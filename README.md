@@ -1,7 +1,7 @@
-cicstart
+CICSTART
 ========
 
-CICSTART: Common Interfaces for Cloud Storage, Access, and Resource Utilization (CANARIE RPI SC-04)
+Common Interfaces for Cloud Storage, Access, and Resource Utilization (CANARIE RPI SC-04)
 
 During the NEP-61 project, a suite of generalized components and framework was prototyped. These components address several problems identified during the NEP-21 project, and when compiled together into a platform, make up leading-edge middleware to support research. This project aims to enhance the platform, making it more suitable and scaling it up for use by the broader scientific community.
 
