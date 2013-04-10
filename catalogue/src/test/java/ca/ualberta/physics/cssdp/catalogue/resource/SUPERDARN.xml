@@ -1,0 +1,348 @@
+<project extKey="SUPERDARN">
+	<name>SuperDARN</name>
+	<url>http://ion.usask.ca/info.php</url>
+	<rulesUrl>http://superdarn.jhuapl.edu/data/index.html</rulesUrl>
+	<host>superdarn-cssdp.usask.ca</host>
+	<scanDirectories>
+		<directory>/data/fit</directory>
+	</scanDirectories>
+	
+	<observatories>
+		<observatory extKey="ksr">
+			<location>[58.68,-156.65]</location>
+			<description>King Salmon, Alaska, United States</description>
+		</observatory>
+		<observatory extKey="kod">
+			<location>[57.60,-152.2]</location>
+			<description>Kodiak, Alaska, United States</description>
+		</observatory>
+		<observatory extKey="pgr">
+			<location>[53.98,-122.59]</location>
+			<description>Prince George, British Columbia, Canada</description>
+		</observatory>
+		<observatory extKey="sas">
+			<location>[52.16,-106.53]</location>
+			<description>Saskatoon, Saskatchewan, Canada</description>
+		</observatory>
+		<observatory extKey="rkn">
+			<location>[62.8,-93.1]</location>
+			<description>Rankin Inlet, Nunavut, Canada</description>
+		</observatory>
+		<observatory extKey="inv">
+			<location>[68.42,-133.5]</location>
+			<description>Inuvik, Northwest Territories, Canada</description>
+		</observatory>
+		<observatory extKey="bks">
+			<location>[37.10,-77.95]</location>
+			<description>Blackstone, Virginia, USA</description>
+		</observatory>
+		<observatory extKey="kap">
+			<location>[49.39,-82.32]</location>
+			<description>Kapuskasing, Ontario, Canada</description>
+		</observatory>
+		<observatory extKey="wal">
+			<location>[37.93,-75.47]</location>
+			<description>Wallops Island, Virginia, United States</description>
+		</observatory>
+		<observatory extKey="gbr">
+			<location>[53.32,-60.46]</location>
+			<description>Happy Valley-Goose Bay, Newfoundland and Labrador, Canada</description>
+		</observatory>
+		<observatory extKey="sto">
+			<location>[63.86,-22.02]</location>
+			<description>Stokkseyri, Iceland</description>
+		</observatory>
+		<observatory extKey="pyk">
+			<location>[63.86,-19.20]</location>
+			<description>Þykkvibær, Iceland</description>
+		</observatory>
+		<observatory extKey="han">
+			<location>[62.32,26.61]</location>
+			<description>Hankasalmi Cutlass/Finland</description>
+		</observatory>
+		<observatory extKey="hok">
+			<location>[43.53,143.61]</location>
+			<description>Hokkaido, Japan</description>
+		</observatory>
+	</observatories>
+	
+	<instrumentTypes>
+		<instrumentType extKey="RADAR">
+			<description>Radars operating on frequencies between 8 and 20 MHz and looking into the polar regions of the Earth</description>
+		</instrumentType>
+	</instrumentTypes>
+	
+	<discriminators>
+		<discriminator extKey="fit">
+			<description>fit format files, generated pre-1995</description>
+		</discriminator>
+		<discriminator extKey="fitacf">
+			<description>fitacf format files</description>
+		</discriminator>
+	</discriminators>
+	
+	<startDateRegex>\d{8}</startDateRegex>
+	<endDateRegex>\d{8}</endDateRegex>
+	
+	<excludesRegex>inx.gz</excludesRegex>
+	
+	<startDateBeanShell>
+		<![CDATA[
+			import org.joda.time.LocalDate;
+			import org.joda.time.LocalTime;
+			import org.joda.time.LocalDateTime;
+			import org.joda.time.format.DateTimeFormat;
+			LocalDateTime parse(String url, regexResult) { 
+				LocalDate date = DateTimeFormat.forPattern("yyyyMMdd").parseLocalDate(regexResult);
+				LocalDateTime startDate = date.toLocalDateTime(new LocalTime(0,0));
+				return startDate;
+			}
+		]]>
+	</startDateBeanShell>
+	<endDateBeanShell>
+		<![CDATA[
+			import org.joda.time.LocalDate;
+			import org.joda.time.LocalTime;
+			import org.joda.time.LocalDateTime;
+			import org.joda.time.format.DateTimeFormat;
+			LocalDateTime parse(String url, regexResult) { 
+				LocalDate date = DateTimeFormat.forPattern("yyyyMMdd").parseLocalDate(regexResult);
+				LocalDateTime dateTime = date.toLocalDateTime(new LocalTime(23,59));
+				return dateTime;
+			}
+		]]>
+	</endDateBeanShell>
+
+	<dataProducts>
+		<dataProduct extKey="FITACF-KSR">
+			<description>fitacf data from King Salmon</description>
+			<observatories><observatory>ksr</observatory></observatories>
+			<instrumentTypes><insrumentType>RADAR</insrumentType></instrumentTypes>
+			<discriminator>fitacf</discriminator>
+			<metadataParserConfig>
+				<includesRegex>.ksr.fitacf.gz</includesRegex>
+			</metadataParserConfig>
+		</dataProduct>
+		<dataProduct extKey="FITACF-KOD">
+			<description>fitacf data from Kodian</description>
+			<observatories><observatory>kod</observatory></observatories>
+			<instrumentTypes><insrumentType>RADAR</insrumentType></instrumentTypes>
+			<discriminator>fitacf</discriminator>
+			<metadataParserConfig>
+				<includesRegex>.kod.fitacf.gz</includesRegex>
+			</metadataParserConfig>
+		</dataProduct>
+		<dataProduct extKey="FITACF-PGR">
+			<description>fitacf data from Prince George</description>
+			<observatories><observatory>pgr</observatory></observatories>
+			<instrumentTypes><insrumentType>RADAR</insrumentType></instrumentTypes>
+			<discriminator>fitacf</discriminator>
+			<metadataParserConfig>
+				<includesRegex>.pgr.fitacf.gz</includesRegex>
+			</metadataParserConfig>
+		</dataProduct>
+		<dataProduct extKey="FITACF-SAS">
+			<description>fitacf data from Saskatoon</description>
+			<observatories><observatory>sas</observatory></observatories>
+			<instrumentTypes><insrumentType>RADAR</insrumentType></instrumentTypes>
+			<discriminator>fitacf</discriminator>
+			<metadataParserConfig>
+				<includesRegex>.sas.fitacf.gz</includesRegex>
+			</metadataParserConfig>
+		</dataProduct>
+		<dataProduct extKey="FITACF-RKN">
+			<description>fitacf data from Rankin Inlet</description>
+			<observatories><observatory>rkn</observatory></observatories>
+			<instrumentTypes><insrumentType>RADAR</insrumentType></instrumentTypes>
+			<discriminator>fitacf</discriminator>
+			<metadataParserConfig>
+				<includesRegex>.rkn.fitacf.gz</includesRegex>
+			</metadataParserConfig>
+		</dataProduct>
+		<dataProduct extKey="FITACF-INV">
+			<description>fitacf data from Inuvik</description>
+			<observatories><observatory>inv</observatory></observatories>
+			<instrumentTypes><insrumentType>RADAR</insrumentType></instrumentTypes>
+			<discriminator>fitacf</discriminator>
+			<metadataParserConfig>
+				<includesRegex>.inv.fitacf.gz</includesRegex>
+			</metadataParserConfig>
+		</dataProduct>
+		<dataProduct extKey="FITACF-BKS">
+			<description>fitacf data from Blackstone</description>
+			<observatories><observatory>bks</observatory></observatories>
+			<instrumentTypes><insrumentType>RADAR</insrumentType></instrumentTypes>
+			<discriminator>fitacf</discriminator>
+			<metadataParserConfig>
+				<includesRegex>.bks.fitacf.gz</includesRegex>
+			</metadataParserConfig>
+		</dataProduct>
+		<dataProduct extKey="FITACF-KAP">
+			<description>fitacf data from Kapuskasing</description>
+			<observatories><observatory>kap</observatory></observatories>
+			<instrumentTypes><insrumentType>RADAR</insrumentType></instrumentTypes>
+			<discriminator>fitacf</discriminator>
+			<metadataParserConfig>
+				<includesRegex>.kap.fitacf.gz</includesRegex>
+			</metadataParserConfig>
+		</dataProduct>
+		<dataProduct extKey="FITACF-WAL">
+			<description>fitacf data from Wallops Island</description>
+			<observatories><observatory>wal</observatory></observatories>
+			<instrumentTypes><insrumentType>RADAR</insrumentType></instrumentTypes>
+			<discriminator>fitacf</discriminator>
+			<metadataParserConfig>
+				<includesRegex>.wal.fitacf.gz</includesRegex>
+			</metadataParserConfig>
+		</dataProduct>
+		<dataProduct extKey="FITACF-GBR">
+			<description>fitacf data from Goose Bay</description>
+			<observatories><observatory>gbr</observatory></observatories>
+			<instrumentTypes><insrumentType>RADAR</insrumentType></instrumentTypes>
+			<discriminator>fitacf</discriminator>
+			<metadataParserConfig>
+				<includesRegex>.gbr.fitacf.gz</includesRegex>
+			</metadataParserConfig>
+		</dataProduct>
+		<dataProduct extKey="FITACF-STO">
+			<description>fitacf data from Stokkseyri</description>
+			<observatories><observatory>sto</observatory></observatories>
+			<instrumentTypes><insrumentType>RADAR</insrumentType></instrumentTypes>
+			<discriminator>fitacf</discriminator>
+			<metadataParserConfig>
+				<includesRegex>.sto.fitacf.gz</includesRegex>
+			</metadataParserConfig>
+		</dataProduct>
+		<dataProduct extKey="FITACF-PYK">
+			<description>fitacf data from Þykkvibær</description>
+			<observatories><observatory>pyk</observatory></observatories>
+			<instrumentTypes><insrumentType>RADAR</insrumentType></instrumentTypes>
+			<discriminator>fitacf</discriminator>
+			<metadataParserConfig>
+				<includesRegex>.pyk.fitacf.gz</includesRegex>
+			</metadataParserConfig>
+		</dataProduct>
+		<dataProduct extKey="FITACF-HAN">
+			<description>fitacf data from Hankasalmi</description>
+			<observatories><observatory>han</observatory></observatories>
+			<instrumentTypes><insrumentType>RADAR</insrumentType></instrumentTypes>
+			<discriminator>fitacf</discriminator>
+			<metadataParserConfig>
+				<includesRegex>.han.fitacf.gz</includesRegex>
+			</metadataParserConfig>
+		</dataProduct>
+		<dataProduct extKey="FITACF-HOK">
+			<description>fitacf data from Hokkaido</description>
+			<observatories><observatory>hok</observatory></observatories>
+			<instrumentTypes><insrumentType>RADAR</insrumentType></instrumentTypes>
+			<discriminator>fitacf</discriminator>
+			<metadataParserConfig>
+				<includesRegex>.hok.fitacf.gz</includesRegex>
+			</metadataParserConfig>
+		</dataProduct>
+		
+		
+		<!-- fit data products -->
+
+		<dataProduct extKey="FIT-KSR">
+			<description>fit data from King Salmon</description>
+			<observatories><observatory>ksr</observatory></observatories>
+			<instrumentTypes><insrumentType>RADAR</insrumentType></instrumentTypes>
+			<discriminator>fit</discriminator>
+			<metadataParserConfig>
+				<includesRegex>cC.fit.gz</includesRegex>
+			</metadataParserConfig>
+		</dataProduct>
+		<dataProduct extKey="FIT-KOD">
+			<description>fit data from Kodiak</description>
+			<observatories><observatory>kod</observatory></observatories>
+			<instrumentTypes><insrumentType>RADAR</insrumentType></instrumentTypes>
+			<discriminator>fit</discriminator>
+			<metadataParserConfig>
+				<includesRegex>aC.fit.gz</includesRegex>
+			</metadataParserConfig>
+		</dataProduct>
+		<dataProduct extKey="FIT-PGR">
+			<description>fit data from Prince George</description>
+			<observatories><observatory>pgr</observatory></observatories>
+			<instrumentTypes><insrumentType>RADAR</insrumentType></instrumentTypes>
+			<discriminator>fit</discriminator>
+			<metadataParserConfig>
+				<includesRegex>bC.fit.gz</includesRegex>
+			</metadataParserConfig>
+		</dataProduct>
+		<dataProduct extKey="FIT-SAS">
+			<description>fit data from Saskatoon</description>
+			<observatories><observatory>sas</observatory></observatories>
+			<instrumentTypes><insrumentType>RADAR</insrumentType></instrumentTypes>
+			<discriminator>fit</discriminator>
+			<metadataParserConfig>
+				<includesRegex>tC.fit.gz</includesRegex>
+			</metadataParserConfig>
+		</dataProduct>
+		<dataProduct extKey="FIT-RKN">
+			<description>fit data from Rankin Inlet</description>
+			<observatories><observatory>rkn</observatory></observatories>
+			<instrumentTypes><insrumentType>RADAR</insrumentType></instrumentTypes>
+			<discriminator>fit</discriminator>
+			<metadataParserConfig>
+				<includesRegex>xC.fit.gz</includesRegex>
+			</metadataParserConfig>
+		</dataProduct>
+		<dataProduct extKey="FIT-KAP">
+			<description>fit data from Kapuskasing</description>
+			<observatories><observatory>kap</observatory></observatories>
+			<instrumentTypes><insrumentType>RADAR</insrumentType></instrumentTypes>
+			<discriminator>fit</discriminator>
+			<metadataParserConfig>
+				<includesRegex>kC.fit.gz</includesRegex>
+			</metadataParserConfig>
+		</dataProduct>
+		<dataProduct extKey="FIT-WAL">
+			<description>fit data from Wallops Island</description>
+			<observatories><observatory>wal</observatory></observatories>
+			<instrumentTypes><insrumentType>RADAR</insrumentType></instrumentTypes>
+			<discriminator>fit</discriminator>
+			<metadataParserConfig>
+				<includesRegex>iC.fit.gz</includesRegex>
+			</metadataParserConfig>
+		</dataProduct>
+		<dataProduct extKey="FIT-GBR">
+			<description>fit data from Goose Bay</description>
+			<observatories><observatory>gbr</observatory></observatories>
+			<instrumentTypes><insrumentType>RADAR</insrumentType></instrumentTypes>
+			<discriminator>fit</discriminator>
+			<metadataParserConfig>
+				<includesRegex>gC.fit.gz</includesRegex>
+			</metadataParserConfig>
+		</dataProduct>
+		<dataProduct extKey="FIT-STO">
+			<description>fit data from Stokkseyri</description>
+			<observatories><observatory>sto</observatory></observatories>
+			<instrumentTypes><insrumentType>RADAR</insrumentType></instrumentTypes>
+			<discriminator>fit</discriminator>
+			<metadataParserConfig>
+				<includesRegex>wC.fit.gz</includesRegex>
+			</metadataParserConfig>
+		</dataProduct>
+		<dataProduct extKey="FIT-PYK">
+			<description>fit data from Þykkvibær</description>
+			<observatories><observatory>pyk</observatory></observatories>
+			<instrumentTypes><insrumentType>RADAR</insrumentType></instrumentTypes>
+			<discriminator>fit</discriminator>
+			<metadataParserConfig>
+				<includesRegex>eC.fit.gz</includesRegex>
+			</metadataParserConfig>
+		</dataProduct>
+		<dataProduct extKey="FIT-HAN">
+			<description>fit data from Hankasalmi</description>
+			<observatories><observatory>han</observatory></observatories>
+			<instrumentTypes><insrumentType>RADAR</insrumentType></instrumentTypes>
+			<discriminator>fit</discriminator>
+			<metadataParserConfig>
+				<includesRegex>fC.fit.gz</includesRegex>
+			</metadataParserConfig>
+		</dataProduct>
+		
+	</dataProducts>
+</project>

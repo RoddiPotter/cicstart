@@ -1,0 +1,10 @@
+<hostEntry>
+	<hostname>superdarn-cssdp.usask.ca</hostname>
+	<protocol>sftp</protocol>
+	<username>ssdp</username>
+	<password>Sup3rD@RN-C$$DP</password>
+	<maxConnections>5</maxConnections>
+	<timeout>10000</timeout>
+	<retryWait>10000</retryWait>
+	<retryCount>3</retryCount>
+</hostEntry>

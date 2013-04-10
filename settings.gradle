@@ -1,0 +1,1 @@
+include "common", "catalogue", "vfs", "file", "apps", "auth"

@@ -1,0 +1,89 @@
+apply plugin: 'eclipse'
+apply plugin: 'war'
+
+sourceCompatibility=1.6
+targetCompatibility=1.6
+
+dependsOn(':common')
+
+repositories {
+  mavenCentral()
+}
+
+war {
+	from('src/main/java') {
+	   include '**/*.properties' into ('WEB-INF/classes')
+	}
+	// remove classes from the classpath
+	classpath = configurations.runtime
+
+	// add them in explicitly, with the filtering applied
+	webInf {
+		into('classes') {
+			from sourceSets.main.classes
+			exclude '**/logback.xml'
+		}
+	}
+}
+
+eclipse {
+	classpath {
+		defaultOutputDir = file('src/main/webapp/WEB-INF/classes')
+	}
+}
+
+
+dependencies {
+	
+	compile project(":common")
+	
+	compile "org.slf4j:slf4j-api:1.7.2"
+	compile "ch.qos.logback:logback-classic:1.0.9"
+	compile "com.google.guava:guava:14.0"
+	compile "com.google.inject:guice:3.0"
+   	compile "org.apache.commons:commons-compress:1.4.1"	
+	compile "joda-time:joda-time:2.2"
+
+//    compile "joda-time:joda-time-hibernate:1.3"
+	compile "org.hibernate:hibernate-entitymanager:4.1.9.Final"
+	compile "com.jolbox:bonecp:0.7.1.RELEASE"
+	compile "com.jolbox:bonecp-provider:0.8.0-alpha1"
+	compile "postgresql:postgresql:9.1-901.jdbc4"
+	
+	compile("com.wordnik:swagger-jaxrs_2.9.1:1.2.1")
+	compile("com.wordnik:swagger-core_2.9.1:1.2.1")
+	
+	//compile("com.wordnik:swagger-jaxrs_2.10.0:1.2.0") {
+   		//exclude group: "log4j"	
+   		//exclude group: "com.sun.jersey"
+   	//}
+	//compile "com.sun.jersey.contribs:jersey-multipart:1.17.1"
+	
+	compile "com.sun.jersey:jersey-core:1.17.1"
+	compile "com.sun.jersey:jersey-server:1.17.1"
+	compile "com.sun.jersey:jersey-servlet:1.17.1"
+	compile "com.sun.jersey:jersey-json:1.17.1"
+	//compile "com.sun.jersey:jersey-client:1.17.1"
+	//compile "com.sun.jersey.contribs:jersey-guice:1.17.1"
+	compile "com.sun.jersey.contribs:jersey-multipart:1.17.1"
+	//compile "org.jvnet:mimepull:1.6"
+	//compile "javax.xml.bind:jaxb-api:2.2.7"
+	//compile "com.sun.xml.bind:jaxb-impl:2.2.6"
+	//compile "javax.servlet:javax.servlet-api:3.0.1"
+	//compile "javax.activation:activation:1.1.1"
+	//compile "javax.persistence:persistence-api:1.0.2"
+	compile "javax.ws.rs:jsr311-api:1.1.1"
+	
+	compile "org.beanshell:bsh:2.0b5"
+	compile "org.bouncycastle:bcprov-jdk16:1.46"
+	compile "net.schmizz:sshj:0.8.1"
+	compile "commons-net:commons-net:3.2"
+
+	testCompile "com.jayway.restassured:rest-assured:1.7.2"
+	testCompile "org.eclipse.jetty:jetty-webapp:8.0.4.v20111024"
+	testCompile "org.eclipse.jetty:jetty-servlets:8.0.4.v20111024"
+	testCompile "junit:junit:4.+"
+}
+
+	
+
