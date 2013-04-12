@@ -1,28 +1,76 @@
-CICSTART
-========
+# Introduction
 
-Common Interfaces for Cloud Storage, Access, and Resource Utilization (CANARIE RPI SC-04)
+CICSTART: Common Interfaces for Cloud Storage, Access, and Resource Utilization (CANARIE RPI SC-04)
 
-During the NEP-61 project, a suite of generalized components and framework was prototyped. These components address several problems identified during the NEP-21 project, and when compiled together into a platform, make up leading-edge middleware to support research. This project aims to enhance the platform, making it more suitable and scaling it up for use by the broader scientific community.
+During the [CANARIE](http://www.canarie.ca/) NEP-61 project developed at the 
+[University of Alberta Department of Physics](http://www.physics.ualberta.ca/en/Research/SpacePhysics.aspx) under the direction of 
+Dr. Robert Rankin with the space physics group, a framework for cataloguing, accessing, and working with file data from 
+various data sources was prototyped. CICSTART is a realization of that prototype, bringing each component to a higher level of 
+maturity and building new components required to fulfil the objective "Give a researcher consistent access to data, compute, and 
+storage resources by leveraging existing hardware and software assets".  
 
-The components that make up this research middleware platform are:
+This framework is currently accessible on the CANARIE [DAIR](http://www.canarie.ca/en/dair-program/about) network, but may also be 
+downloaded and configured to run on your infrastructure.  You may wish to download and setup your own platform for access to your 
+specific licensed software and hardware resources not available on the DAIR cloud.
 
-1. A Catalogue Service used to identify and locate data resources across network boundaries. This service is a stand-alone component that can be used by end users (via a portal) independent of the platform. This component can also be used to automate the look-up and retrieval of data by any research software running within the platform. At the same time, this service allows any research software to automatically catalogue the output data generated. Essentially, this component establishes a means of cycling data between any piece of software used by researchers.
-2. A File Service used to transfer data from remote data stores to the research software or end users. This service isolates the software and end user from dealing with the complexities of low-level details of differing network protocols, authentication, and specific locations of data files in the remote data stores.
-3. An Authentication Service used to authenticate users and software so that authorization of services and resources can be enforced.
-4. A Virtual File System Service (VFSS) that allows (s)ftp directory-based access using off-the-shelf ftp client software, as well as web service access by research software and/or other users of the platform to data files. This service also enables an innovative mechanism for distributed storage in the platform.
-5. A Proxy Service that manages the allocation of cloud resources and supervises the dispatching of research software runs on those resources.
-6. A Proxy Framework, which is a "thin wrapper" used to make legacy software accessible via web service calls, and which allows for interaction with other platform services (Catalogue, File Service, Authentication, VFSS, and Proxy).
+The components that make up the CICSTART platform are:
 
-The CICSTART platform is intentionally made up of stand-alone components for a number of strategic reasons:
+## Catalogue
+> A Catalogue Service used to identify and locate data resources on the Internet. This service is 
+> a stand-alone component that can be used by end users (e.g., via a portal) independent of the platform. This component 
+> can also be used to automate the look-up and retrieval of data by any client software running within the platform. 
+> At the same time, this service allows any research software to automatically catalogue the output generated data from computational models. 
+> This component enabled a piping mechanism to move data from one computational model job to the next.
 
-1. Independent of each other, the components can add value to any new project requiring cataloguing and data location services, file transfer and caching, and authentication services.
-2. The VFSS is designed to run outside of the cloud. Researchers that already have access to storage outside the cloud can integrate their existing storage into the platform by installing the VFSS. The remote VFSS is accessible by CICSTART and as a result, the research software wrapped in the Proxy framework also has access to the remote VFSS. This innovative approach has a number of unique attributes:
-  * The cost of data storage is distributed back to the research community, and allows for horizontal scaling of storage.
-  * Provides researchers with the option of keeping their current storage configuration, allowing them to physically store the data within their own network boundaries while still gaining benefit from the rest of the CICSTART platform services.
-3. The Proxy service can be installed where the computing resource exists (i.e., on Amazon, on DAIR, or on CESWP) and run independently from the cloud but still has access to the rest of the CICSTART platform services. This innovation allows computations to run closer to the data when necessary, and creates a model for distributed computing.
-4. The Proxy framework can be used directly in new development, or used to wrap legacy software such as the Space Weather Modelling Framework, which is accessed via command line only. Once the asset is wrapped, it becomes accessible via standard web interface run through the Proxy service. The researcher also has the option of running the asset directly outside of the CICSTART platform, which allows for easy debugging and testing.
+## File
+> A File Service used to transfer data resources across the Internet to the computational models or end users. This service isolates 
+> the software and end user from dealing with the complexities of low-level details of differing network protocols, authentication, 
+> and specific file locations of the data files in the remote servers.  This component also caches data for efficiencies and allows for
+> arbitrary mapping of external keys to the file's MD5 hash.
 
-The CICSTART platform reduces the challenges and complexity of providing storage and computing resources to the research.
+## Auth
+> An Authentication Service used to authenticate users and software so that authorization of services and resources can be enforced. The
+> VFS and other components may use this service to identify the user or request authentication prior to authorizing access to the resource.
+> Note that this component currently does not use HTTPS.  A discussion has been started on the Google group about this.
 
-Please see the wiki for more information.
+## VFS
+> A Virtual 'File System Service' (VFS) that allows (s)ftp directory-based access using off-the-shelf ftp client software, as well as 
+> web service access by research software and/or other users of the platform to data files. This service also enables an innovative 
+> mechanism for distributed storage in the platform.
+
+## Proxy
+> A Proxy Service that manages the allocation of cloud resources and supervises the dispatching of research software jobs on those 
+> resources.
+
+## Wrapper
+> A Proxy Framework, which is a "thin wrapper" used to make legacy software accessible via web service calls, and which allows 
+> for interaction with other platform services (Catalogue, File Service, Authentication, VFS, and Proxy).
+
+---------------------------------------
+
+The documentation is split into a few categories:
+
+### For the platform developer.
+> You are extending the CICSTART components for general use or your own interests.
+> 1. See building and deploying the components
+    
+### For the platform implementor.
+> You are using the REST APIs offered by CICSTART to build your own data portal.
+> 1. See Components & REST APIs
+    
+### For the model developer.
+> You are developing a computational model and you want it served by CICSTART
+> 1. See Wrapper documentation
+> 1. See Components & Rest APIs
+
+---------------------------------------
+
+Open discussion about the platform is conducted through the Google group: 
+[CICSTART](https://groups.google.com/forum/?hl=en&fromgroups#!forum/cicstart)
+
+---------------------------------------
+
+All CICSTART components are released under the [Apache 2.0 license](http://www.apache.org/licenses/LICENSE-2.0.html).  This excludes 
+computational models developed that run on the CICSTART platform since these models may be released under their own license.  All 
+computational models bundled with the CICSTART platform are Apache 2 licensed. See LICENSE for license detail.
+
