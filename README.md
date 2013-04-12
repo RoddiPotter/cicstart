@@ -50,18 +50,18 @@ The components that make up the CICSTART platform are:
 
 The documentation is split into a few categories:
 
-### For the platform developer.
-> You are extending the CICSTART components for general use or your own interests.
-> 1. See building and deploying the components
+### For the platform developer
+You are extending the CICSTART components for general use or your own interests.
+1. See building and deploying the components
     
-### For the platform implementor.
-> You are using the REST APIs offered by CICSTART to build your own data portal.
-> 1. See Components & REST APIs
+### For the platform implementor
+You are using the REST APIs offered by CICSTART to build your own data portal.
+1. See Components & REST APIs
     
-### For the model developer.
-> You are developing a computational model and you want it served by CICSTART
-> 1. See Wrapper documentation
-> 1. See Components & Rest APIs
+### For the model developer
+You are developing a computational model and you want it served by CICSTART
+1. See Wrapper documentation
+2. See Components & Rest APIs
 
 ---------------------------------------
 
