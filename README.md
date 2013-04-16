@@ -9,6 +9,14 @@ various data sources was prototyped. CICSTART is a realization of that prototype
 maturity and building new components required to fulfil the objective "Give a researcher consistent access to data, compute, and 
 storage resources by leveraging existing hardware and software assets".  
 
+This object is acheived with the following goals:
+
+1. Registering file urls in a searchable catalogue via a REST api.
+2. Accessing files at those urls through a REST api.
+3. Launching software to run in pre-defined VMs in an OpenStack cloud.
+4. Saving the results generated from running software to long term user storage.
+5. Combining these services to simplify or extend the capabilities of software, and exposing them through a REST api.
+
 This framework is currently accessible on the CANARIE [DAIR](http://www.canarie.ca/en/dair-program/about) network, but may also be 
 downloaded and configured to run on your infrastructure.  You may wish to download and setup your own platform for access to your 
 specific licensed software and hardware resources not available on the DAIR cloud.
@@ -51,7 +59,8 @@ The components that make up the CICSTART platform are:
 The documentation is split into a few categories:
 
 ### For the platform developer
-You are extending the CICSTART components for general use or your own interests.
+You are extending the CICSTART components for general use or your own interests. The software is built on Java 1.6 and JAXRS.  
+The server components need a database to talk with (PostgreSQL is default), but the VFS and Proxy components do not require a database.
 1. See building and deploying the components
     
 ### For the platform implementor

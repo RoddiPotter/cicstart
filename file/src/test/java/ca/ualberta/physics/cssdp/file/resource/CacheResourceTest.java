@@ -46,12 +46,15 @@ public class CacheResourceTest extends FileTestsScaffolding {
 	@Test
 	public void allBasicCacheOps() throws IOException {
 
+		// start with consistent baseline
+		delete("/file/cache.json/68784d5d41107460df67ba08b7287267");
+
 		File internalCacheDir = new File(FileServer.properties().getString(
 				"file.cache.root"));
 
 		File cacheDir = new File(internalCacheDir,
 				"6878/4d5d/4110/7460/df67/ba08/b728/7267/");
-
+		
 		int startCount = cacheDir.list().length;
 
 		File file = new File("src/test/resources/cache_test_file.txt");
@@ -103,6 +106,7 @@ public class CacheResourceTest extends FileTestsScaffolding {
 		tempFile.delete();
 		tempDir.delete();
 
+		// cleanup
 		expect().statusCode(200).when().delete(location);
 		expect().statusCode(404).when().get(location);
 
@@ -167,7 +171,7 @@ public class CacheResourceTest extends FileTestsScaffolding {
 				.when().put("/file/cache.json");
 
 		given().formParam("key", "secondKey").expect().statusCode(200).when()
-				.post("/file/cache.json/68784d5d41107460df67ba08b7287267/map");
+				.put("/file/cache.json/68784d5d41107460df67ba08b7287267/map");
 
 		Assert.assertEquals("68784d5d41107460df67ba08b7287267",
 				get("/file/cache.json/find?key=secondKey").asString());
@@ -180,15 +184,19 @@ public class CacheResourceTest extends FileTestsScaffolding {
 		Host host = new Host("sunsite.ualberta.ca", "anonymous", "anonymous");
 		host.setProtocol(Protocol.ftp);
 
-		expect().statusCode(201)
-				.given()
+		// if HostRestTest.ls() runs first this will return 500, but that's OK
+		// because sunsite.ualberta.ca will have already been added to the hosts
+		Response res = 
+				given()
 				.content(host)
 				.and()
 				.contentType(ContentType.JSON)
 				.and()
-				.header("cicstart_session",
+				.header("CICSTART.session",
 						login(dataManager.getEmail(), "password"))
-				.post("/file/host.json");
+				.put("/file/host.json");
+
+		System.out.println(res.asString());
 
 		String url = "ftp://sunsite.ualberta.ca/pub/Mirror/apache/commons/daemon/RELEASE-NOTES.txt";
 		// String url = "ftp://ftp14.freebsd.org/pub/FreeBSD/README.TXT";
@@ -223,7 +231,7 @@ public class CacheResourceTest extends FileTestsScaffolding {
 
 		}, readme);
 
-		Assert.assertEquals(5685, readme.length());
+		Assert.assertEquals(5741, readme.length());
 
 		System.out.println(Files.toString(readme, Charset.defaultCharset()));
 

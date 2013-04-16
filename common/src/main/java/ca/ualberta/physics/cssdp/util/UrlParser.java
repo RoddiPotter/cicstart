@@ -25,7 +25,7 @@ public class UrlParser {
 		if (url.contains("://")) {
 			int pathIndex = url.indexOf("/", url.indexOf("://") + 3);
 			String path = url.substring(pathIndex);
-			return path.endsWith("/") ? path : path + "/";
+			return path;
 		}
 
 		return url;

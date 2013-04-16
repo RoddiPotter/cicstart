@@ -88,11 +88,14 @@ public class FileSystemService {
 		};
 
 		long size = 0L;
-		for (File file : userDir.listFiles(fileFilter)) {
-			if (file.isFile()) {
-				size += file.length();
-			} else {
-				size += sizeOf(file);
+		File[] files = userDir.listFiles(fileFilter);
+		if (files != null) {
+			for (File file : files) {
+				if (file.isFile()) {
+					size += file.length();
+				} else {
+					size += sizeOf(file);
+				}
 			}
 		}
 		return size;

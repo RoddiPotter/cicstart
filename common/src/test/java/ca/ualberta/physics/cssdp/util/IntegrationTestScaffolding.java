@@ -41,6 +41,11 @@ public abstract class IntegrationTestScaffolding extends TestSupport {
 
 	private static Server server;
 
+	private static Server authServer;
+	private static Server fileServer;
+	private static Server catalogueServer;
+	
+	// start the appserver of the project we are testing
 	@Before
 	public void setupEnvironment() {
 
@@ -75,6 +80,132 @@ public abstract class IntegrationTestScaffolding extends TestSupport {
 
 			try {
 				server.start();
+			} catch (Exception e) {
+				Throwables.propagate(e);
+			}
+
+		}
+	}
+
+	// start an auth server for tests that depend on the auth resources
+	@Before
+	public void startAuthServer() {
+
+		config().objectMapperConfig(
+				new ObjectMapperConfig()
+						.jackson2ObjectMapperFactory(new Jackson2ObjectMapperFactory() {
+
+							@Override
+							public ObjectMapper create(
+									@SuppressWarnings("rawtypes") Class cls,
+									String charset) {
+								return new JSONObjectMapperProvider().get();
+							}
+						}));
+
+		if (authServer == null || !authServer.isStarted()) {
+			// configure Jetty as an embedded web application server
+			authServer = new Server();
+			authServer.setStopAtShutdown(true);
+			authServer.setGracefulShutdown(1000);
+
+			SocketConnector connector = new SocketConnector();
+			connector.setPort(8081);
+			authServer.addConnector(connector);
+
+			WebAppContext context = new WebAppContext();
+			context.setDescriptor("../auth/src/main/webapp/WEB-INF/web.xml");
+			context.setResourceBase("../auth/src/main/webapp");
+			context.setContextPath(getComponetContext());
+			context.setParentLoaderPriority(true);
+			authServer.setHandler(context);
+
+			try {
+				authServer.start();
+			} catch (Exception e) {
+				Throwables.propagate(e);
+			}
+
+		}
+	}
+
+	// start a file server for tests that depend on the file resources
+	@Before
+	public void startFileServer() {
+
+		config().objectMapperConfig(
+				new ObjectMapperConfig()
+						.jackson2ObjectMapperFactory(new Jackson2ObjectMapperFactory() {
+
+							@Override
+							public ObjectMapper create(
+									@SuppressWarnings("rawtypes") Class cls,
+									String charset) {
+								return new JSONObjectMapperProvider().get();
+							}
+						}));
+
+		if (fileServer == null || !fileServer.isStarted()) {
+			// configure Jetty as an embedded web application server
+			fileServer = new Server();
+			fileServer.setStopAtShutdown(true);
+			fileServer.setGracefulShutdown(1000);
+
+			SocketConnector connector = new SocketConnector();
+			connector.setPort(8083);
+			fileServer.addConnector(connector);
+
+			WebAppContext context = new WebAppContext();
+			context.setDescriptor("../file/src/main/webapp/WEB-INF/web.xml");
+			context.setResourceBase("../file/src/main/webapp");
+			context.setContextPath(getComponetContext());
+			context.setParentLoaderPriority(true);
+			fileServer.setHandler(context);
+
+			try {
+				fileServer.start();
+			} catch (Exception e) {
+				Throwables.propagate(e);
+			}
+
+		}
+	}
+
+	// start a catalouge server for tests that depend on the file resources
+	@Before
+	public void startCatalogueServer() {
+
+		config().objectMapperConfig(
+				new ObjectMapperConfig()
+						.jackson2ObjectMapperFactory(new Jackson2ObjectMapperFactory() {
+
+							@Override
+							public ObjectMapper create(
+									@SuppressWarnings("rawtypes") Class cls,
+									String charset) {
+								return new JSONObjectMapperProvider().get();
+							}
+						}));
+
+		if (catalogueServer == null || !catalogueServer.isStarted()) {
+			// configure Jetty as an embedded web application server
+			catalogueServer = new Server();
+			catalogueServer.setStopAtShutdown(true);
+			catalogueServer.setGracefulShutdown(1000);
+
+			SocketConnector connector = new SocketConnector();
+			connector.setPort(8084);
+			catalogueServer.addConnector(connector);
+
+			WebAppContext context = new WebAppContext();
+			context.setDescriptor("../catalogue/src/main/webapp/WEB-INF/web.xml");
+			context.setResourceBase("../catalogue/src/main/webapp");
+			context.setContextPath(getComponetContext());
+			context.setParentLoaderPriority(true);
+			catalogueServer.setHandler(context);
+
+			try {
+				catalogueServer.start();
 			} catch (Exception e) {
 				Throwables.propagate(e);
 			}

@@ -10,7 +10,7 @@
 		<servlet-class>ca.ualberta.physics.cssdp.catalogue.CatalogueServletContainer</servlet-class>
 		<init-param>
 			<param-name>com.sun.jersey.config.property.packages</param-name>
-			<param-value>ca.ualberta.physics.cssdp.util;ca.ualberta.physics.cssdp.catalogue;com.wordnik.swagger.jaxrs.listing;</param-value>
+			<param-value>ca.ualberta.physics.cssdp.configuration;ca.ualberta.physics.cssdp.catalogue;com.wordnik.swagger.jaxrs.listing;</param-value>
 		</init-param>
 		<init-param>
 			<param-name>com.sun.jersey.spi.container.ContainerRequestFilters</param-name>
@@ -22,7 +22,7 @@
 		</init-param>
 		<init-param>
 			<param-name>swagger.api.basepath</param-name>
-			<param-value>http://localhost:8082/catalogue</param-value>
+			<param-value>http://localhost:8084/catalogue</param-value>
 		</init-param>
 		<init-param>
 			<param-name>api.version</param-name>

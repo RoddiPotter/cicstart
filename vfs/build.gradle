@@ -10,6 +10,19 @@ repositories {
   mavenCentral()
 }
 
+// ensure properties files are on the tests classpath
+sourceSets.test.runtimeClasspath += files(sourceSets.main.java.srcDirs)
+
+// copy the properties files to the classes folder so they are found by tests
+test.doFirst {
+    copy {
+        from("src/main") {
+            include "**/*.properties"
+        }
+        into "build/classes/main"
+    }
+}
+
 war {
 	from('src/main/java') {
 	   include '**/*.properties' into ('WEB-INF/classes')
@@ -20,7 +33,7 @@ war {
 	// add them in explicitly, with the filtering applied
 	webInf {
 		into('classes') {
-			from sourceSets.main.classes
+			from sourceSets.main.output
 			exclude '**/logback.xml'
 		}
 	}
@@ -35,48 +48,15 @@ eclipse {
 dependencies {
 	
 	compile project(":common")
-	
-	compile "org.slf4j:slf4j-api:1.7.2"
-	compile "ch.qos.logback:logback-classic:1.0.9"
-	compile "com.google.guava:guava:14.0"
-	compile "com.google.inject:guice:3.0"
-   	compile "org.apache.commons:commons-compress:1.4.1"	
-	compile "joda-time:joda-time:2.2"
-		
-	compile("com.wordnik:swagger-jaxrs_2.9.1:1.2.1")
-	compile("com.wordnik:swagger-core_2.9.1:1.2.1")
-	
-	//compile("com.wordnik:swagger-jaxrs_2.10.0:1.2.0") {
-   		//exclude group: "log4j"	
-   		//exclude group: "com.sun.jersey"
-   	//}
-	//compile "com.sun.jersey.contribs:jersey-multipart:1.17.1"
-	
-	compile "com.sun.jersey:jersey-core:1.17.1"
-	compile "com.sun.jersey:jersey-server:1.17.1"
-	compile "com.sun.jersey:jersey-servlet:1.17.1"
-	compile "com.sun.jersey:jersey-json:1.17.1"
-	compile "com.sun.jersey:jersey-client:1.17.1"
-	//compile "com.sun.jersey.contribs:jersey-guice:1.17.1"
-	compile "com.sun.jersey.contribs:jersey-multipart:1.17.1"
-	//compile "org.jvnet:mimepull:1.6"
-	//compile "javax.xml.bind:jaxb-api:2.2.7"
-	//compile "com.sun.xml.bind:jaxb-impl:2.2.6"
-	//compile "javax.servlet:javax.servlet-api:3.0.1"
-	//compile "javax.activation:activation:1.1.1"
-	//compile "javax.persistence:persistence-api:1.0.2"
-	compile "javax.ws.rs:jsr311-api:1.1.1"
-	
+			
 	// keep apache-sshd at 0.7.0 until this bug is fixed: https://issues.apache.org/jira/browse/FTPSERVER-437
 	compile "org.apache.ftpserver:ftpserver-core:1.0.6"
 	compile("org.apache.sshd:apache-sshd:0.7.0") {
 		exclude group: 'org.slf4j'
 	}
 		
-	testCompile "com.jayway.restassured:rest-assured:1.7.2"
-	testCompile "org.eclipse.jetty:jetty-webapp:8.0.4.v20111024"
-	testCompile "org.eclipse.jetty:jetty-servlets:8.0.4.v20111024"
-	testCompile "junit:junit:4.+"
+	// allow test infrastructure to be available during test runs
+	testCompile project(path: ':common', configuration: 'tests')
 }
 
 

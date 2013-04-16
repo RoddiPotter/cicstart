@@ -35,10 +35,10 @@ import org.slf4j.LoggerFactory;
 
 import bsh.EvalError;
 import bsh.Interpreter;
-import ca.ualberta.physics.cssdp.catalogue.CatalogueServer;
 import ca.ualberta.physics.cssdp.catalogue.dao.DataProductDao;
 import ca.ualberta.physics.cssdp.catalogue.dao.ProjectDao;
 import ca.ualberta.physics.cssdp.catalogue.dao.UrlDataProductDao;
+import ca.ualberta.physics.cssdp.configuration.Common;
 import ca.ualberta.physics.cssdp.domain.catalogue.DataProduct;
 import ca.ualberta.physics.cssdp.domain.catalogue.Discriminator;
 import ca.ualberta.physics.cssdp.domain.catalogue.Project;
@@ -177,21 +177,20 @@ public class CatalogueService {
 		return sr;
 	}
 
-	public ServiceResponse<Void> scan(Project project) {
+	public ServiceResponse<Void> scan(Project project, String sessionToken) {
 
 		ServiceResponse<Void> sr = new ServiceResponse<Void>();
 		List<String> roots = project.getScanDirectories();
 		String host = project.getHost();
-		String fileUrl = CatalogueServer.properties().getString(
-				"file.url");
+		String fileUrl = Common.properties().getString("file.url");
 		String hostResource = fileUrl + "/host.json";
-		
+
 		List<UrlDataProduct> unsavedUrlDataProducts = new ArrayList<UrlDataProduct>();
 
 		for (String root : roots) {
 
 			ServiceResponse<List<UrlDataProduct>> processSr = processDirectory(
-					host, hostResource, project, root);
+					host, hostResource, project, root, sessionToken);
 
 			if (!processSr.isRequestOk()) {
 				sr.addMessages(processSr.getMessages());
@@ -209,7 +208,8 @@ public class CatalogueService {
 	}
 
 	private ServiceResponse<List<UrlDataProduct>> processDirectory(String host,
-			String hostResource, Project project, String directory) {
+			String hostResource, Project project, String directory,
+			String sessionToken) {
 
 		UrlDataProductMapper urlDataProductMapper = new UrlDataProductMapper(
 				project);
@@ -217,9 +217,11 @@ public class CatalogueService {
 		ServiceResponse<List<UrlDataProduct>> sr = new ServiceResponse<List<UrlDataProduct>>(
 				new ArrayList<UrlDataProduct>());
 
-		Response res = given().queryParameter("path", directory).and()
-				.queryParam("depth", "5")
-				.get(hostResource + "/{host}/ls", host);
+		String path = hostResource + "/{host}/ls";
+		logger.debug("Scanning path: " + path + ", host=" + host);
+		Response res = given().header("CICSTART.session", sessionToken).and()
+				.queryParameter("path", directory).and()
+				.queryParam("depth", "5").get(path, host);
 
 		int statusCode = res.getStatusCode();
 
@@ -238,7 +240,7 @@ public class CatalogueService {
 
 						ServiceResponse<List<UrlDataProduct>> subSr = processDirectory(
 								host, hostResource, project,
-								UrlParser.getPath(entry.getUrl()));
+								UrlParser.getPath(entry.getUrl()), sessionToken);
 
 						sr.getPayload().addAll(subSr.getPayload());
 						sr.addMessages(subSr.getMessages());
@@ -306,7 +308,7 @@ public class CatalogueService {
 					unmapped = false;
 					break;
 
-				} 
+				}
 
 			}
 

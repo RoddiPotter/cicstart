@@ -20,6 +20,10 @@ package ca.ualberta.physics.cssdp.configuration;
 
 import java.net.URI;
 
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.ext.ContextResolver;
+
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 
@@ -38,26 +42,27 @@ import ca.ualberta.physics.cssdp.util.JSONPointSerializer;
 import ca.ualberta.physics.cssdp.util.JSONURIDeserializer;
 import ca.ualberta.physics.cssdp.util.JSONURISerializer;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.google.inject.Provider;
 
-public class JSONObjectMapperProvider implements Provider<ObjectMapper> {
+@javax.ws.rs.ext.Provider
+@Produces(MediaType.APPLICATION_JSON)
+public class JSONObjectMapperProvider implements Provider<ObjectMapper>, ContextResolver<ObjectMapper> {
 
 	private final ObjectMapper mapper;
 
 	public JSONObjectMapperProvider() {
 
 		mapper = new ObjectMapper();
-		mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-		mapper.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
+//		mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+//		mapper.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
 		mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
 				false);
-
+		
 		SimpleModule module = new SimpleModule("cicstart");
 
 		module.addSerializer(LocalDate.class, new JSONLocalDateSerializer());
@@ -86,6 +91,11 @@ public class JSONObjectMapperProvider implements Provider<ObjectMapper> {
 
 	@Override
 	public ObjectMapper get() {
+		return mapper;
+	}
+
+	@Override
+	public ObjectMapper getContext(Class<?> type) {
 		return mapper;
 	}
 

@@ -114,7 +114,7 @@ public class UrlDataProductTest {
 		second.setStartTimestamp(start);
 		Assert.assertFalse(first.hasChanged(second));
 		
-		second.setEndTimestamp(new LocalDateTime());
+		second.setEndTimestamp(new LocalDateTime().plusMinutes(1));
 		Assert.assertTrue(first.hasChanged(second));
 		second.setEndTimestamp(end);
 		Assert.assertFalse(first.hasChanged(second));
