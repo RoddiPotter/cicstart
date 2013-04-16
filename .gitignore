@@ -6,3 +6,4 @@
 build/
 **/WEB-INF/classes/
 bin/
+cloud-script.txt
