@@ -21,15 +21,22 @@ package ca.ualberta.physics.cssdp.util;
 import static com.jayway.restassured.RestAssured.given;
 import static com.jayway.restassured.config.RestAssuredConfig.config;
 
+import java.util.Properties;
+
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.bio.SocketConnector;
+import org.eclipse.jetty.server.handler.ContextHandlerCollection;
+import org.eclipse.jetty.server.handler.DefaultHandler;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.junit.Before;
 
+import ca.ualberta.physics.cssdp.configuration.ApplicationProperties;
+import ca.ualberta.physics.cssdp.configuration.Common;
 import ca.ualberta.physics.cssdp.configuration.JSONObjectMapperProvider;
 import ca.ualberta.physics.cssdp.domain.auth.User;
 import ca.ualberta.physics.cssdp.domain.auth.User.Role;
 
+import com.coderod.db.migrations.Migrator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Throwables;
 import com.jayway.restassured.config.ObjectMapperConfig;
@@ -37,12 +44,43 @@ import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.mapper.factory.Jackson2ObjectMapperFactory;
 import com.jayway.restassured.response.Response;
 
-public abstract class IntegrationTestScaffolding extends TestSupport {
+public abstract class IntegrationTestScaffolding {
 
-	private static Server server;
+	private static Server allServers;
 
+	public IntegrationTestScaffolding() {
+		// initialize default properties
+		Common.properties();
+
+		// override the database connection url to point to an in-memory
+		// database
+		Properties overrides = new Properties();
+		overrides.put("common.logback.configuration.xml",
+				"src/test/resources/logback-test.xml");
+		overrides
+				.setProperty("common.hibernate.connection.url",
+						"jdbc:h2:mem:test;DB_CLOSE_DELAY=1000;MODE=PostgreSQL;TRACE_LEVEL_FILE=0");
+		ApplicationProperties.overrideDefaults(overrides);
+	}
+	
+	// start an auth server for tests that depend on the auth resources
 	@Before
-	public void setupEnvironment() {
+	public void setup() {
+
+
+		String url = Common.properties().getString("hibernate.connection.url");
+		String driver = Common.properties().getString(
+				"hibernate.connection.driver_class");
+		String user = Common.properties().getString(
+				"hibernate.connection.username");
+		String password = Common.properties().getString(
+				"hibernate.connection.password");
+		String scriptsDir = "../database/migrations";
+
+		Migrator migrator = new Migrator(url, driver, user, password,
+				scriptsDir);
+		migrator.initDb();
+		migrator.migrateUpAll();
 
 		config().objectMapperConfig(
 				new ObjectMapperConfig()
@@ -56,25 +94,72 @@ public abstract class IntegrationTestScaffolding extends TestSupport {
 							}
 						}));
 
-		if (server == null || !server.isStarted()) {
+		if (allServers == null || !allServers.isStarted()) {
 			// configure Jetty as an embedded web application server
-			server = new Server();
-			server.setStopAtShutdown(true);
-			server.setGracefulShutdown(1000);
+			allServers = new Server();
+			allServers.setStopAtShutdown(true);
+			allServers.setGracefulShutdown(1000);
 
 			SocketConnector connector = new SocketConnector();
 			connector.setPort(8080);
-			server.addConnector(connector);
+			allServers.addConnector(connector);
 
+			ContextHandlerCollection contexts = new ContextHandlerCollection();
+			contexts.addHandler(new DefaultHandler());
+			
+			// this one is relative to the project we are testing
 			WebAppContext context = new WebAppContext();
 			context.setDescriptor("src/main/webapp/WEB-INF/web.xml");
 			context.setResourceBase("src/main/webapp");
-			context.setContextPath(getComponetContext());
+			String thisContext = getComponetContext();
+			context.setContextPath(thisContext);
 			context.setParentLoaderPriority(true);
-			server.setHandler(context);
+			contexts.addHandler(context);
+
+			// and these blocks setup the other contexts that we talk to during tests and operations
+			if (!thisContext.equals("/auth")) {
+				WebAppContext auth = new WebAppContext();
+				auth.setDescriptor("../auth/src/main/webapp/WEB-INF/web.xml");
+				auth.setResourceBase("../auth/src/main/webapp");
+				auth.setContextPath("/auth");
+				auth.setParentLoaderPriority(true);
+				contexts.addHandler(auth);
+			}
+
+			if (!thisContext.equals("/file")) {
+				WebAppContext file = new WebAppContext();
+				file.setDescriptor("../file/src/main/webapp/WEB-INF/web.xml");
+				file.setResourceBase("../file/src/main/webapp");
+				file.setContextPath("/file");
+				file.setParentLoaderPriority(true);
+				contexts.addHandler(file);
+			}
+
+			if (!thisContext.equals("/catalogue")) {
+
+				WebAppContext catalogue = new WebAppContext();
+				catalogue
+						.setDescriptor("../catalogue/src/main/webapp/WEB-INF/web.xml");
+				catalogue.setResourceBase("../catalogue/src/main/webapp");
+				catalogue.setContextPath("/catalogue");
+				catalogue.setParentLoaderPriority(true);
+				contexts.addHandler(catalogue);
+			}
+
+			if (!thisContext.equals("/vfs")) {
+				WebAppContext vfs = new WebAppContext();
+				vfs.setDescriptor("../vfs/src/main/webapp/WEB-INF/web.xml");
+				vfs.setResourceBase("../vfs/src/main/webapp");
+				vfs.setContextPath("/vfs");
+				vfs.setParentLoaderPriority(true);
+				contexts.addHandler(vfs);
+			}
+
+			allServers.setHandler(contexts);
 
 			try {
-				server.start();
+				allServers.start();
+//				System.err.println(allServers.dump());
 			} catch (Exception e) {
 				Throwables.propagate(e);
 			}
@@ -83,7 +168,10 @@ public abstract class IntegrationTestScaffolding extends TestSupport {
 	}
 
 	protected abstract String getComponetContext();
-
+	protected String baseUrl() {
+		return getComponetContext() + "/api";
+	}
+	
 	protected User setupDataManager() {
 
 		User newDataManager = new User();
@@ -94,9 +182,9 @@ public abstract class IntegrationTestScaffolding extends TestSupport {
 		newDataManager.setPassword("password");
 		newDataManager.setRole(Role.DATA_MANAGER);
 
+		String authUrl = Common.properties().getString("auth.url");
 		Response res = given().content(newDataManager).and()
-				.contentType("application/json")
-				.post("http://localhost:8081/auth/user.json");
+				.contentType("application/json").post(authUrl + "/user.json");
 
 		String location = res.getHeader("location");
 		User dataManager = given().contentType(ContentType.JSON).get(location)
@@ -116,8 +204,9 @@ public abstract class IntegrationTestScaffolding extends TestSupport {
 	 * @return
 	 */
 	protected String login(String username, String password) {
+		String authUrl = Common.properties().getString("auth.url");
 		return given().formParam("username", username)
 				.formParam("password", password)
-				.post("http://localhost:8081/auth/session.json").asString();
+				.post(authUrl + "/session.json").asString();
 	}
 }

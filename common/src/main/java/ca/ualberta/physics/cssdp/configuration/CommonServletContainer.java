@@ -69,7 +69,8 @@ public abstract class CommonServletContainer extends ServletContainer {
 				System.out.println("No override file found at "
 						+ applicationPropertiesFile
 						+ ", reverting to defaults.");
-
+				ComponentProperties.printAll();
+				
 			} catch (IOException e) {
 				throw Throwables.propagate(e);
 			}

@@ -2,7 +2,7 @@
 create table cached_file (
 	id serial primary key,			
 	local_path varchar(1256) not null,		-- the local path on disk where the file is cached
-	size int not null,						-- the size of the file in bytes
+	size integer not null,					-- the size of the file in bytes
 	md5 varchar(32) not null,				-- the md5 of the file
 	file_tstamp timestamp not null,			-- the timestamp of the file (create timestamp)
 	last_accessed timestamp not null,		-- the timestamp of when this file was last accessed

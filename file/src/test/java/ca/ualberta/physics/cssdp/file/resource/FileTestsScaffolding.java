@@ -45,7 +45,7 @@ public class FileTestsScaffolding extends IntegrationTestScaffolding {
 
 	@Override
 	protected String getComponetContext() {
-		return "";
+		return "/file";
 	}
 
 	@Before

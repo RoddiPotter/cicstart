@@ -65,7 +65,7 @@ import com.google.common.collect.ImmutableList;
 import com.wordnik.swagger.annotations.ApiClass;
 import com.wordnik.swagger.annotations.ApiProperty;
 
-@JsonAutoDetect(getterVisibility = Visibility.NONE, fieldVisibility = Visibility.ANY, creatorVisibility = Visibility.NONE, isGetterVisibility = Visibility.NONE)
+@JsonAutoDetect(getterVisibility = Visibility.NONE, fieldVisibility = Visibility.ANY, creatorVisibility = Visibility.NONE, isGetterVisibility = Visibility.NONE, setterVisibility = Visibility.NONE)
 @ApiClass(value = "Describes a set of data files that should be logically grouped together.")
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -101,7 +101,7 @@ public class DataProduct extends Persistent {
 	@JoinTable(name = "catalogue_dataproduct_observatory", joinColumns = @JoinColumn(name = "dataproduct_id"), inverseJoinColumns = @JoinColumn(name = "observatory_id"))
 	private List<Observatory> observatories = new ArrayList<Observatory>();
 
-	@JsonInclude(Include.ALWAYS)
+	@JsonInclude(Include.NON_EMPTY)
 	@Transient
 	@ApiProperty(required = false, value = "A list of Observatory keys that are related to this Data Product", dataType = "Mnemonic")
 	@XmlElementWrapper(name = "observatories")
@@ -115,7 +115,7 @@ public class DataProduct extends Persistent {
 	@JoinTable(name = "catalogue_dataproduct_instrumenttype", joinColumns = @JoinColumn(name = "dataproduct_id"), inverseJoinColumns = @JoinColumn(name = "instrumenttype_id"))
 	private List<InstrumentType> instrumentTypes = new ArrayList<InstrumentType>();
 
-	@JsonInclude(Include.ALWAYS)
+	@JsonInclude(Include.NON_EMPTY)
 	@Transient
 	@ApiProperty(required = false, value = "A list of Instrument Type keys that are related to this Data Product", dataType = "Mnemonic")
 	@XmlElementWrapper(name = "instrumentTypes")
@@ -137,7 +137,7 @@ public class DataProduct extends Persistent {
 
 	@JsonSerialize(using = JSONMnemonicSerializer.class)
 	@JsonDeserialize(using = JSONMnemonicDeserializer.class)
-	@JsonInclude(Include.ALWAYS)
+	@JsonInclude(Include.NON_NULL)
 	@Transient
 	@ApiProperty(required = false, value = "A Discriminator key that helps to make this Data Product unique within a project", dataType = "Mnemonic")
 	@XmlElement(name = "discriminator")

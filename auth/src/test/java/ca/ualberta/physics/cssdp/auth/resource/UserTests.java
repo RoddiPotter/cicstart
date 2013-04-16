@@ -26,6 +26,8 @@ import org.junit.Test;
 
 import ca.ualberta.physics.cssdp.domain.auth.User;
 
+import com.jayway.restassured.response.Response;
+
 public class UserTests extends AuthTestsScaffolding {
 
 	@Test
@@ -39,20 +41,20 @@ public class UserTests extends AuthTestsScaffolding {
 		user.setName("Test User");
 		user.setPassword("password");
 
-		given().content(user)
+		Response res = given()
+				.content(user)
 				.and()
 				.contentType("application/json")
 				.expect()
 				.statusCode(201)
 				.and()
 				.header("location",
-						"http://localhost:8080/auth/user.json/testuser1@nowhere.com")
-				.when().post("/auth/user.json");
+						"http://localhost:8080" + baseUrl()
+								+ "/user.json/testuser1@nowhere.com").when()
+				.post(baseUrl() + "/user.json");
 
-		User created = get(
-				"http://localhost:8080/auth/user.json/testuser1@nowhere.com")
-				.as(User.class);
-		
+		User created = get(res.getHeader("location")).as(User.class);
+
 		Assert.assertTrue(created.getId() > 0);
 		Assert.assertEquals("Canada", created.getCountry());
 		Assert.assertEquals("testuser1@nowhere.com", created.getEmail());
@@ -61,7 +63,7 @@ public class UserTests extends AuthTestsScaffolding {
 		Assert.assertEquals("******", created.getPassword());
 		Assert.assertNull(created.getPasswordDigest());
 		Assert.assertNull(created.getPasswordSalt());
-		
+
 	}
 
 }

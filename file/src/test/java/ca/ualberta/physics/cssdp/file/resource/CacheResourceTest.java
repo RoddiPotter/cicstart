@@ -46,6 +46,9 @@ public class CacheResourceTest extends FileTestsScaffolding {
 	@Test
 	public void allBasicCacheOps() throws IOException {
 
+		// start with consistent baseline
+		delete(baseUrl() + "/cache.json/68784d5d41107460df67ba08b7287267");
+
 		File internalCacheDir = new File(FileServer.properties().getString(
 				"file.cache.root"));
 
@@ -63,8 +66,10 @@ public class CacheResourceTest extends FileTestsScaffolding {
 				.statusCode(201)
 				.and()
 				.header("location",
-						"http://localhost:8080/file/cache.json/68784d5d41107460df67ba08b7287267")
-				.when().put("/file/cache.json");
+						"http://localhost:8080"
+								+ baseUrl()
+								+ "/cache.json/68784d5d41107460df67ba08b7287267")
+				.when().put(baseUrl() + "/cache.json");
 
 		int midCount = cacheDir.list().length;
 
@@ -76,8 +81,10 @@ public class CacheResourceTest extends FileTestsScaffolding {
 				.statusCode(201)
 				.and()
 				.header("location",
-						"http://localhost:8080/file/cache.json/68784d5d41107460df67ba08b7287267")
-				.when().put("/file/cache.json");
+						"http://localhost:8080"
+								+ baseUrl()
+								+ "/cache.json/68784d5d41107460df67ba08b7287267")
+				.when().put(baseUrl() + "/cache.json");
 
 		int endCount = cacheDir.list().length;
 
@@ -103,6 +110,7 @@ public class CacheResourceTest extends FileTestsScaffolding {
 		tempFile.delete();
 		tempDir.delete();
 
+		// cleanup
 		expect().statusCode(200).when().delete(location);
 		expect().statusCode(404).when().get(location);
 
@@ -122,12 +130,14 @@ public class CacheResourceTest extends FileTestsScaffolding {
 				.statusCode(201)
 				.and()
 				.header("location",
-						"http://localhost:8080/file/cache.json/68784d5d41107460df67ba08b7287267")
-				.when().put("/file/cache.json");
+						"http://localhost:8080"
+								+ baseUrl()
+								+ "/cache.json/68784d5d41107460df67ba08b7287267")
+				.when().put(baseUrl() + "/cache.json");
 
 		file = new File("build.gradle");
 		given().formParam("key", "addToCache").and().multiPart(file).expect()
-				.statusCode(409).when().put("/file/cache.json");
+				.statusCode(409).when().put(baseUrl() + "/cache.json");
 
 	}
 
@@ -143,10 +153,13 @@ public class CacheResourceTest extends FileTestsScaffolding {
 				.statusCode(201)
 				.and()
 				.header("location",
-						"http://localhost:8080/file/cache.json/68784d5d41107460df67ba08b7287267")
-				.when().put("/file/cache.json");
+						"http://localhost:8080"
+								+ baseUrl()
+								+ "/cache.json/68784d5d41107460df67ba08b7287267")
+				.when().put(baseUrl() + "/cache.json");
 
-		String md5 = get("/file/cache.json/find?key=addToCache").asString();
+		String md5 = get(baseUrl() + "/cache.json/find?key=addToCache")
+				.asString();
 
 		Assert.assertEquals("68784d5d41107460df67ba08b7287267", md5);
 	}
@@ -163,14 +176,20 @@ public class CacheResourceTest extends FileTestsScaffolding {
 				.statusCode(201)
 				.and()
 				.header("location",
-						"http://localhost:8080/file/cache.json/68784d5d41107460df67ba08b7287267")
-				.when().put("/file/cache.json");
+						"http://localhost:8080"
+								+ baseUrl()
+								+ "/cache.json/68784d5d41107460df67ba08b7287267")
+				.when().put(baseUrl() + "/cache.json");
 
-		given().formParam("key", "secondKey").expect().statusCode(200).when()
-				.post("/file/cache.json/68784d5d41107460df67ba08b7287267/map");
+		given().formParam("key", "secondKey")
+				.expect()
+				.statusCode(200)
+				.when()
+				.put(baseUrl()
+						+ "/cache.json/68784d5d41107460df67ba08b7287267/map");
 
 		Assert.assertEquals("68784d5d41107460df67ba08b7287267",
-				get("/file/cache.json/find?key=secondKey").asString());
+				get(baseUrl() + "/cache.json/find?key=secondKey").asString());
 
 	}
 
@@ -180,15 +199,15 @@ public class CacheResourceTest extends FileTestsScaffolding {
 		Host host = new Host("sunsite.ualberta.ca", "anonymous", "anonymous");
 		host.setProtocol(Protocol.ftp);
 
-		expect().statusCode(201)
-				.given()
-				.content(host)
+		// if HostRestTest.ls() runs first this will return 500, but that's OK
+		// because sunsite.ualberta.ca will have already been added to the hosts
+		given().content(host)
 				.and()
 				.contentType(ContentType.JSON)
 				.and()
-				.header("cicstart_session",
-						login(dataManager.getEmail(), "password"))
-				.post("/file/host.json");
+				.header("CICSTART.session",
+						login(dataManager.getEmail(), "password")).when()
+				.post(baseUrl() + "/host.json");
 
 		String url = "ftp://sunsite.ualberta.ca/pub/Mirror/apache/commons/daemon/RELEASE-NOTES.txt";
 		// String url = "ftp://ftp14.freebsd.org/pub/FreeBSD/README.TXT";
@@ -198,10 +217,12 @@ public class CacheResourceTest extends FileTestsScaffolding {
 				.statusCode(202)
 				.and()
 				.header("location",
-						"http://localhost:8080/file/cache.json/find?key=" + url)
-				.when().put("/file/cache.json/request");
+						"http://localhost:8080" + baseUrl()
+								+ "/cache.json/find?key=" + url).when()
+				.put(baseUrl() + "/cache.json/request");
 
-		while (get("/file/cache.json/find?key=" + encodeUrl).statusCode() == 404) {
+		while (get(baseUrl() + "/cache.json/find?key=" + encodeUrl)
+				.statusCode() == 404) {
 			try {
 				Thread.sleep(2000);
 				System.out.println("sleeping...");
@@ -210,7 +231,7 @@ public class CacheResourceTest extends FileTestsScaffolding {
 			}
 		}
 
-		final String md5 = get("/file/cache.json/find?key=" + encodeUrl)
+		final String md5 = get(baseUrl() + "/cache.json/find?key=" + encodeUrl)
 				.asString();
 
 		File readme = new File("apache-commons-daemon-README.txt");
@@ -218,16 +239,16 @@ public class CacheResourceTest extends FileTestsScaffolding {
 
 			@Override
 			public InputStream getInput() throws IOException {
-				return get("/file/cache.json/" + md5).asInputStream();
+				return get(baseUrl() + "/cache.json/" + md5).asInputStream();
 			}
 
 		}, readme);
 
-		Assert.assertEquals(5685, readme.length());
+		Assert.assertEquals(5741, readme.length());
 
 		System.out.println(Files.toString(readme, Charset.defaultCharset()));
 
-		delete("/file/cache.json/" + md5);
+		delete(baseUrl() + "/cache.json/" + md5);
 		readme.delete();
 
 	}

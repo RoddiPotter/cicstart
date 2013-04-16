@@ -26,7 +26,6 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -128,9 +127,9 @@ public class CacheResource {
 									.build()).build();
 		} else {
 
-			String errorMessages = sr.getMessagesAsStrings();
+			String errorMessages = sr.getMessagesAsStrings().toLowerCase();
 			if (errorMessages.contains("external_key_uq")
-					&& errorMessages.contains("violates")) {
+					&& errorMessages.contains("violat")) {
 
 				return Response.status(409).entity(errorMessages).build();
 
@@ -321,7 +320,7 @@ public class CacheResource {
 
 	}
 
-	@POST
+	@PUT
 	@Path("/{MD5}/map")
 	@ApiOperation(value = "Map a new key to this cached file")
 	@ApiErrors(value = {

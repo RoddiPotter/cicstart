@@ -45,7 +45,7 @@ public class VfsTestsScaffolding extends IntegrationTestScaffolding {
 
 	@Override
 	protected String getComponetContext() {
-		return "";
+		return "/vfs";
 	}
 
 	@Before

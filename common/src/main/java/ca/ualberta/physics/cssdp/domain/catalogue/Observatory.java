@@ -34,13 +34,9 @@ import org.hibernate.annotations.Type;
 
 import ca.ualberta.physics.cssdp.dao.Persistent;
 import ca.ualberta.physics.cssdp.jaxb.MnemonicAdapter;
-import ca.ualberta.physics.cssdp.jaxb.PointAdapter;
 import ca.ualberta.physics.cssdp.model.Mnemonic;
-import ca.ualberta.physics.cssdp.model.Point;
 import ca.ualberta.physics.cssdp.util.JSONMnemonicDeserializer;
 import ca.ualberta.physics.cssdp.util.JSONMnemonicSerializer;
-import ca.ualberta.physics.cssdp.util.JSONPointDeserializer;
-import ca.ualberta.physics.cssdp.util.JSONPointSerializer;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -72,14 +68,15 @@ public class Observatory extends Persistent {
 	@Type(type = "ca.ualberta.physics.cssdp.dao.MnemonicType")
 	private Mnemonic externalKey;
 
-	@JsonSerialize(using = JSONPointSerializer.class)
-	@JsonDeserialize(using = JSONPointDeserializer.class)
-	@ApiProperty(required = false, value = "The geographic location of this Observatory", dataType = "Point")
+	@ApiProperty(required = false, value = "The geographic latitude of this Observatory")
 	@XmlElement
-	@XmlJavaTypeAdapter(PointAdapter.class)
-	@Column(name = "location", nullable = true)
-	@Type(type = "ca.ualberta.physics.cssdp.dao.GeomPoint")
-	private Point location;
+	@Column(name = "latitude", nullable = true)
+	private Double latitude;
+
+	@ApiProperty(required = false, value = "The geographic longitude of this Observatory")
+	@XmlElement
+	@Column(name = "longitude", nullable = true)
+	private Double longitude;
 
 	@ApiProperty(required = false, value = "A description of this Observatory.  Max length 1024.")
 	@XmlElement
@@ -120,14 +117,6 @@ public class Observatory extends Persistent {
 		this.externalKey = externalKey;
 	}
 
-	public Point getLocation() {
-		return location;
-	}
-
-	public void setLocation(Point location) {
-		this.location = location;
-	}
-
 	public String getDescription() {
 		return description;
 	}
@@ -140,6 +129,27 @@ public class Observatory extends Persistent {
 	public String toString() {
 		return Objects.toStringHelper(this).add("key", externalKey)
 				.add("project", project != null ? project.getId() : null)
-				.add("location", location).toString();
+				.add("location", latitude + "," + longitude).toString();
+	}
+
+	public Double getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(Double latitude) {
+		this.latitude = latitude;
+	}
+
+	public Double getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(Double longitude) {
+		this.longitude = longitude;
+	}
+
+	public void setLocation(Double latitude, Double longitude) {
+		setLatitude(latitude);
+		setLongitude(longitude);
 	}
 }

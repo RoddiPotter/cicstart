@@ -52,7 +52,8 @@ create table catalogue_observatory (
 	id serial primary key,
 	ext_key varchar(50) not null,			-- the external key
 	project_id integer not null,			-- the project this observatory is for
-	location point,							-- the lat,long of this observatory
+	latitude numeric(8,5),					-- the latitude of this observatory
+	longitude numeric(8,5),					-- the longitude of this observatory
 	description varchar(1024),				-- the description of this observatory record
 	version integer not null
 );
@@ -117,8 +118,9 @@ create table catalogue_observatorygroup_members (
 alter table catalogue_observatorygroup_members add constraint pk_catalogueobservatorygroup_members primary key (observatorygroup_id,observatory_id);
 
 -- The mapping of urls to data products
+create sequence catalogue_url_dataproduct_id_seq;
 create table catalogue_url_dataproduct (
-	id bigserial primary key,
+	id numeric not null default nextval('catalogue_url_dataproduct_id_seq') primary key,
 	dataproduct_id integer not null,		-- the data product this url is for
 	url varchar(2048) not null,				-- the url of the file (unique)
 	start_tstamp timestamp,					-- the start timestamp of the data in the file
@@ -127,12 +129,11 @@ create table catalogue_url_dataproduct (
 	deleted boolean not null,				-- true if this file is marked as deleted
 	version integer not null
 );
---create unique index idx_catalogue_url_dataproduct ON catalogue_url_dataproduct (url);
-
 @UP
 
 @DOWN
 drop table catalogue_url_dataproduct;
+drop sequence catalogue_url_dataproduct_id_seq
 drop table catalogue_observatorygroup_members;
 drop table catalogue_observatorygroup;
 drop table catalogue_dataproduct_discriminator;

@@ -24,6 +24,7 @@ import java.util.List;
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -38,6 +39,7 @@ import org.slf4j.LoggerFactory;
 
 import ca.ualberta.physics.cssdp.catalogue.InjectorHolder;
 import ca.ualberta.physics.cssdp.catalogue.service.CatalogueService;
+import ca.ualberta.physics.cssdp.client.AuthClient;
 import ca.ualberta.physics.cssdp.domain.catalogue.CatalogueSearchRequest;
 import ca.ualberta.physics.cssdp.domain.catalogue.CatalogueSearchResponse;
 import ca.ualberta.physics.cssdp.domain.catalogue.DataProduct;
@@ -59,6 +61,9 @@ public class ProjectResource {
 
 	@Inject
 	private CatalogueService catalogueService;
+
+	@Inject
+	private AuthClient authClient;
 
 	public ProjectResource() {
 		InjectorHolder.inject(this);
@@ -186,11 +191,15 @@ public class ProjectResource {
 	@ApiErrors(value = {
 			@ApiError(code = 400, reason = "No Project key supplied"),
 			@ApiError(code = 404, reason = "No Project found for key supplied"),
+			@ApiError(code = 404, reason = "No session found"),
 			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
 	public Response scanForDataProductMapping(
 			@ApiParam(value = "The Project key", required = true) @PathParam("extKey") String extKey,
+			@ApiParam(value = "The authenticated session token", required = true) @HeaderParam("CICSTART.session") String sessionToken,
 			@Context UriInfo uriInfo) {
 
+		authClient.validate(sessionToken);
+		
 		ServiceResponse<Project> projectSr = catalogueService.find(extKey);
 
 		if (projectSr.isRequestOk()) {
@@ -198,9 +207,10 @@ public class ProjectResource {
 			if (project == null) {
 				return Response.status(404).build();
 			} else {
-				ServiceResponse<Void> sr = catalogueService.scan(project);
+				ServiceResponse<Void> sr = catalogueService.scan(project,
+						sessionToken);
 				if (sr.isRequestOk()) {
-					return Response.status(200).build();
+					return Response.status(202).build();
 				} else {
 					return Response.status(500)
 							.entity(sr.getMessagesAsStrings()).build();

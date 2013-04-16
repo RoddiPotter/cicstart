@@ -23,6 +23,8 @@ import static com.jayway.restassured.RestAssured.given;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ca.ualberta.physics.cssdp.domain.auth.User;
 import ca.ualberta.physics.cssdp.domain.file.DirectoryListing;
@@ -35,6 +37,8 @@ import com.jayway.restassured.response.Response;
 
 public class HostResourceTest extends FileTestsScaffolding {
 
+	private static final Logger logger = LoggerFactory.getLogger(HostResourceTest.class);
+	
 	/**
 	 * Requires Auth to be running on 8080
 	 */
@@ -59,11 +63,11 @@ public class HostResourceTest extends FileTestsScaffolding {
 				.statusCode(201)
 				.and()
 				.header("location",
-						"http://localhost:8080/file/host.json/hostname").when()
-				.post("/file/host.json");
+						"http://localhost:8080" + baseUrl()
+								+ "/host.json/hostname").when()
+				.post(baseUrl() + "/host.json");
 
-		Host created = get("http://localhost:8080/file/host.json/hostname").as(
-				Host.class);
+		Host created = get(baseUrl() + "/host.json/hostname").as(Host.class);
 
 		Assert.assertTrue(created.getId() > 0);
 		Assert.assertEquals("hostname", created.getHostname());
@@ -94,14 +98,15 @@ public class HostResourceTest extends FileTestsScaffolding {
 				.statusCode(201)
 				.and()
 				.header("location",
-						"http://localhost:8080/file/host.json/delete").when()
-				.post("/file/host.json");
+						"http://localhost:8080" + baseUrl()
+								+ "/host.json/delete").when()
+				.post(baseUrl() + "/host.json");
 
 		given().header("CICSTART.session", session).expect().statusCode(200)
-				.when().delete("http://localhost:8080/file/host.json/delete");
+				.when().delete(baseUrl() + "/host.json/delete");
 
 		given().header("CICSTART.session", session).expect().statusCode(404)
-				.when().get("http://localhost:8080/file/host.json/delete");
+				.when().get(baseUrl() + "/host.json/delete");
 
 	}
 
@@ -116,12 +121,13 @@ public class HostResourceTest extends FileTestsScaffolding {
 
 		// use default role and deleted properties
 		Host host = new Host();
-		host.setHostname("localhost");
+		host.setHostname("localhost2");
 		host.setProtocol(Protocol.file);
 		host.setPassword("password");
 		host.setUsername("username");
 
-		given().content(host)
+		Response res = given()
+				.content(host)
 				.and()
 				.header("CICSTART.session", session)
 				.contentType("application/json")
@@ -129,15 +135,19 @@ public class HostResourceTest extends FileTestsScaffolding {
 				.statusCode(201)
 				.and()
 				.header("location",
-						"http://localhost:8080/file/host.json/localhost")
-				.when().post("/file/host.json");
+						"http://localhost:8080" + baseUrl()
+								+ "/host.json/localhost2").when()
+				.post(baseUrl() + "/host.json");
 
-		Response res = given()
+		System.out.println(res.asString());
+
+		res = given()
 				.header("CICSTART.session", session)
 				.expect()
 				.statusCode(200)
 				.when()
-				.get("http://localhost:8080/file/host.json/localhost/ls?path=/home/rpotter&depth=2");
+				.get(baseUrl()
+						+ "/host.json/localhost2/ls?path=/home/rpotter&depth=2");
 
 		/*
 		 * RestAssured sucks at deserializing json... so it's best to access the
@@ -178,23 +188,26 @@ public class HostResourceTest extends FileTestsScaffolding {
 		host.setUsername("anonymous");
 		host.setPassword("anonymous");
 
+		// if CacheResourceTest.rquest() runs first, this may return status 500,
+		// but that's OK since sunsite.ualberta.ca will have already been added.
 		given().content(host)
 				.and()
 				.header("CICSTART.session", session)
 				.contentType("application/json")
-				.expect()
-				.statusCode(201)
 				.and()
 				.header("location",
-						"http://localhost:8080/file/host.json/sunsite.ualberta.ca")
-				.when().post("/file/host.json");
+						"http://localhost:8080" + baseUrl()
+								+ "/host.json/sunsite.ualberta.ca").when()
+				.post(baseUrl() + "/host.json");
 
 		Response res = given()
 				.header("CICSTART.session", session)
 				.expect()
 				.statusCode(200)
 				.when()
-				.get("http://localhost:8080/file/host.json/sunsite.ualberta.ca/ls?path=/pub/Mirror/apache/commons/daemon/&depth=5");
+				.get("http://localhost:8080"
+						+ baseUrl()
+						+ "/host.json/sunsite.ualberta.ca/ls?path=/pub/Mirror/apache/commons/daemon/&depth=5");
 
 		/*
 		 * RestAssured sucks at deserializing json... so it's best to access the
@@ -202,9 +215,11 @@ public class HostResourceTest extends FileTestsScaffolding {
 		 */
 
 		DirectoryListing ls = null;
+		String responseBody = res.asString();
 		try {
-			ls = mapper.readValue(res.asString(), DirectoryListing.class);
+			ls = mapper.readValue(responseBody, DirectoryListing.class);
 		} catch (Exception e) {
+			logger.error(responseBody);
 			Throwables.propagate(e);
 		}
 
@@ -237,7 +252,7 @@ public class HostResourceTest extends FileTestsScaffolding {
 
 		// use default role and deleted properties
 		Host host = new Host();
-		host.setHostname("localhost");
+		host.setHostname("localhost1");
 		host.setProtocol(Protocol.file);
 		host.setPassword("password");
 		host.setUsername("username");
@@ -250,15 +265,17 @@ public class HostResourceTest extends FileTestsScaffolding {
 				.statusCode(201)
 				.and()
 				.header("location",
-						"http://localhost:8080/file/host.json/localhost")
-				.when().post("/file/host.json");
+						"http://localhost:8080" + baseUrl()
+								+ "/host.json/localhost1").when()
+				.post(baseUrl() + "/host.json");
 
 		Response res = given()
 				.header("CICSTART.session", session)
 				.expect()
 				.statusCode(200)
 				.when()
-				.get("http://localhost:8080/file/host.json/localhost/ls?path=/home/rpotter&depth=0");
+				.get("http://localhost:8080" + baseUrl()
+						+ "/host.json/localhost1/ls?path=/home/rpotter&depth=0");
 
 		/*
 		 * RestAssured sucks at deserializing json... so it's best to access the

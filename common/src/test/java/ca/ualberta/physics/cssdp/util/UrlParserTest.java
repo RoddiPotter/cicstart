@@ -26,6 +26,7 @@ public class UrlParserTest {
 	@Test
 	public void testGetPath() {
 		
+		Assert.assertEquals("/dir/on/host/", UrlParser.getPath("ftp://ssl.justice.berkely.edu/dir/on/host/"));
 		Assert.assertEquals("/dir/on/host", UrlParser.getPath("ftp://ssl.justice.berkely.edu/dir/on/host"));
 		Assert.assertEquals("/dir/on/host/somefile.txt", UrlParser.getPath("ftp://ssl.justice.berkely.edu/dir/on/host/somefile.txt"));
 		Assert.assertEquals("/local/file.zip", UrlParser.getPath("file:///local/file.zip"));

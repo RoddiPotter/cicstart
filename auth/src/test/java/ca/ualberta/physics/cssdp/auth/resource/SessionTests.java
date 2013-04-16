@@ -18,12 +18,14 @@
  */
 package ca.ualberta.physics.cssdp.auth.resource;
 
-import static com.jayway.restassured.RestAssured.given;
 import static com.jayway.restassured.RestAssured.expect;
 import static com.jayway.restassured.RestAssured.get;
+import static com.jayway.restassured.RestAssured.given;
 
 import org.junit.Assert;
 import org.junit.Test;
+
+import ca.ualberta.physics.cssdp.domain.auth.User;
 
 public class SessionTests extends AuthTestsScaffolding {
 
@@ -39,29 +41,31 @@ public class SessionTests extends AuthTestsScaffolding {
 
 		// no user
 		given().auth().preemptive().basic("doesnot@exist.com", "anything")
-				.expect().statusCode(401).when().post("/auth/session.json");
+				.expect().statusCode(404).when()
+				.post(baseUrl() + "/session.json");
 		given().auth().preemptive().basic("doesnot@exist.com", "anything")
-				.expect().statusCode(401).when().post("/auth/session.xml");
+				.expect().statusCode(404).when()
+				.post(baseUrl() + "/session.xml");
 
 		// success
 		String sessionToken = given().auth().preemptive()
 				.basic("datauser@nowhere.com", "password").expect()
-				.statusCode(200).post("/auth/session.json").asString();
+				.statusCode(200).post(baseUrl() + "/session.json").asString();
 		Assert.assertEquals(36, sessionToken.length());
 
 		sessionToken = given().auth().preemptive()
 				.basic("datauser@nowhere.com", "password").expect()
-				.statusCode(200).post("/auth/session.xml").asString();
+				.statusCode(200).post(baseUrl() + "/session.xml").asString();
 		Assert.assertEquals(36, sessionToken.length());
 
 		// fail
 		given().auth().preemptive()
 				.basic("datauser@nowhere.com", "wrongpassword").expect()
-				.statusCode(401).post("/auth/session.json");
+				.statusCode(404).post(baseUrl() + "/session.json");
 
 		given().auth().preemptive()
 				.basic("datauser@nowhere.com", "wrongpassword").expect()
-				.statusCode(401).post("/auth/session.xml");
+				.statusCode(404).post(baseUrl() + "/session.xml");
 
 	}
 
@@ -74,33 +78,35 @@ public class SessionTests extends AuthTestsScaffolding {
 
 		// no user
 		given().formParam("username", "doesnot@exist.com")
-				.formParam("password", "anything").expect().statusCode(401)
-				.when().post("/auth/session.json");
+				.formParam("password", "anything").expect().statusCode(404)
+				.when().post(baseUrl() + "/session.json");
 
 		given().formParam("username", "doesnot@exist.com")
-				.formParam("password", "anything").expect().statusCode(401)
-				.when().post("/auth/session.xml");
+				.formParam("password", "anything").expect().statusCode(404)
+				.when().post(baseUrl() + "/session.xml");
 
 		// success
 		String sessionToken = given()
 				.formParam("username", "datauser@nowhere.com")
 				.formParam("password", "password").expect().statusCode(200)
-				.when().post("/auth/session.json").asString();
+				.when().post(baseUrl() + "/session.json").asString();
 		Assert.assertEquals(36, sessionToken.length());
 
 		sessionToken = given().formParam("username", "datauser@nowhere.com")
 				.formParam("password", "password").expect().statusCode(200)
-				.when().post("/auth/session.xml").asString();
+				.when().post(baseUrl() + "/session.xml").asString();
 		Assert.assertEquals(36, sessionToken.length());
 
 		// fail
 		given().formParam("username", "datauser@nowhere.com")
 				.formParam("password", "wrongpassword").expect()
-				.statusCode(401).when().post("/auth/session.json").asString();
+				.statusCode(404).when().post(baseUrl() + "/session.json")
+				.asString();
 
 		given().formParam("username", "datauser@nowhere.com")
 				.formParam("password", "wrongpassword").expect()
-				.statusCode(401).when().post("/auth/session.xml").asString();
+				.statusCode(404).when().post(baseUrl() + "/session.xml")
+				.asString();
 
 	}
 
@@ -109,17 +115,23 @@ public class SessionTests extends AuthTestsScaffolding {
 
 		/*
 		 * curl
-		 * http://localhost:8080/auth/session.json/asdfasdfas234234q23asdfasdfas/whois
+		 * http://localhost:8080/auth/session.json/asdfasdfas234234q23asdfasdfas
+		 * /whois
 		 */
 
 		// token not valid
-		expect().statusCode(404).when()
-				.get("/auth/session.json/{token}/whois", "not-a-valid-token");
-		
+		expect().statusCode(404)
+				.when()
+				.get(baseUrl() + "/session.json/{token}/whois",
+						"not-a-valid-token");
+
 		// get a token to validate lookup
-		String token = login(dataUser.getEmail(), "password");
-		String email = get("/auth/session.json/{token}/whois", token).asString();
+		String token = given().auth().preemptive()
+				.basic("datauser@nowhere.com", "password")
+				.post(baseUrl() + "/session.json").asString();
+		String email = get(baseUrl() + "/session.json/{token}/whois", token)
+				.as(User.class).getEmail();
 		Assert.assertEquals(dataUser.getEmail(), email);
-		
+
 	}
 }

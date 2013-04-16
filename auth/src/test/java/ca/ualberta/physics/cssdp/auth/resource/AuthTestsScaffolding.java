@@ -34,7 +34,7 @@ public class AuthTestsScaffolding extends IntegrationTestScaffolding {
 
 	@Override
 	protected String getComponetContext() {
-		return "";
+		return "/auth";
 	}
 
 	@Before
@@ -49,10 +49,11 @@ public class AuthTestsScaffolding extends IntegrationTestScaffolding {
 		newDataUser.setRole(Role.DATA_USER);
 
 		given().content(newDataUser).and().contentType("application/json")
-				.post("/auth/user.json");
+				.post(baseUrl() + "/user.json");
 
 		dataUser = given().contentType(ContentType.JSON)
-				.get("/auth/user.json/datauser@nowhere.com").as(User.class);
+				.get(baseUrl() + "/user.json/datauser@nowhere.com")
+				.as(User.class);
 	}
 
 }

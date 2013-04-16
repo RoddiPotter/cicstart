@@ -22,7 +22,9 @@ import static com.jayway.restassured.RestAssured.expect;
 import static com.jayway.restassured.RestAssured.get;
 import static com.jayway.restassured.RestAssured.given;
 
+import java.io.IOException;
 import java.io.StringWriter;
+import java.util.Arrays;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -30,14 +32,19 @@ import javax.xml.bind.Marshaller;
 import org.junit.Assert;
 import org.junit.Test;
 
+import ca.ualberta.physics.cssdp.configuration.Common;
+import ca.ualberta.physics.cssdp.domain.auth.User;
 import ca.ualberta.physics.cssdp.domain.catalogue.CatalogueSearchRequest;
 import ca.ualberta.physics.cssdp.domain.catalogue.CatalogueSearchResponse;
 import ca.ualberta.physics.cssdp.domain.catalogue.DataProduct;
+import ca.ualberta.physics.cssdp.domain.catalogue.Discriminator;
 import ca.ualberta.physics.cssdp.domain.catalogue.InstrumentType;
+import ca.ualberta.physics.cssdp.domain.catalogue.MetadataParserConfig;
 import ca.ualberta.physics.cssdp.domain.catalogue.Observatory;
 import ca.ualberta.physics.cssdp.domain.catalogue.Project;
+import ca.ualberta.physics.cssdp.domain.file.Host;
+import ca.ualberta.physics.cssdp.domain.file.Host.Protocol;
 import ca.ualberta.physics.cssdp.model.Mnemonic;
-import ca.ualberta.physics.cssdp.model.Point;
 
 import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.response.Response;
@@ -56,7 +63,7 @@ public class ProjectResourceTest extends CatalogueTestsScaffolding {
 		o.setExternalKey(Mnemonic.of("TEST-OBSERV"));
 		o.setDescription("Test Observatory");
 		o.setProject(project);
-		o.setLocation(new Point(10, 10));
+		o.setLocation(10d, 10d);
 		project.getObservatories().add(o);
 
 		InstrumentType i = new InstrumentType();
@@ -77,7 +84,7 @@ public class ProjectResourceTest extends CatalogueTestsScaffolding {
 		System.out.println(projectJSON);
 		Response res = given().body(projectJSON).and()
 				.contentType("application/json").expect().statusCode(201)
-				.when().post("/catalogue/project.json");
+				.when().post(baseUrl() + "/project.json");
 
 		Project createdProject = get(res.getHeader("location")).as(
 				Project.class);
@@ -120,7 +127,8 @@ public class ProjectResourceTest extends CatalogueTestsScaffolding {
 		String xml = writer.toString();
 		System.out.println(xml);
 		res = given().content(xml).and().contentType("application/xml")
-				.expect().statusCode(201).when().post("/catalogue/project.xml");
+				.expect().statusCode(201).when()
+				.post(baseUrl() + "/project.xml");
 
 		createdProject = get(res.getHeader("location")).as(Project.class);
 
@@ -154,23 +162,72 @@ public class ProjectResourceTest extends CatalogueTestsScaffolding {
 	}
 
 	@Test
-	public void testScanAndFind() throws InterruptedException {
+	public void testScanAndFind() throws InterruptedException, IOException {
+
+		Project apache = new Project();
+		apache.setExternalKey(Mnemonic.of("APACHE"));
+		apache.setHost("sunsite.ualberta.ca");
+		apache.setName("Apache data on sunsite at ualberta.ca");
+		apache.setScanDirectories(Arrays
+				.asList("/pub/Mirror/apache/commons/daemon/"));
+
+		Discriminator d = new Discriminator();
+		d.setDescription("commons/daemon");
+		d.setExternalKey(Mnemonic.of("COMMONS/DAEMON"));
+		d.setProject(apache);
+		apache.getDiscriminators().add(d);
+
+		DataProduct commonsDaemon = new DataProduct();
+		commonsDaemon.setExternalKey(Mnemonic.of("COMMONS/DAEMON"));
+		commonsDaemon.setDescription("Apache Commons Daemon files");
+		commonsDaemon.setDiscriminator(d);
+		commonsDaemon.setProject(apache);
+
+		MetadataParserConfig metadataParserConfig = new MetadataParserConfig();
+		metadataParserConfig.setIncludesRegex(".*jar$");
+		commonsDaemon.setMetadataParserConfig(metadataParserConfig);
+
+		apache.getDataProducts().add(commonsDaemon);
+
+		String apacheJSON = mapper.writeValueAsString(apache);
+
+		Response res = given().body(apacheJSON).and()
+				.contentType("application/json").expect().statusCode(201)
+				.when().post(baseUrl() + "/project.json");
+
+		User dataManager = setupDataManager();
+		String sessionToken = login(dataManager.getEmail(), "password");
+
+		Host host = new Host();
+		host.setHostname("sunsite.ualberta.ca");
+		host.setProtocol(Protocol.ftp);
+		host.setUsername("anonymous");
+		host.setPassword("anonymous");
+
+		String fileUrl = Common.properties().getString("file.url");
+		expect().statusCode(201).when().given().content(host).and()
+				.contentType(ContentType.JSON).and()
+				.headers("CICSTART.session", sessionToken)
+				.post(fileUrl + "/host.json");
 
 		// scan the host first
-		Response res = expect()/*.statusCode(202).when()*/
-				.put("/catalogue/project.json/APACHE/scan");
+		res = given().header("CICSTART.session", sessionToken).expect()
+				.statusCode(202).when()
+				.put(baseUrl() + "/project.json/APACHE/scan");
 
 		System.out.println(res.asString());
-		
+
 		CatalogueSearchRequest searchRequest = new CatalogueSearchRequest();
 		searchRequest.setProjectExtKey(Mnemonic.of("APACHE"));
 
-		CatalogueSearchResponse result = given().content(searchRequest).and()
+		res = given().content(searchRequest).and()
 				.contentType(ContentType.JSON)
-				.post("/catalogue/project.json/find")
-				.as(CatalogueSearchResponse.class);
+				.post(baseUrl() + "/project.json/find");
 
-		System.out.println(result.toString());
+		// System.out.println(res.asString());
+
+		Assert.assertEquals(1, res.as(CatalogueSearchResponse.class).getUris()
+				.size());
 
 	}
 

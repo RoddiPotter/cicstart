@@ -23,6 +23,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import ca.ualberta.physics.cssdp.util.JSONMnemonicDeserializer;
+import ca.ualberta.physics.cssdp.util.JSONMnemonicSerializer;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.collect.Sets;
 import com.google.common.primitives.Chars;
 import com.wordnik.swagger.annotations.ApiClass;
@@ -35,6 +40,8 @@ import com.wordnik.swagger.annotations.ApiProperty;
  * would have the
  */
 @ApiClass(value = "A pattern of letters, numbers, and characters that assists in remembering something.", description = "Max 20 chars.  Allow")
+@JsonSerialize(using = JSONMnemonicSerializer.class)
+@JsonDeserialize(using = JSONMnemonicDeserializer.class)
 public class Mnemonic extends Model {
 
 	private static final long serialVersionUID = 1L;
