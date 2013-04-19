@@ -113,8 +113,8 @@ public abstract class IntegrationTestScaffolding {
 			// this one is relative to the project we are testing
 			WebAppContext context = new WebAppContext();
 			context.setDescriptor("src/main/webapp/WEB-INF/web.xml");
-			context.setResourceBase("src/main/webapp");
 			context.setInitParameter("application.properties", "unused");
+			context.setResourceBase("src/main/webapp");
 			String thisContext = getComponetContext();
 			context.setContextPath(thisContext);
 			context.setParentLoaderPriority(true);
@@ -124,8 +124,8 @@ public abstract class IntegrationTestScaffolding {
 			if (!thisContext.equals("/auth")) {
 				WebAppContext auth = new WebAppContext();
 				auth.setDescriptor("../auth/src/main/webapp/WEB-INF/web.xml");
-				auth.setResourceBase("../auth/src/main/webapp");
 				auth.setInitParameter("application.properties", "unused");
+				auth.setResourceBase("../auth/src/main/webapp");
 				auth.setContextPath("/auth");
 				auth.setParentLoaderPriority(true);
 				contexts.addHandler(auth);
@@ -134,8 +134,8 @@ public abstract class IntegrationTestScaffolding {
 			if (!thisContext.equals("/file")) {
 				WebAppContext file = new WebAppContext();
 				file.setDescriptor("../file/src/main/webapp/WEB-INF/web.xml");
+				file.setInitParameter("application.properties", "unused");
 				file.setResourceBase("../file/src/main/webapp");
-				auth.setInitParameter("application.properties", "unused");
 				file.setContextPath("/file");
 				file.setParentLoaderPriority(true);
 				contexts.addHandler(file);
@@ -146,8 +146,8 @@ public abstract class IntegrationTestScaffolding {
 				WebAppContext catalogue = new WebAppContext();
 				catalogue
 						.setDescriptor("../catalogue/src/main/webapp/WEB-INF/web.xml");
+				catalogue.setInitParameter("application.properties", "unused");
 				catalogue.setResourceBase("../catalogue/src/main/webapp");
-				auth.setInitParameter("application.properties", "unused");
 				catalogue.setContextPath("/catalogue");
 				catalogue.setParentLoaderPriority(true);
 				contexts.addHandler(catalogue);
@@ -156,8 +156,8 @@ public abstract class IntegrationTestScaffolding {
 			if (!thisContext.equals("/vfs")) {
 				WebAppContext vfs = new WebAppContext();
 				vfs.setDescriptor("../vfs/src/main/webapp/WEB-INF/web.xml");
+				vfs.setInitParameter("application.properties", "unused");
 				vfs.setResourceBase("../vfs/src/main/webapp");
-				auth.setInitParameter("application.properties", "unused");
 				vfs.setContextPath("/vfs");
 				vfs.setParentLoaderPriority(true);
 				contexts.addHandler(vfs);
