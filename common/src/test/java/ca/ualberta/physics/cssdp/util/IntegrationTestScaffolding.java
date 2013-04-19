@@ -182,7 +182,7 @@ public abstract class IntegrationTestScaffolding {
 		newDataManager.setPassword("password");
 		newDataManager.setRole(Role.DATA_MANAGER);
 
-		String authUrl = Common.properties().getString("auth.url");
+		String authUrl = Common.properties().getString("auth.api.url");
 		Response res = given().content(newDataManager).and()
 				.contentType("application/json").post(authUrl + "/user.json");
 
@@ -204,7 +204,7 @@ public abstract class IntegrationTestScaffolding {
 	 * @return
 	 */
 	protected String login(String username, String password) {
-		String authUrl = Common.properties().getString("auth.url");
+		String authUrl = Common.properties().getString("auth.api.url");
 		return given().formParam("username", username)
 				.formParam("password", password)
 				.post(authUrl + "/session.json").asString();
