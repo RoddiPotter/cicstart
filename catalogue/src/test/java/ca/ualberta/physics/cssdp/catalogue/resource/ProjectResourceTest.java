@@ -204,7 +204,7 @@ public class ProjectResourceTest extends CatalogueTestsScaffolding {
 		host.setUsername("anonymous");
 		host.setPassword("anonymous");
 
-		String fileUrl = Common.properties().getString("file.url");
+		String fileUrl = Common.properties().getString("file.api.url");
 		expect().statusCode(201).when().given().content(host).and()
 				.contentType(ContentType.JSON).and()
 				.headers("CICSTART.session", sessionToken)

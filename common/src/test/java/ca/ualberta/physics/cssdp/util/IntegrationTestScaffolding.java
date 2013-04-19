@@ -49,6 +49,9 @@ public abstract class IntegrationTestScaffolding {
 	private static Server allServers;
 
 	public IntegrationTestScaffolding() {
+		
+		ApplicationProperties.dropOverrides();
+		
 		// initialize default properties
 		Common.properties();
 
@@ -111,6 +114,7 @@ public abstract class IntegrationTestScaffolding {
 			WebAppContext context = new WebAppContext();
 			context.setDescriptor("src/main/webapp/WEB-INF/web.xml");
 			context.setResourceBase("src/main/webapp");
+			context.setInitParameter("application.properties", "unused");
 			String thisContext = getComponetContext();
 			context.setContextPath(thisContext);
 			context.setParentLoaderPriority(true);
@@ -121,6 +125,7 @@ public abstract class IntegrationTestScaffolding {
 				WebAppContext auth = new WebAppContext();
 				auth.setDescriptor("../auth/src/main/webapp/WEB-INF/web.xml");
 				auth.setResourceBase("../auth/src/main/webapp");
+				auth.setInitParameter("application.properties", "unused");
 				auth.setContextPath("/auth");
 				auth.setParentLoaderPriority(true);
 				contexts.addHandler(auth);
@@ -130,6 +135,7 @@ public abstract class IntegrationTestScaffolding {
 				WebAppContext file = new WebAppContext();
 				file.setDescriptor("../file/src/main/webapp/WEB-INF/web.xml");
 				file.setResourceBase("../file/src/main/webapp");
+				auth.setInitParameter("application.properties", "unused");
 				file.setContextPath("/file");
 				file.setParentLoaderPriority(true);
 				contexts.addHandler(file);
@@ -141,6 +147,7 @@ public abstract class IntegrationTestScaffolding {
 				catalogue
 						.setDescriptor("../catalogue/src/main/webapp/WEB-INF/web.xml");
 				catalogue.setResourceBase("../catalogue/src/main/webapp");
+				auth.setInitParameter("application.properties", "unused");
 				catalogue.setContextPath("/catalogue");
 				catalogue.setParentLoaderPriority(true);
 				contexts.addHandler(catalogue);
@@ -150,6 +157,7 @@ public abstract class IntegrationTestScaffolding {
 				WebAppContext vfs = new WebAppContext();
 				vfs.setDescriptor("../vfs/src/main/webapp/WEB-INF/web.xml");
 				vfs.setResourceBase("../vfs/src/main/webapp");
+				auth.setInitParameter("application.properties", "unused");
 				vfs.setContextPath("/vfs");
 				vfs.setParentLoaderPriority(true);
 				contexts.addHandler(vfs);
