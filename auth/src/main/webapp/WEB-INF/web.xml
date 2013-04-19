@@ -2,7 +2,7 @@
 <web-app>
 	<context-param>
 		<param-name>application.properties</param-name>
-		<param-value>/home/roddi/cssdp/config/auth-application.properties</param-value>
+		<param-value>/cicstart/config/application.properties</param-value>
 	</context-param>
 
 	<servlet>
@@ -21,20 +21,16 @@
 			<param-value>true</param-value>
 		</init-param>
 		<init-param>
-			<param-name>swagger.api.basepath</param-name>
-			<param-value>http://localhost:8080/auth/api</param-value>
+			<param-name>swagger.config.reader</param-name>
+			<param-value>ca.ualberta.physics.cssdp.configuration.SwaggerConfigReader</param-value>
 		</init-param>
 		<init-param>
-			<param-name>api.version</param-name>
-			<param-value>1.0</param-value>
+			<param-name>common.properties_url.key</param-name>
+			<param-value>auth.api.url</param-value>
 		</init-param>
 		<init-param>
-			<param-name>swagger.version</param-name>
-			<param-value>1.1</param-value>
-		</init-param>
-		<init-param>
-			<param-name>swagger.security.filter</param-name>
-			<param-value>ca.ualberta.physics.cssdp.util.ApiAuthorizationFilterImpl</param-value>
+			<param-name>common.properties_doc.url.key</param-name>
+			<param-value>auth.doc.url</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>

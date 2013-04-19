@@ -55,7 +55,7 @@ public abstract class IntegrationTestScaffolding {
 		// override the database connection url to point to an in-memory
 		// database
 		Properties overrides = new Properties();
-		overrides.put("common.logback.configuration.xml",
+		overrides.put("common.logback.configuration",
 				"src/test/resources/logback-test.xml");
 		overrides
 				.setProperty("common.hibernate.connection.url",

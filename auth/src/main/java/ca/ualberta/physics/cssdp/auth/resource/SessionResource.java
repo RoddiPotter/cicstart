@@ -191,49 +191,6 @@ public class SessionResource {
 	// }
 	// }
 	//
-	// return Response
-	// .temporaryRedirect(
-	// UriBuilder
-	// .fromUri(
-	// AuthServer.properties().getString(
-	// "login_form")).build())
-	// .header("cssdp-auth-error", "Please log into the portal")
-	// .build();
-	//
-	// }
-	//
-	// @Path("/{token}")
-	// @DELETE
-	// @Consumes({ MediaType.APPLICATION_FORM_URLENCODED })
-	// public Response endSession(@QueryParam("email") String email,
-	// @Context HttpServletRequest request) {
-	//
-	// if (email == null) {
-	// return Response
-	// .status(Status.BAD_REQUEST)
-	// .header("environet-auth-errors",
-	// "An email address is required").build();
-	// }
-	//
-	// String requestIp = request.getRemoteAddr();
-	// if (privilegedIps.contains(requestIp)) {
-	//
-	// String ipAddress = ipWhiteList.getIfPresent(email);
-	// if (ipAddress != null) {
-	// ipWhiteList.invalidate(email);
-	// }
-	//
-	// }
-	//
-	// return Response
-	// .temporaryRedirect(
-	// UriBuilder
-	// .fromUri(
-	// AuthServer.properties().getString(
-	// "login_form")).build())
-	// .header("cssdp-auth-error", "Please log into the portal")
-	// .build();
-	//
-	// }
+
 
 }

@@ -11,8 +11,8 @@
   </root>
   <logger name="org.hibernate.SQL" level="warn"/>
   <logger name="org.hibernate.type" level="warn"/>
-  <logger name="eojs" level="warn" />
-  <logger name="ca.ualberta.physics.cssdp" level="info"/>
-  <logger name="com.wordnik.swagger.jaxrs" level="warn"/>
+  <logger name="o.eclipse.jetty" level="info" />
+  <logger name="ca.ualberta.physics.cssdp.auth" level="debug"/>
+  <logger name="com.sun.grizzly" level="trace"/>
   
 </configuration>
