@@ -41,7 +41,7 @@ public class CssdpPasswordAuthenticator implements PasswordAuthenticator {
 
 	public CssdpPasswordAuthenticator() {
 
-		authUrl = Common.properties().getString("auth.url");
+		authUrl = Common.properties().getString("auth.api.url");
 
 	}
 

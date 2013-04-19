@@ -118,7 +118,7 @@ public class VfsFtpUserManager implements UserManager {
 				};
 			} else {
 				throw new AuthenticationFailedException("Please login at "
-						+ Common.properties().getString("auth.url"));
+						+ Common.properties().getString("auth.api.url"));
 			}
 
 		}

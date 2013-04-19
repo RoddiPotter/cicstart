@@ -32,7 +32,7 @@ import com.jayway.restassured.response.Response;
 
 public class AuthClient {
 
-	private String authUrl = Common.properties().getString("auth.url");
+	private String authUrl = Common.properties().getString("auth.api.url");
 
 	public ServiceResponse<String> login(String username, String password) {
 
