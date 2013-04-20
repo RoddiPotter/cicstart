@@ -19,8 +19,6 @@
 
 package ca.ualberta.physics.cssdp.catalogue;
 
-import javax.servlet.ServletException;
-
 import ca.ualberta.physics.cssdp.configuration.CommonServletContainer;
 
 /**
@@ -30,12 +28,5 @@ import ca.ualberta.physics.cssdp.configuration.CommonServletContainer;
 public class CatalogueServletContainer extends CommonServletContainer {
 
 	private static final long serialVersionUID = 1L;
-
-	@Override
-	public void init() throws ServletException {
-		// touch the guice module so that things like the custom JSON Object
-		// Mapper is registered with Jackson
-		InjectorHolder.get();
-		super.init();
-	}
+	
 }
