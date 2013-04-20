@@ -26,12 +26,12 @@ import java.util.Properties;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.bio.SocketConnector;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
-import org.eclipse.jetty.server.handler.DefaultHandler;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.junit.Before;
 
 import ca.ualberta.physics.cssdp.configuration.ApplicationProperties;
 import ca.ualberta.physics.cssdp.configuration.Common;
+import ca.ualberta.physics.cssdp.configuration.CommonServletContainer;
 import ca.ualberta.physics.cssdp.configuration.JSONObjectMapperProvider;
 import ca.ualberta.physics.cssdp.domain.auth.User;
 import ca.ualberta.physics.cssdp.domain.auth.User.Role;
@@ -46,12 +46,12 @@ import com.jayway.restassured.response.Response;
 
 public abstract class IntegrationTestScaffolding {
 
-	private static Server allServers;
+	private static Server server;
 
 	public IntegrationTestScaffolding() {
-		
+
 		ApplicationProperties.dropOverrides();
-		
+
 		// initialize default properties
 		Common.properties();
 
@@ -65,11 +65,10 @@ public abstract class IntegrationTestScaffolding {
 						"jdbc:h2:mem:test;DB_CLOSE_DELAY=1000;MODE=PostgreSQL;TRACE_LEVEL_FILE=0");
 		ApplicationProperties.overrideDefaults(overrides);
 	}
-	
+
 	// start an auth server for tests that depend on the auth resources
 	@Before
-	public void setup() {
-
+	public void setup() throws Exception {
 
 		String url = Common.properties().getString("hibernate.connection.url");
 		String driver = Common.properties().getString(
@@ -97,34 +96,36 @@ public abstract class IntegrationTestScaffolding {
 							}
 						}));
 
-		if (allServers == null || !allServers.isStarted()) {
+		if (server == null || !server.isStarted()) {
+
+			CommonServletContainer.readWebXml.set(Boolean.FALSE);
+
 			// configure Jetty as an embedded web application server
-			allServers = new Server();
-			allServers.setStopAtShutdown(true);
-			allServers.setGracefulShutdown(1000);
+			server = new Server();
+			server.setStopAtShutdown(true);
+			server.setGracefulShutdown(1000);
 
 			SocketConnector connector = new SocketConnector();
 			connector.setPort(8080);
-			allServers.addConnector(connector);
+			server.addConnector(connector);
 
 			ContextHandlerCollection contexts = new ContextHandlerCollection();
-			contexts.addHandler(new DefaultHandler());
-			
+
 			// this one is relative to the project we are testing
 			WebAppContext context = new WebAppContext();
 			context.setDescriptor("src/main/webapp/WEB-INF/web.xml");
-			context.setInitParameter("application.properties", "unused");
 			context.setResourceBase("src/main/webapp");
 			String thisContext = getComponetContext();
 			context.setContextPath(thisContext);
 			context.setParentLoaderPriority(true);
+
 			contexts.addHandler(context);
 
-			// and these blocks setup the other contexts that we talk to during tests and operations
+			// and these blocks setup the other contexts that we talk to during
+			// tests and operations
 			if (!thisContext.equals("/auth")) {
 				WebAppContext auth = new WebAppContext();
 				auth.setDescriptor("../auth/src/main/webapp/WEB-INF/web.xml");
-				auth.setInitParameter("application.properties", "unused");
 				auth.setResourceBase("../auth/src/main/webapp");
 				auth.setContextPath("/auth");
 				auth.setParentLoaderPriority(true);
@@ -134,7 +135,6 @@ public abstract class IntegrationTestScaffolding {
 			if (!thisContext.equals("/file")) {
 				WebAppContext file = new WebAppContext();
 				file.setDescriptor("../file/src/main/webapp/WEB-INF/web.xml");
-				file.setInitParameter("application.properties", "unused");
 				file.setResourceBase("../file/src/main/webapp");
 				file.setContextPath("/file");
 				file.setParentLoaderPriority(true);
@@ -146,7 +146,6 @@ public abstract class IntegrationTestScaffolding {
 				WebAppContext catalogue = new WebAppContext();
 				catalogue
 						.setDescriptor("../catalogue/src/main/webapp/WEB-INF/web.xml");
-				catalogue.setInitParameter("application.properties", "unused");
 				catalogue.setResourceBase("../catalogue/src/main/webapp");
 				catalogue.setContextPath("/catalogue");
 				catalogue.setParentLoaderPriority(true);
@@ -156,18 +155,16 @@ public abstract class IntegrationTestScaffolding {
 			if (!thisContext.equals("/vfs")) {
 				WebAppContext vfs = new WebAppContext();
 				vfs.setDescriptor("../vfs/src/main/webapp/WEB-INF/web.xml");
-				vfs.setInitParameter("application.properties", "unused");
 				vfs.setResourceBase("../vfs/src/main/webapp");
 				vfs.setContextPath("/vfs");
 				vfs.setParentLoaderPriority(true);
 				contexts.addHandler(vfs);
 			}
 
-			allServers.setHandler(contexts);
+			server.setHandler(contexts);
 
 			try {
-				allServers.start();
-//				System.err.println(allServers.dump());
+				server.start();
 			} catch (Exception e) {
 				Throwables.propagate(e);
 			}
@@ -176,10 +173,11 @@ public abstract class IntegrationTestScaffolding {
 	}
 
 	protected abstract String getComponetContext();
+
 	protected String baseUrl() {
 		return getComponetContext() + "/api";
 	}
-	
+
 	protected User setupDataManager() {
 
 		User newDataManager = new User();

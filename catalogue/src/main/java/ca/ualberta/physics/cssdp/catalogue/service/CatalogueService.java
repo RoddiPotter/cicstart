@@ -182,7 +182,7 @@ public class CatalogueService {
 		ServiceResponse<Void> sr = new ServiceResponse<Void>();
 		List<String> roots = project.getScanDirectories();
 		String host = project.getHost();
-		String fileUrl = Common.properties().getString("file.url");
+		String fileUrl = Common.properties().getString("file.api.url");
 		String hostResource = fileUrl + "/host.json";
 
 		List<UrlDataProduct> unsavedUrlDataProducts = new ArrayList<UrlDataProduct>();

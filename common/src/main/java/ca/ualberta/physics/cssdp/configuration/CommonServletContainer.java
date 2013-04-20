@@ -26,8 +26,8 @@ import java.util.Properties;
 
 import javax.servlet.ServletException;
 
-import ca.ualberta.physics.cssdp.configuration.ApplicationProperties;
-import ca.ualberta.physics.cssdp.configuration.Common;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
@@ -39,7 +39,12 @@ import com.sun.jersey.spi.container.servlet.ServletContainer;
  */
 public abstract class CommonServletContainer extends ServletContainer {
 
+	private static final Logger logger = LoggerFactory
+			.getLogger(CommonServletContainer.class);
+
 	private static final long serialVersionUID = 1L;
+
+	public static final ThreadLocal<Boolean> readWebXml = new ThreadLocal<Boolean>();
 
 	@Override
 	public void init() throws ServletException {
@@ -49,34 +54,40 @@ public abstract class CommonServletContainer extends ServletContainer {
 		String applicationPropertiesFile = getServletContext()
 				.getInitParameter("application.properties");
 
-		if (!Strings.isNullOrEmpty(applicationPropertiesFile)) {
+		Boolean useWebXmlOverrides = readWebXml.get();
 
-			// must load components first.
-			Common.properties();
-			touchComponentProperties();
+		if (useWebXmlOverrides != null && useWebXmlOverrides) {
 
-			Properties overrides = new Properties();
-			try {
-				System.out.println("Loading property overrides from "
-						+ applicationPropertiesFile);
-				overrides.load(new FileInputStream(new File(
-						applicationPropertiesFile)));
+			if (!Strings.isNullOrEmpty(applicationPropertiesFile)) {
 
-				ApplicationProperties.overrideDefaults(overrides);
+				// must load components first.
+				Common.properties();
+				touchComponentProperties();
 
-			} catch (FileNotFoundException e) {
+				Properties overrides = new Properties();
+				try {
+					System.out.println("Loading property overrides from "
+							+ applicationPropertiesFile);
+					overrides.load(new FileInputStream(new File(
+							applicationPropertiesFile)));
 
-				System.out.println("No override file found at "
-						+ applicationPropertiesFile
-						+ ", reverting to defaults.");
-				ComponentProperties.printAll();
-				
-			} catch (IOException e) {
-				throw Throwables.propagate(e);
+					ApplicationProperties.overrideDefaults(overrides);
+
+				} catch (FileNotFoundException e) {
+
+					System.out.println("No override file found at "
+							+ applicationPropertiesFile
+							+ ", reverting to defaults.");
+					ComponentProperties.printAll();
+
+				} catch (IOException e) {
+					throw Throwables.propagate(e);
+				}
+			} else {
+				logger.warn("No application.properties init parameter found, things may not work as expected.");
 			}
 		} else {
-			System.out
-					.println("No application.properties init parameter found, using default properties.");
+			logger.info("Not reading application.properties from web.xml because we are testing.");
 		}
 
 		super.init();
