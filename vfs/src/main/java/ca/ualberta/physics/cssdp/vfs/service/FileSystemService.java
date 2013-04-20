@@ -23,9 +23,9 @@ import java.io.FileFilter;
 import java.io.IOException;
 import java.io.InputStream;
 
+import ca.ualberta.physics.cssdp.configuration.VfsServer;
 import ca.ualberta.physics.cssdp.service.ServiceResponse;
 import ca.ualberta.physics.cssdp.util.StorageUnit;
-import ca.ualberta.physics.cssdp.vfs.VfsServer;
 
 import com.google.common.io.Files;
 import com.google.common.io.InputSupplier;

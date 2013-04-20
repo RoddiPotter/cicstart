@@ -38,11 +38,6 @@ public class FileServletContainer extends CommonServletContainer {
 	private Thread remoteServersDaemon;
 
 	@Override
-	protected void touchComponentProperties() {
-		FileServer.properties();
-	}
-
-	@Override
 	public void init() throws ServletException {
 		super.init();
 

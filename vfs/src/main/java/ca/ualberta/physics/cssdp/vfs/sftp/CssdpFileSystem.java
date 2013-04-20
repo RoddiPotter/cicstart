@@ -23,7 +23,7 @@ import java.io.File;
 import org.apache.sshd.server.FileSystemView;
 import org.apache.sshd.server.SshFile;
 
-import ca.ualberta.physics.cssdp.vfs.VfsServer;
+import ca.ualberta.physics.cssdp.configuration.VfsServer;
 
 public class CssdpFileSystem implements FileSystemView {
 

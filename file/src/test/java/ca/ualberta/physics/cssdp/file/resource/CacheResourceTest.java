@@ -32,9 +32,9 @@ import java.nio.charset.Charset;
 import org.junit.Assert;
 import org.junit.Test;
 
+import ca.ualberta.physics.cssdp.configuration.FileServer;
 import ca.ualberta.physics.cssdp.domain.file.Host;
 import ca.ualberta.physics.cssdp.domain.file.Host.Protocol;
-import ca.ualberta.physics.cssdp.file.FileServer;
 
 import com.google.common.io.Files;
 import com.google.common.io.InputSupplier;

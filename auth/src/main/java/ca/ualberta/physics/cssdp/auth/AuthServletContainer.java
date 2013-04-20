@@ -28,10 +28,5 @@ public class AuthServletContainer extends CommonServletContainer {
 
 	private static final long serialVersionUID = 1L;
 
-	@Override
-	protected void touchComponentProperties() {
-		AuthServer.properties();
-	}
-
 
 }

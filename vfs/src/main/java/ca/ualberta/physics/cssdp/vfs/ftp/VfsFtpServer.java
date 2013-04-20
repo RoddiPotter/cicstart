@@ -27,7 +27,7 @@ import org.apache.ftpserver.listener.ListenerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ca.ualberta.physics.cssdp.vfs.VfsServer;
+import ca.ualberta.physics.cssdp.configuration.VfsServer;
 
 import com.google.common.base.Throwables;
 

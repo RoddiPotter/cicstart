@@ -29,8 +29,8 @@ import javax.persistence.EntityManager;
 
 import org.joda.time.LocalDateTime;
 
+import ca.ualberta.physics.cssdp.configuration.FileServer;
 import ca.ualberta.physics.cssdp.domain.file.CachedFile;
-import ca.ualberta.physics.cssdp.file.FileServer;
 import ca.ualberta.physics.cssdp.file.dao.CachedFileDao;
 import ca.ualberta.physics.cssdp.service.ManualTransaction;
 import ca.ualberta.physics.cssdp.service.ServiceResponse;

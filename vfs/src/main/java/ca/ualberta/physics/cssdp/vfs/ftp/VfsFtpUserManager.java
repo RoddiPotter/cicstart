@@ -31,9 +31,9 @@ import org.apache.ftpserver.usermanager.UsernamePasswordAuthentication;
 
 import ca.ualberta.physics.cssdp.client.AuthClient;
 import ca.ualberta.physics.cssdp.configuration.Common;
+import ca.ualberta.physics.cssdp.configuration.VfsServer;
 import ca.ualberta.physics.cssdp.service.ServiceResponse;
 import ca.ualberta.physics.cssdp.vfs.InjectorHolder;
-import ca.ualberta.physics.cssdp.vfs.VfsServer;
 
 import com.google.inject.Inject;
 

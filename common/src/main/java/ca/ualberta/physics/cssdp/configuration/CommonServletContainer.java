@@ -62,7 +62,16 @@ public abstract class CommonServletContainer extends ServletContainer {
 
 				// must load components first.
 				Common.properties();
-				touchComponentProperties();
+
+				// ideally these would be in each sub-project, but since we
+				// want to reduce the number of configuration, we must
+				// initialize these here and so they must be in the common
+				// project.
+				// TODO refactor Component properties to handle single overrides
+				AuthServer.properties();
+				CatalogueServer.properties();
+				FileServer.properties();
+				VfsServer.properties();
 
 				Properties overrides = new Properties();
 				try {
@@ -92,7 +101,5 @@ public abstract class CommonServletContainer extends ServletContainer {
 
 		super.init();
 	}
-
-	protected abstract void touchComponentProperties();
 
 }

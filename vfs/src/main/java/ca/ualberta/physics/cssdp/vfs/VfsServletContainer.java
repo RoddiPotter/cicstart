@@ -33,6 +33,7 @@ import org.apache.sshd.server.FileSystemView;
 import org.apache.sshd.server.sftp.SftpSubsystem;
 
 import ca.ualberta.physics.cssdp.configuration.CommonServletContainer;
+import ca.ualberta.physics.cssdp.configuration.VfsServer;
 import ca.ualberta.physics.cssdp.vfs.ftp.VfsFtpServer;
 import ca.ualberta.physics.cssdp.vfs.sftp.CssdpFileSystem;
 import ca.ualberta.physics.cssdp.vfs.sftp.CssdpPasswordAuthenticator;
@@ -78,11 +79,6 @@ public class VfsServletContainer extends CommonServletContainer {
 
 		super.init();
 
-	}
-
-	@Override
-	protected void touchComponentProperties() {
-		VfsServer.properties();
 	}
 
 }

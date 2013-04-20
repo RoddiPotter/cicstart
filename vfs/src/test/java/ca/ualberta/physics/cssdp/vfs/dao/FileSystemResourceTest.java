@@ -26,7 +26,7 @@ import java.io.File;
 import org.junit.Assert;
 import org.junit.Test;
 
-import ca.ualberta.physics.cssdp.vfs.VfsServer;
+import ca.ualberta.physics.cssdp.configuration.VfsServer;
 
 import com.google.common.io.Files;
 import com.jayway.restassured.response.Response;
