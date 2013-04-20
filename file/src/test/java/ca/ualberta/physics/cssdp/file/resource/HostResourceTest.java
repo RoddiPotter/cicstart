@@ -37,8 +37,9 @@ import com.jayway.restassured.response.Response;
 
 public class HostResourceTest extends FileTestsScaffolding {
 
-	private static final Logger logger = LoggerFactory.getLogger(HostResourceTest.class);
-	
+	private static final Logger logger = LoggerFactory
+			.getLogger(HostResourceTest.class);
+
 	/**
 	 * Requires Auth to be running on 8080
 	 */
@@ -165,9 +166,11 @@ public class HostResourceTest extends FileTestsScaffolding {
 		Assert.assertTrue(ls.getRemoteFiles().size() > 50);
 
 		for (RemoteFile file : ls.getRemoteFiles()) {
-			int numSlashes = file.getUrl().split("/").length - 1;
-			Assert.assertTrue(file.getUrl() + ":" + numSlashes, numSlashes >= 5
-					&& numSlashes <= 7);
+			if (file != null) {
+				int numSlashes = file.getUrl().split("/").length - 1;
+				Assert.assertTrue(file.getUrl() + ":" + numSlashes,
+						numSlashes >= 5 && numSlashes <= 7);
+			}
 		}
 
 	}

@@ -56,7 +56,7 @@ public abstract class CommonServletContainer extends ServletContainer {
 
 		Boolean useWebXmlOverrides = readWebXml.get();
 
-		if (useWebXmlOverrides != null && useWebXmlOverrides) {
+		if (useWebXmlOverrides == null || useWebXmlOverrides) {
 
 			if (!Strings.isNullOrEmpty(applicationPropertiesFile)) {
 
