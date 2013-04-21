@@ -1,0 +1,10 @@
+{
+  "maxConnections": "2",
+  "username": "anonymous",
+  "protocol": "ftp",
+  "retryCount": "5",
+  "retryWait": "10000",
+  "hostname": "space.augsburg.edu",
+  "password": "anonymous",
+  "timeout": "30000",
+}
