@@ -25,9 +25,9 @@
          "externalKey":"PG10SEC",
          "description":"Pangnirtung Magnetometer 10 sec",
          "metadataParserConfig":{
-            "includesRegex":"^PGG.*sec$",
-            "startDateRegex":"/d{8}",
-            "endDateRegex":"/d{8}",
+            "includesRegex":".*/PGG\\d{8}.*sec$",
+            "startDateRegex":"\\d{8}",
+            "endDateRegex":"\\d{8}",
             "startDateBeanShell":"            
               import org.joda.time.LocalDate;            
               import org.joda.time.LocalTime;            
@@ -60,6 +60,6 @@
    "endDateBeanShell":"",
    "host":"space.augsburg.edu",
    "scanDirectories":[
-      "/processed/MACCS/IAGA2000/"
+      "/processed/MACCS/IAGA2000"
    ]
 }

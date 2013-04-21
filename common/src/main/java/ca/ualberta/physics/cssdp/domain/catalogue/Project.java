@@ -133,7 +133,7 @@ public class Project extends Persistent {
 
 	@ApiProperty(required = false, value = "The regular expression used to include files while scanning "
 			+ "the host. Follow http://docs.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html for regex "
-			+ "rules.")
+			+ "rules.  Matches against the entire URL.")
 	@XmlElement
 	@Column(name = "excludes_regex", length = 1024, nullable = true)
 	private String excludesRegex;
@@ -155,7 +155,7 @@ public class Project extends Persistent {
 	@Column(name = "host", nullable = true)
 	private String host;
 
-	@ApiProperty(required = false, value = "The list of directories to start scanning at")
+	@ApiProperty(required = false, value = "The list of directories to start scanning at.  Don't end with a slash.")
 	@XmlElementWrapper(name = "scanDirectories")
 	@XmlElement(name = "directory")
 	@ElementCollection

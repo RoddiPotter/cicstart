@@ -66,15 +66,15 @@ public class CatalogueSearchRequest {
 	@XmlJavaTypeAdapter(MnemonicAdapter.class)
 	private Mnemonic discriminatorExtKey;
 
-	@JsonSerialize(using = ca.ualberta.physics.cssdp.util.JSONLocalDateSerializer.class)
-	@JsonDeserialize(using = ca.ualberta.physics.cssdp.util.JSONLocalDateDeserializer.class)
+	@JsonSerialize(using = ca.ualberta.physics.cssdp.util.JSONLocalDateTimeSerializer.class)
+	@JsonDeserialize(using = ca.ualberta.physics.cssdp.util.JSONLocalDateTimeDeserializer.class)
 	@ApiProperty(value = "The file start date range to include.  Date format follows ISO8601 YYYY-MM-DDThh:mm:ss.SSS", dataType = "String")
 	@XmlElement
 	@XmlJavaTypeAdapter(LocalDateTimeAdapter.class)
 	private LocalDateTime start;
 
-	@JsonSerialize(using = ca.ualberta.physics.cssdp.util.JSONLocalDateSerializer.class)
-	@JsonDeserialize(using = ca.ualberta.physics.cssdp.util.JSONLocalDateDeserializer.class)
+	@JsonSerialize(using = ca.ualberta.physics.cssdp.util.JSONLocalDateTimeSerializer.class)
+	@JsonDeserialize(using = ca.ualberta.physics.cssdp.util.JSONLocalDateTimeDeserializer.class)
 	@ApiProperty(value = "The file end date range to include. Date format follows ISO8601 YYYY-MM-DDThh:mm:ss.SSS", dataType = "String")
 	@XmlElement
 	@XmlJavaTypeAdapter(LocalDateTimeAdapter.class)
