@@ -117,24 +117,14 @@ public class HostResource {
 			return Response.status(404).build();
 		}
 
-		User requester = authClient.whois(sessionToken);
+		ServiceResponse<Void> sr = hostService.addHost(host);
 
-		if (requester.hasRole(Role.DATA_MANAGER)) {
-
-			ServiceResponse<Void> sr = hostService.addHost(host);
-
-			if (sr.isRequestOk()) {
-				return Response.created(
-						UriBuilder.fromUri(uriInfo.getBaseUri())
-								.path(getClass()).path(host.getHostname())
-								.build()).build();
-			} else {
-				return Response.status(500).entity(sr.getMessagesAsStrings())
-						.build();
-			}
+		if (sr.isRequestOk()) {
+			return Response.created(
+					UriBuilder.fromUri(uriInfo.getBaseUri()).path(getClass())
+							.path(host.getHostname()).build()).build();
 		} else {
-			return Response.status(401)
-					.entity("Only DATA_MANAGER roles are allowed to add hosts")
+			return Response.status(500).entity(sr.getMessagesAsStrings())
 					.build();
 		}
 	}

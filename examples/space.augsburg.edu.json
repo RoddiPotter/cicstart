@@ -6,5 +6,5 @@
   "retryWait": "10000",
   "hostname": "space.augsburg.edu",
   "password": "anonymous",
-  "timeout": "30000",
+  "timeout": "30000"
 }
