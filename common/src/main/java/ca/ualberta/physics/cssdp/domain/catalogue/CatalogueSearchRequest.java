@@ -34,33 +34,45 @@ import ca.ualberta.physics.cssdp.jaxb.LocalDateTimeAdapter;
 import ca.ualberta.physics.cssdp.jaxb.MnemonicAdapter;
 import ca.ualberta.physics.cssdp.model.Mnemonic;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.wordnik.swagger.annotations.ApiClass;
 import com.wordnik.swagger.annotations.ApiProperty;
 
+@JsonAutoDetect(getterVisibility = Visibility.NONE, fieldVisibility = Visibility.ANY, creatorVisibility = Visibility.NONE, isGetterVisibility = Visibility.NONE, setterVisibility = Visibility.NONE)
 @ApiClass(value = "The search request", description = "Less values expands the search")
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class CatalogueSearchRequest {
 
+	@JsonProperty("project")
 	@ApiProperty(value = "The project key", dataType = "Mnemonic")
 	@XmlElement(name = "project")
 	@XmlJavaTypeAdapter(MnemonicAdapter.class)
 	private Mnemonic projectExtKey;
 
+	@JsonProperty("observatories")
+	@JsonInclude(Include.NON_EMPTY)
 	@ApiProperty(value = "The observatory keys to search", dataType = "Mnemonic")
 	@XmlElementWrapper(name = "observatories")
 	@XmlElement(name = "observatory")
 	@XmlJavaTypeAdapter(MnemonicAdapter.class)
 	private List<Mnemonic> observatoryExtKeys = new ArrayList<Mnemonic>();
 
+	@JsonProperty("instrumentTypes")
+	@JsonInclude(Include.NON_EMPTY)
 	@ApiProperty(value = "The instrument types to search", dataType = "Mnemonic")
 	@XmlElementWrapper(name = "instrumentTypes")
 	@XmlElement(name = "instrumentType")
 	@XmlJavaTypeAdapter(MnemonicAdapter.class)
 	private List<Mnemonic> instrumentTypeExtKeys = new ArrayList<Mnemonic>();
 
+	@JsonProperty("discriminator")
 	@ApiProperty(value = "The discriminator to search", dataType = "Mnemonic")
 	@XmlElement(name = "discriminator")
 	@XmlJavaTypeAdapter(MnemonicAdapter.class)
