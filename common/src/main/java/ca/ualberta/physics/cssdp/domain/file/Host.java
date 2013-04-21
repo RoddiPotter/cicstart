@@ -63,10 +63,12 @@ public class Host extends Persistent {
 	@Column(name = "max_connections", nullable = false)
 	private int maxConnections = 1;
 
+	@ApiProperty(value="Milliseconds before tiemout")
 	@Column(name = "timeout", nullable = false)
 	private int timeout = (int) TimeUnit.MILLISECONDS.convert(1,
 			TimeUnit.MINUTES);
 
+	@ApiProperty(value="Milliseconds to wait")
 	@Column(name = "retry_wait", nullable = false)
 	private int retryWait = (int) TimeUnit.MILLISECONDS.convert(1,
 			TimeUnit.MINUTES);

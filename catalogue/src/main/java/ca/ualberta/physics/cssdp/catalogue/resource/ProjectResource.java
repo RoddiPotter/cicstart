@@ -101,7 +101,7 @@ public class ProjectResource {
 
 	@DELETE
 	@Path("/{extKey}")
-	@ApiOperation(value = "Delete a Project object", notes = "Successful operation will respond with 200 and return the Project object deleted", responseClass = "ca.ualberta.cssdp.domain.catalogue.Project")
+	@ApiOperation(value = "Delete a Project object", notes = "Successful operation will respond with 200 and return the Project object deleted", responseClass = "ca.ualberta.physics.cssdp.domain.catalogue.Project")
 	@ApiErrors(value = {
 			@ApiError(code = 400, reason = "No Project key supplied"),
 			@ApiError(code = 404, reason = "No Project found for key supplied"),
