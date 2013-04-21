@@ -126,7 +126,7 @@ public class FtpConnection extends RemoteConnection {
 						file.getTimestamp());
 
 				RemoteFile remoteFile = new RemoteFile("ftp://"
-						+ getHostEntry().getHostname() + path + name, size,
+						+ getHostEntry().getHostname() + path + "/" + name, size,
 						modifiedTstamp, isDir);
 				list.add(remoteFile);
 			}

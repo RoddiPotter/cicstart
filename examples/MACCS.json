@@ -1,65 +1,65 @@
 {
-  "host": "space.augsburg.edu",
-  "endDateBeanShell": "",
-  "endDateRegex": "",
-  "scanDirectories": [
-    "processed/MACCS/IAGA2000"
-  ],
-  "excludesRegex": "string",
-  "externalKey": {
-    "value": "MACCS"
-  },
-  "rulesUrl": "http://space.augsburg.edu/maccs/datausepolicy.html",
-  "observatories": {
-    "description": "Pangnirtung, Nunavut, Canad",
-    "longitude": "294.2",
-    "latitude": "66.1",
-    "externalKey": {
-      "value": "PG"
-    }
-  },
-  "name": "The Magnetometer Array for Cusp and Cleft Studies",
-  "startDateBeanShell": "",
-  "startDateRegex": "",
-  "instrumentTypes": {
-    "description": "Magnetometer",
-    "externalKey": {
-      "value": "Magnetometer"
-    }
-  },
-  "dataProducts": {
-    "metadataParserConfig": {
-      "endDateBeanShell": "
-      		import org.joda.time.LocalDate;
-			import org.joda.time.LocalTime;
-			import org.joda.time.LocalDateTime;
-			import org.joda.time.format.DateTimeFormat;
-			 
-			LocalDateTime parse(String url, String regexResult) { 
-				LocalDate date = DateTimeFormat.forPattern("yyyyMMdd").parseLocalDate(regexResult);
-				LocalDateTime dateTime = date.toLocalDateTime(new LocalTime(23,59));
-				return dateTime;
-			}
-      ",
-      "endDateRegex": "/d{8}",
-      "startDateRegex": "/d{8}",
-      "startDateBeanShell": "
-            import org.joda.time.LocalDate;
-			import org.joda.time.LocalTime;
-			import org.joda.time.LocalDateTime;
-			import org.joda.time.format.DateTimeFormat;
-			 
-			LocalDateTime parse(String url, String regexResult) { 
-				LocalDate date = DateTimeFormat.forPattern("yyyyMMdd").parseLocalDate(regexResult);
-				LocalDateTime dateTime = date.toLocalDateTime(LocalTime.MIDNIGHT);
-				return dateTime;
-			}
-      ",
-      "includesRegex": "^PGG.*sec$",
-    },
-    "description": "Pangnirtung Magnetometer 10 sec",
-    "externalKey": {
-      "value": "PG10SEC"
-    }
-  }
+   "externalKey":"MACCS",
+   "name":"The Magnetometer Array for Cusp and Cleft Studies",
+   "url":"http://space.augsburg.edu/maccs/index.html",
+   "rulesUrl":"http://space.augsburg.edu/maccs/datausepolicy.html",
+   "observatories":[
+      {
+         "externalKey":"PG",
+         "latitude":66.1,
+         "longitude":294.2,
+         "description":"Pangnirtung, Nunavut, Canada"
+      }
+   ],
+   "instrumentTypes":[
+      {
+         "externalKey":"Magnetometer",
+         "description":"Magnetometer"
+      }
+   ],
+   "discriminators":[
+
+   ],
+   "dataProducts":[
+      {
+         "externalKey":"PG10SEC",
+         "description":"Pangnirtung Magnetometer 10 sec",
+         "metadataParserConfig":{
+            "includesRegex":"^PGG.*sec$",
+            "startDateRegex":"/d{8}",
+            "endDateRegex":"/d{8}",
+            "startDateBeanShell":"            
+              import org.joda.time.LocalDate;            
+              import org.joda.time.LocalTime;            
+              import org.joda.time.LocalDateTime;            
+              import org.joda.time.format.DateTimeFormat;                        
+              LocalDateTime parse(String url, String regexResult) {                 
+                LocalDate date = DateTimeFormat.forPattern(\"yyyyMMdd\").parseLocalDate(regexResult);
+                LocalDateTime dateTime = date.toLocalDateTime(LocalTime.MIDNIGHT);
+                return dateTime;
+              }
+            ",
+            "endDateBeanShell":"
+              import org.joda.time.LocalDate;
+              import org.joda.time.LocalTime;
+              import org.joda.time.LocalDateTime;
+              import org.joda.time.format.DateTimeFormat;
+              LocalDateTime parse(String url, String regexResult) {
+                LocalDate date = DateTimeFormat.forPattern(\"yyyyMMdd\").parseLocalDate(regexResult);
+                LocalDateTime dateTime = date.toLocalDateTime(new LocalTime(23,59));
+                return dateTime;
+              }
+            "
+         }
+      }
+   ],
+   "startDateRegex":"",
+   "endDateRegex":"",
+   "excludesRegex":"",
+   "startDateBeanShell":"",
+   "endDateBeanShell":"",
+   "host":"space.augsburg.edu",
+   "scanDirectories":[
+      "/processed/MACCS/IAGA2000/"
+   ]
 }

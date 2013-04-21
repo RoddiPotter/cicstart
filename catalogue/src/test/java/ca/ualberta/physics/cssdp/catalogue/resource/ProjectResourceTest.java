@@ -169,7 +169,7 @@ public class ProjectResourceTest extends CatalogueTestsScaffolding {
 		apache.setHost("sunsite.ualberta.ca");
 		apache.setName("Apache data on sunsite at ualberta.ca");
 		apache.setScanDirectories(Arrays
-				.asList("/pub/Mirror/apache/commons/daemon/"));
+				.asList("/pub/Mirror/apache/commons"));
 
 		Discriminator d = new Discriminator();
 		d.setDescription("commons/daemon");
@@ -226,7 +226,7 @@ public class ProjectResourceTest extends CatalogueTestsScaffolding {
 
 		// System.out.println(res.asString());
 
-		Assert.assertEquals(1, res.as(CatalogueSearchResponse.class).getUris()
+		Assert.assertEquals(4, res.as(CatalogueSearchResponse.class).getUris()
 				.size());
 
 	}
