@@ -50,7 +50,7 @@ subprojects {
 		compile "org.bouncycastle:bcprov-jdk16:1.46"
 		compile "net.schmizz:sshj:0.8.1"
 		// see https://issues.apache.org/jira/browse/NET-465 change to 3.3 when released
-		compile "commons-net:commons-net:3.2"
+		compile "commons-net:commons-net:3.1"
 
 		// keep apache-sshd at 0.7.0 until this bug is fixed: https://issues.apache.org/jira/browse/FTPSERVER-437
 		compile "org.apache.ftpserver:ftpserver-core:1.0.6"

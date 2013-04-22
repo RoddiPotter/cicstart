@@ -61,9 +61,6 @@ public class FtpConnection extends RemoteConnection {
 		ftpClient.setConnectTimeout(hostEntry.getTimeout());
 		ftpClient.setDataTimeout(hostEntry.getTimeout());
 		ftpClient.setDefaultTimeout(hostEntry.getTimeout());
-		// TODO remove when commons-net:3.3 released. See
-		// https://issues.apache.org/jira/browse/NET-465
-		ftpClient.setBufferSize(0);
 		String hostname = hostEntry.getHostname();
 		try {
 			ftpClient.connect(hostname);
