@@ -28,6 +28,8 @@ import java.util.UUID;
 import javax.persistence.EntityManager;
 
 import org.joda.time.LocalDateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ca.ualberta.physics.cssdp.configuration.FileServer;
 import ca.ualberta.physics.cssdp.domain.file.CachedFile;
@@ -45,6 +47,8 @@ import com.google.inject.Inject;
 
 public class CacheService {
 
+	private static final Logger logger = LoggerFactory.getLogger(CacheService.class);
+	
 	private final File cacheRoot = new File(FileServer.properties().getString(
 			"file.cache.root"));
 
@@ -65,8 +69,8 @@ public class CacheService {
 		try {
 			Files.touch(tempFile);
 			fos = new FileOutputStream(tempFile);
+			logger.debug("Shuffling bytes from input stream into " + tempFile.getAbsolutePath());
 			ByteStreams.copy(fileData, fos);
-
 		} catch (IOException e) {
 			sr.error("Could not copy file data into temp file because "
 					+ e.getMessage());
@@ -119,6 +123,7 @@ public class CacheService {
 					try {
 						Files.touch(cacheFile);
 						Files.copy(tempFile, cacheFile);
+						logger.debug("Shuffling bytes from " + tempFile.getAbsolutePath() + " into " + cacheFile.getAbsolutePath());
 					} catch (IOException e) {
 						sr.error("Could not copy temp file into cache because "
 								+ e.getMessage());
@@ -144,11 +149,12 @@ public class CacheService {
 
 		tempFile.delete();
 		tempDir.delete();
+		logger.debug("temp files and dirs cleared");
 
 		if (sr.isRequestOk()) {
 			sr.setPayload(md5);
 		}
-
+		logger.info("File with MD5 " + md5 + " is now in cache");
 		return sr;
 	}
 
