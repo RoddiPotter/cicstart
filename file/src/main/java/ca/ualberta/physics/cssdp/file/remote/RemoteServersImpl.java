@@ -23,8 +23,8 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +32,6 @@ import org.slf4j.LoggerFactory;
 import ca.ualberta.physics.cssdp.domain.file.Host;
 import ca.ualberta.physics.cssdp.file.InjectorHolder;
 import ca.ualberta.physics.cssdp.file.dao.HostEntryDao;
-import ca.ualberta.physics.cssdp.file.remote.command.CommandRequest;
 import ca.ualberta.physics.cssdp.file.remote.command.RemoteServerCommand;
 import ca.ualberta.physics.cssdp.file.remote.protocol.RemoteConnection;
 
@@ -51,14 +50,12 @@ public class RemoteServersImpl implements RemoteServers {
 	@Inject
 	private HostEntryDao hostEntryDao;
 
-	private final AtomicInteger requestIdGenerator = new AtomicInteger();
-
 	private final ConcurrentMap<String, BlockingQueue<RemoteConnection>> connectionPools = new ConcurrentHashMap<String, BlockingQueue<RemoteConnection>>();
 
 	private final BlockingQueue<RemoteServerCommand<?>> backlog = new ArrayBlockingQueue<RemoteServerCommand<?>>(
 			5000);
 
-	private final ConcurrentMap<Integer, CommandRequest> requests = new ConcurrentHashMap<Integer, CommandRequest>();
+	private final CopyOnWriteArraySet<RemoteServerCommand<?>> currentRequests = new CopyOnWriteArraySet<RemoteServerCommand<?>>();
 
 	public RemoteServersImpl() {
 		InjectorHolder.inject(this);
@@ -72,25 +69,29 @@ public class RemoteServersImpl implements RemoteServers {
 	}
 
 	@Override
-	public int requestOperation(RemoteServerCommand<?> command) {
+	public void requestOperation(RemoteServerCommand<?> command) {
 
-		// verify the remove servers are configured with the host in the command
-		if (connectionPools.containsKey(command.getHostname()) == false) {
-			throw new IllegalArgumentException(
-					"Remote Servers needs to be configured with "
-							+ command.getHostname()
-							+ " before this action can be performend.  Add the host and then retry the operation.");
-		}
+		if(!currentRequests.contains(command)) {
+			
+			currentRequests.add(command);
+			
+			// verify the remove servers are configured with the host in the command
+			if (connectionPools.containsKey(command.getHostname()) == false) {
+				throw new IllegalArgumentException(
+						"Remote Servers needs to be configured with "
+								+ command.getHostname()
+								+ " before this action can be performend.  Add the host and then retry the operation.");
+			}
 
-		int requestId = requestIdGenerator.incrementAndGet();
-		try {
-			this.backlog.offer(command, 30, TimeUnit.SECONDS);
-			requests.put(requestId, new CommandRequest(requestId, command));
-		} catch (InterruptedException e) {
-			throw new RuntimeException(
-					"File Service is too busy, please try again soon.");
+			try {
+				this.backlog.offer(command, 30, TimeUnit.SECONDS);
+				
+			} catch (InterruptedException e) {
+				throw new RuntimeException(
+						"File Service is too busy, please try again soon.");
+			}
 		}
-		return requestId;
+		
 
 	}
 
@@ -169,15 +170,11 @@ public class RemoteServersImpl implements RemoteServers {
 			try {
 				command.execute(connection);
 			} finally {
+				currentRequests.remove(command);
 				returnConnection(command.getHostname(), connection);
 			}
 		}
 
-	}
-
-	@Override
-	public CommandRequest getRequest(Integer requestId) {
-		return requests.get(requestId);
 	}
 
 	@Override

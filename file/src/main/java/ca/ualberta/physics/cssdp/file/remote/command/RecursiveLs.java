@@ -35,6 +35,8 @@ import com.google.common.base.Throwables;
 
 public class RecursiveLs extends RemoteServerCommand<List<RemoteFile>> {
 
+	private static final long serialVersionUID = 1L;
+
 	private static final Logger logger = LoggerFactory
 			.getLogger(RecursiveLs.class);
 
@@ -49,7 +51,8 @@ public class RecursiveLs extends RemoteServerCommand<List<RemoteFile>> {
 			throw new IllegalArgumentException(
 					"Must supply a root dir to start listing at");
 		}
-		this.rootDir = rootDir;
+		this.rootDir = rootDir.endsWith("/") ? rootDir.substring(0,
+				rootDir.length() - 1) : rootDir;
 		if (maxDepth != null && maxDepth > 250) {
 			error("Max Depth must be <= 250");
 			this.maxDepth = 0;
@@ -112,5 +115,10 @@ public class RecursiveLs extends RemoteServerCommand<List<RemoteFile>> {
 	@Override
 	public List<RemoteFile> getResult() {
 		return fileList;
+	}
+
+	@Override
+	public String _pk() {
+		return getHostname() + rootDir + maxDepth;
 	}
 }

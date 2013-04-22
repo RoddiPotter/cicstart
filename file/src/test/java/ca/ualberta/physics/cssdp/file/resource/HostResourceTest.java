@@ -210,7 +210,7 @@ public class HostResourceTest extends FileTestsScaffolding {
 				.when()
 				.get("http://localhost:8080"
 						+ baseUrl()
-						+ "/host.json/sunsite.ualberta.ca/ls?path=/pub/Mirror/apache/commons/daemon/&depth=5");
+						+ "/host.json/sunsite.ualberta.ca/ls?path=/pub/Mirror/apache/commons/daemon&depth=5");
 
 		/*
 		 * RestAssured sucks at deserializing json... so it's best to access the

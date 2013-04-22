@@ -33,6 +33,8 @@ import com.google.common.base.Throwables;
 
 public class Download extends RemoteServerCommand<Void> {
 
+	private static final long serialVersionUID = 1L;
+
 	private static final Logger logger = LoggerFactory
 			.getLogger(Download.class);
 
@@ -75,6 +77,11 @@ public class Download extends RemoteServerCommand<Void> {
 	@Override
 	public Void getResult() {
 		return null;
+	}
+
+	@Override
+	public String _pk() {
+		return url;
 	}
 
 }

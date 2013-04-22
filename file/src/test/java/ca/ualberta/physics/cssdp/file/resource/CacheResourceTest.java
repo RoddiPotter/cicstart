@@ -212,7 +212,8 @@ public class CacheResourceTest extends FileTestsScaffolding {
 		String url = "ftp://sunsite.ualberta.ca/pub/Mirror/apache/commons/daemon/RELEASE-NOTES.txt";
 		// String url = "ftp://ftp14.freebsd.org/pub/FreeBSD/README.TXT";
 		String encodeUrl = URLEncoder.encode(url, "UTF-8");
-		given().formParam("url", url)
+		final Response res = given()
+				.queryParam("url", url)
 				.and()
 				.contentType(ContentType.URLENC)
 				.expect()
@@ -220,14 +221,15 @@ public class CacheResourceTest extends FileTestsScaffolding {
 				.and()
 				.header("location",
 						"http://localhost:8080" + baseUrl()
-								+ "/cache.json/find?key=" + url).when()
-				.put(baseUrl() + "/cache.json/request");
+								+ "/cache.json?url=" + url).when()
+				.get(baseUrl() + "/cache.json");
 
-		while (get(baseUrl() + "/cache.json/find?key=" + encodeUrl)
-				.statusCode() == 404) {
+		Response poll = get(res.getHeader("location"));
+		while (poll.statusCode() == 202) {
 			try {
 				Thread.sleep(2000);
 				System.out.println("sleeping...");
+				poll = get(res.getHeader("location"));
 			} catch (InterruptedException e) {
 				Thread.currentThread().interrupt();
 			}
@@ -241,7 +243,7 @@ public class CacheResourceTest extends FileTestsScaffolding {
 
 			@Override
 			public InputStream getInput() throws IOException {
-				return get(baseUrl() + "/cache.json/" + md5).asInputStream();
+				return get(res.getHeader("location")).asInputStream();
 			}
 
 		}, readme);

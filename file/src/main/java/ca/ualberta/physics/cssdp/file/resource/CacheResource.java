@@ -95,7 +95,9 @@ public class CacheResource {
 
 	@PUT
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
-	@ApiOperation(value = "Upload a file directly into the cache", notes = "Upload a file using multipart form data directly into the cache")
+	@ApiOperation(value = "Upload a file directly into the cache.  "
+			+ "Upload a file using multipart form data directly into the cache.  "
+			+ "The MD5 of the file will be returned on successfull PUT operations.")
 	@ApiErrors(value = {
 			@ApiError(code = 400, reason = "No file supplied"),
 			@ApiError(code = 404, reason = "No key or url supplied"),
@@ -142,120 +144,123 @@ public class CacheResource {
 
 	}
 
-	@PUT
-	@Path("/request")
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	@ApiOperation(value = "Request the file data at the url given to be cached", notes = "The url will be used a key to the cached file.  "
+	@GET
+	@Produces(MediaType.APPLICATION_OCTET_STREAM)
+	@ApiOperation(value = "Get a file if it is cached already, otherwise download the file using the url given and cache it.  "
+			+ " The url will be used a key to the cached file.  "
 			+ " If the file is not cached, an attemp will be made to retrieve the file contents from the url given. This is an asynchronous "
 			+ " request.  Expect response code 202 and use the location given to check the status. If the file is cached, then the file will"
-			+ " be returned")
+			+ " be returned.  Giving an MD5 assumes the file is already cached and a 404 will be returned if it is not.")
 	@ApiErrors(value = {
-			@ApiError(code = 400, reason = "No url supplied or the host has not been added to the host resource yet."),
-			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
-	public Response download(
-			@ApiParam(value = "The url to retrieve the file data from", required = true) @FormParam("url") String url,
-			@Context UriInfo uriInfo) {
-
-		if (Strings.isNullOrEmpty(url)) {
-			return Response.status(400).build();
-		}
-
-		// is the file cached already?
-		ServiceResponse<CachedFile> sr = cacheService.find(url);
-		if (sr.isRequestOk()) {
-			CachedFile cachedFile = sr.getPayload();
-
-			if (cachedFile != null) {
-
-				ResponseBuilder response = Response.ok((Object) cachedFile
-						.getFile());
-				response.type(MediaType.APPLICATION_OCTET_STREAM);
-				response.header("Content-Disposition", "attachment; "
-						+ "filename=\"" + cachedFile.getFilename() + "\"");
-				return response.build();
-
-			} else {
-
-				String hostname = UrlParser.getHostname(url);
-				ServiceResponse<Host> getHostSr = hostService
-						.getHostEntry(hostname);
-				if (sr.isRequestOk() && getHostSr.getPayload() != null) {
-					Host host = getHostSr.getPayload();
-					if (!remoteServers.contains(host)) {
-						remoteServers.add(host);
-					}
-				} else {
-					return Response
-							.status(400)
-							.entity("Please add "
-									+ hostname
-									+ " to "
-									+ UriBuilder
-											.fromResource(HostResourceJSON.class)
-									+ " and try again.").build();
-				}
-
-				// no file, let's download it from the remote host
-				Download downloadCommand = new Download(cacheService, hostname,
-						url);
-				remoteServers.requestOperation(downloadCommand);
-
-				return Response
-						.status(202)
-						.location(
-								UriBuilder.fromUri(uriInfo.getBaseUri())
-										.path(getClass()).path("find")
-										.queryParam("key", url).build())
-						.entity("Accepted request to download file from "
-								+ url
-								+ " and cache it.  "
-								+ "Use the 'find' resource to determine when the file is available "
-								+ "for retrieving from cache.  The url given is the cache key.")
-						.build();
-			}
-		} else {
-			return Response.status(500).entity(sr.getMessagesAsStrings())
-					.build();
-		}
-
-	}
-
-	@GET
-	@Path("/{MD5}")
-	@Produces(MediaType.APPLICATION_OCTET_STREAM)
-	@ApiOperation(value = "Get a file from cache")
-	@ApiErrors(value = {
-			@ApiError(code = 400, reason = "No MD5 supplied"),
+			@ApiError(code = 400, reason = "Neither MD5 or url is supplied"),
 			@ApiError(code = 404, reason = "No file cached with MD5 given"),
+			@ApiError(code = 404, reason = "No file cached with key given"),
+			@ApiError(code = 404, reason = "No file catalogued with url given"),
 			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
 	public Response getFromCache(
-			@ApiParam(value = "The MD5 of this cached file", required = true) @PathParam("MD5") String md5) {
+			@ApiParam(value = "The MD5 of this cached file", required = false) @QueryParam("MD5") String md5,
+			@ApiParam(value = "The MD5 of this cached file", required = false) @QueryParam("key") String key,
+			@ApiParam(value = "The URL of the uncached file", required = false) @QueryParam("url") String url,
+			@Context UriInfo uriInfo) {
 
-		if (Strings.isNullOrEmpty(md5)) {
+		if (Strings.isNullOrEmpty(md5) && Strings.isNullOrEmpty(url)
+				&& Strings.isNullOrEmpty(key)) {
+
 			return Response.status(400).build();
-		}
 
-		ServiceResponse<CachedFile> sr = cacheService.get(md5);
-		if (sr.isRequestOk()) {
+		} else if (!Strings.isNullOrEmpty(md5)) {
 
-			CachedFile cachedFile = sr.getPayload();
-			if (cachedFile != null) {
+			ServiceResponse<CachedFile> sr = cacheService.get(md5);
+			if (sr.isRequestOk()) {
 
-				ResponseBuilder response = Response.ok((Object) cachedFile
-						.getFile());
-				response.type(MediaType.APPLICATION_OCTET_STREAM);
-				response.header("Content-Disposition", "attachment; "
-						+ "filename=\"" + cachedFile.getFilename() + "\"");
-				return response.build();
+				CachedFile cachedFile = sr.getPayload();
+				if (cachedFile != null) {
+
+					ResponseBuilder response = Response.ok((Object) cachedFile
+							.getFile());
+					response.type(MediaType.APPLICATION_OCTET_STREAM);
+					response.header("Content-Disposition", "attachment; "
+							+ "filename=\"" + cachedFile.getFilename() + "\"");
+					return response.build();
+
+				} else {
+					return Response.status(404).build();
+				}
 
 			} else {
-				return Response.status(404).build();
-			}
 
+				return Response.status(500).entity(sr.getMessagesAsStrings())
+						.build();
+
+			}
 		} else {
 
-			return Response.status(500).entity(sr.getMessagesAsStrings())
-					.build();
+			ServiceResponse<CachedFile> sr = null;
+			if (!Strings.isNullOrEmpty(key)) {
+				sr = cacheService.find(key);
+			} else {
+				sr = cacheService.find(url);
+			}
+
+			if (sr.isRequestOk()) {
+
+				CachedFile cachedFile = sr.getPayload();
+
+				if (cachedFile != null) {
+
+					ResponseBuilder response = Response.ok((Object) cachedFile
+							.getFile());
+					response.type(MediaType.APPLICATION_OCTET_STREAM);
+					response.header("Content-Disposition", "attachment; "
+							+ "filename=\"" + cachedFile.getFilename() + "\"");
+					return response.build();
+
+				} else if (!Strings.isNullOrEmpty(url)) {
+
+					String hostname = UrlParser.getHostname(url);
+					ServiceResponse<Host> getHostSr = hostService
+							.getHostEntry(hostname);
+					if (getHostSr.getPayload() != null) {
+						Host host = getHostSr.getPayload();
+						if (!remoteServers.contains(host)) {
+							remoteServers.add(host);
+						}
+					} else {
+						return Response
+								.status(400)
+								.entity("Please add "
+										+ hostname
+										+ " to "
+										+ UriBuilder
+												.fromResource(HostResourceJSON.class)
+										+ " and try again.").build();
+					}
+
+					// no file, let's download it from the remote host
+					Download downloadCommand = new Download(cacheService,
+							hostname, url);
+					remoteServers.requestOperation(downloadCommand);
+
+					return Response
+							.status(202)
+							.location(
+									UriBuilder.fromUri(uriInfo.getBaseUri())
+											.path(getClass())
+											.queryParam("url", url).build())
+							.entity("Accepted request to download file from "
+									+ url
+									+ " and cache it.  "
+									+ "Try (and repeat) the url given in the location header "
+									+ "until the file data becomes available.")
+							.build();
+				} else {
+					return Response.status(404).entity(key + " is not cached")
+							.build();
+				}
+			} else {
+				return Response.status(500).entity(sr.getMessagesAsStrings())
+						.build();
+			}
 
 		}
 

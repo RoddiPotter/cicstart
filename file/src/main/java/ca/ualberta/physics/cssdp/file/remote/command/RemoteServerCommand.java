@@ -19,10 +19,13 @@
 package ca.ualberta.physics.cssdp.file.remote.command;
 
 import ca.ualberta.physics.cssdp.file.remote.protocol.RemoteConnection;
+import ca.ualberta.physics.cssdp.model.Model;
 
 import com.google.common.base.Strings;
 
-public abstract class RemoteServerCommand<T> {
+public abstract class RemoteServerCommand<T> extends Model {
+
+	private static final long serialVersionUID = 1L;
 
 	private final String hostname;
 
@@ -65,4 +68,5 @@ public abstract class RemoteServerCommand<T> {
 	public synchronized boolean isDone() {
 		return done;
 	}
+	
 }
