@@ -5,7 +5,7 @@ DEPLOY_DIR=/cicstart/jetty/webapps
 GIT_DIR=/cicstart/deploy/cicstart
 LIB_DIR=build/libs
 
-gradle -b $GIT_DIR/build.gradle clean build
+gradle -b $GIT_DIR/build.gradle clean build -x test
 
 sudo -u jetty cp $GIT_DIR/auth/$LIB_DIR/auth-$VERSION.war $DEPLOY_DIR/auth.war
 sudo -u jetty cp $GIT_DIR/catalogue/$LIB_DIR/catalogue-$VERSION.war $DEPLOY_DIR/catalogue.war
