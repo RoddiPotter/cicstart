@@ -68,7 +68,7 @@ public class CacheResourceTest extends FileTestsScaffolding {
 				.header("location",
 						"http://localhost:8080"
 								+ baseUrl()
-								+ "/cache.json/68784d5d41107460df67ba08b7287267")
+								+ "/cache.json?md5=68784d5d41107460df67ba08b7287267")
 				.when().put(baseUrl() + "/cache.json");
 
 		int midCount = cacheDir.list().length;
@@ -83,7 +83,7 @@ public class CacheResourceTest extends FileTestsScaffolding {
 				.header("location",
 						"http://localhost:8080"
 								+ baseUrl()
-								+ "/cache.json/68784d5d41107460df67ba08b7287267")
+								+ "/cache.json?md5=68784d5d41107460df67ba08b7287267")
 				.when().put(baseUrl() + "/cache.json");
 
 		int endCount = cacheDir.list().length;
@@ -111,7 +111,9 @@ public class CacheResourceTest extends FileTestsScaffolding {
 		tempDir.delete();
 
 		// cleanup
-		expect().statusCode(200).when().delete(location);
+		expect().statusCode(200).when().delete("http://localhost:8080"
+				+ baseUrl()
+				+ "/cache.json/68784d5d41107460df67ba08b7287267");
 		expect().statusCode(404).when().get(location);
 
 		Assert.assertEquals(startCount, cacheDir.list().length);
@@ -132,7 +134,7 @@ public class CacheResourceTest extends FileTestsScaffolding {
 				.header("location",
 						"http://localhost:8080"
 								+ baseUrl()
-								+ "/cache.json/68784d5d41107460df67ba08b7287267")
+								+ "/cache.json?md5=68784d5d41107460df67ba08b7287267")
 				.when().put(baseUrl() + "/cache.json");
 
 		file = new File("build.gradle");
@@ -155,7 +157,7 @@ public class CacheResourceTest extends FileTestsScaffolding {
 				.header("location",
 						"http://localhost:8080"
 								+ baseUrl()
-								+ "/cache.json/68784d5d41107460df67ba08b7287267")
+								+ "/cache.json?md5=68784d5d41107460df67ba08b7287267")
 				.when().put(baseUrl() + "/cache.json");
 
 		String md5 = get(baseUrl() + "/cache.json/find?key=addToCache")
@@ -178,7 +180,7 @@ public class CacheResourceTest extends FileTestsScaffolding {
 				.header("location",
 						"http://localhost:8080"
 								+ baseUrl()
-								+ "/cache.json/68784d5d41107460df67ba08b7287267")
+								+ "/cache.json?md5=68784d5d41107460df67ba08b7287267")
 				.when().put(baseUrl() + "/cache.json");
 
 		given().formParam("key", "secondKey")

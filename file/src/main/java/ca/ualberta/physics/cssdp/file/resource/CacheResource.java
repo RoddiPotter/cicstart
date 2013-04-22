@@ -125,8 +125,9 @@ public class CacheResource {
 					.status(201)
 					.location(
 							UriBuilder.fromUri(uriInfo.getBaseUri())
-									.path(getClass()).path(sr.getPayload())
-									.build()).build();
+									.path(getClass())
+									.queryParam("md5", sr.getPayload()).build())
+					.build();
 		} else {
 
 			String errorMessages = sr.getMessagesAsStrings().toLowerCase();
@@ -158,7 +159,7 @@ public class CacheResource {
 			@ApiError(code = 404, reason = "No file catalogued with url given"),
 			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
 	public Response getFromCache(
-			@ApiParam(value = "The MD5 of this cached file", required = false) @QueryParam("MD5") String md5,
+			@ApiParam(value = "The MD5 of this cached file", required = false) @QueryParam("md5") String md5,
 			@ApiParam(value = "The MD5 of this cached file", required = false) @QueryParam("key") String key,
 			@ApiParam(value = "The URL of the uncached file", required = false) @QueryParam("url") String url,
 			@Context UriInfo uriInfo) {
