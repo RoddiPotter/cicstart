@@ -218,7 +218,7 @@ public class ProjectResourceTest extends CatalogueTestsScaffolding {
 		System.out.println(res.asString());
 
 		CatalogueSearchRequest searchRequest = new CatalogueSearchRequest();
-		searchRequest.setProjectExtKey(Mnemonic.of("APACHE"));
+		searchRequest.setProjectKey(Mnemonic.of("APACHE"));
 
 		res = given().content(searchRequest).and()
 				.contentType(ContentType.JSON)

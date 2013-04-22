@@ -71,7 +71,7 @@ public class DataProductDao extends AbstractJpaDao<DataProduct> implements
 		if(discriminator != null) {
 			q.setParameter("discriminator", discriminator);
 		}
-		
+
 		List<DataProduct> result = q.getResultList();
 		
 		return result;

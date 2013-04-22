@@ -9,8 +9,8 @@
   <root level="info">
     <appender-ref ref="STDOUT" />
   </root>
-  <logger name="org.hibernate.SQL" level="warn"/>
-  <logger name="org.hibernate.type" level="warn"/>
+  <logger name="org.hibernate.SQL" level="debug"/>
+  <logger name="org.hibernate.type" level="trace"/>
   <logger name="eojs" level="warn" />
   <logger name="ca.ualberta.physics.cssdp" level="debug"/>
   <logger name="com.wordnik.swagger.jaxrs" level="warn"/>

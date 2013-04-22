@@ -52,6 +52,7 @@ import ca.ualberta.physics.cssdp.service.ServiceResponse;
 import ca.ualberta.physics.cssdp.util.UrlParser;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.jayway.restassured.response.Response;
@@ -159,6 +160,8 @@ public class CatalogueService {
 
 		Project project = projectDao.find(projectExtKey);
 
+		logger.debug("found project " + project.getName());
+
 		// can get the discriminator directly from the project
 		Discriminator discriminator = null;
 		if (discriminatorExtKey != null) {
@@ -168,6 +171,8 @@ public class CatalogueService {
 		// find the data products for all these bits of criteria
 		List<DataProduct> dataProducts = dataProductDao.find(project,
 				observatoryExtKeys, instrumentTypeExtKeys, discriminator);
+
+		logger.debug("found data products " + Joiner.on("; ").join(dataProducts));
 
 		// and finally, query for the urls.
 		List<URI> result = urlDataProductDao.findUrls(dataProducts, start, end);

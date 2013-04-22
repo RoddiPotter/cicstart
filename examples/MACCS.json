@@ -24,6 +24,7 @@
       {
          "externalKey":"PG10SEC",
          "description":"Pangnirtung Magnetometer 10 sec",
+         "observatoryKeys":["PG"],
          "metadataParserConfig":{
             "includesRegex":".*/PGG\\d{8}.*sec$",
             "startDateRegex":"\\d{8}",

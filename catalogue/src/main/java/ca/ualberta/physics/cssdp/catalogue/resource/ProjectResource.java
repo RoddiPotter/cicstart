@@ -237,10 +237,10 @@ public class ProjectResource {
 		}
 
 		ServiceResponse<List<URI>> results = catalogueService.find(
-				searchRequest.getProjectExtKey(),
-				searchRequest.getObservatoryExtKeys(),
-				searchRequest.getInstrumentTypeExtKeys(),
-				searchRequest.getDiscriminatorExtKey(),
+				searchRequest.getProjectKey(),
+				searchRequest.getObservatoryKeys(),
+				searchRequest.getInstrumentTypeKeys(),
+				searchRequest.getDiscriminatorKey(),
 				searchRequest.getStart(), searchRequest.getEnd());
 
 		if (results.isRequestOk()) {

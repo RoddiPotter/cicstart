@@ -38,7 +38,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.wordnik.swagger.annotations.ApiClass;
@@ -50,33 +49,29 @@ import com.wordnik.swagger.annotations.ApiProperty;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class CatalogueSearchRequest {
 
-	@JsonProperty("project")
 	@ApiProperty(value = "The project key", dataType = "Mnemonic")
 	@XmlElement(name = "project")
 	@XmlJavaTypeAdapter(MnemonicAdapter.class)
-	private Mnemonic projectExtKey;
+	private Mnemonic projectKey;
 
-	@JsonProperty("observatories")
 	@JsonInclude(Include.NON_EMPTY)
 	@ApiProperty(value = "The observatory keys to search", dataType = "Mnemonic")
 	@XmlElementWrapper(name = "observatories")
 	@XmlElement(name = "observatory")
 	@XmlJavaTypeAdapter(MnemonicAdapter.class)
-	private List<Mnemonic> observatoryExtKeys = new ArrayList<Mnemonic>();
+	private List<Mnemonic> observatoryKeys = new ArrayList<Mnemonic>();
 
-	@JsonProperty("instrumentTypes")
 	@JsonInclude(Include.NON_EMPTY)
 	@ApiProperty(value = "The instrument types to search", dataType = "Mnemonic")
 	@XmlElementWrapper(name = "instrumentTypes")
 	@XmlElement(name = "instrumentType")
 	@XmlJavaTypeAdapter(MnemonicAdapter.class)
-	private List<Mnemonic> instrumentTypeExtKeys = new ArrayList<Mnemonic>();
+	private List<Mnemonic> instrumentTypeKeys = new ArrayList<Mnemonic>();
 
-	@JsonProperty("discriminator")
 	@ApiProperty(value = "The discriminator to search", dataType = "Mnemonic")
 	@XmlElement(name = "discriminator")
 	@XmlJavaTypeAdapter(MnemonicAdapter.class)
-	private Mnemonic discriminatorExtKey;
+	private Mnemonic discriminatorKey;
 
 	@JsonSerialize(using = ca.ualberta.physics.cssdp.util.JSONLocalDateTimeSerializer.class)
 	@JsonDeserialize(using = ca.ualberta.physics.cssdp.util.JSONLocalDateTimeDeserializer.class)
@@ -92,36 +87,36 @@ public class CatalogueSearchRequest {
 	@XmlJavaTypeAdapter(LocalDateTimeAdapter.class)
 	private LocalDateTime end;
 
-	public Mnemonic getProjectExtKey() {
-		return projectExtKey;
+	public Mnemonic getProjectKey() {
+		return projectKey;
 	}
 
-	public void setProjectExtKey(Mnemonic projectExtKey) {
-		this.projectExtKey = projectExtKey;
+	public void setProjectKey(Mnemonic projectExtKey) {
+		this.projectKey = projectExtKey;
 	}
 
-	public List<Mnemonic> getObservatoryExtKeys() {
-		return observatoryExtKeys;
+	public List<Mnemonic> getObservatoryKeys() {
+		return observatoryKeys;
 	}
 
-	public void setObservatoryExtKeys(List<Mnemonic> observatoryExtKeys) {
-		this.observatoryExtKeys = observatoryExtKeys;
+	public void setObservatoryKeys(List<Mnemonic> observatoryExtKeys) {
+		this.observatoryKeys = observatoryExtKeys;
 	}
 
-	public List<Mnemonic> getInstrumentTypeExtKeys() {
-		return instrumentTypeExtKeys;
+	public List<Mnemonic> getInstrumentTypeKeys() {
+		return instrumentTypeKeys;
 	}
 
-	public void setInstrumentTypeExtKeys(List<Mnemonic> instrumentTypeExtKeys) {
-		this.instrumentTypeExtKeys = instrumentTypeExtKeys;
+	public void setInstrumentTypeKeys(List<Mnemonic> instrumentTypeExtKeys) {
+		this.instrumentTypeKeys = instrumentTypeExtKeys;
 	}
 
-	public Mnemonic getDiscriminatorExtKey() {
-		return discriminatorExtKey;
+	public Mnemonic getDiscriminatorKey() {
+		return discriminatorKey;
 	}
 
-	public void setDiscriminatorExtKey(Mnemonic discriminatorExtKey) {
-		this.discriminatorExtKey = discriminatorExtKey;
+	public void setDiscriminatorKey(Mnemonic discriminatorExtKey) {
+		this.discriminatorKey = discriminatorExtKey;
 	}
 
 	public LocalDateTime getStart() {
