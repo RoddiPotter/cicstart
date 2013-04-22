@@ -227,7 +227,7 @@ public class CacheResourceTest extends FileTestsScaffolding {
 		Response poll = get(res.getHeader("location"));
 		while (poll.statusCode() == 202) {
 			try {
-				Thread.sleep(2000);
+				Thread.sleep(10);
 				System.out.println("sleeping...");
 				poll = get(res.getHeader("location"));
 			} catch (InterruptedException e) {

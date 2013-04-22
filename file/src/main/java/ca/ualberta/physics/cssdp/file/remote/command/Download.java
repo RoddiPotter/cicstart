@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 import ca.ualberta.physics.cssdp.file.remote.protocol.FtpConnection;
 import ca.ualberta.physics.cssdp.file.remote.protocol.RemoteConnection;
 import ca.ualberta.physics.cssdp.file.service.CacheService;
+import ca.ualberta.physics.cssdp.service.ServiceResponse;
 import ca.ualberta.physics.cssdp.util.UrlParser;
 
 import com.google.common.base.Throwables;
@@ -56,16 +57,23 @@ public class Download extends RemoteServerCommand<Void> {
 
 			String filename = UrlParser.getLeaf(url);
 			inputStream = connection.download(url);
-			fileCache.put(filename, url, inputStream);
-
+			ServiceResponse<String> sr = fileCache.put(filename, url,
+					inputStream);
+			if (sr.isRequestOk()) {
+				logger.info("Added " + filename + " to file cache with MD5 "
+						+ sr.getPayload() + ", originating from " + url);
+			} else {
+				logger.error("Cache put failed because "
+						+ sr.getMessagesAsStrings());
+			}
 		} catch (Exception e) {
 			logger.error("Download failed", e);
 			error(Throwables.getRootCause(e).getMessage());
 		} finally {
 			try {
 				inputStream.close();
-				if(connection.getClass().equals(FtpConnection.class)) {
-					((FtpConnection)connection).nudge();
+				if (connection.getClass().equals(FtpConnection.class)) {
+					((FtpConnection) connection).nudge();
 				}
 			} catch (IOException ignore) {
 			}

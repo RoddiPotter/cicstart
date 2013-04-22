@@ -168,10 +168,12 @@ public class RemoteServersImpl implements RemoteServers {
 
 		public void run() {
 			try {
+				logger.info("Starting command " + command.getClass().getSimpleName() + " with " + command.getHostname());
 				command.execute(connection);
 			} finally {
 				currentRequests.remove(command);
 				returnConnection(command.getHostname(), connection);
+				logger.info("Finished command " + command.getClass().getSimpleName() + " with " + command.getHostname());
 			}
 		}
 

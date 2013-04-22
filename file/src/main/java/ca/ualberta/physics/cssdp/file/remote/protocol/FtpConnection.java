@@ -75,6 +75,7 @@ public class FtpConnection extends RemoteConnection {
 				throw new ProtocolException(
 						"Cannot set FTP connection to binary mode.", false);
 			}
+			logger.info("Connected to " + hostname);
 			return success;
 
 		} catch (SocketTimeoutException timedOut) {
@@ -91,6 +92,8 @@ public class FtpConnection extends RemoteConnection {
 	public boolean disconnect() {
 
 		try {
+			logger.info("Disconnecting from "
+					+ ftpClient.getRemoteAddress().getHostName());
 			ftpClient.disconnect();
 			return true;
 		} catch (IOException e) {
@@ -126,8 +129,8 @@ public class FtpConnection extends RemoteConnection {
 						file.getTimestamp());
 
 				RemoteFile remoteFile = new RemoteFile("ftp://"
-						+ getHostEntry().getHostname() + path + "/" + name, size,
-						modifiedTstamp, isDir);
+						+ getHostEntry().getHostname() + path + "/" + name,
+						size, modifiedTstamp, isDir);
 				list.add(remoteFile);
 			}
 
@@ -149,6 +152,7 @@ public class FtpConnection extends RemoteConnection {
 
 		ftpClient.enterLocalPassiveMode();
 		InputStream is = ftpClient.retrieveFileStream(UrlParser.getPath(url));
+		logger.info("Got an input stream for " + url);
 		return is;
 	}
 
