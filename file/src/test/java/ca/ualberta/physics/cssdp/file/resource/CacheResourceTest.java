@@ -213,6 +213,8 @@ public class CacheResourceTest extends FileTestsScaffolding {
 		// String url = "ftp://ftp14.freebsd.org/pub/FreeBSD/README.TXT";
 		String encodeUrl = URLEncoder.encode(url, "UTF-8");
 		given().formParam("url", url)
+				.and()
+				.contentType(ContentType.URLENC)
 				.expect()
 				.statusCode(202)
 				.and()

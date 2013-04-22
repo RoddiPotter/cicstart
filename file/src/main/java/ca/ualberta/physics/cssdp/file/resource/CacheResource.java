@@ -144,6 +144,7 @@ public class CacheResource {
 
 	@PUT
 	@Path("/request")
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@ApiOperation(value = "Request the file data at the url given to be cached", notes = "The url will be used a key to the cached file.  "
 			+ " If the file is not cached, an attemp will be made to retrieve the file contents from the url given. This is an asynchronous "
 			+ " request.  Expect response code 202 and use the location given to check the status. If the file is cached, then the file will"

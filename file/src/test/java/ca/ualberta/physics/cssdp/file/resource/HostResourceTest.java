@@ -231,7 +231,7 @@ public class HostResourceTest extends FileTestsScaffolding {
 		for (RemoteFile file : ls.getRemoteFiles()) {
 			int numSlashes = file.getUrl().split("/").length - 1;
 			Assert.assertTrue(file.getUrl() + ":" + numSlashes, numSlashes >= 6
-					&& numSlashes <= 10);
+					&& numSlashes <= 11);
 			System.out.println(file.getUrl());
 			if (file.getUrl().contains("windows")) {
 				Assert.assertTrue(
