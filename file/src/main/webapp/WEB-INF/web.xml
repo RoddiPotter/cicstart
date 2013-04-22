@@ -26,7 +26,7 @@
 		</init-param>
 		<init-param>
 			<param-name>common.properties_url.key</param-name>
-			<param-value>file.api.url</param-value>
+			<param-value>external.file.api.url</param-value>
 		</init-param>
 		<init-param>
 			<param-name>common.properties_doc.url.key</param-name>
