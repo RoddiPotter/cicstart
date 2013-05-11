@@ -1,1 +1,1 @@
-include "common", "catalogue", "vfs", "file", "apps", "auth"
+include "common", "catalogue", "vfs", "file", "apps", "auth", "cml", "macro"

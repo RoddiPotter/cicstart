@@ -1,0 +1,58 @@
+apply plugin: 'eclipse'
+apply plugin: 'war'
+
+sourceCompatibility=1.6
+targetCompatibility=1.6
+
+repositories {
+  mavenCentral()
+}
+
+// ensure properties files are on the tests classpath
+sourceSets.test.runtimeClasspath += files(sourceSets.main.java.srcDirs)
+
+// copy the properties files to the classes folder so they are found by tests
+test.doFirst {
+    copy {
+        from("src/main") {
+            include "**/*.properties"
+        }
+        into "build/classes/main"
+    }
+}
+
+war {
+	from('src/main/java') {
+	   include '**/*.properties' into ('WEB-INF/classes')
+	}
+	// remove classes from the classpath
+	classpath = configurations.runtime
+
+	// add them in explicitly, with the filtering applied
+	webInf {
+		into('classes') {
+			from sourceSets.main.output
+			exclude '**/logback.xml'
+		}
+	}
+}
+
+eclipse {
+	classpath {
+		defaultOutputDir = file('src/main/webapp/WEB-INF/classes')
+	}
+}
+
+dependsOn(':common')
+dependencies {
+	
+	compile project(":common")
+
+	compile "org.antlr:antlr4-runtime:4.0"
+	
+	// allow test infrastructure to be available during test runs
+	testCompile project(path: ':common', configuration: 'tests')
+}
+
+	
+

@@ -7,3 +7,5 @@ build/
 **/WEB-INF/classes/
 bin/
 cloud-script.txt
+cml/macro.log
+cml/temp

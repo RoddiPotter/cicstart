@@ -50,9 +50,9 @@ public class FileSystemService {
 		}
 
 		File file = new File(new File(userDir, path), filename);
-		if (file.exists()) {
-			sr.error("A file already exists at " + path + "/" + filename);
-			return sr;
+		int duplicateCount = 0;
+		while (file.exists()) {
+			file = new File(new File(userDir, path), filename + "(" + ++duplicateCount + ")");
 		}
 		try {
 			Files.createParentDirs(file);

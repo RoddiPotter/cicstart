@@ -18,6 +18,7 @@
  */
 package ca.ualberta.physics.cssdp.model;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -108,6 +109,16 @@ public class Mnemonic extends Model {
 
 	public static Mnemonic of(String value) {
 		return new Mnemonic(value);
+	}
+
+	public static List<Mnemonic> listOf(List<String> strings) {
+		List<Mnemonic> m = new ArrayList<Mnemonic>();
+		if (strings != null) {
+			for (String data : strings) {
+				m.add(of(data));
+			}
+		}
+		return m;
 	}
 
 }

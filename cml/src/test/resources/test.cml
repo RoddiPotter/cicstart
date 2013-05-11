@@ -1,0 +1,16 @@
+gnuPlotScript = getVFS($CICSTART.session, "/maccs.gp");
+maccsData = getCataloguedFiles({
+	project="MACCS",
+	observatories=("PG", "RNK"),
+	dateRange=("2010-01-01","2011-01-01")
+	}
+);
+foreach file in $maccsData {
+		// run gnuplot (assuming it's on the path)
+		run("gnuplot -e \"filename='$file'\" $gnuPlotScript", "1");
+		// convert eps to png files.
+		run("convert -density 300 -alpha off \"$file.eps\" \"$file.png\"", "3");
+		// put the png back onto my VFS
+		putVFS($CICSTART.session, "/$JOBID", "$file.png");
+}
+

@@ -58,6 +58,33 @@ public class UrlDataProductTest {
 	}
 
 	@Test
+	public void testHasNotChanged2() {
+
+		String url = "ftp://sunsite.ualberta.ca/pub/Mirror/apache/commons/daemon/binaries/commons-daemon-1.0.15.jar";
+		DataProduct dataProduct = new DataProduct();
+		LocalDateTime start = null;
+		LocalDateTime end = null;
+		boolean isDeleted = false;
+		
+		UrlDataProduct first = new UrlDataProduct();
+		first.setUrl(url);
+		first.setDataProduct(dataProduct);
+		first.setStartTimestamp(start);
+		first.setEndTimestamp(end);
+		first.setDeleted(isDeleted);
+		
+		UrlDataProduct second = new UrlDataProduct();
+		second.setUrl(url);
+		second.setDataProduct(dataProduct);
+		second.setStartTimestamp(start);
+		second.setEndTimestamp(end);
+		second.setDeleted(isDeleted);
+		
+		Assert.assertFalse(first.hasChanged(second));
+		
+	}
+
+	@Test
 	public void testHasChanged() {
 
 		/*

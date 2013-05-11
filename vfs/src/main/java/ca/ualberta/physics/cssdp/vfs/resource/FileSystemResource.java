@@ -80,13 +80,14 @@ public class FileSystemResource {
 	@POST
 	@Path("/{owner}/write")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
-	@ApiOperation(value = "Write a file to this filesystem at the given path", notes = "Non-existing paths will automatically be created.")
+	@ApiOperation(value = "Write a file to this filesystem at the given path.  "
+			+ "If the file already exists, a '(n)' is suffixed to the filename. "
+			+ "Non-existing paths will automatically be created.")
 	@ApiErrors(value = {
 			@ApiError(code = 400, reason = "No owner specified"),
 			@ApiError(code = 400, reason = "No path specified"),
 			@ApiError(code = 400, reason = "No file data specified"),
 			@ApiError(code = 404, reason = "No session found"),
-			@ApiError(code = 409, reason = "File exists"),
 			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
 	public Response write(
 			@ApiParam(value = "The owner of this file system", required = true) @PathParam("owner") Long owner,
@@ -125,13 +126,8 @@ public class FileSystemResource {
 									.build()).build();
 
 		} else {
-			if (sr.getMessagesAsStrings().contains("A file already exists")) {
-				return Response.status(409).entity(sr.getMessagesAsStrings())
-						.build();
-			} else {
-				return Response.status(500).entity(sr.getMessagesAsStrings())
-						.build();
-			}
+			return Response.status(500).entity(sr.getMessagesAsStrings())
+					.build();
 		}
 
 	}

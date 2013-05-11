@@ -117,10 +117,15 @@ public class UrlDataProduct extends Persistent {
 		hasChanged = !getUrl().equals(updated.getUrl());
 		hasChanged = !getDataProduct().equals(updated.getDataProduct())
 				|| hasChanged;
-		hasChanged = !getStartTimestamp().equals(updated.getStartTimestamp())
-				|| hasChanged;
-		hasChanged = !getEndTimestamp().equals(updated.getEndTimestamp())
-				|| hasChanged;
+		if (getStartTimestamp() != null && updated.getStartTimestamp() != null) {
+			hasChanged = !getStartTimestamp().equals(
+					updated.getStartTimestamp())
+					|| hasChanged;
+		}
+		if (getEndTimestamp() != null && updated.getEndTimestamp() != null) {
+			hasChanged = !getEndTimestamp().equals(updated.getEndTimestamp())
+					|| hasChanged;
+		}
 		hasChanged = !isDeleted() && updated.isDeleted() || hasChanged;
 
 		return hasChanged;
@@ -133,7 +138,7 @@ public class UrlDataProduct extends Persistent {
 			return false;
 		}
 	}
-	
+
 	public static UrlDataProduct getStopSignal() {
 		UrlDataProduct stop = new UrlDataProduct();
 		stop.setUrl("STOP");

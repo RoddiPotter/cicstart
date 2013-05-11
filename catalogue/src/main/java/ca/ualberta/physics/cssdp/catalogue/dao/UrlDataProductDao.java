@@ -97,6 +97,9 @@ public class UrlDataProductDao extends AbstractJpaDao<UrlDataProduct> implements
 					existing.setDeleted(false);
 					urlDataProductUpdateMap.remove(updated.getUrl());
 					session.update(existing);
+				} else {
+					// remove it so it's not duplicated
+					urlDataProductUpdateMap.remove(existing.getUrl());
 				}
 
 			} else {

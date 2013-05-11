@@ -40,6 +40,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.google.common.base.Joiner;
+import com.google.common.base.Objects;
 import com.wordnik.swagger.annotations.ApiClass;
 import com.wordnik.swagger.annotations.ApiProperty;
 
@@ -86,6 +88,17 @@ public class CatalogueSearchRequest {
 	@XmlElement
 	@XmlJavaTypeAdapter(LocalDateTimeAdapter.class)
 	private LocalDateTime end;
+
+	@Override
+	public String toString() {
+		return Objects
+				.toStringHelper(this)
+				.add("project", projectKey)
+				.add("observatories", Joiner.on("|").join(observatoryKeys))
+				.add("instrument types", Joiner.on("|").join(instrumentTypeKeys))
+				.add("discriminator", discriminatorKey).add("start", start)
+				.add("end", end).toString();
+	}
 
 	public Mnemonic getProjectKey() {
 		return projectKey;
