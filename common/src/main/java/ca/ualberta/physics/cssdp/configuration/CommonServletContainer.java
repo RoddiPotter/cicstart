@@ -72,7 +72,8 @@ public abstract class CommonServletContainer extends ServletContainer {
 				CatalogueServer.properties();
 				FileServer.properties();
 				VfsServer.properties();
-
+				MacroServer.properties();
+				
 				Properties overrides = new Properties();
 				try {
 					System.out.println("Loading property overrides from "
