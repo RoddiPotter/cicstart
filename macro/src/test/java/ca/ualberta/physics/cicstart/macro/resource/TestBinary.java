@@ -97,6 +97,12 @@ public class TestBinary extends IntegrationTestScaffolding {
 		// should have a normal exit code
 		Assert.assertEquals(new Integer(0), (Integer)run.getResult());
 		
+		// cleanup
+		for(File file: FileUtil.walk(tempDir)) {
+			file.delete();
+		}
+		tarFile.delete();
+		binaryMarco.delete();
 		
 	}
 

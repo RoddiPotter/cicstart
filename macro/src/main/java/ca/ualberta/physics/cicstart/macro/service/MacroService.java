@@ -168,7 +168,7 @@ public class MacroService {
 		// cp the macroClientDirectory to a scratch area
 		File buildDirectory = new File(new File(MacroServer.properties()
 				.getString("macro.client.build.dir")), sessionToken);
-
+		buildDirectory.mkdirs();
 		logger.debug("building client in " + buildDirectory.getAbsolutePath());
 
 		FileUtil.copy(clientTemplateDir).to(buildDirectory);
@@ -201,8 +201,8 @@ public class MacroService {
 					Charset.forName("UTF-8"));
 			overrides = overrides
 					.replaceAll(
-							"logback.configuration=.*$",
-							"logback.configuration=logback.xml");
+							"common.logback.configuration=.*.xml",
+							"common.logback.configuration=logback.xml");
 			Files.write(overrides, appProperties, Charset.forName("UTF-8"));
 
 			// write a run.sh with all req. params to the bin folder, set it to
@@ -233,6 +233,9 @@ public class MacroService {
 		sr.setPayload(tarball);
 
 		// cleanup
+		for(File file : FileUtil.walk(buildDirectory)) {
+			file.delete();
+		}
 		buildDirectory.delete();
 		
 		return sr;

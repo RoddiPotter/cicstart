@@ -22,9 +22,11 @@ import static com.jayway.restassured.RestAssured.get;
 import static com.jayway.restassured.RestAssured.given;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -38,11 +40,12 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.StreamingOutput;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
+
+import org.apache.commons.compress.utils.IOUtils;
 
 import ca.ualberta.physics.cicstart.macro.InjectorHolder;
 import ca.ualberta.physics.cicstart.macro.service.MacroService;
@@ -51,6 +54,7 @@ import ca.ualberta.physics.cssdp.configuration.Common;
 import ca.ualberta.physics.cssdp.domain.auth.User;
 import ca.ualberta.physics.cssdp.service.ServiceResponse;
 
+import com.google.common.base.Throwables;
 import com.google.inject.Inject;
 import com.wordnik.swagger.annotations.ApiError;
 import com.wordnik.swagger.annotations.ApiErrors;
@@ -197,6 +201,7 @@ public class MacroResource {
 
 		final String readUrl = vfsResource + "/filesystem.json/{owner}/read";
 
+		// FIXME this does nothing.
 		return new StreamingOutput() {
 			public void write(OutputStream output) throws IOException,
 					WebApplicationException {
@@ -246,29 +251,45 @@ public class MacroResource {
 	public Response getMacroBinaryClient(
 			@ApiParam(value = "Script to run", required = true) String cmlScript,
 			@ApiParam(value = "The authenticated session token", required = true) @HeaderParam("CICSTART.session") String sessionToken,
-			@ApiParam(value = "Include embedded JRE?", required = false, defaultValue = "false") @QueryParam("include_jre") boolean includeJre) {
+			@ApiParam(value = "Include embedded JRE?", required = false, defaultValue = "false") @QueryParam("include_jre") boolean includeJre,
+			@Context final HttpServletResponse response) {
 
 		ServiceResponse<File> sr = macroService.assembleClient(cmlScript,
 				sessionToken, includeJre);
 		if (sr.isRequestOk()) {
 
 			File clientBinary = sr.getPayload();
-			ResponseBuilder response = Response.ok((Object) clientBinary);
-			response.type(MediaType.APPLICATION_OCTET_STREAM);
-			response.header("Content-Disposition", "attachment; "
+			response.setHeader("Content-Disposition", "attachment; "
 					+ "filename=\"" + clientBinary.getName() + "\"");
+			response.setContentType(MediaType.APPLICATION_OCTET_STREAM);
 			try {
-				return response.build();
-			} finally {
-				// cleanup
-				clientBinary.delete();
-			}
 
+				IOUtils.copy(new FileInputStream(clientBinary),
+						response.getOutputStream());
+
+			} catch (IOException e) {
+				return Response.status(500)
+						.entity(Throwables.getStackTraceAsString(e)).build();
+
+			} finally {
+				clientBinary.delete();
+
+			}
+			return Response.ok().build();
+			// ResponseBuilder response = Response.ok((Object) clientBinary);
+			// response.type(MediaType.APPLICATION_OCTET_STREAM);
+			// response.header("Content-Disposition", "attachment; "
+			// + "filename=\"" + clientBinary.getName() + "\"");
+			//
+			// return response.build();
+			//
+			// } else {
+			// return Response.status(500).entity(sr.getMessagesAsStrings())
+			// .build();
 		} else {
 			return Response.status(500).entity(sr.getMessagesAsStrings())
 					.build();
 		}
-
 	}
 
 }
