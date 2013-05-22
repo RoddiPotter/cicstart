@@ -201,7 +201,7 @@ public class MacroService {
 					Charset.forName("UTF-8"));
 			overrides = overrides
 					.replaceAll(
-							"logback.configuration=src/test/resources/logback-test.xml",
+							"logback.configuration=.*$",
 							"logback.configuration=logback.xml");
 			Files.write(overrides, appProperties, Charset.forName("UTF-8"));
 
@@ -232,6 +232,9 @@ public class MacroService {
 		// set the payload and return
 		sr.setPayload(tarball);
 
+		// cleanup
+		buildDirectory.delete();
+		
 		return sr;
 	}
 

@@ -236,6 +236,7 @@ public class MacroResource {
 	@Path("/bin")
 	@POST
 	@Consumes(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_OCTET_STREAM)
 	@ApiOperation(value = "Download the macro binary that would run on the server", notes = "optionally contains an embedded JRE if "
 			+ "none are available on the resource running the macro")
 	@ApiErrors(value = {
@@ -256,7 +257,12 @@ public class MacroResource {
 			response.type(MediaType.APPLICATION_OCTET_STREAM);
 			response.header("Content-Disposition", "attachment; "
 					+ "filename=\"" + clientBinary.getName() + "\"");
-			return response.build();
+			try {
+				return response.build();
+			} finally {
+				// cleanup
+				clientBinary.delete();
+			}
 
 		} else {
 			return Response.status(500).entity(sr.getMessagesAsStrings())

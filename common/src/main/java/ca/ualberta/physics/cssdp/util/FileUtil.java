@@ -203,6 +203,8 @@ public class FileUtil {
 				}
 			}
 		}
+		// cleanup
+		file.delete();
 		return gzFile;
 
 	}
