@@ -1,21 +1,14 @@
 package ca.ualberta.physics.cicstart.cml.command;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.common.base.Joiner;
-import com.google.common.collect.ImmutableList;
 
-public class ForEachCommandDefinition extends CommandDefinition {
+public class ForEachCommandDefinition extends NestedCommandDefinition {
 
 	private String iteratorVar;
 	private String collectionVar;
 	private final boolean waitFlag;
 
-	private final List<CommandDefinition> children = new ArrayList<CommandDefinition>();
-
-	public ForEachCommandDefinition(String signature, String name,
-			boolean waitFlag) {
+	public ForEachCommandDefinition(String signature, String name, boolean waitFlag) {
 		super(signature, name);
 		this.waitFlag = waitFlag;
 	}
@@ -36,20 +29,17 @@ public class ForEachCommandDefinition extends CommandDefinition {
 		this.collectionVar = collectionVar;
 	}
 
-	public void addChild(CommandDefinition child) {
-		children.add(child);
-	}
-
 	@Override
 	public String toString() {
-		return getName() + "[" + Joiner.on(", ").join(children) + "]";
-	}
-
-	public List<CommandDefinition> getChildren() {
-		return ImmutableList.copyOf(children);
+		return getName() + "[" + Joiner.on(", ").join(getChildren()) + "]";
 	}
 
 	public boolean getWaitFlag() {
+		return isWaitFlag();
+	}
+
+	public boolean isWaitFlag() {
 		return waitFlag;
 	}
+
 }

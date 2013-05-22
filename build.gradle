@@ -13,6 +13,11 @@ subprojects {
         mavenCentral()
     }
     
+    jar {
+		from('src/main/java') {
+	   		include '**/*.properties'
+		}
+	}    
     dependencies {
     	compile "org.slf4j:slf4j-api:1.7.2"
 		compile "ch.qos.logback:logback-classic:1.0.9"
@@ -27,6 +32,7 @@ subprojects {
 		compile "postgresql:postgresql:9.1-901.jdbc4"
 
 		compile "org.apache.commons:commons-email:1.2"
+		compile "org.apache.commons:commons-compress:1.5"
 		compile "commons-codec:commons-codec:1.6"
 	
 		compile "com.wordnik:swagger-core_2.9.1:1.2.1"

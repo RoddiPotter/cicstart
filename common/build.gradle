@@ -10,9 +10,3 @@ configurations {
 artifacts {
     tests testJar
 }
-
-jar {
-	from('src/main/java') {
-	   include '**/*.properties'
-	}
-}

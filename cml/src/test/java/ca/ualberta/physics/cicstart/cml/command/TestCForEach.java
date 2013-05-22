@@ -29,7 +29,7 @@ public class TestCForEach {
 			}
 		};
 
-		forEach.execute(new CMLRuntime("session"));
+		forEach.execute(new CMLRuntime("testJob", "session"));
 
 		Assert.assertEquals(3, ai.get());
 
@@ -55,7 +55,7 @@ public class TestCForEach {
 			}
 		};
 
-		forEach.execute(new CMLRuntime("session"));
+		forEach.execute(new CMLRuntime("testJob", "session"));
 
 		Assert.assertEquals(3, ai.get());
 

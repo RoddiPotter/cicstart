@@ -40,7 +40,7 @@ public class TestGetVFS extends IntegrationTestScaffolding {
 		sessionToken = login(dataManager.getEmail(), "password");
 
 		GetVFS getVfs = new GetVFS(sessionToken, "maccs.test");
-		getVfs.execute(new CMLRuntime(sessionToken));
+		getVfs.execute(new CMLRuntime("testJob", sessionToken));
 		File downloadedFile = (File) getVfs.getResult();
 
 		Assert.assertEquals("maccs.test", downloadedFile.getName());

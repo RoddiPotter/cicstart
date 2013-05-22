@@ -61,7 +61,8 @@ public abstract class IntegrationTestScaffolding {
 		overrides.put("common.logback.configuration",
 				"src/test/resources/logback-test.xml");
 		overrides
-				.setProperty("common.hibernate.connection.url",
+				.setProperty(
+						"common.hibernate.connection.url",
 						"jdbc:h2:mem:test;DB_CLOSE_DELAY=1000;MODE=PostgreSQL;TRACE_LEVEL_FILE=0;DB_CLOSE_ON_EXIT=FALSE");
 		ApplicationProperties.overrideDefaults(overrides);
 	}
@@ -98,6 +99,7 @@ public abstract class IntegrationTestScaffolding {
 
 		if (server == null || !server.isStarted()) {
 
+			// override some common setup needed during actual runtime on servers
 			CommonServletContainer.readWebXml.set(Boolean.FALSE);
 
 			// configure Jetty as an embedded web application server
@@ -161,6 +163,15 @@ public abstract class IntegrationTestScaffolding {
 				contexts.addHandler(vfs);
 			}
 
+			if (!thisContext.equals("/macro")) {
+				WebAppContext macro = new WebAppContext();
+				macro.setDescriptor("../macro/src/main/webapp/WEB-INF/web.xml");
+				macro.setResourceBase("../macro/src/main/webapp");
+				macro.setContextPath("/macro");
+				macro.setParentLoaderPriority(true);
+				contexts.addHandler(macro);
+			}
+
 			server.setHandler(contexts);
 
 			try {
@@ -170,6 +181,10 @@ public abstract class IntegrationTestScaffolding {
 			}
 
 		}
+	}
+
+	protected Server getServer() {
+		return server;
 	}
 
 	protected abstract String getComponetContext();

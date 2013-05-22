@@ -22,6 +22,8 @@ import ca.ualberta.physics.cicstart.cml.command.ForEachCommandDefinition;
 import ca.ualberta.physics.cicstart.cml.command.GetCataloguedFiles;
 import ca.ualberta.physics.cicstart.cml.command.GetVFS;
 import ca.ualberta.physics.cicstart.cml.command.Macro;
+import ca.ualberta.physics.cicstart.cml.command.On;
+import ca.ualberta.physics.cicstart.cml.command.OnCommandDefinition;
 import ca.ualberta.physics.cicstart.cml.command.PutVFS;
 import ca.ualberta.physics.cicstart.cml.command.Run;
 
@@ -37,7 +39,7 @@ public class ParsingAndBuildingTests {
 		ANTLRInputStream input = new ANTLRInputStream(
 				ParsingAndBuildingTests.class.getResourceAsStream("/test.cml"));
 
-		CML2Lexer lexer = new CML2Lexer(input);
+		CMLLexer lexer = new CMLLexer(input);
 
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
 
@@ -51,20 +53,14 @@ public class ParsingAndBuildingTests {
 
 		walker.walk(macro, tree);
 
-		runtime = new CMLRuntime("testSession") {
-			@Override
-			protected String newJobId() {
-				return "testJob";
-			}
-		};
-
+		runtime = new CMLRuntime("testJob", "testSession");
 	}
 
 	@Test
 	public void testCommandOrder() {
 
 		Assert.assertEquals(
-				"getVFS, getCataloguedFiles, foreach[run, run, putVFS]",
+				"on[getVFS, getCataloguedFiles, foreach[run, run, putVFS]]",
 				Joiner.on(", ").join(macro.getCommands()));
 
 	}
@@ -73,12 +69,21 @@ public class ParsingAndBuildingTests {
 	public void testCommandDefinitions() {
 
 		CommandDefinition cmdDef = macro.getCommands().get(0);
+		Assert.assertEquals("on", cmdDef.getName());
+		Assert.assertEquals("$localhost",
+				((OnCommandDefinition) cmdDef).getServerVar());
+
+		List<CommandDefinition> cmds = ((OnCommandDefinition) cmdDef)
+				.getChildren();
+
+		cmdDef = cmds.get(0);
 		Assert.assertEquals("getVFS", cmdDef.getName());
 		Assert.assertEquals("gnuPlotScript", cmdDef.getAssignment());
-		Assert.assertEquals("$CICSTART.session", cmdDef.getParameterNames().get(0));
+		Assert.assertEquals("$CICSTART.session", cmdDef.getParameterNames()
+				.get(0));
 		Assert.assertEquals("/maccs.gp", cmdDef.getParameterNames().get(1));
 
-		cmdDef = macro.getCommands().get(1);
+		cmdDef = cmds.get(1);
 		Assert.assertEquals("getCataloguedFiles", cmdDef.getName());
 		Assert.assertEquals("maccsData", cmdDef.getAssignment());
 		Assert.assertEquals(Arrays.asList(new String[0]),
@@ -91,8 +96,8 @@ public class ParsingAndBuildingTests {
 				Arrays.asList(new String[] { "2010-01-01", "2011-01-01" }),
 				cmdDef.getStructParameters("dateRange"));
 
-		ForEachCommandDefinition forEachCmdDef = (ForEachCommandDefinition) macro
-				.getCommands().get(2);
+		ForEachCommandDefinition forEachCmdDef = (ForEachCommandDefinition) cmds
+				.get(2);
 		Assert.assertEquals("foreach", forEachCmdDef.getName());
 		Assert.assertEquals("file", forEachCmdDef.getIteratorVar());
 		Assert.assertEquals("$maccsData", forEachCmdDef.getCollectionVar());
@@ -104,6 +109,12 @@ public class ParsingAndBuildingTests {
 	public void testBuild() {
 
 		CommandDefinition cmdDef = macro.getCommands().get(0);
+		Command onCommand = runtime.buildCommand(cmdDef);
+		Assert.assertTrue(onCommand instanceof On);
+
+		List<CommandDefinition> cmds = ((OnCommandDefinition) cmdDef)
+				.getChildren();
+		cmdDef = cmds.get(0);
 		Command command = runtime.buildCommand(cmdDef);
 		Assert.assertTrue(command instanceof GetVFS);
 
@@ -111,7 +122,7 @@ public class ParsingAndBuildingTests {
 		File gnuPlotScript = new File("gnuPlotScript.gp");
 		runtime.setVariableData(cmdDef.getAssignment(), gnuPlotScript);
 
-		cmdDef = macro.getCommands().get(1);
+		cmdDef = cmds.get(1);
 		command = runtime.buildCommand(cmdDef);
 		Assert.assertTrue(command instanceof GetCataloguedFiles);
 
@@ -137,7 +148,7 @@ public class ParsingAndBuildingTests {
 		maccsData.add(file2);
 		runtime.setVariableData(cmdDef.getAssignment(), maccsData);
 
-		cmdDef = macro.getCommands().get(2);
+		cmdDef = cmds.get(2);
 		command = runtime.buildCommand(cmdDef);
 		Assert.assertTrue(command instanceof ForEach);
 
@@ -157,7 +168,7 @@ public class ParsingAndBuildingTests {
 		Assert.assertTrue(command instanceof Run);
 		Assert.assertEquals(
 				"convert -density 300 -alpha off \"" + file1.getAbsolutePath()
-						+ ".eps\" \"" + file1.getAbsolutePath() + ".png\"",
+						+ ".eps\" \"" + file1.getAbsolutePath() + ".png",
 				((Run) command).getCommandLine());
 
 		cmdDef = cmdsToRun.get(2);
@@ -181,7 +192,7 @@ public class ParsingAndBuildingTests {
 		Assert.assertTrue(command instanceof Run);
 		Assert.assertEquals(
 				"convert -density 300 -alpha off \"" + file2.getAbsolutePath()
-						+ ".eps\" \"" + file2.getAbsolutePath() + ".png\"",
+						+ ".eps\" \"" + file2.getAbsolutePath() + ".png",
 				((Run) command).getCommandLine());
 
 		cmdDef = cmdsToRun.get(2);

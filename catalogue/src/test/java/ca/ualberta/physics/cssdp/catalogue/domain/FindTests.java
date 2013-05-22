@@ -16,7 +16,6 @@ import ca.ualberta.physics.cssdp.catalogue.InjectorHolder;
 import ca.ualberta.physics.cssdp.catalogue.dao.UrlDataProductDao;
 import ca.ualberta.physics.cssdp.catalogue.resource.CatalogueTestsScaffolding;
 import ca.ualberta.physics.cssdp.catalogue.service.CatalogueService;
-import ca.ualberta.physics.cssdp.domain.catalogue.CatalogueSearchRequest;
 import ca.ualberta.physics.cssdp.domain.catalogue.CatalogueSearchResponse;
 import ca.ualberta.physics.cssdp.domain.catalogue.DataProduct;
 import ca.ualberta.physics.cssdp.domain.catalogue.Observatory;
@@ -26,8 +25,6 @@ import ca.ualberta.physics.cssdp.model.Mnemonic;
 import ca.ualberta.physics.cssdp.service.ManualTransaction;
 import ca.ualberta.physics.cssdp.service.ServiceResponse;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.io.Files;
 import com.google.inject.Inject;
 import com.jayway.restassured.http.ContentType;
@@ -43,9 +40,6 @@ public class FindTests extends CatalogueTestsScaffolding {
 
 	@Inject
 	private EntityManager em;
-
-	@Inject
-	private ObjectMapper mapper;
 
 	public FindTests() {
 		InjectorHolder.inject(this);

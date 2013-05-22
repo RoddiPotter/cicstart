@@ -10,30 +10,30 @@ public class TestRun {
 
 		// spaces in command
 		Run run = new Run("ls -l");
-		run.execute(new CMLRuntime("session"));
+		run.execute(new CMLRuntime("testJob", "session"));
 
 		// lots of spaces in command
 		run = new Run("gradle build -x test");
-		run.execute(new CMLRuntime("session"));
+		run.execute(new CMLRuntime("testJob", "session"));
 
 		run = new Run("cat build.gradle");
-		run.execute(new CMLRuntime("session"));
+		run.execute(new CMLRuntime("testJob", "session"));
 
 		run = new Run("grep plugin build.gradle");
-		run.execute(new CMLRuntime("session"));
+		run.execute(new CMLRuntime("testJob", "session"));
 		System.out.println("exit value " + run.getResult());
 
 		// this is a complex command with embedded quotes
 		run = new Run("grep \"plugin: 'war'\" build.gradle");
-		run.execute(new CMLRuntime("session"));
+		run.execute(new CMLRuntime("testJob", "session"));
 		Assert.assertEquals(0, run.getResult());
 		run = new Run("cat build.gradle");
-		run.execute(new CMLRuntime("session"));
+		run.execute(new CMLRuntime("testJob", "session"));
 		Assert.assertEquals(0, run.getResult());
 
 		// timeout explicitly set
 		run = new Run("wc -l build.gradle", 2);
-		run.execute(new CMLRuntime("session"));
+		run.execute(new CMLRuntime("testJob", "session"));
 
 	}
 

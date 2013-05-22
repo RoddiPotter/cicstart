@@ -1,5 +1,8 @@
 apply plugin: 'eclipse'
 apply plugin: 'war'
+apply plugin: 'application'
+
+mainClassName = "ca.ualberta.physics.cicstart.macro.MainClass"
 
 sourceCompatibility=1.6
 targetCompatibility=1.6

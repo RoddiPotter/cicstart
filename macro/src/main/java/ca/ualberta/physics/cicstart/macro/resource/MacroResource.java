@@ -21,10 +21,11 @@ package ca.ualberta.physics.cicstart.macro.resource;
 import static com.jayway.restassured.RestAssured.get;
 import static com.jayway.restassured.RestAssured.given;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import javax.ws.rs.DefaultValue;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
@@ -35,7 +36,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.StreamingOutput;
 import javax.ws.rs.core.UriBuilder;
@@ -48,7 +51,6 @@ import ca.ualberta.physics.cssdp.configuration.Common;
 import ca.ualberta.physics.cssdp.domain.auth.User;
 import ca.ualberta.physics.cssdp.service.ServiceResponse;
 
-import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.wordnik.swagger.annotations.ApiError;
 import com.wordnik.swagger.annotations.ApiErrors;
@@ -64,36 +66,41 @@ public class MacroResource {
 		InjectorHolder.inject(this);
 	}
 
-	@POST
-	@ApiOperation(value = "Run a macro", notes = "Run the given macro.  HTTP 201 is returned along with a "
-			+ "location header which can be used to access status and logs")
-	@ApiErrors(value = {
-			@ApiError(code = 400, reason = "No CML script supplied"),
-			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
-	public Response runScript(
-			@ApiParam(value = "Script to run", required = true) String cmlScript,
-			@ApiParam(value = "Dry run flag - don't actually run anything", required = false, defaultValue = "false") @QueryParam("dryrun") @DefaultValue("false") boolean dryrun,
-			@ApiParam(value = "The authenticated session token", required = true) @HeaderParam("CICSTART.session") String sessionToken,
-			@Context UriInfo uriInfo) {
-
-		if (Strings.isNullOrEmpty(cmlScript)) {
-			return Response.status(400).build();
-		}
-
-		ServiceResponse<String> sr = macroService.run(cmlScript, sessionToken);
-		if (sr.isRequestOk()) {
-			String jobId = sr.getPayload();
-			return Response
-					.status(201)
-					.location(
-							UriBuilder.fromUri(uriInfo.getBaseUri())
-									.path(getClass()).path(jobId)
-									.path("status").build()).build();
-		} else {
-			return Response.status(500).entity(sr.getMessagesAsStrings())
-					.build();
-		}
-	}
+	// @POST
+	// @ApiOperation(value = "Run a macro", notes =
+	// "Run the given macro.  HTTP 201 is returned along with a "
+	// + "location header which can be used to access status and logs")
+	// @ApiErrors(value = {
+	// @ApiError(code = 400, reason = "No CML script supplied"),
+	// @ApiError(code = 500, reason =
+	// "Unable to complete request, see response body for error details") })
+	// public Response runScript(
+	// @ApiParam(value = "Script to run", required = true) String cmlScript,
+	// @ApiParam(value = "Dry run flag - don't actually run anything", required
+	// = false, defaultValue = "false") @QueryParam("dryrun")
+	// @DefaultValue("false") boolean dryrun,
+	// @ApiParam(value = "The authenticated session token", required = true)
+	// @HeaderParam("CICSTART.session") String sessionToken,
+	// @Context UriInfo uriInfo) {
+	//
+	// if (Strings.isNullOrEmpty(cmlScript)) {
+	// return Response.status(400).build();
+	// }
+	//
+	// ServiceResponse<String> sr = macroService.run(cmlScript, sessionToken);
+	// if (sr.isRequestOk()) {
+	// String jobId = sr.getPayload();
+	// return Response
+	// .status(201)
+	// .location(
+	// UriBuilder.fromUri(uriInfo.getBaseUri())
+	// .path(getClass()).path(jobId)
+	// .path("status").build()).build();
+	// } else {
+	// return Response.status(500).entity(sr.getMessagesAsStrings())
+	// .build();
+	// }
+	// }
 
 	@Path("/{requestId}/status")
 	@GET
@@ -226,18 +233,35 @@ public class MacroResource {
 
 	}
 
-	@Path("/{requestId}/bin")
-	@GET
+	@Path("/bin")
+	@POST
+	@Consumes(MediaType.TEXT_PLAIN)
 	@ApiOperation(value = "Download the macro binary that would run on the server", notes = "optionally contains an embedded JRE if "
 			+ "none are available on the resource running the macro")
 	@ApiErrors(value = {
 			@ApiError(code = 400, reason = "No request id supplied"),
 			@ApiError(code = 404, reason = "Request not found"),
 			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
-	public Response getMacroBinary(
-			@ApiParam(value = "The request id", required = true) @PathParam("requestId") String requestId,
-			@ApiParam(value = "Include embedded JRE?", required = true, defaultValue = "true") @QueryParam("include_jre") boolean includeJre) {
-		return null;
+	public Response getMacroBinaryClient(
+			@ApiParam(value = "Script to run", required = true) String cmlScript,
+			@ApiParam(value = "The authenticated session token", required = true) @HeaderParam("CICSTART.session") String sessionToken,
+			@ApiParam(value = "Include embedded JRE?", required = false, defaultValue = "false") @QueryParam("include_jre") boolean includeJre) {
+
+		ServiceResponse<File> sr = macroService.assembleClient(cmlScript,
+				sessionToken, includeJre);
+		if (sr.isRequestOk()) {
+
+			File clientBinary = sr.getPayload();
+			ResponseBuilder response = Response.ok((Object) clientBinary);
+			response.type(MediaType.APPLICATION_OCTET_STREAM);
+			response.header("Content-Disposition", "attachment; "
+					+ "filename=\"" + clientBinary.getName() + "\"");
+			return response.build();
+
+		} else {
+			return Response.status(500).entity(sr.getMessagesAsStrings())
+					.build();
+		}
 
 	}
 

@@ -128,7 +128,7 @@ public class TestGetCataloguedFile extends IntegrationTestScaffolding {
 
 		GetCataloguedFiles getCataloguedFiles = new GetCataloguedFiles(
 				searchRequest);
-		getCataloguedFiles.execute(new CMLRuntime(sessionToken));
+		getCataloguedFiles.execute(new CMLRuntime("testJob", sessionToken));
 		List<File> downloadedFiles = (List<File>) getCataloguedFiles
 				.getResult();
 
@@ -156,7 +156,7 @@ public class TestGetCataloguedFile extends IntegrationTestScaffolding {
 
 		GetCataloguedFiles getCataloguedFiles = new GetCataloguedFiles(
 				searchRequest);
-		getCataloguedFiles.execute(new CMLRuntime(sessionToken));
+		getCataloguedFiles.execute(new CMLRuntime("testJob", sessionToken));
 		List<File> downloadedFiles = (List<File>) getCataloguedFiles
 				.getResult();
 

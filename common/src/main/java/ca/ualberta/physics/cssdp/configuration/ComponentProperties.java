@@ -18,8 +18,10 @@
  */
 package ca.ualberta.physics.cssdp.configuration;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -28,6 +30,9 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+
+import com.google.common.base.Throwables;
+import com.google.common.io.Files;
 
 /**
  * A component (i.e., a project) may have a specific set of reasonable default
@@ -345,7 +350,8 @@ public abstract class ComponentProperties {
 	}
 
 	/**
-	 * Like getSet(String prefix) but returns a map of key,value, filtering on the prefix given
+	 * Like getSet(String prefix) but returns a map of key,value, filtering on
+	 * the prefix given
 	 * 
 	 * @param prefix
 	 * @return
@@ -353,7 +359,7 @@ public abstract class ComponentProperties {
 	public Map<String, Object> getMap(String prefix) {
 		Map<String, Object> propsAsMap = new HashMap<String, Object>();
 		Properties props = getSet(prefix);
-		for(Object key : props.keySet()) {
+		for (Object key : props.keySet()) {
 			propsAsMap.put(key.toString(), props.get(key));
 		}
 		return propsAsMap;
@@ -379,6 +385,39 @@ public abstract class ComponentProperties {
 				} else {
 					System.out.println("..... " + key + "="
 							+ properties.getString(key));
+				}
+			}
+		}
+
+	}
+
+	public static void dumpToFile(File file) {
+		// clear file.
+		try {
+			Files.write("".getBytes(), file);
+		} catch (IOException e) {
+			Throwables.propagate(e);
+		}
+		Set<String> components = INSTANCES.keySet();
+		for (String componentName : components) {
+			ComponentProperties properties = ComponentProperties
+					.properties(componentName);
+			Set<String> stringPropertyNames = properties.properties
+					.stringPropertyNames();
+			List<String> keys = new ArrayList<String>(stringPropertyNames);
+			Collections.sort(keys);
+			for (String key : keys) {
+				try {
+					if (key.contains("pass")) {
+						Files.append(componentName + "." + key + "=filtered\n",
+								file, Charset.forName("UTF-8"));
+					} else {
+						Files.append(componentName + "." + key + "="
+								+ properties.getString(key) + "\n", file,
+								Charset.forName("UTF-8"));
+					}
+				} catch (IOException e) {
+					Throwables.propagate(e);
 				}
 			}
 		}

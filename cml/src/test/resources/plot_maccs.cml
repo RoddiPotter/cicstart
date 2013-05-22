@@ -1,27 +1,30 @@
 // future, run on a vm
 //vm = start("ami12345","tiny","Alberta");
-	
-// Get the gnuplot script from my VFS.
-gnuPlotScript = getVFS($CICSTART.session,"/maccs.gp");
-	
-// get some data from MACCS
-maccsData = getCataloguedFiles({
-	projects=("MACCS"),
-	observatories=("PG"),
-	dateRange=("2010-01-01","2011-01-01")
-});
+
+// localhost becomes $vm when start command exists
+on $localhost {	
+
+	// Get the gnuplot script from my VFS.
+	gnuPlotScript = getVFS($CICSTART.session,"/maccs.gp");
 		
-// Loop over each MACCS data file we grabbed
-foreach file in $maccsData {
+	// get some data from MACCS
+	maccsData = getCataloguedFiles({
+		projects=("MACCS"),
+		observatories=("PG"),
+		dateRange=("2010-01-01","2011-01-01")
+	});
+			
+	// Loop over each MACCS data file we grabbed
+	foreach file in $maccsData {
+			
+		// run gnuplot (assuming it's on the path)
+		run("gnuplot -e \"filename='$file'\" $gnuPlotScript", "3");
 		
-	// run gnuplot (assuming it's on the path)
-	run("gnuplot -e \"filename='$file'\" $gnuPlotScript", "3");
-	
-	// convert eps to png files.
-	run("convert -density 300 -alpha off $file.eps $file.png", "3");
-		
-	// put the png back onto my VFS
-	putVFS($CICSTART.session, "/$JOB/$file.png")]
-}
-	
+		// convert eps to png files.
+		run("convert -density 300 -alpha off $file.eps $file.png", "3");
+			
+		// put the png back onto my VFS
+		putVFS($CICSTART.session, "/$JOB/$file.png")]
+	}
+}	
 

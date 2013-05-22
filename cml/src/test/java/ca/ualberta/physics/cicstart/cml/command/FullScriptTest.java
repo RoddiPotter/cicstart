@@ -14,7 +14,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import ca.ualberta.physics.cicstart.cml.CML2Lexer;
+import ca.ualberta.physics.cicstart.cml.CMLLexer;
 import ca.ualberta.physics.cicstart.cml.CMLParser;
 import ca.ualberta.physics.cicstart.cml.ParsingAndBuildingTests;
 import ca.ualberta.physics.cssdp.client.AuthClient;
@@ -143,7 +143,7 @@ public class FullScriptTest extends IntegrationTestScaffolding {
 		ANTLRInputStream input = new ANTLRInputStream(
 				ParsingAndBuildingTests.class.getResourceAsStream("/test2.cml"));
 
-		CML2Lexer lexer = new CML2Lexer(input);
+		CMLLexer lexer = new CMLLexer(input);
 
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
 
@@ -157,16 +157,10 @@ public class FullScriptTest extends IntegrationTestScaffolding {
 
 		walker.walk(macro, tree);
 
-		CMLRuntime runtime = new CMLRuntime(sessionToken) {
-			@Override
-			protected String newJobId() {
-				return "testJob";
-			}
-		};
-
+		CMLRuntime runtime = new CMLRuntime("testJob", sessionToken);
 		runtime.run(macro.getCommands());
 
-		new PutVFS(sessionToken, runtime.getJobId(), "macro.log")
+		new PutVFS(sessionToken, runtime.getRequestId(), "macro.log")
 				.execute(runtime);
 
 		vfsRoot = VfsServer.properties().getString("vfs_root");

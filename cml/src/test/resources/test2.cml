@@ -1,10 +1,14 @@
-apacheData = getCataloguedFiles({
-	project="APACHE"
+on $localhost {
+	
+	apacheData = getCataloguedFiles({
+		project="APACHE"
+		});
+		
+	run("mkdir temp");
+	
+	foreach file in $apacheData {
+		run("unzip -o $file -d temp", 1);
+		putVFS($CICSTART.session, "/$JOBID", $file);
 	}
-);
-run("mkdir temp");
-foreach file in $apacheData {
-		run("unzip -o $file -d temp", "1");
-		putVFS($CICSTART.session, "/$JOBID", "$file");
+	
 }
-

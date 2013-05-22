@@ -2,7 +2,8 @@ package ca.ualberta.physics.cicstart.cml.command;
 
 import static ch.qos.logback.classic.ClassicConstants.FINALIZE_SESSION_MARKER;
 
-import java.io.File;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +21,7 @@ import ca.ualberta.physics.cssdp.model.Mnemonic;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
+import com.google.common.base.Throwables;
 
 public class CMLRuntime {
 	private static final Logger cmlLogger = LoggerFactory
@@ -29,19 +31,25 @@ public class CMLRuntime {
 
 	private static final String CICSTARTSESSION = "CICSTART.session";
 	private static final String JOBID = "JOBID";
+	private static final String LOCALHOST = "localhost";
 
 	private final Map<String, Object> variableData = new HashMap<String, Object>();
 
-	public CMLRuntime(String cicstartSession) {
+	public CMLRuntime(String jobId, String cicstartSession) {
 		// set globals
-		variableData.put(JOBID, newJobId());
+		MDC.put("jobId", jobId);
+		variableData.put(JOBID, jobId);
 		variableData.put(CICSTARTSESSION, cicstartSession);
-
+		try {
+			variableData.put(LOCALHOST, InetAddress.getLocalHost()
+					.getHostAddress());
+		} catch (UnknownHostException e) {
+			Throwables.propagate(e);
+		}
 	}
 
-	protected String newJobId() {
+	public static String newJobId() {
 		String jobId = UUID.randomUUID().toString();
-		MDC.put("jobId", jobId);
 		return jobId;
 	}
 
@@ -66,11 +74,17 @@ public class CMLRuntime {
 		logger.info(FINALIZE_SESSION_MARKER, "About to end the job");
 	}
 
+	@SuppressWarnings("unchecked")
 	private <T> T mutate(String value, Class<T> clazz) {
 
 		T t = null;
 		if (value.contains("$")) {
 
+			/*
+			 * These static mappings could have been done in the generalized
+			 * loop below, but I thought this would be a little more efficient
+			 * for these specific cases
+			 */
 			if (value.contains("$" + JOBID)) {
 				value = value.replaceAll("\\$" + JOBID, variableData.get(JOBID)
 						.toString());
@@ -78,6 +92,10 @@ public class CMLRuntime {
 			} else if (value.contains("$" + CICSTARTSESSION)) {
 				value = value.replaceAll("\\$" + CICSTARTSESSION, variableData
 						.get(CICSTARTSESSION).toString());
+				t = (T) value;
+			} else if (value.contains("$" + LOCALHOST)) {
+				value = value.replaceAll("\\$" + LOCALHOST,
+						variableData.get(LOCALHOST).toString());
 				t = (T) value;
 			} else {
 				for (String variableName : variableData.keySet()) {
@@ -103,6 +121,9 @@ public class CMLRuntime {
 		} else {
 			t = (T) value;
 		}
+		if (clazz.equals(String.class)) {
+			t = (T) ((String)t).replaceAll("^\"|\"$", "");
+		}
 
 		return t;
 
@@ -113,6 +134,13 @@ public class CMLRuntime {
 
 		if (name.equals("debug")) {
 			DebugCmd cmd = new DebugCmd(commandDef.getParameterNames().get(0));
+			return cmd;
+		}
+
+		if (name.equals("on")) {
+			OnCommandDefinition onCommandDef = (OnCommandDefinition) commandDef;
+			On cmd = new On(mutate(onCommandDef.getServerVar(), String.class),
+					onCommandDef.getChildren());
 			return cmd;
 		}
 
@@ -214,7 +242,7 @@ public class CMLRuntime {
 		this.variableData.put(variableName, value);
 	}
 
-	public String getJobId() {
+	public String getRequestId() {
 		return (String) variableData.get(JOBID);
 	}
 

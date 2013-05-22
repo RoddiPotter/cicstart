@@ -18,9 +18,10 @@
  */
 package ca.ualberta.physics.cssdp.configuration;
 
+import java.io.File;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Stack;
-import java.util.Map.Entry;
 
 /**
  * Allows for the overriding of ComponentProperties by referencing the component
@@ -80,4 +81,7 @@ public class ApplicationProperties {
 		}
 	}
 
+	public static void dumpToFile(File file) {
+		ComponentProperties.dumpToFile(file);
+	}
 }

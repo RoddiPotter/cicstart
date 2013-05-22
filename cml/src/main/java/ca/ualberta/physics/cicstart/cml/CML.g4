@@ -3,9 +3,9 @@
  * 
  * Helps you run stuff
  *
- * generate java files using:
- *  antlr -package ca.ualberta.physics.cicstart.cml CML.g4
- *
+ *  ~/workspaces/cicstart/cml/src/main/java/ca/ualberta/physics/cicstart/cml$ antlr -package ca.ualberta.physics.cicstart.cml CML.g4
+ *  ~/workspaces/cicstart/cml/src/main/webapp/WEB-INF/classes$ grun ca.ualberta.physics.cicstart.cml.CML macro -tokens test.cml
+ *  ~/workspaces/cicstart/cml/src/main/webapp/WEB-INF/classes$ grun ca.ualberta.physics.cicstart.cml.CML macro -gui test.cml
  */
 grammar CML;
 
@@ -13,31 +13,30 @@ grammar CML;
 macro       : (statement(';')?)+
             ;
 
-// a statement may be a function, a variable assignment
-// or a foreach style loop
-statement   : function 
-            | assignment 
-            | foreach
+// a statement may be a function, a variable assignment,
+// an on directive, or a foreach style loop
+statement   : function
+			| assignment
+			| expr
             ;
-
 // foreach has 2 variants, one for synchronous iteration
 // and one for parallel iteration with an optional barrier
 // at the end
-foreach     : 'foreach' id 'in' VARIABLE '{' macro* '}'                     
-            | 'cforeach' id 'in' VARIABLE '{' macro* '}' ('and wait')?      
+expr	    : 'foreach' id 'in' variable '{' macro* '}'       			# foreach              
+            | 'cforeach' id 'in' variable '{' macro* '}' ('and wait')?	# cforeach
+            | 'on' (variable|STRING) '{' macro* '}'						# on
             ;
-
+            
 // a function can either take a list of parameters
 // or a struct (anonymous object)
-function    : ID '(' parameters ')'                                         
-            | ID '(' struct ')'                                         	
+function    : id '(' parameters ')'                                         
+            | id '(' struct ')'                                         	
             ;
-
 // assignments set variable data to values returned
 // from statements or a set of parameters (like in a struct)
-assignment  : ID '=' function 												
-            | ID '=' '(' parameters ')'										
-            | ID '=' parameter												
+assignment  : id '=' function 												
+            | id '=' '(' parameters ')'										
+            | id '=' parameter												
             ;
 // a struct is like an anonymous object of key=value
 // paris.  Values maybe of arbitrary complexity (lists of
@@ -49,20 +48,20 @@ parameters  : parameter (',' parameter)*
             ;
 // a parameter can be a variable (from an assignment or 
 // a globally known variable, or a simple string.  Strings
-parameter   : VARIABLE
-            | STRING 
+parameter   : variable
+            | STRING
+            | INT
+            | FLOAT
             ;
-// ids follow a standard naming pattern
-id          : ID ;
 
-// variables always start with a $ sign.
-VARIABLE    : '$'[a-zA-Z0-9\.]+ ;
+variable	: '$' ID ;      
+id			: ID;
 
-// strings are double quoted, escape " with a \, for example
-// "a \"double quoted\" string
-STRING      : '"' (ESC|.)*? '"' ;
-ESC         : '\\"' | '\\\\' ; // 2-char sequences \" and \\
-ID          : [a-zA-Z0-9]+ ; // alphanumeric only
-LINE_COMMENT : '//' .*? '\r'? '\n' -> skip ; // Match "//" stuff '\n'
-COMMENT     : '/*' .*? '*/' -> skip ; // Match "/*" stuff "*/"
-WS          : [ \t\r\n]+ -> skip;
+ID			: [a-zA-Z]+ ('.' ([a-zA-Z]+|INT)+)? ;          
+STRING		: '"' (ESC|.)*? '"' ;
+ESC			: '\\"' | '\\\\' ; 					// 2-char sequences \" and \\
+INT			: [0-9]+ ; 							// numbers
+FLOAT		: [0-9]+ '.' ;
+LINE_COMMENT : '//' .*? '\r'? '\n' -> skip ; 	// Match "//" stuff '\n'
+COMMENT     : '/*' .*? '*/' -> skip ; 			// Match "/*" stuff "*/"
+WS          : [ \t\r\n]+ -> skip;				// skip all whitespace

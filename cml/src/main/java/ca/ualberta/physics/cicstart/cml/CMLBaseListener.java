@@ -2,9 +2,8 @@
 package ca.ualberta.physics.cicstart.cml;
 
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.Token;
-import org.antlr.v4.runtime.tree.TerminalNode;
 import org.antlr.v4.runtime.tree.ErrorNode;
+import org.antlr.v4.runtime.tree.TerminalNode;
 
 public class CMLBaseListener implements CMLListener {
 	@Override public void enterId(CMLParser.IdContext ctx) { }
@@ -28,8 +27,17 @@ public class CMLBaseListener implements CMLListener {
 	@Override public void enterStruct(CMLParser.StructContext ctx) { }
 	@Override public void exitStruct(CMLParser.StructContext ctx) { }
 
+	@Override public void enterOn(CMLParser.OnContext ctx) { }
+	@Override public void exitOn(CMLParser.OnContext ctx) { }
+
 	@Override public void enterParameters(CMLParser.ParametersContext ctx) { }
 	@Override public void exitParameters(CMLParser.ParametersContext ctx) { }
+
+	@Override public void enterVariable(CMLParser.VariableContext ctx) { }
+	@Override public void exitVariable(CMLParser.VariableContext ctx) { }
+
+	@Override public void enterCforeach(CMLParser.CforeachContext ctx) { }
+	@Override public void exitCforeach(CMLParser.CforeachContext ctx) { }
 
 	@Override public void enterFunction(CMLParser.FunctionContext ctx) { }
 	@Override public void exitFunction(CMLParser.FunctionContext ctx) { }

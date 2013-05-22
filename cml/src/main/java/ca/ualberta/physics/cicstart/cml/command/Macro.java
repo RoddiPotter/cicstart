@@ -10,21 +10,43 @@ import ca.ualberta.physics.cicstart.cml.CMLBaseListener;
 import ca.ualberta.physics.cicstart.cml.CMLParser.AssignmentContext;
 import ca.ualberta.physics.cicstart.cml.CMLParser.ForeachContext;
 import ca.ualberta.physics.cicstart.cml.CMLParser.FunctionContext;
+import ca.ualberta.physics.cicstart.cml.CMLParser.OnContext;
 import ca.ualberta.physics.cicstart.cml.CMLParser.ParameterContext;
 import ca.ualberta.physics.cicstart.cml.CMLParser.StatementContext;
+import ca.ualberta.physics.cicstart.cml.CMLParser.VariableContext;
 
 public class Macro extends CMLBaseListener {
 
 	private List<CommandDefinition> commands = new ArrayList<CommandDefinition>();
 
-	private Stack<ForEachCommandDefinition> nesting = new Stack<ForEachCommandDefinition>();
+	private Stack<NestedCommandDefinition> nesting = new Stack<NestedCommandDefinition>();
 
 	private CommandDefinition command;
 	private String variableToAssign;
 
 	@Override
+	public void enterOn(OnContext ctx) {
+		VariableContext variable = ctx.variable();
+		OnCommandDefinition cmd = new OnCommandDefinition(ctx.getText(), ctx
+				.getChild(0).getText(), variable != null ? variable.getText()
+				: ctx.STRING().getText());
+		nesting.push(cmd);
+	}
+
+	@Override
+	public void exitOn(OnContext ctx) {
+		CommandDefinition cmd = nesting.pop();
+		if (nesting.size() == 0) {
+			commands.add(cmd);
+		} else {
+			nesting.peek().addChild(cmd);
+		}
+		command = null;
+	}
+
+	@Override
 	public void enterFunction(FunctionContext ctx) {
-		command = new CommandDefinition(ctx.getText(), ctx.ID().getText());
+		command = new CommandDefinition(ctx.getText(), ctx.id().getText());
 		ParserRuleContext parent = ctx.getParent();
 		if (parent instanceof AssignmentContext) {
 			if (variableToAssign != null) {
@@ -48,7 +70,7 @@ public class Macro extends CMLBaseListener {
 	public void enterAssignment(AssignmentContext ctx) {
 		ParserRuleContext parent = ctx.getParent();
 		if (parent instanceof StatementContext) {
-			variableToAssign = ctx.ID().getText();
+			variableToAssign = ctx.id().getText();
 			if (command != null) {
 				command.setAssignment(variableToAssign);
 			}
@@ -57,10 +79,11 @@ public class Macro extends CMLBaseListener {
 
 	@Override
 	public void enterForeach(ForeachContext ctx) {
-		boolean waitFlag = ctx.getChild(ctx.getChildCount() - 1).getText().contains("wait");
+		boolean waitFlag = ctx.getChild(ctx.getChildCount() - 1).getText()
+				.contains("wait");
 		ForEachCommandDefinition cmd = new ForEachCommandDefinition(
 				ctx.getText(), ctx.getChild(0).getText(), waitFlag);
-		cmd.setCollectionVar(ctx.VARIABLE().getText());
+		cmd.setCollectionVar(ctx.variable().getText());
 		cmd.setIteratorVar(ctx.id().getText());
 		nesting.push(cmd);
 	}
@@ -68,7 +91,12 @@ public class Macro extends CMLBaseListener {
 	@Override
 	public void exitForeach(ForeachContext ctx) {
 		CommandDefinition cmd = nesting.pop();
-		commands.add(cmd);
+		if (nesting.size() == 0) {
+			commands.add(cmd);
+		} else {
+			nesting.peek().addChild(cmd);
+		}
+		command = null;
 	}
 
 	@Override
@@ -77,10 +105,11 @@ public class Macro extends CMLBaseListener {
 		if (parent instanceof AssignmentContext) {
 			// deal with struct
 			AssignmentContext assignment = (AssignmentContext) parent;
-			command.addStructParameter(assignment.ID().getText(), ctx.getText());
-		} else if (parent.getParent() instanceof AssignmentContext){
-			AssignmentContext assignment = (AssignmentContext) parent.getParent();
-			command.addStructParameter(assignment.ID().getText(), ctx.getText());
+			command.addStructParameter(assignment.id().getText(), ctx.getText());
+		} else if (parent.getParent() instanceof AssignmentContext) {
+			AssignmentContext assignment = (AssignmentContext) parent
+					.getParent();
+			command.addStructParameter(assignment.id().getText(), ctx.getText());
 		} else {
 			command.addParameterName(ctx.getText());
 		}

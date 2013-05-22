@@ -41,7 +41,7 @@ public class TestPutVFS extends IntegrationTestScaffolding {
 		sessionToken = login(dataManager.getEmail(), "password");
 
 		PutVFS putVfs = new PutVFS(sessionToken, "/testputvfs", "build.gradle");
-		putVfs.execute(new CMLRuntime(sessionToken));
+		putVfs.execute(new CMLRuntime("testJob", sessionToken));
 
 		String vfsRoot = VfsServer.properties().getString("vfs_root");
 		File uploadedFile = new File(new File(vfsRoot, dataManager.getId().toString() + "/testputvfs"), "build.gradle");

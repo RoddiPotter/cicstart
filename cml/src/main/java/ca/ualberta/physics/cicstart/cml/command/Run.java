@@ -32,6 +32,10 @@ public class Run implements Command {
 	private static final AtomicInteger idGenerator = new AtomicInteger(0);
 	private final int id;
 
+	// not accessible via CML but used for testing. Make a constructor to allow
+	// access via CML.
+	private File workingDirectory = new File(".");
+
 	public Run(String commandLine) {
 		this(commandLine, 1);
 	}
@@ -67,7 +71,7 @@ public class Run implements Command {
 		jobLogger.debug("Run: parsed command line is "
 				+ Joiner.on(" ").join(list));
 		final ProcessBuilder pb = new ProcessBuilder(list);
-		pb.directory(new File("."));
+		pb.directory(getWorkingDirectory());
 		pb.redirectErrorStream(true); // combine stderr and stdout
 
 		// run the external process in a separate thread to capture input stream
@@ -94,8 +98,7 @@ public class Run implements Command {
 							stringToLog = stringToLog.replaceAll("[\n\r]$", "")
 									.replaceAll("^\\s*$", "");
 							if (!Strings.isNullOrEmpty(stringToLog)) {
-								jobLogger
-										.info("\t{" + id + "}|" + stringToLog);
+								jobLogger.info("\t{" + id + "}|" + stringToLog);
 							}
 						};
 
@@ -169,5 +172,13 @@ public class Run implements Command {
 	@Override
 	public String toString() {
 		return commandLine;
+	}
+
+	public File getWorkingDirectory() {
+		return workingDirectory;
+	}
+
+	public void setWorkingDirectory(File workingDirectory) {
+		this.workingDirectory = workingDirectory;
 	}
 }
