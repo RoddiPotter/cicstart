@@ -27,6 +27,7 @@ test.doFirst {
 war {
 	from('src/main/java') {
 	   include '**/*.properties' into ('WEB-INF/classes')
+	   include '**/logback.template' into ('WEB-INF/classes')
 	}
 	// remove classes from the classpath
 	classpath = configurations.runtime
