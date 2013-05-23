@@ -5,6 +5,8 @@ import static com.jayway.restassured.RestAssured.given;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -61,8 +63,10 @@ public class TestBinary extends IntegrationTestScaffolding {
 	public void testBuildBinaryClient() throws Exception {
 
 		File macro = new File(TestBinary.class.getResource("/test.cml").toURI());
+		String script = URLEncoder.encode(
+				Files.toString(macro, Charset.forName("UTF-8")), "UTF-8");
 		final Response res = given()
-				.content(Files.toByteArray(macro))
+				.content(script)
 				.and()
 				.contentType(ContentType.TEXT)
 				.and()
@@ -95,15 +99,15 @@ public class TestBinary extends IntegrationTestScaffolding {
 		run.execute(new CMLRuntime("test", "test"));
 
 		// should have a normal exit code
-		Assert.assertEquals(new Integer(0), (Integer)run.getResult());
-		
+		Assert.assertEquals(new Integer(0), (Integer) run.getResult());
+
 		// cleanup
-		for(File file: FileUtil.walk(tempDir)) {
+		for (File file : FileUtil.walk(tempDir)) {
 			file.delete();
 		}
 		tarFile.delete();
 		binaryMarco.delete();
-		
+
 	}
 
 }

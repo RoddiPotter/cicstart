@@ -171,6 +171,8 @@ public class MacroService {
 	public ServiceResponse<File> assembleClient(String cmlScript,
 			String sessionToken, boolean includeJre) {
 
+		logger.debug("Got script to assemble: \n" + cmlScript);
+		
 		ServiceResponse<File> sr = new ServiceResponse<File>();
 
 		File clientTemplateDir = new File(MacroServer.properties().getString(
@@ -187,10 +189,10 @@ public class MacroService {
 
 		try {
 			// write the cmlScript to bin folder
-			File macro = new File(new File(buildDirectory, "bin"), "macro.cml");
-			macro.createNewFile();
-			Files.write(cmlScript, macro, Charset.forName("UTF-8"));
-			macro.setExecutable(true, false);
+			File macroFile = new File(new File(buildDirectory, "bin"), "macro.cml");
+			macroFile.createNewFile();
+			Files.write(cmlScript, macroFile, Charset.forName("UTF-8"));
+			macroFile.setExecutable(true, false);
 
 			// create a logback.xml
 			File logbackConfig = new File(new File(buildDirectory, "bin"),
@@ -241,7 +243,7 @@ public class MacroService {
 			Files.append("#!/usr/bin/env bash\n", run, Charset.forName("UTF-8"));
 			Files.append(
 					"./macro " + appProperties.getName() + " "
-							+ macro.getName() + " " + sessionToken, run,
+							+ macroFile.getName() + " " + sessionToken, run,
 					Charset.forName("UTF-8"));
 			run.setExecutable(true, false);
 

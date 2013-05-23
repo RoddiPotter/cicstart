@@ -25,6 +25,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
@@ -254,6 +256,12 @@ public class MacroResource {
 			@ApiParam(value = "Include embedded JRE?", required = false, defaultValue = "false") @QueryParam("include_jre") boolean includeJre,
 			@Context final HttpServletResponse response) {
 
+		try {
+			cmlScript = URLDecoder.decode(cmlScript, "UTF-8");
+		} catch (UnsupportedEncodingException e1) {
+			Throwables.propagate(e1);
+		}
+		
 		ServiceResponse<File> sr = macroService.assembleClient(cmlScript,
 				sessionToken, includeJre);
 		if (sr.isRequestOk()) {
