@@ -5,8 +5,6 @@ import static com.jayway.restassured.RestAssured.given;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URLEncoder;
-import java.nio.charset.Charset;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -63,12 +61,11 @@ public class TestBinary extends IntegrationTestScaffolding {
 	public void testBuildBinaryClient() throws Exception {
 
 		File macro = new File(TestBinary.class.getResource("/test.cml").toURI());
-		String script = URLEncoder.encode(
-				Files.toString(macro, Charset.forName("UTF-8")), "UTF-8");
+		byte[] script = Files.toByteArray(macro);
 		final Response res = given()
 				.content(script)
 				.and()
-				.contentType(ContentType.TEXT)
+				.contentType(ContentType.BINARY)
 				.and()
 				.header("CICSTART.session",
 						login(dataManager.getEmail(), "password")).when()

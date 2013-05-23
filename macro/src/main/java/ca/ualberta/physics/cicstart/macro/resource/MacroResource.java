@@ -25,8 +25,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
+import java.nio.charset.Charset;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
@@ -242,7 +241,7 @@ public class MacroResource {
 
 	@Path("/bin")
 	@POST
-	@Consumes(MediaType.TEXT_PLAIN)
+	@Consumes(MediaType.APPLICATION_OCTET_STREAM)
 	@Produces(MediaType.APPLICATION_OCTET_STREAM)
 	@ApiOperation(value = "Download the macro binary that would run on the server", notes = "optionally contains an embedded JRE if "
 			+ "none are available on the resource running the macro")
@@ -251,19 +250,13 @@ public class MacroResource {
 			@ApiError(code = 404, reason = "Request not found"),
 			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
 	public Response getMacroBinaryClient(
-			@ApiParam(value = "Script to run", required = true) String cmlScript,
+			@ApiParam(value = "Script to run", required = true) byte[] cmlScript,
 			@ApiParam(value = "The authenticated session token", required = true) @HeaderParam("CICSTART.session") String sessionToken,
 			@ApiParam(value = "Include embedded JRE?", required = false, defaultValue = "false") @QueryParam("include_jre") boolean includeJre,
 			@Context final HttpServletResponse response) {
 
-		try {
-			cmlScript = URLDecoder.decode(cmlScript, "UTF-8");
-		} catch (UnsupportedEncodingException e1) {
-			Throwables.propagate(e1);
-		}
-		
-		ServiceResponse<File> sr = macroService.assembleClient(cmlScript,
-				sessionToken, includeJre);
+		ServiceResponse<File> sr = macroService.assembleClient(new String(
+				cmlScript, Charset.forName("UTF-8")), sessionToken, includeJre);
 		if (sr.isRequestOk()) {
 
 			File clientBinary = sr.getPayload();
