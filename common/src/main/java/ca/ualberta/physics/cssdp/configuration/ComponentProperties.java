@@ -424,4 +424,24 @@ public abstract class ComponentProperties {
 
 	}
 
+	public static Properties dump() {
+		
+		Properties allProps = new Properties();
+		
+		Set<String> components = INSTANCES.keySet();
+		for (String componentName : components) {
+			ComponentProperties properties = ComponentProperties
+					.properties(componentName);
+			Set<String> stringPropertyNames = properties.properties
+					.stringPropertyNames();
+			List<String> keys = new ArrayList<String>(stringPropertyNames);
+			Collections.sort(keys);
+			for (String key : keys) {
+				allProps.setProperty(componentName + "." + key, properties.getString(key));
+			}
+		}
+
+		return allProps;
+	}
+
 }

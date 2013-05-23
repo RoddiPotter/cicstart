@@ -24,7 +24,7 @@ on $localhost {
 		run("convert -density 300 -alpha off $file.eps $file.png", "3");
 			
 		// put the png back onto my VFS
-		putVFS($CICSTART.session, "/$JOB/$file.png")]
+		putVFS($CICSTART.session, "/$JOB/$file.png");
 	}
 }	
 

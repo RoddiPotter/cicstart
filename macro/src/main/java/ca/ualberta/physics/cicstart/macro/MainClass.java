@@ -87,6 +87,7 @@ public class MainClass {
 			cmlScript = Files.toString(new File(args[1]),
 					Charset.forName("UTF-8"));
 			logger.info("Found macro to run.");
+			logger.debug(cmlScript);
 		} catch (IOException e) {
 			logger.error("Could not load CML script " + args[1] + "\n"
 					+ Throwables.getStackTraceAsString(e));

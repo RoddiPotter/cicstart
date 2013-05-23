@@ -84,4 +84,8 @@ public class ApplicationProperties {
 	public static void dumpToFile(File file) {
 		ComponentProperties.dumpToFile(file);
 	}
+
+	public static Properties dump() {
+		return ComponentProperties.dump();
+	}
 }
