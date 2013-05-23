@@ -9,7 +9,7 @@ on $localhost {
 		
 	// get some data from MACCS
 	maccsData = getCataloguedFiles({
-		projects=("MACCS"),
+		project=("MACCS"),
 		observatories=("PG"),
 		dateRange=("2010-01-01","2011-01-01")
 	});
@@ -24,7 +24,7 @@ on $localhost {
 		run("convert -density 300 -alpha off $file.eps $file.png", "3");
 			
 		// put the png back onto my VFS
-		putVFS($CICSTART.session, "/$JOB/$file.png");
+		putVFS($CICSTART.session, "/$JOBID","$file.png");
 	}
 }	
 

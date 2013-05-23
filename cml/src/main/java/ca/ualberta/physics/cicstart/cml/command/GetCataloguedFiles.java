@@ -44,14 +44,13 @@ public class GetCataloguedFiles implements Command {
 
 		String findUrl = catalogueResource + "/project.json/find";
 		jobLogger.info("GetCatalogueFiles: finding data at " + findUrl);
-		jobLogger
-				.info("GetCatalogueFiles: search request is " + searchRequest);
+		jobLogger.info("GetCatalogueFiles: search request is " + searchRequest);
 
 		Response res = given().content(searchRequest).and()
 				.contentType(ContentType.JSON).post(findUrl);
 
 		List<URI> urisToFetch = res.as(CatalogueSearchResponse.class).getUris();
-		Set<URI> urisFetched = new HashSet<URI>(); 
+		Set<URI> urisFetched = new HashSet<URI>();
 
 		// pass 1 - asynchronous request
 		for (URI uri : urisToFetch) {
@@ -65,6 +64,10 @@ public class GetCataloguedFiles implements Command {
 						.info("GetCatalogueFiles: data not in cache, trying next one");
 				continue;
 			} else {
+
+				// TODO test for local file MD5 and skip download if already
+				// exists (restart)
+
 				jobLogger
 						.info("GetCatalogueFiles: cache hit! Downloading it now.");
 				File downloadedFile = Commands.streamToFile(
@@ -86,7 +89,6 @@ public class GetCataloguedFiles implements Command {
 			}
 
 			File file = new File(UrlParser.getLeaf(uri.toASCIIString()));
-
 
 			res = given().queryParam("url", uri.toASCIIString()).and()
 					.contentType(ContentType.URLENC).when()

@@ -121,6 +121,9 @@ public class CMLRuntime {
 		} else {
 			t = (T) value;
 		}
+		
+		// TODO report invalid variable references
+		
 		if (clazz.equals(String.class)) {
 			t = (T) ((String)t).replaceAll("^\"|\"$", "");
 		}
@@ -148,6 +151,7 @@ public class CMLRuntime {
 
 			CatalogueSearchRequest searchRequest = new CatalogueSearchRequest();
 
+			// TODO validate struct parameters
 			List<String> projects = commandDef.getStructParameters("project");
 			if (projects.size() > 0) {
 				searchRequest.setProjectKey(Mnemonic.of(projects.get(0)));
