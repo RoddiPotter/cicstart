@@ -70,7 +70,7 @@ You are using the REST APIs offered by CICSTART to build your own data portal.
     
 ### For the model developer
 You are developing a computational model and you want it served by CICSTART
-1. See [Macro](Macro) and [CML](CML) documentation
+1. See [Macro](wiki/Macro) and [CML](wiki/CML) documentation
 2. See Components & Rest APIs
 
 ---------------------------------------
