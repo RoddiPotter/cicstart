@@ -9,7 +9,7 @@ various data sources was prototyped. CICSTART is a realization of that prototype
 maturity and building new components required to fulfil the objective "Give a researcher consistent access to data, compute, and 
 storage resources by leveraging existing hardware and software assets".  
 
-This object is acheived with the following goals:
+This object is achieved with the following goals:
 
 1. Registering file urls in a searchable catalogue via a REST api.
 2. Accessing files at those urls through a REST api.
@@ -46,13 +46,14 @@ The components that make up the CICSTART platform are:
 > web service access by research software and/or other users of the platform to data files. This service also enables an innovative 
 > mechanism for distributed storage in the platform.
 
-## Proxy
-> A Proxy Service that manages the allocation of cloud resources and supervises the dispatching of research software jobs on those 
-> resources.
+## Macro
+> A service that is used to generate CML client binary software for running on arbitrary computing resources.  In-progress work to
+> start VM instances on behalf of CICSTART users and dispatch CML scripts to those VMs.
 
-## Wrapper
-> A Proxy Framework, which is a "thin wrapper" used to make legacy software accessible via web service calls, and which allows 
-> for interaction with other platform services (Catalogue, File Service, Authentication, VFS, and Proxy).
+## CICSTART Macro Language (CML)
+> A scripting language used to interact with CICSTART resources (Catalogue and VFS) and run arbitrary command line processes.  A script
+> can be used to find and access scientific data and then run arbitrary software against that data.  The script can also be used to
+> define where the results should be placed.  This is an evolving work-in-progress. 
 
 ---------------------------------------
 
@@ -69,7 +70,7 @@ You are using the REST APIs offered by CICSTART to build your own data portal.
     
 ### For the model developer
 You are developing a computational model and you want it served by CICSTART
-1. See Wrapper documentation
+1. See [Macro](Macro) and [CML](CML) documentation
 2. See Components & Rest APIs
 
 ---------------------------------------
