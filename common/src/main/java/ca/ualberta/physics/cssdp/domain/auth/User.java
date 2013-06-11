@@ -108,6 +108,23 @@ public class User extends Persistent implements Serializable {
 	@Column(name = "country", length = 100, nullable = true)
 	private String country;
 
+	// TODO this should be a collection of cloud credentials (a map by cloud id)
+	
+	/*
+	 * The users open stack username.
+	 */
+	@Column(name = "openstack_username", length = 100, nullable = true)
+	private String openStackUsername;
+
+	/*
+	 * The users open stack password.
+	 */
+	@Column(name = "openstack_password", length = 100, nullable = true)
+	private String openStackPassword;
+
+	@Column(name = "openstack_keyname", length = 100, nullable = true)
+	private String keyname;
+
 	public User() {
 		// establish defaults
 		deleted = false;
@@ -251,5 +268,35 @@ public class User extends Persistent implements Serializable {
 		setPasswordDigest(user.getPasswordDigest());
 		setPasswordSalt(user.getPasswordSalt());
 		setRole(user.getRole());
+	}
+
+	@ApiProperty(required = false, notes = "The username for creating open stack resources")
+	@XmlElement
+	public String getOpenStackUsername() {
+		return openStackUsername;
+	}
+
+	public void setOpenStackUsername(String openStackUsername) {
+		this.openStackUsername = openStackUsername;
+	}
+
+	@ApiProperty(required = false, notes = "The open stack username password")
+	@XmlElement
+	public String getOpenStackPassword() {
+		return openStackPassword;
+	}
+
+	public void setOpenStackPassword(String openStackPassword) {
+		this.openStackPassword = openStackPassword;
+	}
+
+	@ApiProperty(required = false, notes = "The name of the public/private keypair you want injected into the instance")
+	@XmlElement
+	public String getKeyname() {
+		return keyname;
+	}
+
+	public void setKeyname(String keyname) {
+		this.keyname = keyname;
 	}
 }

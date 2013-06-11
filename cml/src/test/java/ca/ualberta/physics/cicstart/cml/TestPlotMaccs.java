@@ -10,7 +10,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import ca.ualberta.physics.cicstart.cml.command.CMLRuntime;
 import ca.ualberta.physics.cicstart.cml.command.Macro;
 
 import com.google.common.base.Joiner;
@@ -18,7 +17,6 @@ import com.google.common.base.Joiner;
 public class TestPlotMaccs {
 
 	private Macro macro;
-	private CMLRuntime runtime;
 
 	@Before
 	public void setup() throws IOException {
@@ -39,7 +37,6 @@ public class TestPlotMaccs {
 
 		walker.walk(macro, tree);
 
-		runtime = new CMLRuntime("testJob", "testSession");
 	}
 
 	@Test

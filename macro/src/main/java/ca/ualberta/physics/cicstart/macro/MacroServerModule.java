@@ -18,6 +18,7 @@
  */
 package ca.ualberta.physics.cicstart.macro;
 
+import ca.ualberta.physics.cicstart.macro.service.CloudService;
 import ca.ualberta.physics.cicstart.macro.service.MacroService;
 import ca.ualberta.physics.cssdp.configuration.JSONObjectMapperProvider;
 import ca.ualberta.physics.cssdp.configuration.Slf4jLoggerInitializer;
@@ -42,7 +43,7 @@ public class MacroServerModule extends AbstractModule {
 		bind(ObjectMapper.class).toProvider(new JSONObjectMapperProvider());
 
 		bind(MacroService.class).in(Scopes.SINGLETON);
-
+		bind(CloudService.class).in(Scopes.SINGLETON);
 	}
 
 }

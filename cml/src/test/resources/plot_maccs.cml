@@ -1,8 +1,8 @@
-// future, run on a vm
-//vm = start("ami12345","tiny","Alberta");
+// start a vm
+vm = startVM($CICSTART.session, "DAIR", "Ubuntu 12.04 cloudimg amd64", "m1.tiny");
 
-// localhost becomes $vm when start command exists
-on $localhost {	
+// use special $localhost to run on all vm's or to test locally
+on $vm {	
 
 	// Get the gnuplot script from my VFS.
 	gnuPlotScript = getVFS($CICSTART.session,"/maccs.gp");
@@ -18,10 +18,10 @@ on $localhost {
 	foreach file in $maccsData {
 			
 		// run gnuplot (assuming it's on the path)
-		run("gnuplot -e \"filename='$file'\" $gnuPlotScript", "3");
+		run("gnuplot -e \"filename='$file'\" $gnuPlotScript", 3);
 		
 		// convert eps to png files.
-		run("convert -density 300 -alpha off $file.eps $file.png", "3");
+		run("convert -density 300 -alpha off $file.eps $file.png", 3);
 			
 		// put the png back onto my VFS
 		putVFS($CICSTART.session, "/$JOBID","$file.png");

@@ -323,6 +323,9 @@ public abstract class ComponentProperties {
 	 * have hibernate.connection.url, hibernate.connection.driver a call to
 	 * getSet("hibernate") will return a Properties with these two items in it.
 	 * 
+	 * The resulting property keys will contain the prefix, so to get
+	 * hibernate.connection.url use props.getString("hibernate.connection.url")
+	 * 
 	 * @param prefix
 	 * @return
 	 */
@@ -425,9 +428,9 @@ public abstract class ComponentProperties {
 	}
 
 	public static Properties dump() {
-		
+
 		Properties allProps = new Properties();
-		
+
 		Set<String> components = INSTANCES.keySet();
 		for (String componentName : components) {
 			ComponentProperties properties = ComponentProperties
@@ -437,7 +440,8 @@ public abstract class ComponentProperties {
 			List<String> keys = new ArrayList<String>(stringPropertyNames);
 			Collections.sort(keys);
 			for (String key : keys) {
-				allProps.setProperty(componentName + "." + key, properties.getString(key));
+				allProps.setProperty(componentName + "." + key,
+						properties.getString(key));
 			}
 		}
 

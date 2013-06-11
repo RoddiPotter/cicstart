@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
 import ca.ualberta.physics.cssdp.domain.catalogue.CatalogueSearchRequest;
+import ca.ualberta.physics.cssdp.domain.macro.Instance;
 import ca.ualberta.physics.cssdp.model.Mnemonic;
 
 import com.google.common.base.Joiner;
@@ -34,6 +35,7 @@ public class CMLRuntime {
 	private static final String LOCALHOST = "localhost";
 
 	private final Map<String, Object> variableData = new HashMap<String, Object>();
+	private final Map<String, Instance> instances = new HashMap<String, Instance>();
 
 	public CMLRuntime(String jobId, String cicstartSession) {
 		// set globals
@@ -66,10 +68,28 @@ public class CMLRuntime {
 		logger.info("running " + cmd.toString());
 		cmd.execute(this);
 		Object result = cmd.getResult();
-		String variableName = cmdDef.getAssignment();
 
-		if (result != null && !Strings.isNullOrEmpty(variableName)) {
-			variableData.put(variableName, result);
+		if (cmd instanceof StartVM) {
+			Instance instance = (Instance) result;
+			if (instance != null) {
+				instances.put(instance.ipAddress, instance);
+				
+				String variableName = cmdDef.getAssignment();
+
+				if (result != null) {
+					variableData.put(variableName, result);
+				}
+				
+			} else {
+				logger.warn("Instance not started for " + cmdDef.getSignature());
+			}
+		} else {
+
+			String variableName = cmdDef.getAssignment();
+
+			if (result != null && !Strings.isNullOrEmpty(variableName)) {
+				variableData.put(variableName, result);
+			}
 		}
 		logger.info(FINALIZE_SESSION_MARKER, "About to end the job");
 	}
@@ -121,11 +141,11 @@ public class CMLRuntime {
 		} else {
 			t = (T) value;
 		}
-		
+
 		// TODO report invalid variable references
-		
+
 		if (clazz.equals(String.class)) {
-			t = (T) ((String)t).replaceAll("^\"|\"$", "");
+			t = (T) ((String) t).replaceAll("^\"|\"$", "");
 		}
 
 		return t;
@@ -238,6 +258,28 @@ public class CMLRuntime {
 			}
 		}
 
+		if (name.equals("startVM")) {
+			String cloud = null;
+			String image = null;
+			String flavor = null;
+			if (commandDef.getParameterNames().size() == 3) {
+				cloud = commandDef.getParameterNames().get(0);
+				image = commandDef.getParameterNames().get(1);
+				flavor = commandDef.getParameterNames().get(2);
+			} else {
+				throw new IllegalArgumentException(
+						"Invalid definition for startVM, 3 parameters are required");
+
+			}
+
+			String session = (String) variableData.get(CICSTARTSESSION);
+			String jobId = (String) variableData.get(JOBID);
+			cloud = mutate(cloud, String.class);
+			image = mutate(image, String.class);
+			flavor = mutate(flavor, String.class);
+			return new StartVM(session, jobId, cloud, image, flavor);
+		}
+
 		throw new IllegalArgumentException(
 				"Don't know how to build a command with name " + name);
 	}
@@ -248,6 +290,10 @@ public class CMLRuntime {
 
 	public String getRequestId() {
 		return (String) variableData.get(JOBID);
+	}
+
+	public Instance getInstance(String host) {
+		return instances.get(host);
 	}
 
 }

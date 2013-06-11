@@ -35,7 +35,7 @@ public class Macro extends CMLBaseListener {
 
 	@Override
 	public void exitOn(OnContext ctx) {
-		CommandDefinition cmd = nesting.pop();
+		OnCommandDefinition cmd = (OnCommandDefinition) nesting.pop();
 		if (nesting.size() == 0) {
 			commands.add(cmd);
 		} else {

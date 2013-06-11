@@ -29,6 +29,7 @@ import java.nio.charset.Charset;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
@@ -49,10 +50,15 @@ import javax.ws.rs.core.UriInfo;
 import org.apache.commons.compress.utils.IOUtils;
 
 import ca.ualberta.physics.cicstart.macro.InjectorHolder;
+import ca.ualberta.physics.cicstart.macro.service.CloudService;
+import ca.ualberta.physics.cicstart.macro.service.Image;
 import ca.ualberta.physics.cicstart.macro.service.MacroService;
 import ca.ualberta.physics.cicstart.macro.service.MacroService.JobStatus;
+import ca.ualberta.physics.cicstart.macro.service.OpenStackCloud.Flavor;
 import ca.ualberta.physics.cssdp.configuration.Common;
 import ca.ualberta.physics.cssdp.domain.auth.User;
+import ca.ualberta.physics.cssdp.domain.macro.Instance;
+import ca.ualberta.physics.cssdp.domain.macro.InstanceSpec;
 import ca.ualberta.physics.cssdp.service.ServiceResponse;
 
 import com.google.common.base.Throwables;
@@ -66,6 +72,9 @@ public class MacroResource {
 
 	@Inject
 	private MacroService macroService;
+
+	@Inject
+	private CloudService cloudService;
 
 	public MacroResource() {
 		InjectorHolder.inject(this);
@@ -277,20 +286,86 @@ public class MacroResource {
 
 			}
 			return Response.ok().build();
-			// ResponseBuilder response = Response.ok((Object) clientBinary);
-			// response.type(MediaType.APPLICATION_OCTET_STREAM);
-			// response.header("Content-Disposition", "attachment; "
-			// + "filename=\"" + clientBinary.getName() + "\"");
-			//
-			// return response.build();
-			//
-			// } else {
-			// return Response.status(500).entity(sr.getMessagesAsStrings())
-			// .build();
 		} else {
 			return Response.status(500).entity(sr.getMessagesAsStrings())
 					.build();
 		}
+	}
+
+	@Path("/vm")
+	@POST
+	@ApiOperation(value = "starts a remote VM defined by a macro script", notes = "")
+	@ApiErrors(value = {
+			@ApiError(code = 400, reason = "No request id supplied"),
+			@ApiError(code = 404, reason = "Request not found"),
+			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+	public Response startVM(
+			@ApiParam(value = "The instance specification to use when starting the VM", required = true) InstanceSpec instanceSpec,
+			@ApiParam(value = "The authenticated session token", required = true) @HeaderParam("CICSTART.session") String sessionToken) {
+
+		String cloudName = instanceSpec.getCloud();
+		String jobId = instanceSpec.getRequestId();
+		String imageName = instanceSpec.getImage();
+		String flavorName = instanceSpec.getFlavor();
+
+		Image theImage = null;
+		for (Image image : cloudService.getImages(cloudName, sessionToken)
+				.getPayload()) {
+
+			if (image.name.equals(imageName)) {
+				theImage = image;
+				break;
+			}
+
+		}
+
+		if (theImage == null) {
+			return Response.status(400).entity("No image named " + imageName)
+					.build();
+		}
+
+		Flavor flavor = null;
+		try {
+			flavor = Flavor.valueOf(flavorName.replaceAll("\\.", "_"));
+		} catch (IllegalArgumentException e) {
+			return Response.status(400).entity("No flavor named " + flavorName)
+					.build();
+
+		}
+
+		ServiceResponse<Instance> sr = cloudService.startInstance(cloudName,
+				theImage, flavor, sessionToken, jobId);
+
+		if (sr.isRequestOk()) {
+			return Response.ok(sr.getPayload()).build();
+		} else {
+			return Response.status(500).entity(sr.getMessagesAsStrings())
+					.build();
+		}
+
+	}
+
+	@Path("/vm")
+	@DELETE
+	@ApiOperation(value = "stops a remote VM", notes = "")
+	@ApiErrors(value = {
+			@ApiError(code = 400, reason = "No request id supplied"),
+			@ApiError(code = 404, reason = "Request not found"),
+			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+	public Response stopVM(
+			@ApiParam(value = "The instance to stop", required = true) Instance instance,
+			@ApiParam(value = "The authenticated session token", required = true) @HeaderParam("CICSTART.session") String sessionToken) {
+
+		ServiceResponse<Void> sr = cloudService.stopInstance(instance,
+				sessionToken);
+
+		if (sr.isRequestOk()) {
+			return Response.ok(sr.getPayload()).build();
+		} else {
+			return Response.status(500).entity(sr.getMessagesAsStrings())
+					.build();
+		}
+
 	}
 
 }

@@ -4,6 +4,7 @@ import static com.jayway.restassured.RestAssured.expect;
 import static com.jayway.restassured.RestAssured.given;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
@@ -173,4 +174,30 @@ public class FullScriptTest extends IntegrationTestScaffolding {
 		}
 	}
 
+	@Test
+	public void testStartVMAndRunStuffOnIt() throws Exception {
+		
+		ANTLRInputStream input = new ANTLRInputStream(
+				ParsingAndBuildingTests.class.getResourceAsStream("/test3.cml"));
+
+		CMLLexer lexer = new CMLLexer(input);
+
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+
+		CMLParser parser = new CMLParser(tokens);
+
+		ParseTreeWalker walker = new ParseTreeWalker();
+
+		Macro macro = new Macro();
+
+		ParseTree tree = parser.macro();
+
+		walker.walk(macro, tree);
+
+		CMLRuntime runtime = new CMLRuntime("testJob", sessionToken);
+		runtime.run(macro.getCommands());
+
+		
+	}
+	
 }

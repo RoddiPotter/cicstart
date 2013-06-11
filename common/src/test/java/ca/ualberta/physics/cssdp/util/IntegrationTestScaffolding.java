@@ -202,6 +202,8 @@ public abstract class IntegrationTestScaffolding {
 		newDataManager.setInstitution("institution");
 		newDataManager.setPassword("password");
 		newDataManager.setRole(Role.DATA_MANAGER);
+		newDataManager.setOpenStackUsername("cicstart");
+		newDataManager.setOpenStackPassword("c1c$tart");
 
 		String authUrl = Common.properties().getString("auth.api.url");
 		Response res = given().content(newDataManager).and()
