@@ -33,6 +33,7 @@ import ca.ualberta.physics.cssdp.configuration.ApplicationProperties;
 import ca.ualberta.physics.cssdp.configuration.Common;
 import ca.ualberta.physics.cssdp.configuration.CommonServletContainer;
 import ca.ualberta.physics.cssdp.configuration.JSONObjectMapperProvider;
+import ca.ualberta.physics.cssdp.configuration.MacroServer;
 import ca.ualberta.physics.cssdp.domain.auth.User;
 import ca.ualberta.physics.cssdp.domain.auth.User.Role;
 
@@ -202,8 +203,8 @@ public abstract class IntegrationTestScaffolding {
 		newDataManager.setInstitution("institution");
 		newDataManager.setPassword("password");
 		newDataManager.setRole(Role.DATA_MANAGER);
-		newDataManager.setOpenStackUsername("cicstart");
-		newDataManager.setOpenStackPassword("c1c$tart");
+		newDataManager.setOpenStackUsername(MacroServer.properties().getString("cicstart.test.openstack.username"));
+		newDataManager.setOpenStackPassword(MacroServer.properties().getString("cicstart.test.openstack.password"));
 
 		String authUrl = Common.properties().getString("auth.api.url");
 		Response res = given().content(newDataManager).and()

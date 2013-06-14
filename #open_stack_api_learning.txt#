@@ -1,0 +1,40 @@
+nova		http://208.75.74.10:8774/v2/676c6c8ec151432ea94f6fe5f50e57ee
+swift_s3	https://208.75.74.250:8080
+glance		http://208.75.74.10:9292/v1
+cinder		http://208.75.74.10:8776/v2/676c6c8ec151432ea94f6fe5f50e57ee
+nova_ec2	http://208.75.74.10:8773/services/Cloud
+swift		https://208.75.74.250:8080/v1/AUTH_676c6c8ec151432ea94f6fe5f50e57ee
+keystone	http://208.75.74.10:5000/v2.0
+
+tenant_id=676c6c8ec151432ea94f6fe5f50e57ee
+
+get auth token
+curl -k -X 'POST' -v http://208.75.74.10:5000/v2.0/tokens -d '{"auth":{"passwordCredentials":{"username": "cicstart", "password":"c1c$tart"}, "tenantId":"676c6c8ec151432ea94f6fe5f50e57ee"}}' -H 'Content-type: application/json'
+
+token=93cb8e0c3b5445ca914bbb2d72c8f9ad
+
+list servers
+curl -v -H "X-Auth-Token:93cb8e0c3b5445ca914bbb2d72c8f9ad" http://208.75.74.10:8774/v2/676c6c8ec151432ea94f6fe5f50e57ee/servers
+
+list images
+curl -v -H "X-Auth-Token:93cb8e0c3b5445ca914bbb2d72c8f9ad" http://208.75.74.10:8774/v2/676c6c8ec151432ea94f6fe5f50e57ee/images
+
+list flavors
+curl -v -H "X-Auth-Token:93cb8e0c3b5445ca914bbb2d72c8f9ad" http://208.75.74.10:8774/v2/676c6c8ec151432ea94f6fe5f50e57ee/flavors
+m1.tiny: curl -v -H "X-Auth-Token:93cb8e0c3b5445ca914bbb2d72c8f9ad" http://208.75.74.10:8774/v2/676c6c8ec151432ea94f6fe5f50e57ee/flavors/1
+m1.small: curl -v -H "X-Auth-Token:93cb8e0c3b5445ca914bbb2d72c8f9ad" http://208.75.74.10:8774/v2/676c6c8ec151432ea94f6fe5f50e57ee/flavors/10
+m1.medium: curl -v -H "X-Auth-Token:93cb8e0c3b5445ca914bbb2d72c8f9ad" http://208.75.74.10:8774/v2/676c6c8ec151432ea94f6fe5f50e57ee/flavors/12
+m1.large: curl -v -H "X-Auth-Token:93cb8e0c3b5445ca914bbb2d72c8f9ad" http://208.75.74.10:8774/v2/676c6c8ec151432ea94f6fe5f50e57ee/flavors/13
+m1.xlarge: curl -v -H "X-Auth-Token:93cb8e0c3b5445ca914bbb2d72c8f9ad" http://208.75.74.10:8774/v2/676c6c8ec151432ea94f6fe5f50e57ee/flavors/11
+
+create server
+
+curl -H "X-Auth-Token:93cb8e0c3b5445ca914bbb2d72c8f9ad" -k -X 'POST' -v http://208.75.74.10:8774/v2/676c6c8ec151432ea94f6fe5f50e57ee/servers -d '{ "server": { "flavorRef": "http://208.75.74.10:8774/v2/676c6c8ec151432ea94f6fe5f50e57ee/flavors/1", "imageRef": "http://208.75.74.10:8774/v2/676c6c8ec151432ea94f6fe5f50e57ee/images/a8951146-154f-481b-b65a-3d3337ca685d", "name": "fbd7347d-505e-44f0-a7ec-4a062c50fd2c-testJobId" }}' -H 'Content-type: application/json'
+
+list volumens
+
+curl -H "X-Auth-Token:93cb8e0c3b5445ca914bbb2d72c8f9ad" -k -X GET http://208.75.74.10:8776/v2/676c6c8ec151432ea94f6fe5f50e57ee/volumes
+
+list networks
+
+curl -H "X-Auth-Token:93cb8e0c3b5445ca914bbb2d72c8f9ad" -k -X GET http://208.75.74.10:8774/v2/676c6c8ec151432ea94f6fe5f50e57ee/flavors

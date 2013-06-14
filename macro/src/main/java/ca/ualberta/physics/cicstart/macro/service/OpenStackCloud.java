@@ -2,6 +2,7 @@ package ca.ualberta.physics.cicstart.macro.service;
 
 import static com.jayway.restassured.RestAssured.given;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Throwables;
+import com.google.common.net.InetAddresses;
 import com.google.inject.Inject;
 import com.jayway.restassured.path.json.JsonPath;
 import com.jayway.restassured.response.Response;
@@ -135,7 +137,7 @@ public class OpenStackCloud implements Cloud {
 				.and().header("Content-Type", "application/json").and()
 				.content(jsonServer).post(createServerUrl);
 
-		// ovoid infinite loop below in server status check
+		// avoid infinite loop below in server status check
 		if (res.getStatusCode() == 202) {
 
 			// get some reference info so we can interact with it
@@ -185,10 +187,25 @@ public class OpenStackCloud implements Cloud {
 			}
 
 			// final bit of info, the internal ip address we need to log into
-			// the
-			// machine
+			// the machine
 			instance.ipAddress = instanceQueryResponseJsonPath
 					.getString("server.addresses.novanetwork_28[0].addr");
+
+			try {
+				InetAddresses.forString(instance.ipAddress).isReachable(1);
+			} catch (IOException e) {
+
+				// TODO allocate and assign external ip
+				
+				/*
+				 * Note that DAIR does not expose the Quantum service. This
+				 * means that I can't download a CML binary client and run the
+				 * script in the cloud, unless I'm logged into the machine
+				 * already.
+				 */
+
+			}
+
 			return instance;
 
 		} else {
