@@ -82,7 +82,7 @@ public class MacroService {
 
 		walker.walk(macro, tree);
 
-		String requestId = sessionToken + CMLRuntime.newJobId();
+		String requestId = sessionToken + ":" + CMLRuntime.newJobId();
 		final CMLRuntime runtime = new CMLRuntime(requestId, sessionToken);
 
 		sr.setPayload(runtime.getRequestId());

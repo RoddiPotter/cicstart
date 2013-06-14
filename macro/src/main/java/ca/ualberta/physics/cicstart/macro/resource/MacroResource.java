@@ -61,6 +61,7 @@ import ca.ualberta.physics.cssdp.domain.macro.Instance;
 import ca.ualberta.physics.cssdp.domain.macro.InstanceSpec;
 import ca.ualberta.physics.cssdp.service.ServiceResponse;
 
+import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
 import com.google.inject.Inject;
 import com.wordnik.swagger.annotations.ApiError;
@@ -80,41 +81,35 @@ public class MacroResource {
 		InjectorHolder.inject(this);
 	}
 
-	// @POST
-	// @ApiOperation(value = "Run a macro", notes =
-	// "Run the given macro.  HTTP 201 is returned along with a "
-	// + "location header which can be used to access status and logs")
-	// @ApiErrors(value = {
-	// @ApiError(code = 400, reason = "No CML script supplied"),
-	// @ApiError(code = 500, reason =
-	// "Unable to complete request, see response body for error details") })
-	// public Response runScript(
-	// @ApiParam(value = "Script to run", required = true) String cmlScript,
-	// @ApiParam(value = "Dry run flag - don't actually run anything", required
-	// = false, defaultValue = "false") @QueryParam("dryrun")
-	// @DefaultValue("false") boolean dryrun,
-	// @ApiParam(value = "The authenticated session token", required = true)
-	// @HeaderParam("CICSTART.session") String sessionToken,
-	// @Context UriInfo uriInfo) {
-	//
-	// if (Strings.isNullOrEmpty(cmlScript)) {
-	// return Response.status(400).build();
-	// }
-	//
-	// ServiceResponse<String> sr = macroService.run(cmlScript, sessionToken);
-	// if (sr.isRequestOk()) {
-	// String jobId = sr.getPayload();
-	// return Response
-	// .status(201)
-	// .location(
-	// UriBuilder.fromUri(uriInfo.getBaseUri())
-	// .path(getClass()).path(jobId)
-	// .path("status").build()).build();
-	// } else {
-	// return Response.status(500).entity(sr.getMessagesAsStrings())
-	// .build();
-	// }
-	// }
+	@POST
+	@ApiOperation(value = "Run a macro", notes = "Run the given macro.  HTTP 201 is returned along with a "
+			+ "location header which can be used to access status and logs")
+	@ApiErrors(value = {
+			@ApiError(code = 400, reason = "No CML script supplied"),
+			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+	public Response runScript(
+			@ApiParam(value = "Script to run", required = true) String cmlScript,
+			@ApiParam(value = "The authenticated session token", required = true) @HeaderParam("CICSTART.session") String sessionToken,
+			@Context UriInfo uriInfo) {
+
+		if (Strings.isNullOrEmpty(cmlScript)) {
+			return Response.status(400).build();
+		}
+
+		ServiceResponse<String> sr = macroService.run(cmlScript, sessionToken);
+		if (sr.isRequestOk()) {
+			String jobId = sr.getPayload();
+			return Response
+					.status(201)
+					.location(
+							UriBuilder.fromUri(uriInfo.getBaseUri())
+									.path(getClass()).path(jobId)
+									.path("status").build()).build();
+		} else {
+			return Response.status(500).entity(sr.getMessagesAsStrings())
+					.build();
+		}
+	}
 
 	@Path("/{requestId}/status")
 	@GET
