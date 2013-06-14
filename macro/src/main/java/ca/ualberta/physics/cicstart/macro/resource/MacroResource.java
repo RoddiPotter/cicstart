@@ -81,6 +81,7 @@ public class MacroResource {
 		InjectorHolder.inject(this);
 	}
 
+	@Path("/run")
 	@POST
 	@ApiOperation(value = "Run a macro", notes = "Run the given macro.  HTTP 201 is returned along with a "
 			+ "location header which can be used to access status and logs")
