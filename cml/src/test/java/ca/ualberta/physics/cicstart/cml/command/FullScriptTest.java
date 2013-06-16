@@ -4,6 +4,7 @@ import static com.jayway.restassured.RestAssured.expect;
 import static com.jayway.restassured.RestAssured.given;
 
 import java.io.File;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
@@ -12,7 +13,6 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import ca.ualberta.physics.cicstart.cml.CMLLexer;
@@ -34,6 +34,7 @@ import ca.ualberta.physics.cssdp.model.Mnemonic;
 import ca.ualberta.physics.cssdp.util.IntegrationTestScaffolding;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.io.Files;
 import com.google.inject.Inject;
 import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.response.Response;
@@ -141,8 +142,9 @@ public class FullScriptTest extends IntegrationTestScaffolding {
 			file.delete();
 		}
 
-		ANTLRInputStream input = new ANTLRInputStream(
-				ParsingAndBuildingTests.class.getResourceAsStream("/test2.cml"));
+		String script = Files.toString(new File(ParsingAndBuildingTests.class
+				.getResource("/test2.cml").toURI()), Charset.forName("UTF-8"));
+		ANTLRInputStream input = new ANTLRInputStream(script);
 
 		CMLLexer lexer = new CMLLexer(input);
 
@@ -152,7 +154,7 @@ public class FullScriptTest extends IntegrationTestScaffolding {
 
 		ParseTreeWalker walker = new ParseTreeWalker();
 
-		Macro macro = new Macro();
+		Macro macro = new Macro(script);
 
 		ParseTree tree = parser.macro();
 
@@ -174,16 +176,12 @@ public class FullScriptTest extends IntegrationTestScaffolding {
 		}
 	}
 
-	/*
-	 * THIS TEST FAILS because DAIR does not provide access to Quantum. This
-	 * test can only be run from within the cloud.
-	 */
 	@Test
-	@Ignore("Quantum is unavailable in DAIR")
 	public void testStartVMAndRunStuffOnIt() throws Exception {
 
-		ANTLRInputStream input = new ANTLRInputStream(
-				ParsingAndBuildingTests.class.getResourceAsStream("/test3.cml"));
+		String script = Files.toString(new File(ParsingAndBuildingTests.class
+				.getResource("/test3.cml").toURI()), Charset.forName("UTF-8"));
+		ANTLRInputStream input = new ANTLRInputStream(script);
 
 		CMLLexer lexer = new CMLLexer(input);
 
@@ -193,7 +191,7 @@ public class FullScriptTest extends IntegrationTestScaffolding {
 
 		ParseTreeWalker walker = new ParseTreeWalker();
 
-		Macro macro = new Macro();
+		Macro macro = new Macro(script);
 
 		ParseTree tree = parser.macro();
 

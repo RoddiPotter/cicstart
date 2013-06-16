@@ -73,13 +73,13 @@ public class CMLRuntime {
 			Instance instance = (Instance) result;
 			if (instance != null) {
 				instances.put(instance.ipAddress, instance);
-				
+
 				String variableName = cmdDef.getAssignment();
 
 				if (result != null) {
 					variableData.put(variableName, result);
 				}
-				
+
 			} else {
 				logger.warn("Instance not started for " + cmdDef.getSignature());
 			}
@@ -144,7 +144,7 @@ public class CMLRuntime {
 
 		// TODO report invalid variable references
 
-		if (clazz.equals(String.class)) {
+		if (clazz.equals(String.class) && t != null) {
 			t = (T) ((String) t).replaceAll("^\"|\"$", "");
 		}
 
@@ -162,8 +162,9 @@ public class CMLRuntime {
 
 		if (name.equals("on")) {
 			OnCommandDefinition onCommandDef = (OnCommandDefinition) commandDef;
-			On cmd = new On(mutate(onCommandDef.getServerVar(), String.class),
-					onCommandDef.getChildren());
+			On cmd = new On(
+					mutate(onCommandDef.getServerVar(), Instance.class),
+					onCommandDef.getChildren(), onCommandDef.getMacroScript());
 			return cmd;
 		}
 
@@ -294,6 +295,10 @@ public class CMLRuntime {
 
 	public Instance getInstance(String host) {
 		return instances.get(host);
+	}
+
+	public String getCICSTARTSession() {
+		return (String) variableData.get(CICSTARTSESSION);
 	}
 
 }

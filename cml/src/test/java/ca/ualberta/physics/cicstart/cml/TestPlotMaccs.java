@@ -1,6 +1,7 @@
 package ca.ualberta.physics.cicstart.cml;
 
-import java.io.IOException;
+import java.io.File;
+import java.nio.charset.Charset;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -13,15 +14,19 @@ import org.junit.Test;
 import ca.ualberta.physics.cicstart.cml.command.Macro;
 
 import com.google.common.base.Joiner;
+import com.google.common.io.Files;
 
 public class TestPlotMaccs {
 
 	private Macro macro;
 
 	@Before
-	public void setup() throws IOException {
-		ANTLRInputStream input = new ANTLRInputStream(
-				TestPlotMaccs.class.getResourceAsStream("/plot_maccs.cml"));
+	public void setup() throws Exception {
+
+		String script = Files.toString(new File(ParsingAndBuildingTests.class
+				.getResource("/plot_maccs.cml").toURI()), Charset
+				.forName("UTF-8"));
+		ANTLRInputStream input = new ANTLRInputStream(script);
 
 		CMLLexer lexer = new CMLLexer(input);
 
@@ -31,7 +36,7 @@ public class TestPlotMaccs {
 
 		ParseTreeWalker walker = new ParseTreeWalker();
 
-		macro = new Macro();
+		macro = new Macro(script);
 
 		ParseTree tree = parser.macro();
 

@@ -7,7 +7,7 @@ public class Instance {
 	public String cloudName;
 	public String ipAddress;
 	public String href;
-	public String password;
+	public String id;
 
 	@Override
 	public boolean equals(Object obj) {
@@ -17,8 +17,7 @@ public class Instance {
 	@Override
 	public String toString() {
 		return Objects.toStringHelper(this).add("ipAddress", ipAddress)
-				.add("href", href).add("password", password)
-				.toString();
+				.add("href", href).add("id", id).toString();
 	}
 
 }

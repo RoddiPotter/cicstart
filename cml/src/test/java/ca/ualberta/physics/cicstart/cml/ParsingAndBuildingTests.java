@@ -1,7 +1,7 @@
 package ca.ualberta.physics.cicstart.cml;
 
 import java.io.File;
-import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +28,7 @@ import ca.ualberta.physics.cicstart.cml.command.PutVFS;
 import ca.ualberta.physics.cicstart.cml.command.Run;
 
 import com.google.common.base.Joiner;
+import com.google.common.io.Files;
 
 public class ParsingAndBuildingTests {
 
@@ -35,9 +36,10 @@ public class ParsingAndBuildingTests {
 	private CMLRuntime runtime;
 
 	@Before
-	public void setup() throws IOException {
-		ANTLRInputStream input = new ANTLRInputStream(
-				ParsingAndBuildingTests.class.getResourceAsStream("/test.cml"));
+	public void setup() throws Exception {
+		String script = Files.toString(new File(ParsingAndBuildingTests.class
+				.getResource("/test.cml").toURI()), Charset.forName("UTF-8"));
+		ANTLRInputStream input = new ANTLRInputStream(script);
 
 		CMLLexer lexer = new CMLLexer(input);
 
@@ -47,7 +49,7 @@ public class ParsingAndBuildingTests {
 
 		ParseTreeWalker walker = new ParseTreeWalker();
 
-		macro = new Macro();
+		macro = new Macro(script);
 
 		ParseTree tree = parser.macro();
 

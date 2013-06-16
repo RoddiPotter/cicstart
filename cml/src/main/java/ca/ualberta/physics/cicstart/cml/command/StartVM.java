@@ -77,7 +77,7 @@ public class StartVM implements Command {
 								.info("StartVM: Instance started with ip address "
 										+ instance.ipAddress
 										+ " and id "
-										+ instance.href);
+										+ instance.id);
 					}
 
 					correctServer = true;

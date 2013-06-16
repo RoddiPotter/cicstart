@@ -17,19 +17,25 @@ import ca.ualberta.physics.cicstart.cml.CMLParser.VariableContext;
 
 public class Macro extends CMLBaseListener {
 
+	private final String originalScript;
+	
 	private List<CommandDefinition> commands = new ArrayList<CommandDefinition>();
 
 	private Stack<NestedCommandDefinition> nesting = new Stack<NestedCommandDefinition>();
 
 	private CommandDefinition command;
 	private String variableToAssign;
+	
+	public Macro(String cmlScript) {
+		this.originalScript = cmlScript;
+	}
 
 	@Override
 	public void enterOn(OnContext ctx) {
 		VariableContext variable = ctx.variable();
 		OnCommandDefinition cmd = new OnCommandDefinition(ctx.getText(), ctx
 				.getChild(0).getText(), variable != null ? variable.getText()
-				: ctx.STRING().getText());
+				: ctx.STRING().getText(), originalScript);
 		nesting.push(cmd);
 	}
 
@@ -117,5 +123,9 @@ public class Macro extends CMLBaseListener {
 
 	public List<CommandDefinition> getCommands() {
 		return commands;
+	}
+
+	public String getScript() {
+		return originalScript;
 	}
 }

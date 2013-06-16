@@ -85,11 +85,15 @@ public class CloudService {
 			String whoisUrl = authResource + "/session.json/{session}/whois";
 			User user = get(whoisUrl, sessionToken).as(User.class);
 
-			Identity identity = cloud.authenticate(user.getOpenStackUsername(),
-					user.getOpenStackPassword());
+			Identity clientIdentity = cloud.authenticate(
+					user.getOpenStackUsername(), user.getOpenStackPassword());
 
-			Instance instance = cloud.startInstance(identity, image, flavor,
-					sessionToken + jobId);
+			// inject the cicstart public key into the users cloud identity
+			cloud.putKey(clientIdentity, "cicstart", MacroServer.properties()
+					.getString("cicstart.public.key"));
+
+			Instance instance = cloud.startInstance(clientIdentity, image,
+					flavor, sessionToken + jobId);
 
 			if (instance != null) {
 				sr.setPayload(instance);

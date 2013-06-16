@@ -72,8 +72,18 @@ public interface Cloud {
 
 	/**
 	 * Gets a list of images
+	 * 
 	 * @param sessionToken
 	 */
 	public List<Image> getImages(Identity identity);
+
+	/**
+	 * Adds the given key to this cloud account if it's not already there.
+	 * 
+	 * @param clientIdentity
+	 * @param keyname
+	 * @param publicKey
+	 */
+	public void putKey(Identity clientIdentity, String keyname, String publicKey);
 
 }

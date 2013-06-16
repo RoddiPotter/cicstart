@@ -32,6 +32,7 @@ import ca.ualberta.physics.cssdp.util.FileUtil;
 
 import com.google.common.base.Throwables;
 import com.google.common.io.Files;
+import com.google.common.net.InetAddresses;
 
 public class MacroService {
 
@@ -76,7 +77,7 @@ public class MacroService {
 
 		ParseTreeWalker walker = new ParseTreeWalker();
 
-		final Macro macro = new Macro();
+		final Macro macro = new Macro(cmlScript);
 
 		ParseTree tree = parser.macro();
 
@@ -172,7 +173,7 @@ public class MacroService {
 			String sessionToken, boolean includeJre) {
 
 		logger.debug("Got script to assemble: \n" + cmlScript);
-		
+
 		ServiceResponse<File> sr = new ServiceResponse<File>();
 
 		File clientTemplateDir = new File(MacroServer.properties().getString(
@@ -189,7 +190,8 @@ public class MacroService {
 
 		try {
 			// write the cmlScript to bin folder
-			File macroFile = new File(new File(buildDirectory, "bin"), "macro.cml");
+			File macroFile = new File(new File(buildDirectory, "bin"),
+					"macro.cml");
 			macroFile.createNewFile();
 			Files.write(cmlScript, macroFile, Charset.forName("UTF-8"));
 			macroFile.setExecutable(true, false);
@@ -215,18 +217,34 @@ public class MacroService {
 			overrides
 					.setProperty("common.logback.configuration", "logback.xml");
 
-			// the client will be run on an external device, so the external
-			// url's are needed for accessing CICSTART resources
-			overrides.setProperty("common.auth.api.url", Common.properties()
-					.getString("external.auth.api.url"));
-			overrides.setProperty("common.file.api.url", Common.properties()
-					.getString("external.file.api.url"));
-			overrides.setProperty("common.catalogue.api.url", Common
-					.properties().getString("external.catalogue.api.url"));
-			overrides.setProperty("common.macro.api.url", Common.properties()
-					.getString("external.macro.api.url"));
-			overrides.setProperty("common.vfs.api.url", Common.properties()
-					.getString("external.vfs.api.url"));
+			/*
+			 * Internal IP or External IP? Determine that before decided how to
+			 * override the properties when building the overrides. This is
+			 * required because when we run the client from outside the cloud
+			 * network, we need to use the external IP.... but if the binary is
+			 * being run on a VM on the same cloud as CICSTART, then we can not
+			 * use the external IP (unless the cloud is set to allow access....
+			 * DAIR is not)
+			 */
+
+			String CICSTARTInternalIP = MacroServer.properties().getString(
+					"CICSTART.server.internal");
+			if (InetAddresses.forString(CICSTARTInternalIP).isReachable(100)) {
+				// no overrides necessary
+			} else {
+				// the client will be run on an external device, so the external
+				// url's are needed for accessing CICSTART resources
+				overrides.setProperty("common.auth.api.url", Common
+						.properties().getString("external.auth.api.url"));
+				overrides.setProperty("common.file.api.url", Common
+						.properties().getString("external.file.api.url"));
+				overrides.setProperty("common.catalogue.api.url", Common
+						.properties().getString("external.catalogue.api.url"));
+				overrides.setProperty("common.macro.api.url", Common
+						.properties().getString("external.macro.api.url"));
+				overrides.setProperty("common.vfs.api.url", Common.properties()
+						.getString("external.vfs.api.url"));
+			}
 
 			os = new FileOutputStream(appProperties);
 			overrides.store(os,

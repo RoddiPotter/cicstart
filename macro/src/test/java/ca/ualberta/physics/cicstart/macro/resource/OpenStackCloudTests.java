@@ -27,19 +27,27 @@ public class OpenStackCloudTests extends MacroTestsScaffolding {
 		Identity id = cloud.authenticate(user.getOpenStackUsername(),
 				user.getOpenStackPassword());
 
-		Image image = new Image();
-		image.id = "a8951146-154f-481b-b65a-3d3337ca685d";
-		Instance instance = cloud.startInstance(id, image, Flavor.m1_tiny,
+		Image theImage = null;
+		for (Image image : cloud.getImages(id)) {
+
+			if (image.id.equals("a8951146-154f-481b-b65a-3d3337ca685d")) {
+				theImage = image;
+				break;
+			}
+
+		}
+
+		Instance instance = cloud.startInstance(id, theImage, Flavor.m1_tiny,
 				sessionToken + "testJobId");
 
 		Assert.assertFalse(Strings.isNullOrEmpty(instance.href));
 		Assert.assertFalse(Strings.isNullOrEmpty(instance.ipAddress));
-		Assert.assertFalse(Strings.isNullOrEmpty(instance.password));
+		Assert.assertFalse(Strings.isNullOrEmpty(instance.id));
 
-		System.out.println(instance.ipAddress + " " + instance.password);
+		System.out.println(instance.ipAddress + " " + instance.id);
 
 		// cleanup
-		cloud.stopInstance(id, instance);
+//		cloud.stopInstance(id, instance);
 
 	}
 
@@ -55,7 +63,6 @@ public class OpenStackCloudTests extends MacroTestsScaffolding {
 		List<Image> images = cloud.getImages(id);
 
 		Assert.assertTrue(images.size() >= 5);
-		
 
 	}
 }
