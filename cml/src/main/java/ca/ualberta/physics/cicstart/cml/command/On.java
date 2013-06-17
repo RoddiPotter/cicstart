@@ -30,6 +30,7 @@ public class On implements Command {
 
 	// the host these commands should be run on
 	private final String host;
+	private final String serverVar;
 	private final List<CommandDefinition> cmdsToRun;
 	private final String script;
 
@@ -37,8 +38,9 @@ public class On implements Command {
 	private int retryCount = 0;
 
 	public On(Instance instance, List<CommandDefinition> cmdsToRun,
-			String script) {
+			String script, String serverVar) {
 		this.host = instance.ipAddress;
+		this.serverVar = serverVar;
 		this.cmdsToRun = cmdsToRun;
 		this.script = script;
 	}
@@ -100,7 +102,9 @@ public class On implements Command {
 												+ runtime.getCICSTARTSession()
 												+ "\" -H Content-Type:\"application/octet-stream\" --data-binary "
 												+ "'"
-												+ script
+												+ script.replaceAll("\\$"
+														+ serverVar, "\""
+														+ host + "\"")
 												+ "'"
 												+ " -X POST \"http://10.0.28.3/macro/api"
 												// + Common.properties()
