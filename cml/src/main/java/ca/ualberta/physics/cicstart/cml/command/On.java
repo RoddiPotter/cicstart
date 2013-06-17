@@ -102,7 +102,7 @@ public class On implements Command {
 												+ "'"
 												+ script
 												+ "'"
-												+ " -X \"POST http://10.0.28.3/macro/api"
+												+ " -X POST \"http://10.0.28.3/macro/api"
 												// + Common.properties()
 												// .getString(
 												// "external.macro.api.url")
