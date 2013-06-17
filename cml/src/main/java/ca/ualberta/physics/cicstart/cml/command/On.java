@@ -106,7 +106,7 @@ public class On implements Command {
 												// + Common.properties()
 												// .getString(
 												// "external.macro.api.url")
-												+ "/macro.json/bin?include_jre=false > client.tar.gz");
+												+ "/macro.json/bin?include_jre=false&use_internal_network=true > client.tar.gz");
 
 								runOnRemote(client, "tar zxvf client.tar.gz");
 								runOnRemote(client, "cd bin && ./run");
