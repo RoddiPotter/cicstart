@@ -258,10 +258,11 @@ public class MacroResource {
 			@ApiParam(value = "Script to run", required = true) byte[] cmlScript,
 			@ApiParam(value = "The authenticated session token", required = true) @HeaderParam("CICSTART.session") String sessionToken,
 			@ApiParam(value = "Include embedded JRE?", required = false, defaultValue = "false") @QueryParam("include_jre") boolean includeJre,
+			@ApiParam(value = "Client running same network as CICSTART server?", required = false, defaultValue = "false") @QueryParam("use_internal_network") boolean useInternalNetwork,
 			@Context final HttpServletResponse response) {
 
 		ServiceResponse<File> sr = macroService.assembleClient(new String(
-				cmlScript, Charset.forName("UTF-8")), sessionToken, includeJre);
+				cmlScript, Charset.forName("UTF-8")), sessionToken, includeJre, useInternalNetwork);
 		if (sr.isRequestOk()) {
 
 			File clientBinary = sr.getPayload();

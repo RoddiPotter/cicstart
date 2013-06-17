@@ -90,20 +90,22 @@ public class On implements Command {
 												"cicstart.pemfile")).getPath());
 								client.authPublickey("ubuntu", keys);
 
-								runOnRemote(client, "sudo apt-get -y update --fix-missing");
-								runOnRemote(client, "sudo apt-get -y install openjdk-6-jre");
+								runOnRemote(client,
+										"sudo apt-get -y update --fix-missing");
+								runOnRemote(client,
+										"sudo apt-get -y install openjdk-6-jre");
 								runOnRemote(
 										client,
 										"curl -H CICSTART.session:\""
 												+ runtime.getCICSTARTSession()
 												+ "\" -H Content-Type:\"application/octet-stream\" --data-binary "
-												+ "\""
+												+ "'"
 												+ script
-												+ "\""
+												+ "'"
 												+ " -X POST http://10.0.28.3/macro/api"
-//												+ Common.properties()
-//														.getString(
-//																"external.macro.api.url")
+												// + Common.properties()
+												// .getString(
+												// "external.macro.api.url")
 												+ "/macro.json/bin?include_jre=false > client.tar.gz");
 
 								runOnRemote(client, "tar zxvf client.tar.gz");

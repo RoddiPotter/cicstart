@@ -32,7 +32,6 @@ import ca.ualberta.physics.cssdp.util.FileUtil;
 
 import com.google.common.base.Throwables;
 import com.google.common.io.Files;
-import com.google.common.net.InetAddresses;
 
 public class MacroService {
 
@@ -170,7 +169,7 @@ public class MacroService {
 	}
 
 	public ServiceResponse<File> assembleClient(String cmlScript,
-			String sessionToken, boolean includeJre) {
+			String sessionToken, boolean includeJre, boolean useInternalNetwork) {
 
 		logger.debug("Got script to assemble: \n" + cmlScript);
 
@@ -227,10 +226,9 @@ public class MacroService {
 			 * DAIR is not)
 			 */
 
-			String CICSTARTInternalIP = MacroServer.properties().getString(
-					"CICSTART.server.internal");
-			if (InetAddresses.forString(CICSTARTInternalIP).isReachable(100)) {
-				// no overrides necessary
+			if (useInternalNetwork) {
+				// no overrides necessary and internal 10.0.whatever network is
+				// required
 			} else {
 				// the client will be run on an external device, so the external
 				// url's are needed for accessing CICSTART resources
