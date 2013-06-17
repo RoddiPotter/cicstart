@@ -39,7 +39,15 @@ public class On implements Command {
 
 	public On(Instance instance, List<CommandDefinition> cmdsToRun,
 			String script, String serverVar) {
-		this.host = instance.ipAddress;
+		String thisHost = "localhost";
+		try {
+			thisHost = instance != null ? instance.ipAddress : InetAddress
+					.getLocalHost().getHostAddress();
+		} catch (UnknownHostException e) {
+			jobLogger.error("Can get localhost host address");
+		} finally {
+			this.host = thisHost;
+		}
 		this.serverVar = serverVar;
 		this.cmdsToRun = cmdsToRun;
 		this.script = script;
