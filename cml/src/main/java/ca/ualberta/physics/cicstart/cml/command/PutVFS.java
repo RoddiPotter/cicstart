@@ -34,7 +34,7 @@ public class PutVFS implements Command {
 		String authResource = Common.properties().getString("auth.api.url");
 
 		String whoisUrl = authResource + "/session.json/{session}/whois";
-		jobLogger.debug("PutVFS: locating whois for sessin var at " + whoisUrl);
+		jobLogger.debug("PutVFS: locating whois for session var at " + whoisUrl);
 		User user = get(whoisUrl, cicstartSession).as(User.class);
 		jobLogger.debug("PutVFS: found user " + user.getEmail()
 				+ ", owner id=" + user.getId() + " with session var "

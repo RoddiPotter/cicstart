@@ -83,10 +83,14 @@ public class On implements Command {
 				// run commands
 				for (InetAddress inetAddr : InetAddress
 						.getAllByName(InetAddress.getLocalHost().getHostName())) {
+
+					jobLogger.info("Found host " + inetAddr.getHostAddress());
+
 					if (inetAddr.getHostAddress().equals(cicstartServer)
 							|| inetAddr.getHostName().equals(cicstartServer)) {
+
 						jobLogger.info("On: requesting spawned VM " + host
-								+ " to run the commands");
+								+ " to run the commands via remote ssh session");
 
 						SSHClient client = new SSHClient();
 						client.addHostKeyVerifier(new PromiscuousVerifier());
@@ -142,6 +146,9 @@ public class On implements Command {
 
 						remoteRequested = true;
 						break;
+					} else {
+						jobLogger.info("... but we're not on a CICSTART server: "
+								+ cicstartServer);
 					}
 				}
 
