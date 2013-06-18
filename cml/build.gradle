@@ -49,7 +49,8 @@ dependencies {
 	compile project(":common")
 
 	compile "org.antlr:antlr4-runtime:4.0"
-	
+	compile files("lib/org.xbill.dns_2.1.5.jar")
+		
 	// allow test infrastructure to be available during test runs
 	testCompile project(path: ':common', configuration: 'tests')
 }

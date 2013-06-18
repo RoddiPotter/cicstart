@@ -17,6 +17,7 @@ import net.schmizz.sshj.userauth.keyprovider.KeyProvider;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xbill.DNS.Address;
 
 import ca.ualberta.physics.cssdp.configuration.MacroServer;
 import ca.ualberta.physics.cssdp.domain.macro.Instance;
@@ -61,7 +62,7 @@ public class On implements Command {
 		boolean correctServer = false;
 		try {
 			// localhost and address of spawned server runs the commands
-			for (InetAddress inetAddr : InetAddress.getAllByName(InetAddress
+			for (InetAddress inetAddr : Address.getAllByName(InetAddress
 					.getLocalHost().getHostName())) {
 				if (inetAddr.getHostAddress().equals(host)
 						|| inetAddr.getHostName().equals(host)) {
@@ -81,16 +82,18 @@ public class On implements Command {
 				boolean remoteRequested = false;
 				// but we may be on the cicstart server, so request remove VM to
 				// run commands
-				for (InetAddress inetAddr : InetAddress
-						.getAllByName(InetAddress.getLocalHost().getHostName())) {
+				for (InetAddress inetAddr : Address.getAllByName(InetAddress
+						.getLocalHost().getHostName())) {
 
 					jobLogger.info("Found host " + inetAddr.getHostAddress());
 
 					if (inetAddr.getHostAddress().equals(cicstartServer)
 							|| inetAddr.getHostName().equals(cicstartServer)) {
 
-						jobLogger.info("On: requesting spawned VM " + host
-								+ " to run the commands via remote ssh session");
+						jobLogger
+								.info("On: requesting spawned VM "
+										+ host
+										+ " to run the commands via remote ssh session");
 
 						SSHClient client = new SSHClient();
 						client.addHostKeyVerifier(new PromiscuousVerifier());
@@ -147,8 +150,9 @@ public class On implements Command {
 						remoteRequested = true;
 						break;
 					} else {
-						jobLogger.info("... but we're not on a CICSTART server: "
-								+ cicstartServer);
+						jobLogger
+								.info("... but we're not on a CICSTART server: "
+										+ cicstartServer);
 					}
 				}
 
