@@ -312,7 +312,7 @@ public class OpenStackCloud implements Cloud {
 				socket = new Socket(instance.ipAddress, 22);
 				reachable = true;
 				break;
-			} catch (NoRouteToHostException e) {
+			} catch (Exception e) {
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e1) {
