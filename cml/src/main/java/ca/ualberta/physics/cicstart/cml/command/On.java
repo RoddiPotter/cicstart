@@ -182,21 +182,27 @@ public class On implements Command {
 
 	public boolean bindsToAddress(String ipOrHostname) {
 
+		jobLogger.info("here a");
 		Enumeration<NetworkInterface> ifaces;
 		try {
 			ifaces = NetworkInterface.getNetworkInterfaces();
+			jobLogger.info("here b");
 			while (ifaces.hasMoreElements()) {
 				NetworkInterface iface = ifaces.nextElement();
 				Enumeration<InetAddress> inetAddrs = iface.getInetAddresses();
+				jobLogger.info("here c");
 				while (inetAddrs.hasMoreElements()) {
 					InetAddress inetAddr = inetAddrs.nextElement();
+					jobLogger.info("here d");
 					if (inetAddr.getHostAddress().equals(ipOrHostname)
 							|| inetAddr.getHostName().equals(ipOrHostname)) {
+						jobLogger.info("here e");
 						return true;
 					}
 				}
 			}
 		} catch (SocketException e) {
+			jobLogger.error("Could not determine interface addresses", e);
 			Throwables.propagate(e);
 		}
 
