@@ -45,7 +45,7 @@ public class On implements Command {
 
 	public On(Instance instance, List<CommandDefinition> cmdsToRun,
 			String script, String serverVar) {
-		String thisHost = "localhost";
+		String thisHost = "";
 		try {
 			thisHost = instance != null ? instance.ipAddress : InetAddress
 					.getLocalHost().getHostAddress();

@@ -3,6 +3,7 @@ package ca.ualberta.physics.cicstart.macro.service;
 import static com.jayway.restassured.RestAssured.given;
 
 import java.io.IOException;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -217,16 +218,24 @@ public class OpenStackCloud implements Cloud {
 					.getString("server.addresses.novanetwork_28[0].addr");
 
 			try {
-				
+
 				logger.info("Trying to reach " + instance.ipAddress);
 
 				// hack because InetAddress.isReachable is not dependable.
-				Process p1 = java.lang.Runtime.getRuntime().exec("ping -c 1 " + instance.ipAddress);
-				int returnVal = p1.waitFor();
-				boolean reachable = (returnVal==0);
-				
-				logger.info(instance.ipAddress + " is reachable: "
-						+ reachable);
+				Socket socket = null;
+				boolean reachable = false;
+				try {
+					socket = new Socket(instance.ipAddress, 22);
+					reachable = true;
+				} finally {
+					if (socket != null)
+						try {
+							socket.close();
+						} catch (IOException ignore) {
+						}
+				}
+
+				logger.info(instance.ipAddress + " is reachable: " + reachable);
 
 				if (!reachable) {
 
@@ -234,7 +243,7 @@ public class OpenStackCloud implements Cloud {
 
 					res = given().header("X-Auth-Token", identity.auth.token)
 							.post(ipRef, identity.auth.tenantId);
-					
+
 					if (res.getStatusCode() == 200) {
 
 						JsonPath ipPath = JsonPath.from(res.asString());
@@ -283,10 +292,9 @@ public class OpenStackCloud implements Cloud {
 					}
 				}
 			} catch (IOException e) {
-				logger.error("Could not test reachability to " + instance.ipAddress + " because " + e.getMessage(), e);
+				logger.error("Could not test reachability to "
+						+ instance.ipAddress + " because " + e.getMessage(), e);
 				throw new RuntimeException(e);
-			} catch (InterruptedException e) {
-				Thread.currentThread().interrupt();
 			}
 
 			return instance;
