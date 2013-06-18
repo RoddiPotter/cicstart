@@ -3,9 +3,7 @@ package ca.ualberta.physics.cicstart.macro.service;
 import static com.jayway.restassured.RestAssured.given;
 
 import java.io.IOException;
-import java.net.NoRouteToHostException;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -208,84 +206,108 @@ public class OpenStackCloud implements Cloud {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
 					Thread.currentThread().interrupt();
-					// TODO repeat until instance created and then delete
-					// automatically
-
 				}
 			}
 
-			// final bit of info, the internal (or external) ip address we need
-			// to log into the machine
-			instance.ipAddress = instanceQueryResponseJsonPath
+			// handle interruption from while loop nicely
+			if (Thread.currentThread().isInterrupted()) {
+				stopInstance(identity, instance);
+				return instance;
+			}
+
+			String internalIp = instanceQueryResponseJsonPath
 					.getString("server.addresses.novanetwork_28[0].addr");
 
-			try {
+			String cicstartInternalIp = MacroServer.properties().getString(
+					"cicstart.server.internal");
 
-				logger.info("Trying to reach " + instance.ipAddress);
+			String cicstartExternalIp = MacroServer.properties().getString(
+					"cicstart.server.external");
 
-				// hack because InetAddress.isReachable is not dependable.
-				boolean reachable = isReachable(instance, 5);
+			if (isReachable(cicstartInternalIp, 1)) {
 
-				logger.info(instance.ipAddress + " is reachable: " + reachable);
+				// use internal because we can access CICSTART on internal IP
 
-				if (!reachable) {
+				// networking seems to take a minute.. let it finish
+				// to avoid connection refused & no route to host
+				// errors
+				boolean reachable = isReachable(internalIp, 10);
+				if (reachable) {
+					logger.info(internalIp + " is reachable: " + reachable);
+					instance.ipAddress = internalIp;
+				} else {
 
-					logger.info("Allocating and assigned external IP address");
+					logger.error(instance.ipAddress
+							+ " could not be reached, someone is wrong");
+					throw new RuntimeException(
+							"Could not associated external ip to server "
+									+ instance.id + " giving up.");
 
-					res = given().header("X-Auth-Token", identity.auth.token)
-							.post(ipRef, identity.auth.tenantId);
-
-					if (res.getStatusCode() == 200) {
-
-						JsonPath ipPath = JsonPath.from(res.asString());
-						String externalIp = ipPath.getString("floating_ip.ip");
-
-						FloatingIpRequest ipRequest = new FloatingIpRequest();
-						ipRequest.addFloatingIp.address = externalIp;
-
-						res = given()
-								.header("X-Auth-Token", identity.auth.token)
-								.and()
-								.content(ipRequest)
-								.and()
-								.contentType(ContentType.JSON)
-								.post(serversRef + "/{server_id}/action",
-										identity.auth.tenantId, instance.id);
-
-						if (res.getStatusCode() == 202) {
-							// networking seems to take a second.. let it finish
-							// to avoid connection refused & no route to host
-							// errors
-							try {
-								// TODO is there a way this can be smarter?
-								logger.info("Waiting for external IP to assign");
-								Thread.sleep(2000);
-							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-						} else if (res.getStatusCode() != 200) {
-							throw new IllegalStateException(
-									"Could not associated external ip to server "
-											+ instance.id + "open stack error "
-											+ res.getStatusCode() + "\n"
-											+ res.asString());
-						}
-						instance.ipAddress = externalIp;
-
-					} else {
-						throw new IllegalStateException(
-								"Could not allocate external ip because "
-										+ (res.getStatusCode() == 413 ? "over limit"
-												: "open stack error "
-														+ res.getStatusCode())
-										+ "\n" + res.asString());
-					}
 				}
-			} catch (IOException e) {
-				logger.error("Could not test reachability to "
-						+ instance.ipAddress + " because " + e.getMessage(), e);
-				throw new RuntimeException(e);
+
+			} else if (isReachable(cicstartExternalIp, 1)) {
+
+				logger.info("Allocating and assigned external IP address because CICSTART server is external");
+
+				res = given().header("X-Auth-Token", identity.auth.token).post(
+						ipRef, identity.auth.tenantId);
+
+				if (res.getStatusCode() == 200) {
+
+					JsonPath ipPath = JsonPath.from(res.asString());
+					String externalIp = ipPath.getString("floating_ip.ip");
+
+					FloatingIpRequest ipRequest = new FloatingIpRequest();
+					ipRequest.addFloatingIp.address = externalIp;
+
+					res = given()
+							.header("X-Auth-Token", identity.auth.token)
+							.and()
+							.content(ipRequest)
+							.and()
+							.contentType(ContentType.JSON)
+							.post(serversRef + "/{server_id}/action",
+									identity.auth.tenantId, instance.id);
+
+					if (res.getStatusCode() == 202) {
+						// networking seems to take a minute.. let it finish
+						// to avoid connection refused & no route to host
+						// errors
+
+						if (isReachable(externalIp, 10)) {
+							logger.info(externalIp
+									+ " is now reachable, have fun!");
+							instance.ipAddress = externalIp;
+						} else {
+							logger.error(externalIp
+									+ " could not be reached, someone is wrong");
+							throw new RuntimeException(
+									"Could not associated external ip to server "
+											+ instance.id + " giving up.");
+						}
+
+					} else if (res.getStatusCode() != 200) {
+						throw new IllegalStateException(
+								"Could not associated external ip to server "
+										+ instance.id + " open stack error "
+										+ res.getStatusCode() + "\n"
+										+ res.asString());
+					}
+
+				} else {
+					throw new IllegalStateException(
+							"Could not allocate external ip because "
+									+ (res.getStatusCode() == 413 ? "over limit"
+											: "open stack error "
+													+ res.getStatusCode())
+									+ "\n" + res.asString());
+				}
+
+			} else {
+				throw new IllegalStateException(
+						"Can't access CICSTART server on internal network at "
+								+ cicstartInternalIp
+								+ " or external ips, this makes spawned VM useless");
 			}
 
 			return instance;
@@ -299,8 +321,7 @@ public class OpenStackCloud implements Cloud {
 
 	}
 
-	private boolean isReachable(Instance instance, int numTries)
-			throws UnknownHostException, IOException {
+	private boolean isReachable(String host, int numTries) {
 
 		int tryNo = 0;
 
@@ -309,7 +330,7 @@ public class OpenStackCloud implements Cloud {
 
 			Socket socket = null;
 			try {
-				socket = new Socket(instance.ipAddress, 22);
+				socket = new Socket(host, 22);
 				reachable = true;
 				break;
 			} catch (Exception e) {
