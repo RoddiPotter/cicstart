@@ -27,7 +27,7 @@ import com.google.common.base.Throwables;
 public class CMLRuntime {
 	private static final Logger cmlLogger = LoggerFactory
 			.getLogger("JOBLOGGER");
-	private static final Logger logger = LoggerFactory
+	public static final Logger logger = LoggerFactory
 			.getLogger(CMLRuntime.class);
 
 	private static final String CICSTARTSESSION = "CICSTART.session";

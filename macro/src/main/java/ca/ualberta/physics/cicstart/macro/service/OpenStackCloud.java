@@ -2,8 +2,6 @@ package ca.ualberta.physics.cicstart.macro.service;
 
 import static com.jayway.restassured.RestAssured.given;
 
-import java.io.IOException;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +14,7 @@ import ca.ualberta.physics.cicstart.macro.InjectorHolder;
 import ca.ualberta.physics.cssdp.client.AuthClient;
 import ca.ualberta.physics.cssdp.configuration.MacroServer;
 import ca.ualberta.physics.cssdp.domain.macro.Instance;
+import ca.ualberta.physics.cssdp.util.NetworkUtil;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
@@ -29,7 +28,7 @@ import com.jayway.restassured.response.Response;
 
 public class OpenStackCloud implements Cloud {
 
-	private static final Logger logger = LoggerFactory
+	public static final Logger logger = LoggerFactory
 			.getLogger(OpenStackCloud.class);
 
 	@Inject
@@ -224,14 +223,14 @@ public class OpenStackCloud implements Cloud {
 			String cicstartExternalIp = MacroServer.properties().getString(
 					"cicstart.server.external");
 
-			if (isReachable(cicstartInternalIp, 1)) {
+			if (NetworkUtil.isReachable(cicstartInternalIp, 1)) {
 
 				// use internal because we can access CICSTART on internal IP
 
 				// networking seems to take a minute.. let it finish
 				// to avoid connection refused & no route to host
 				// errors
-				boolean reachable = isReachable(internalIp, 10);
+				boolean reachable = NetworkUtil.isReachable(internalIp, 10);
 				if (reachable) {
 					logger.info(internalIp + " is reachable: " + reachable);
 					instance.ipAddress = internalIp;
@@ -245,7 +244,7 @@ public class OpenStackCloud implements Cloud {
 
 				}
 
-			} else if (isReachable(cicstartExternalIp, 1)) {
+			} else if (NetworkUtil.isReachable(cicstartExternalIp, 1)) {
 
 				logger.info("Allocating and assigned external IP address because CICSTART server is external");
 
@@ -274,7 +273,7 @@ public class OpenStackCloud implements Cloud {
 						// to avoid connection refused & no route to host
 						// errors
 
-						if (isReachable(externalIp, 10)) {
+						if (NetworkUtil.isReachable(externalIp, 10)) {
 							logger.info(externalIp
 									+ " is now reachable, have fun!");
 							instance.ipAddress = externalIp;
@@ -319,39 +318,6 @@ public class OpenStackCloud implements Cloud {
 					+ res.asString());
 		}
 
-	}
-
-	private boolean isReachable(String host, int numTries) {
-
-		int tryNo = 0;
-
-		boolean reachable = false;
-		while (tryNo < numTries) {
-
-			Socket socket = null;
-			try {
-				socket = new Socket(host, 22);
-				reachable = true;
-				break;
-			} catch (Exception e) {
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e1) {
-					Thread.currentThread().interrupt();
-					break;
-				}
-				logger.info("not reachable yet, trying again (" + tryNo + "/"
-						+ numTries + ") - " + e.getMessage());
-				tryNo++;
-			} finally {
-				if (socket != null)
-					try {
-						socket.close();
-					} catch (IOException ignore) {
-					}
-			}
-		}
-		return reachable;
 	}
 
 	public Identity authenticate(String osUser, String osPassword) {

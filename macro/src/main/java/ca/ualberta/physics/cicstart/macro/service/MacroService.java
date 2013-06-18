@@ -8,6 +8,9 @@ import java.nio.charset.Charset;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -29,6 +32,7 @@ import ca.ualberta.physics.cssdp.configuration.Common;
 import ca.ualberta.physics.cssdp.configuration.MacroServer;
 import ca.ualberta.physics.cssdp.service.ServiceResponse;
 import ca.ualberta.physics.cssdp.util.FileUtil;
+import ca.ualberta.physics.cssdp.util.NetworkUtil;
 
 import com.google.common.base.Throwables;
 import com.google.common.io.Files;
@@ -42,9 +46,10 @@ public class MacroService {
 		PENDING, RUNNING, STOPPED
 	}
 
-	// private final ConcurrentHashMap<String, Future<String>> jobs = new
-	// ConcurrentHashMap<String, Future<String>>();
+	private final ConcurrentHashMap<String, Future<String>> jobs = new ConcurrentHashMap<String, Future<String>>();
 	private final CopyOnWriteArraySet<String> active = new CopyOnWriteArraySet<String>();
+
+	private final ExecutorService executor = Executors.newFixedThreadPool(5);
 
 	/*
 	 * A circular buffer that overwrites (non-blocking) on writes, but blocks
@@ -87,32 +92,33 @@ public class MacroService {
 
 		sr.setPayload(runtime.getRequestId());
 
-		/*
-		 * The Future below will be needed eventually because the first pass
-		 * needs to run on the CICSTART macro server in order to fire up the VMs
-		 * requested. We'll have to make a synchronous version of this method so
-		 * that calls from the MainClass wait for completion and don't exit
-		 * prematurely.
-		 */
+		// set job to active so that MainClass can wait
+		active.add(requestId);
+		setupLogBuffer(requestId);
 
-		// Future<String> future = executor.submit(new Runnable() {
-		//
-		// @Override
-		// public void run() {
-		// String requestId = runtime.getRequestId();
-		try {
-			setupLogBuffer(requestId);
-			active.add(requestId);
-			runtime.run(macro.getCommands());
-			new PutVFS(sessionToken, runtime.getRequestId(), "macro.log")
-					.execute(runtime);
-		} finally {
-			active.remove(requestId);
-		}
-		// }
+		Future<String> future = executor.submit(new Runnable() {
 
-		// }, runtime.getRequestId());
-		// jobs.put(runtime.getRequestId(), future);
+			@Override
+			public void run() {
+				String requestId = runtime.getRequestId();
+				try {
+					runtime.run(macro.getCommands());
+					String cicstartHost = MacroServer.properties().getString(
+							"cicstart.host.internal");
+					// only post the macro.log to the VFS from spawned VMs
+					if (!NetworkUtil.currentlyRunningOn(cicstartHost)) {
+						new PutVFS(sessionToken, runtime.getRequestId(),
+								"macro.log").execute(runtime);
+					}
+				} finally {
+					active.remove(requestId);
+					jobs.remove(requestId);
+				}
+			}
+
+		}, runtime.getRequestId());
+
+		jobs.put(runtime.getRequestId(), future);
 
 		return sr;
 

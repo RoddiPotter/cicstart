@@ -3,10 +3,7 @@ package ca.ualberta.physics.cicstart.cml.command;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
 import java.net.UnknownHostException;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -23,16 +20,16 @@ import org.slf4j.LoggerFactory;
 
 import ca.ualberta.physics.cssdp.configuration.MacroServer;
 import ca.ualberta.physics.cssdp.domain.macro.Instance;
+import ca.ualberta.physics.cssdp.util.NetworkUtil;
 
-import com.google.common.base.Throwables;
 import com.google.common.net.InetAddresses;
 
 public class On implements Command {
 
 	private static final Logger logger = LoggerFactory.getLogger(On.class);
-	
-//	private static final Logger jobLogger = LoggerFactory
-//			.getLogger("JOBLOGGER");
+
+	// private static final Logger jobLogger = LoggerFactory
+	// .getLogger("JOBLOGGER");
 
 	// the host these commands should be run on
 	private final String host;
@@ -67,17 +64,18 @@ public class On implements Command {
 		String cicstartServer = MacroServer.properties().getString(
 				"cicstart.server.internal");
 
-		if (bindsToAddress(host)) {
+		if (NetworkUtil.currentlyRunningOn(host)) {
 			// we're actually logged into the spawned VM so just run the
 			// commands
 			logger.info("On: running commands on " + host);
 			runtime.run(getCmdsToRun());
 
-		} else if (bindsToAddress(cicstartServer)) {
+		} else if (NetworkUtil.currentlyRunningOn(cicstartServer)) {
 			// we're on the CICSTART server so do a remote SSH to get the
 			// binary client on the spawned VM and run it
 
-			logger.info("On: ssh'ing to " + host + " to setup client.");
+			logger.info("On: connecting to remote " + host
+					+ " to setup client.");
 
 			SSHClient client = new SSHClient();
 			client.addHostKeyVerifier(new PromiscuousVerifier());
@@ -86,9 +84,12 @@ public class On implements Command {
 				try {
 
 					client.connect(InetAddresses.forString(host));
-					KeyProvider keys = client.loadKeys(new File(MacroServer
-							.properties().getString("cicstart.pemfile"))
-							.getPath());
+					String privateKeyFile = MacroServer.properties().getString(
+							"cicstart.pemfile");
+					File pemFile = new File(privateKeyFile);
+					logger.info("Connecting to " + host + " using keyfile "
+							+ pemFile.getAbsolutePath() + " and user 'ubuntu'");
+					KeyProvider keys = client.loadKeys(pemFile.getPath());
 					client.authPublickey("ubuntu", keys);
 
 					runOnRemote(client, "sudo apt-get -y update --fix-missing");
@@ -180,36 +181,6 @@ public class On implements Command {
 
 	public List<CommandDefinition> getCmdsToRun() {
 		return cmdsToRun;
-	}
-
-	public boolean bindsToAddress(String ipOrHostname) {
-
-		logger.info("here a");
-		Enumeration<NetworkInterface> ifaces;
-		try {
-			ifaces = NetworkInterface.getNetworkInterfaces();
-			logger.info("here b");
-			while (ifaces.hasMoreElements()) {
-				NetworkInterface iface = ifaces.nextElement();
-				Enumeration<InetAddress> inetAddrs = iface.getInetAddresses();
-				logger.info("here c");
-				while (inetAddrs.hasMoreElements()) {
-					InetAddress inetAddr = inetAddrs.nextElement();
-					logger.info("here d");
-					if (inetAddr.getHostAddress().equals(ipOrHostname)
-							|| inetAddr.getHostName().equals(ipOrHostname)) {
-						logger.info("here e");
-						return true;
-					}
-				}
-			}
-		} catch (SocketException e) {
-			logger.error("Could not determine interface addresses", e);
-			Throwables.propagate(e);
-		}
-
-		return false;
-
 	}
 
 }
