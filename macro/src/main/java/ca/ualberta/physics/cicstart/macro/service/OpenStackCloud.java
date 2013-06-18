@@ -21,7 +21,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Throwables;
-import com.google.common.net.InetAddresses;
 import com.google.inject.Inject;
 import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.path.json.JsonPath;
@@ -221,13 +220,16 @@ public class OpenStackCloud implements Cloud {
 				
 				logger.info("Trying to reach " + instance.ipAddress);
 
-				boolean internalIpReachable = InetAddresses.forString(
-						instance.ipAddress).isReachable(5000);
-
+				// hack because InetAddress.isReachable is not dependable.
+				Process p1 = java.lang.Runtime.getRuntime().exec("ping -c 1 " + instance.ipAddress);
+				int returnVal = p1.waitFor();
+				boolean reachable = (returnVal==0);
+				p1.destroy();
+				
 				logger.info(instance.ipAddress + " is reachable: "
-						+ internalIpReachable);
+						+ reachable);
 
-				if (!internalIpReachable) {
+				if (!reachable) {
 
 					logger.info("Allocating and assigned external IP address");
 
@@ -282,6 +284,9 @@ public class OpenStackCloud implements Cloud {
 					}
 				}
 			} catch (IOException e) {
+				Throwables.propagate(e);
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
 				Throwables.propagate(e);
 			}
 
