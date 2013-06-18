@@ -92,8 +92,14 @@ public class CloudService {
 			cloud.putKey(clientIdentity, "cicstart", MacroServer.properties()
 					.getString("cicstart.public.key"));
 
-			Instance instance = cloud.startInstance(clientIdentity, image,
-					flavor, sessionToken + jobId);
+			Instance instance = null;
+			try {
+				instance = cloud.startInstance(clientIdentity, image, flavor,
+						sessionToken + jobId);
+			} catch (Exception e) {
+				sr.setOk(false);
+				sr.error(e.getMessage());
+			}
 
 			if (instance != null) {
 				sr.setPayload(instance);

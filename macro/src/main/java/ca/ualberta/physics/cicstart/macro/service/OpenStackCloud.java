@@ -224,7 +224,6 @@ public class OpenStackCloud implements Cloud {
 				Process p1 = java.lang.Runtime.getRuntime().exec("ping -c 1 " + instance.ipAddress);
 				int returnVal = p1.waitFor();
 				boolean reachable = (returnVal==0);
-				p1.destroy();
 				
 				logger.info(instance.ipAddress + " is reachable: "
 						+ reachable);
@@ -284,10 +283,10 @@ public class OpenStackCloud implements Cloud {
 					}
 				}
 			} catch (IOException e) {
-				Throwables.propagate(e);
+				logger.error("Could not test reachability to " + instance.ipAddress + " because " + e.getMessage(), e);
+				throw new RuntimeException(e);
 			} catch (InterruptedException e) {
 				Thread.currentThread().interrupt();
-				Throwables.propagate(e);
 			}
 
 			return instance;
