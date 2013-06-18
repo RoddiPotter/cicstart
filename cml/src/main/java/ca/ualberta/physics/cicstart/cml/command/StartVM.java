@@ -52,7 +52,9 @@ public class StartVM implements Command {
 		try {
 			for (InetAddress inetAddr : Address.getAllByName(InetAddress
 					.getLocalHost().getHostName())) {
+				
 				logger.info("This host is " + inetAddr);
+				
 				if (inetAddr.getHostAddress().equals(cicstartServer)
 						|| inetAddr.getHostName().equals(cicstartServer)) {
 
@@ -62,7 +64,7 @@ public class StartVM implements Command {
 					vmSpec.setImage(imageName);
 					vmSpec.setRequestId(jobId);
 
-					jobLogger.info("StartVM: Starting VM instance on "
+					logger.info("StartVM: Starting VM instance on "
 							+ cloudName + " using image " + imageName
 							+ " of size " + flavor);
 					String macroUrl = Common.properties().getString(
@@ -74,7 +76,7 @@ public class StartVM implements Command {
 
 					if (res.statusCode() == 200) {
 						instance = res.as(Instance.class);
-						jobLogger
+						logger
 								.info("StartVM: Instance started with ip address "
 										+ instance.ipAddress
 										+ " and id "

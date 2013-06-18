@@ -218,10 +218,22 @@ public class OpenStackCloud implements Cloud {
 					.getString("server.addresses.novanetwork_28[0].addr");
 
 			try {
-				if (!InetAddresses.forString(instance.ipAddress).isReachable(
-						100)) {
+				
+				logger.info("Trying to reach " + instance.ipAddress);
+
+				boolean internalIpReachable = InetAddresses.forString(
+						instance.ipAddress).isReachable(5000);
+
+				logger.info(instance.ipAddress + " is reachable: "
+						+ internalIpReachable);
+
+				if (!internalIpReachable) {
+
+					logger.info("Allocating and assigned external IP address");
+
 					res = given().header("X-Auth-Token", identity.auth.token)
 							.post(ipRef, identity.auth.tenantId);
+					
 					if (res.getStatusCode() == 200) {
 
 						JsonPath ipPath = JsonPath.from(res.asString());
