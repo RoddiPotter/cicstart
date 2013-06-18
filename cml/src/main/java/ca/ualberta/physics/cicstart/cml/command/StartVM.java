@@ -7,7 +7,6 @@ import java.net.UnknownHostException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xbill.DNS.Address;
 
 import ca.ualberta.physics.cssdp.configuration.Common;
 import ca.ualberta.physics.cssdp.configuration.MacroServer;
@@ -50,7 +49,7 @@ public class StartVM implements Command {
 
 		boolean correctServer = false;
 		try {
-			for (InetAddress inetAddr : Address.getAllByName(InetAddress
+			for (InetAddress inetAddr : InetAddress.getAllByName(InetAddress
 					.getLocalHost().getHostName())) {
 				
 				logger.info("This host is " + inetAddr);
