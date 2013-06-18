@@ -29,8 +29,10 @@ import com.google.common.net.InetAddresses;
 
 public class On implements Command {
 
-	private static final Logger jobLogger = LoggerFactory
-			.getLogger("JOBLOGGER");
+	private static final Logger logger = LoggerFactory.getLogger(On.class);
+	
+//	private static final Logger jobLogger = LoggerFactory
+//			.getLogger("JOBLOGGER");
 
 	// the host these commands should be run on
 	private final String host;
@@ -48,7 +50,7 @@ public class On implements Command {
 			thisHost = instance != null ? instance.ipAddress : InetAddress
 					.getLocalHost().getHostAddress();
 		} catch (UnknownHostException e) {
-			jobLogger.error("Failed getting localhost host address");
+			logger.error("Failed getting localhost host address");
 		} finally {
 			this.host = thisHost;
 		}
@@ -60,7 +62,7 @@ public class On implements Command {
 	@Override
 	public void execute(CMLRuntime runtime) {
 
-		jobLogger.info("This is try # " + retryCount + " of " + maxRetries);
+		logger.info("This is try # " + retryCount + " of " + maxRetries);
 
 		String cicstartServer = MacroServer.properties().getString(
 				"cicstart.server.host");
@@ -68,14 +70,14 @@ public class On implements Command {
 		if (bindsToAddress(host)) {
 			// we're actually logged into the spawned VM so just run the
 			// commands
-			jobLogger.info("On: running commands on " + host);
+			logger.info("On: running commands on " + host);
 			runtime.run(getCmdsToRun());
 
 		} else if (bindsToAddress(cicstartServer)) {
 			// we're on the CICSTART server so do a remote SSH to get the
 			// binary client on the spawned VM and run it
 
-			jobLogger.info("On: ssh'ing to " + host + " to setup client.");
+			logger.info("On: ssh'ing to " + host + " to setup client.");
 
 			SSHClient client = new SSHClient();
 			client.addHostKeyVerifier(new PromiscuousVerifier());
@@ -144,7 +146,7 @@ public class On implements Command {
 				localIpAddress = "unknown";
 				localHostName = "unknown";
 			}
-			jobLogger.info("On: skipping -> This is " + localIpAddress + "("
+			logger.info("On: skipping -> This is " + localIpAddress + "("
 					+ localHostName + ")" + " but these cmds are for " + host);
 
 		}
@@ -156,16 +158,16 @@ public class On implements Command {
 
 		Session session = client.startSession();
 		try {
-			jobLogger.info("Running '" + command + "' on " + host);
+			logger.info("Running '" + command + "' on " + host);
 			net.schmizz.sshj.connection.channel.direct.Session.Command cmd = session
 					.exec(command);
-			jobLogger.info("On (" + host + "): STDOUT: "
+			logger.info("On (" + host + "): STDOUT: "
 					+ IOUtils.readFully(cmd.getInputStream()).toString());
 			cmd.join(15, TimeUnit.SECONDS);
-			jobLogger.info("On (" + host + "): exit status: "
+			logger.info("On (" + host + "): exit status: "
 					+ cmd.getExitStatus());
 		} catch (ConnectionException ce) {
-			jobLogger.error("Timed out completing command on " + host, ce);
+			logger.error("Timed out completing command on " + host, ce);
 		} finally {
 			session.close();
 		}
@@ -182,27 +184,27 @@ public class On implements Command {
 
 	public boolean bindsToAddress(String ipOrHostname) {
 
-		jobLogger.info("here a");
+		logger.info("here a");
 		Enumeration<NetworkInterface> ifaces;
 		try {
 			ifaces = NetworkInterface.getNetworkInterfaces();
-			jobLogger.info("here b");
+			logger.info("here b");
 			while (ifaces.hasMoreElements()) {
 				NetworkInterface iface = ifaces.nextElement();
 				Enumeration<InetAddress> inetAddrs = iface.getInetAddresses();
-				jobLogger.info("here c");
+				logger.info("here c");
 				while (inetAddrs.hasMoreElements()) {
 					InetAddress inetAddr = inetAddrs.nextElement();
-					jobLogger.info("here d");
+					logger.info("here d");
 					if (inetAddr.getHostAddress().equals(ipOrHostname)
 							|| inetAddr.getHostName().equals(ipOrHostname)) {
-						jobLogger.info("here e");
+						logger.info("here e");
 						return true;
 					}
 				}
 			}
 		} catch (SocketException e) {
-			jobLogger.error("Could not determine interface addresses", e);
+			logger.error("Could not determine interface addresses", e);
 			Throwables.propagate(e);
 		}
 
