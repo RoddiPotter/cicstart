@@ -3,7 +3,10 @@ package ca.ualberta.physics.cicstart.cml.command;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -17,11 +20,11 @@ import net.schmizz.sshj.userauth.keyprovider.KeyProvider;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xbill.DNS.Address;
 
 import ca.ualberta.physics.cssdp.configuration.MacroServer;
 import ca.ualberta.physics.cssdp.domain.macro.Instance;
 
+import com.google.common.base.Throwables;
 import com.google.common.net.InetAddresses;
 
 public class On implements Command {
@@ -45,7 +48,7 @@ public class On implements Command {
 			thisHost = instance != null ? instance.ipAddress : InetAddress
 					.getLocalHost().getHostAddress();
 		} catch (UnknownHostException e) {
-			jobLogger.error("Can get localhost host address");
+			jobLogger.error("Failed getting localhost host address");
 		} finally {
 			this.host = thisHost;
 		}
@@ -56,161 +59,113 @@ public class On implements Command {
 
 	@Override
 	public void execute(CMLRuntime runtime) {
-		jobLogger.info("here a");
-		if (retryCount > 0) {
-			jobLogger.info("This is retry # " + retryCount);
-		}
-		boolean correctServer = false;
-		try {
-			jobLogger.info("here b");
-			// localhost and address of spawned server runs the commands
-			for (InetAddress inetAddr : Address.getAllByName(InetAddress
-					.getLocalHost().getHostName())) {
 
-				jobLogger.info("Found host " + inetAddr.getHostAddress());
+		jobLogger.info("This is try # " + retryCount + " of " + maxRetries);
 
-				if (inetAddr.getHostAddress().equals(host)
-						|| inetAddr.getHostName().equals(host)) {
-					jobLogger.info("On: running commands for " + host);
-					runtime.run(getCmdsToRun());
-					correctServer = true;
-					break;
-				}
-			}
-			jobLogger.info("here c");
+		String cicstartServer = MacroServer.properties().getString(
+				"cicstart.server.host");
 
-			String cicstartServer = MacroServer.properties().getString(
-					"cicstart.server.host");
+		if (bindsToAddress(host)) {
+			// we're actually logged into the spawned VM so just run the
+			// commands
+			jobLogger.info("On: running commands on " + host);
+			runtime.run(getCmdsToRun());
 
-			// we're not on the right host to run commands directly
-			if (!correctServer) {
-				jobLogger.info("here d");
+		} else if (bindsToAddress(cicstartServer)) {
+			// we're on the CICSTART server so do a remote SSH to get the
+			// binary client on the spawned VM and run it
 
-				boolean remoteRequested = false;
-				// but we may be on the cicstart server, so request remove VM to
-				// run commands
-				for (InetAddress inetAddr : Address.getAllByName(InetAddress
-						.getLocalHost().getHostName())) {
+			jobLogger.info("On: ssh'ing to " + host + " to setup client.");
 
-					jobLogger.info("Found host " + inetAddr.getHostAddress());
+			SSHClient client = new SSHClient();
+			client.addHostKeyVerifier(new PromiscuousVerifier());
+			try {
 
-					if (inetAddr.getHostAddress().equals(cicstartServer)
-							|| inetAddr.getHostName().equals(cicstartServer)) {
-
-						jobLogger
-								.info("On: requesting spawned VM "
-										+ host
-										+ " to run the commands via remote ssh session");
-
-						SSHClient client = new SSHClient();
-						client.addHostKeyVerifier(new PromiscuousVerifier());
-						try {
-							jobLogger.info("here e");
-
-							try {
-
-								client.connect(InetAddresses.forString(host));
-								KeyProvider keys = client.loadKeys(new File(
-										MacroServer.properties().getString(
-												"cicstart.pemfile")).getPath());
-								client.authPublickey("ubuntu", keys);
-
-								runOnRemote(client,
-										"sudo apt-get -y update --fix-missing");
-								runOnRemote(client,
-										"sudo apt-get -y install openjdk-6-jre");
-								runOnRemote(
-										client,
-										"curl -H CICSTART.session:\""
-												+ runtime.getCICSTARTSession()
-												+ "\" -H Content-Type:\"application/octet-stream\" --data-binary "
-												+ "'"
-												+ script.replaceAll("\\$"
-														+ serverVar, "\""
-														+ host + "\"")
-												+ "'"
-												+ " -X POST \"http://10.0.28.3/macro/api"
-												// + Common.properties()
-												// .getString(
-												// "external.macro.api.url")
-												+ "/macro.json/bin?include_jre=false&use_internal_network=true\" > client.tar.gz");
-
-								runOnRemote(client, "tar zxvf client.tar.gz");
-								runOnRemote(client, "cd bin && ./run");
-
-							} finally {
-								client.disconnect();
-								client.close();
-							}
-
-						} catch (Exception e) {
-							if (retryCount < maxRetries) {
-								retryCount++;
-								try {
-									Thread.sleep(100);
-								} catch (InterruptedException e1) {
-									// TODO handle interrupt.
-								}
-								jobLogger.info("here f");
-
-								execute(runtime);
-							}
-						}
-
-						remoteRequested = true;
-						break;
-					} else {
-						jobLogger
-								.info("... but we're not on a CICSTART server: "
-										+ cicstartServer);
-					}
-				}
-
-				// we're on the wrong VM so don't run anything
-				if (!remoteRequested) {
-					jobLogger.info("here g");
-
-					InetAddress localhost;
-					localhost = InetAddress.getLocalHost();
-					String localIpAddress = localhost.getHostAddress();
-					String localHostName = localhost.getHostName();
-					jobLogger.info("On: skipping -> This is " + localIpAddress
-							+ "(" + localHostName + ")"
-							+ " but these cmds are for " + host);
-				}
-			}
-
-		} catch (UnknownHostException e) {
-			if (retryCount < maxRetries) {
-				retryCount++;
 				try {
-					Thread.sleep(100);
-				} catch (InterruptedException e1) {
-					// TODO handle interrupt.
-				}
-				jobLogger.info("here g");
 
-				execute(runtime);
+					client.connect(InetAddresses.forString(host));
+					KeyProvider keys = client.loadKeys(new File(MacroServer
+							.properties().getString("cicstart.pemfile"))
+							.getPath());
+					client.authPublickey("ubuntu", keys);
+
+					runOnRemote(client, "sudo apt-get -y update --fix-missing");
+					runOnRemote(client, "sudo apt-get -y install openjdk-6-jre");
+					runOnRemote(
+							client,
+							"curl -H CICSTART.session:\""
+									+ runtime.getCICSTARTSession()
+									+ "\" -H Content-Type:\"application/octet-stream\" --data-binary "
+									+ "'"
+									+ script.replaceAll("\\$" + serverVar, "\""
+											+ host + "\"") + "'"
+									+ " -X POST \"http://10.0.28.3/macro/api"
+									// + Common.properties()
+									// .getString(
+									// "external.macro.api.url")
+									+ "/macro.json/bin?include_jre=false&use_internal_network=true\" > client.tar.gz");
+
+					runOnRemote(client, "tar zxvf client.tar.gz");
+					runOnRemote(client, "cd bin && ./run");
+
+				} finally {
+					client.disconnect();
+					client.close();
+				}
+
+			} catch (Exception e) {
+
+				// assigned external address takes a few seconds and is
+				// non-determinant of what exception will be thrown so just
+				// retry until we can connect to the host
+				if (retryCount < maxRetries) {
+					retryCount++;
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException e1) {
+						// TODO handle interrupt.
+					}
+
+					execute(runtime);
+				}
 			}
+
+		} else {
+
+			// we're somewhere else, don't run anything.
+			InetAddress localhost;
+			String localHostName;
+			String localIpAddress;
+			try {
+				localhost = InetAddress.getLocalHost();
+				localIpAddress = localhost.getHostAddress();
+				localHostName = localhost.getHostName();
+			} catch (UnknownHostException ignore) {
+				localIpAddress = "unknown";
+				localHostName = "unknown";
+			}
+			jobLogger.info("On: skipping -> This is " + localIpAddress + "("
+					+ localHostName + ")" + " but these cmds are for " + host);
+
 		}
 
 	}
 
 	private void runOnRemote(SSHClient client, String command)
 			throws ConnectionException, TransportException, IOException {
-		jobLogger.info("here h");
 
 		Session session = client.startSession();
 		try {
-			jobLogger.info("Going to Run ' " + command + "' on remote host");
+			jobLogger.info("Running '" + command + "' on " + host);
 			net.schmizz.sshj.connection.channel.direct.Session.Command cmd = session
 					.exec(command);
-			jobLogger.info("On (" + host + "): "
+			jobLogger.info("On (" + host + "): STDOUT: "
 					+ IOUtils.readFully(cmd.getInputStream()).toString());
 			cmd.join(15, TimeUnit.SECONDS);
 			jobLogger.info("On (" + host + "): exit status: "
 					+ cmd.getExitStatus());
-
+		} catch (ConnectionException ce) {
+			jobLogger.error("Timed out completing command on " + host, ce);
 		} finally {
 			session.close();
 		}
@@ -223,6 +178,30 @@ public class On implements Command {
 
 	public List<CommandDefinition> getCmdsToRun() {
 		return cmdsToRun;
+	}
+
+	public boolean bindsToAddress(String ipOrHostname) {
+
+		Enumeration<NetworkInterface> ifaces;
+		try {
+			ifaces = NetworkInterface.getNetworkInterfaces();
+			while (ifaces.hasMoreElements()) {
+				NetworkInterface iface = ifaces.nextElement();
+				Enumeration<InetAddress> inetAddrs = iface.getInetAddresses();
+				while (inetAddrs.hasMoreElements()) {
+					InetAddress inetAddr = inetAddrs.nextElement();
+					if (inetAddr.getHostAddress().equals(ipOrHostname)
+							|| inetAddr.getHostName().equals(ipOrHostname)) {
+						return true;
+					}
+				}
+			}
+		} catch (SocketException e) {
+			Throwables.propagate(e);
+		}
+
+		return false;
+
 	}
 
 }
