@@ -65,7 +65,7 @@ public class On implements Command {
 		logger.info("This is try # " + retryCount + " of " + maxRetries);
 
 		String cicstartServer = MacroServer.properties().getString(
-				"cicstart.server.host");
+				"cicstart.server.internal");
 
 		if (bindsToAddress(host)) {
 			// we're actually logged into the spawned VM so just run the

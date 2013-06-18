@@ -46,7 +46,7 @@ public class StartVM implements Command {
 	public void execute(CMLRuntime runtime) {
 
 		String cicstartServer = MacroServer.properties().getString(
-				"cicstart.server.host");
+				"cicstart.server.internal");
 
 		boolean correctServer = false;
 		try {
