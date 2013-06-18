@@ -3,7 +3,9 @@ package ca.ualberta.physics.cicstart.macro.service;
 import static com.jayway.restassured.RestAssured.given;
 
 import java.io.IOException;
+import java.net.NoRouteToHostException;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -222,18 +224,7 @@ public class OpenStackCloud implements Cloud {
 				logger.info("Trying to reach " + instance.ipAddress);
 
 				// hack because InetAddress.isReachable is not dependable.
-				Socket socket = null;
-				boolean reachable = false;
-				try {
-					socket = new Socket(instance.ipAddress, 22);
-					reachable = true;
-				} finally {
-					if (socket != null)
-						try {
-							socket.close();
-						} catch (IOException ignore) {
-						}
-				}
+				boolean reachable = isReachable(instance, 5);
 
 				logger.info(instance.ipAddress + " is reachable: " + reachable);
 
@@ -306,6 +297,38 @@ public class OpenStackCloud implements Cloud {
 					+ res.asString());
 		}
 
+	}
+
+	private boolean isReachable(Instance instance, int numTries)
+			throws UnknownHostException, IOException {
+
+		int tryNo = 0;
+
+		boolean reachable = false;
+		while (tryNo < numTries) {
+
+			Socket socket = null;
+			try {
+				socket = new Socket(instance.ipAddress, 22);
+				reachable = true;
+				break;
+			} catch (NoRouteToHostException e) {
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e1) {
+					Thread.currentThread().interrupt();
+					break;
+				}
+				tryNo++;
+			} finally {
+				if (socket != null)
+					try {
+						socket.close();
+					} catch (IOException ignore) {
+					}
+			}
+		}
+		return reachable;
 	}
 
 	public Identity authenticate(String osUser, String osPassword) {
