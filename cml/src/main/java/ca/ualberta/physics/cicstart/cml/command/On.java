@@ -56,14 +56,19 @@ public class On implements Command {
 
 	@Override
 	public void execute(CMLRuntime runtime) {
+		jobLogger.info("here a");
 		if (retryCount > 0) {
 			jobLogger.info("This is retry # " + retryCount);
 		}
 		boolean correctServer = false;
 		try {
+			jobLogger.info("here b");
 			// localhost and address of spawned server runs the commands
 			for (InetAddress inetAddr : Address.getAllByName(InetAddress
 					.getLocalHost().getHostName())) {
+
+				jobLogger.info("Found host " + inetAddr.getHostAddress());
+
 				if (inetAddr.getHostAddress().equals(host)
 						|| inetAddr.getHostName().equals(host)) {
 					jobLogger.info("On: running commands for " + host);
@@ -72,12 +77,14 @@ public class On implements Command {
 					break;
 				}
 			}
+			jobLogger.info("here c");
 
 			String cicstartServer = MacroServer.properties().getString(
 					"cicstart.server.host");
 
 			// we're not on the right host to run commands directly
 			if (!correctServer) {
+				jobLogger.info("here d");
 
 				boolean remoteRequested = false;
 				// but we may be on the cicstart server, so request remove VM to
@@ -98,6 +105,7 @@ public class On implements Command {
 						SSHClient client = new SSHClient();
 						client.addHostKeyVerifier(new PromiscuousVerifier());
 						try {
+							jobLogger.info("here e");
 
 							try {
 
@@ -143,6 +151,8 @@ public class On implements Command {
 								} catch (InterruptedException e1) {
 									// TODO handle interrupt.
 								}
+								jobLogger.info("here f");
+
 								execute(runtime);
 							}
 						}
@@ -158,6 +168,8 @@ public class On implements Command {
 
 				// we're on the wrong VM so don't run anything
 				if (!remoteRequested) {
+					jobLogger.info("here g");
+
 					InetAddress localhost;
 					localhost = InetAddress.getLocalHost();
 					String localIpAddress = localhost.getHostAddress();
@@ -176,6 +188,8 @@ public class On implements Command {
 				} catch (InterruptedException e1) {
 					// TODO handle interrupt.
 				}
+				jobLogger.info("here g");
+
 				execute(runtime);
 			}
 		}
@@ -184,6 +198,7 @@ public class On implements Command {
 
 	private void runOnRemote(SSHClient client, String command)
 			throws ConnectionException, TransportException, IOException {
+		jobLogger.info("here h");
 
 		Session session = client.startSession();
 		try {
