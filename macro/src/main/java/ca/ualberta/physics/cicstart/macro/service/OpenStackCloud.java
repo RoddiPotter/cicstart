@@ -314,11 +314,13 @@ public class OpenStackCloud implements Cloud {
 				break;
 			} catch (NoRouteToHostException e) {
 				try {
-					Thread.sleep(500);
+					Thread.sleep(1000);
 				} catch (InterruptedException e1) {
 					Thread.currentThread().interrupt();
 					break;
 				}
+				logger.info("not reachable yet, trying again (" + tryNo + "/"
+						+ numTries + ") - " + e.getMessage());
 				tryNo++;
 			} finally {
 				if (socket != null)
