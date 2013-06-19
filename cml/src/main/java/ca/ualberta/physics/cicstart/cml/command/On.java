@@ -119,6 +119,8 @@ public class On implements Command {
 
 			} catch (Exception e) {
 
+				jobLogger.debug(
+						"something when wrong connecting to spawned vm", e);
 				// assigned external address takes a few seconds and is
 				// non-determinant of what exception will be thrown so just
 				// retry until we can connect to the host
@@ -160,7 +162,8 @@ public class On implements Command {
 
 		Session session = client.startSession();
 		try {
-			jobLogger.info("Running '" + command + "' on " + host);
+			jobLogger.info("Running '" + command + "' on "
+					+ client.getRemoteAddress().getHostAddress());
 			net.schmizz.sshj.connection.channel.direct.Session.Command cmd = session
 					.exec(command);
 			jobLogger.info("On (" + host + "): STDOUT: "
