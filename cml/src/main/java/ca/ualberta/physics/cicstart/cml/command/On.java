@@ -27,6 +27,8 @@ import com.google.common.net.InetAddresses;
 
 public class On implements Command {
 
+	private static final Logger logger = LoggerFactory.getLogger(On.class);
+
 	private static final Logger jobLogger = LoggerFactory
 			.getLogger("JOBLOGGER");
 
@@ -65,7 +67,7 @@ public class On implements Command {
 			// we're on the CICSTART server so do a remote SSH to get the
 			// binary client on the spawned VM and run it
 
-			jobLogger.info("On: connecting to remote " + host
+			logger.info("On: connecting to remote " + host
 					+ " to setup client.");
 
 			SSHClient client = new SSHClient();
@@ -78,7 +80,7 @@ public class On implements Command {
 					String privateKeyFile = MacroServer.properties().getString(
 							"cicstart.pemfile");
 					File pemFile = new File(privateKeyFile);
-					jobLogger.info("Connecting to " + host + " using keyfile "
+					logger.info("Connecting to " + host + " using keyfile "
 							+ pemFile.getAbsolutePath() + " and user 'ubuntu'");
 					KeyProvider keys = client.loadKeys(pemFile.getPath());
 					client.authPublickey("ubuntu", keys);
@@ -119,8 +121,7 @@ public class On implements Command {
 
 			} catch (Exception e) {
 
-				jobLogger.debug(
-						"something when wrong connecting to spawned vm", e);
+				logger.warn("something when wrong connecting to spawned vm", e);
 				// assigned external address takes a few seconds and is
 				// non-determinant of what exception will be thrown so just
 				// retry until we can connect to the host
@@ -166,11 +167,12 @@ public class On implements Command {
 					+ client.getRemoteAddress().getHostAddress());
 			net.schmizz.sshj.connection.channel.direct.Session.Command cmd = session
 					.exec(command);
-			jobLogger.info("On (" + host + "): STDOUT: "
+			jobLogger.info("On (" + client.getRemoteAddress().getHostAddress()
+					+ "): STDOUT: "
 					+ IOUtils.readFully(cmd.getInputStream()).toString());
 			cmd.join(15, TimeUnit.SECONDS);
-			jobLogger.info("On (" + host + "): exit status: "
-					+ cmd.getExitStatus());
+			jobLogger.info("On (" + client.getRemoteAddress().getHostAddress()
+					+ "): exit status: " + cmd.getExitStatus());
 		} catch (ConnectionException ce) {
 			jobLogger.error("Timed out completing command on " + host, ce);
 		} finally {
