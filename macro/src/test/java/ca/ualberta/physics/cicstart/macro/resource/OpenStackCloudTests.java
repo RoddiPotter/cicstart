@@ -21,7 +21,6 @@ public class OpenStackCloudTests extends MacroTestsScaffolding {
 	public void testStartInstance() {
 
 		User user = setupDataManager();
-		String sessionToken = login(user.getEmail(), "password");
 
 		Cloud cloud = new OpenStackCloud();
 		Identity id = cloud.authenticate(user.getOpenStackUsername(),
@@ -38,7 +37,7 @@ public class OpenStackCloudTests extends MacroTestsScaffolding {
 		}
 
 		Instance instance = cloud.startInstance(id, theImage, Flavor.m1_tiny,
-				sessionToken + "testJobId");
+				"UNIT_TEST");
 
 		Assert.assertFalse(Strings.isNullOrEmpty(instance.href));
 		Assert.assertFalse(Strings.isNullOrEmpty(instance.ipAddress));
@@ -47,7 +46,7 @@ public class OpenStackCloudTests extends MacroTestsScaffolding {
 		System.out.println(instance.ipAddress + " " + instance.id);
 
 		// cleanup
-//		cloud.stopInstance(id, instance);
+		cloud.stopInstance(id, instance);
 
 	}
 

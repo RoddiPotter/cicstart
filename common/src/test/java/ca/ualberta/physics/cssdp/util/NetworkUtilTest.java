@@ -17,4 +17,10 @@ public class NetworkUtilTest {
 		Assert.assertFalse(NetworkUtil.currentlyRunningOn("10.0.28.4"));
 	}
 	
+	@Test
+	public void testGetLocalHostIp() {
+		
+		Assert.assertEquals("127.0.0.1", NetworkUtil.getLocalHostIp());
+		
+	}
 }

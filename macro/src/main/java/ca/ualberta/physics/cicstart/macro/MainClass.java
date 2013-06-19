@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ca.ualberta.physics.cicstart.macro.service.MacroService;
-import ca.ualberta.physics.cicstart.macro.service.MacroService.JobStatus;
 import ca.ualberta.physics.cssdp.configuration.ApplicationProperties;
 import ca.ualberta.physics.cssdp.configuration.AuthServer;
 import ca.ualberta.physics.cssdp.configuration.CatalogueServer;
@@ -86,8 +85,6 @@ public class MainClass {
 		try {
 			cmlScript = Files.toString(new File(args[1]),
 					Charset.forName("UTF-8"));
-			logger.info("Found macro to run.");
-			logger.debug(cmlScript);
 		} catch (IOException e) {
 			logger.error("Could not load CML script " + args[1] + "\n"
 					+ Throwables.getStackTraceAsString(e));
@@ -99,8 +96,8 @@ public class MainClass {
 		ServiceResponse<String> sr = mc.runCmlScript(cmlScript, sessionToken);
 
 		if (sr.isRequestOk()) {
-			System.exit(0);
 			logger.info("All done, program exiting with normal error code 0");
+			System.exit(0);
 		} else {
 			logger.error("Exiting with error code 1: "
 					+ sr.getMessagesAsStrings());
@@ -121,10 +118,8 @@ public class MainClass {
 		ServiceResponse<String> sr = macroService.run(cmlScript, sessionToken);
 		if (sr.isRequestOk()) {
 			String requestId = sr.getPayload();
-			while (!macroService.getStatus(requestId).getPayload()
-					.equals(JobStatus.STOPPED)) {
-				macroService.connectToLogStream(requestId, System.out);
-			}
+			logger.info("Tailing logs now");
+			macroService.connectToLogStream(requestId, System.out);
 		}
 		return sr;
 	}

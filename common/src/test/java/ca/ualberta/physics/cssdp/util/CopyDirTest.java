@@ -32,7 +32,7 @@ public class CopyDirTest {
 	public void testCopy() {
 
 		File tempDir = Files.createTempDir();
-		File srcDir = new File("build/distributions/macro-1.0");
+		File srcDir = new File("../macro/build/distributions/macro-1.0");
 		FileUtil.copy(srcDir).to(tempDir);
 
 		System.out.println(tempDir.getAbsolutePath());

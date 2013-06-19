@@ -17,6 +17,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.apache.commons.collections.Buffer;
+import org.apache.commons.collections.BufferUnderflowException;
 import org.apache.commons.collections.buffer.BlockingBuffer;
 import org.apache.commons.collections.buffer.CircularFifoBuffer;
 import org.slf4j.Logger;
@@ -87,7 +88,7 @@ public class MacroService {
 
 		walker.walk(macro, tree);
 
-		String requestId = sessionToken + ":" + CMLRuntime.newJobId();
+		String requestId = CMLRuntime.newJobId();
 		final CMLRuntime runtime = new CMLRuntime(requestId, sessionToken);
 
 		sr.setPayload(runtime.getRequestId());
@@ -113,6 +114,7 @@ public class MacroService {
 				} finally {
 					active.remove(requestId);
 					jobs.remove(requestId);
+					writeToLogBuffer(requestId, "CML_STOP");
 				}
 			}
 
@@ -141,15 +143,22 @@ public class MacroService {
 		if (buffer != null) {
 			while (true) {
 				String logEntry = null;
-				logEntry = (String) buffer.remove();
 				try {
+					logEntry = (String) buffer.remove();
 					if (logEntry != null) {
+						if (logEntry.equals("CML_STOP")) {
+							output.write("done.".getBytes());
+							output.flush();
+							return;
+						}
 						output.write(logEntry.getBytes());
 						output.flush();
 					}
 				} catch (IOException e) {
 					logger.debug("Ok, you probably closed the outputstream, "
 							+ "not sending you anymore data.", e);
+				} catch (BufferUnderflowException bue) {
+					logger.debug("No log data, waiting...");
 				} finally {
 				}
 			}
@@ -221,6 +230,19 @@ public class MacroService {
 			// logback will be in the bin folder
 			overrides
 					.setProperty("common.logback.configuration", "logback.xml");
+
+			// hide passwords and other sensitive info
+			overrides
+					.setProperty("common.hibernate.connection.url", "-hidden-");
+			overrides.setProperty("common.hibernate.connection.username",
+					"-hidden-");
+			overrides.setProperty("common.hibernate.connection.password",
+					"-hidden-");
+			overrides.setProperty(
+					"macroserver.cicstart.test.openstack.username", "-hidden-");
+			overrides.setProperty(
+					"macroserver.cicstart.test.openstack.password", "-hidden-");
+			overrides.setProperty("macroserver.cicstart.pemfile", "-hidden-");
 
 			/*
 			 * Internal IP or External IP? Determine that before decided how to

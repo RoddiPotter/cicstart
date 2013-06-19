@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.joda.time.LocalDateTime;
+import org.joda.time.Seconds;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -147,7 +149,9 @@ public class OpenStackCloud implements Cloud {
 
 	@Override
 	public Instance startInstance(Identity identity, Image image,
-			Flavor flavor, String name) {
+			Flavor flavor, String ref) {
+
+		LocalDateTime start = LocalDateTime.now();
 
 		// start the instance
 		CreateServer createServer = new CreateServer();
@@ -155,7 +159,7 @@ public class OpenStackCloud implements Cloud {
 				identity.auth.tenantId) + "/" + flavor.flavorId;
 		createServer.server.imageRef = image.href;
 
-		createServer.server.name = name;
+		createServer.server.name = ref;
 
 		String jsonServer = serialize(createServer);
 
@@ -201,7 +205,7 @@ public class OpenStackCloud implements Cloud {
 				serverStatus = instanceQueryResponseJsonPath
 						.getString("server.status");
 				try {
-					logger.info("Server not ready, status is " + serverStatus);
+					logger.debug("Server not ready, status is " + serverStatus);
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
 					Thread.currentThread().interrupt();
@@ -303,11 +307,18 @@ public class OpenStackCloud implements Cloud {
 				}
 
 			} else {
+				stopInstance(identity, instance);
 				throw new IllegalStateException(
 						"Can't access CICSTART server on internal network at "
 								+ cicstartInternalIp
 								+ " or external ips, this makes spawned VM useless");
 			}
+
+			LocalDateTime end = LocalDateTime.now();
+
+			logger.info("Instance " + instance.ipAddress + "(" + ref + ") took "
+					+ Seconds.secondsBetween(start, end).getSeconds()
+					+ " seconds to become accessible.");
 
 			return instance;
 
@@ -383,6 +394,10 @@ public class OpenStackCloud implements Cloud {
 
 		given().header("X-Auth-Token", identity.auth.token).delete(
 				instance.href);
+		
+		// TODO release IP address
+		
+		
 		// TODO handle errors
 	}
 

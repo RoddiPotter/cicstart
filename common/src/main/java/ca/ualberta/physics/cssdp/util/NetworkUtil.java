@@ -5,6 +5,7 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.Socket;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.Enumeration;
 
 import org.slf4j.Logger;
@@ -16,6 +17,19 @@ public class NetworkUtil {
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(NetworkUtil.class);
+
+	public static String getLocalHostIp() {
+		String ip = "";
+		InetAddress inetAddress;
+		try {
+			inetAddress = InetAddress.getByName("localhost");
+			ip = inetAddress.getHostAddress();
+		} catch (UnknownHostException e) {
+			throw new RuntimeException(
+					"Is your network broken; localhost does not exist?", e);
+		}
+		return ip;
+	}
 
 	/**
 	 * Utility method to help us determine which server we're running on
@@ -33,6 +47,10 @@ public class NetworkUtil {
 				Enumeration<InetAddress> inetAddrs = iface.getInetAddresses();
 				while (inetAddrs.hasMoreElements()) {
 					InetAddress inetAddr = inetAddrs.nextElement();
+					logger.debug("We are currently running on "
+							+ inetAddr.getHostAddress() + " ("
+							+ inetAddr.getHostName() + "), looking for "
+							+ ipOrHostname);
 					if (inetAddr.getHostAddress().equals(ipOrHostname)
 							|| inetAddr.getHostName().equals(ipOrHostname)) {
 						return true;
@@ -43,7 +61,7 @@ public class NetworkUtil {
 			logger.error("Could not determine interface addresses", e);
 			Throwables.propagate(e);
 		}
-
+		logger.info("We are not currently running on " + ipOrHostname);
 		return false;
 
 	}

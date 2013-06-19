@@ -60,6 +60,12 @@ public class TestBinary extends IntegrationTestScaffolding {
 	@Test
 	public void testBuildBinaryClient() throws Exception {
 
+		// you may need to regenerate the binary client by running
+
+		// macro/gradle distZip
+		// cd build/distributions
+		// unzip macro-1.0.zip
+
 		File macro = new File(TestBinary.class.getResource("/test.cml").toURI());
 		byte[] script = Files.toByteArray(macro);
 		final Response res = given()
@@ -68,8 +74,8 @@ public class TestBinary extends IntegrationTestScaffolding {
 				.contentType(ContentType.BINARY)
 				.and()
 				.header("CICSTART.session",
-						login(dataManager.getEmail(), "password")).when()
-				.post(baseUrl() + "/macro.json/bin");
+						login(dataManager.getEmail(), "password")).expect()
+				.statusCode(200).when().post(baseUrl() + "/macro.json/bin");
 
 		File tempDir = Files.createTempDir();
 		String contentDisposition = res.getHeader("Content-Disposition");

@@ -81,10 +81,10 @@ public class Run implements Command {
 				try {
 					process = pb.start();
 					jobLogger.info("Run: '" + commandLine
-							+ "' output logged as {" + id
-							+ "}, timeout set to " + timeoutInMinutes
+							+ "' output logged with reference " + id
+							+ ", timeout set to " + timeoutInMinutes
 							+ " minutes");
-					jobLogger.info("Run: {" + id + "} working directory is: "
+					jobLogger.info("Run: working directory is: "
 							+ pb.directory().getAbsolutePath());
 
 					// copy the input stream to output stream, and make the
@@ -98,7 +98,8 @@ public class Run implements Command {
 							stringToLog = stringToLog.replaceAll("[\n\r]$", "")
 									.replaceAll("^\\s*$", "");
 							if (!Strings.isNullOrEmpty(stringToLog)) {
-								jobLogger.info("\t{" + id + "}|" + stringToLog);
+								jobLogger.info("     " + id + "| "
+										+ stringToLog);
 							}
 						};
 
@@ -112,7 +113,7 @@ public class Run implements Command {
 					if (timeoutSignal.getCount() > 0) {
 						timeoutSignal.countDown();
 					}
-					jobLogger.error("Run: {" + id + "} IOException occured: "
+					jobLogger.error("Run: IOException occured: "
 							+ Throwables.getStackTraceAsString(e));
 					Throwables.propagate(e);
 				} finally {
@@ -123,10 +124,7 @@ public class Run implements Command {
 						process.getInputStream().close();
 						process.getErrorStream().close();
 						timeoutSignal.countDown();
-					} catch (Exception e) {
-						jobLogger.warn("Run: {" + id
-								+ "} Exception occured during stream close: "
-								+ Throwables.getStackTraceAsString(e));
+					} catch (Exception ignore) {
 					}
 				}
 			}
@@ -136,15 +134,16 @@ public class Run implements Command {
 			if (timeoutSignal.await(timeoutInMinutes, TimeUnit.MINUTES)) {
 				exitValue = process.waitFor();
 				t.join();
-				jobLogger.info("Run: {" + id + "} exited with " + exitValue);
+				jobLogger
+						.info("Run: " + id + " exited with value " + exitValue);
 			} else {
 				process.destroy();
-				jobLogger.error("Run: {" + id
-						+ "} TIMED OUT! The process was destroyed.");
+				jobLogger.error("Run: " + id
+						+ " TIMED OUT! The process was destroyed.");
 			}
 		} catch (InterruptedException e) {
-			jobLogger.error("Run: {" + id
-					+ "} Process was interrupted by someone.");
+			jobLogger.error("Run: " + id
+					+ " Process was interrupted by someone.");
 			Thread.currentThread().interrupt();
 		}
 	}

@@ -54,9 +54,12 @@ public class TarTest {
 				.tar(dirToTar,
 						"/home/rpotter/workspaces/cicstart/common/bin/ca/ualberta/physics");
 
+		long tarFileSize = tarFile.length();
+		String tarFileName = tarFile.getName();
+
 		File gzippedFile = FileUtil.gzip(tarFile);
 
-		Assert.assertTrue(tarFile.length() > gzippedFile.length());
+		Assert.assertTrue(tarFileSize > gzippedFile.length());
 		Assert.assertEquals(tarFile.getAbsolutePath() + ".gz",
 				gzippedFile.getAbsolutePath());
 
@@ -64,8 +67,8 @@ public class TarTest {
 
 		File unGzippedFile = FileUtil.unGzip(gzippedFile, tempDir);
 
-		Assert.assertEquals(tarFile.length(), unGzippedFile.length());
-		Assert.assertEquals(tarFile.getName(), unGzippedFile.getName());
+		Assert.assertEquals(tarFileSize, unGzippedFile.length());
+		Assert.assertEquals(tarFileName, unGzippedFile.getName());
 
 		unGzippedFile.delete();
 		tempDir.delete();

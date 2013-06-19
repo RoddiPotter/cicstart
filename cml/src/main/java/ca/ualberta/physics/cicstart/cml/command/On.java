@@ -26,10 +26,8 @@ import com.google.common.net.InetAddresses;
 
 public class On implements Command {
 
-	private static final Logger logger = LoggerFactory.getLogger(On.class);
-
-	// private static final Logger jobLogger = LoggerFactory
-	// .getLogger("JOBLOGGER");
+	private static final Logger jobLogger = LoggerFactory
+			.getLogger("JOBLOGGER");
 
 	// the host these commands should be run on
 	private final String host;
@@ -42,15 +40,7 @@ public class On implements Command {
 
 	public On(Instance instance, List<CommandDefinition> cmdsToRun,
 			String script, String serverVar) {
-		String thisHost = "";
-		try {
-			thisHost = instance != null ? instance.ipAddress : InetAddress
-					.getLocalHost().getHostAddress();
-		} catch (UnknownHostException e) {
-			logger.error("Failed getting localhost host address");
-		} finally {
-			this.host = thisHost;
-		}
+		this.host = instance.ipAddress;
 		this.serverVar = serverVar;
 		this.cmdsToRun = cmdsToRun;
 		this.script = script;
@@ -59,7 +49,7 @@ public class On implements Command {
 	@Override
 	public void execute(CMLRuntime runtime) {
 
-		logger.info("This is try # " + retryCount + " of " + maxRetries);
+		jobLogger.info("This is try # " + retryCount + " of " + maxRetries);
 
 		String cicstartServer = MacroServer.properties().getString(
 				"cicstart.server.internal");
@@ -67,14 +57,14 @@ public class On implements Command {
 		if (NetworkUtil.currentlyRunningOn(host)) {
 			// we're actually logged into the spawned VM so just run the
 			// commands
-			logger.info("On: running commands on " + host);
+			jobLogger.info("On: running commands on " + host);
 			runtime.run(getCmdsToRun());
 
 		} else if (NetworkUtil.currentlyRunningOn(cicstartServer)) {
 			// we're on the CICSTART server so do a remote SSH to get the
 			// binary client on the spawned VM and run it
 
-			logger.info("On: connecting to remote " + host
+			jobLogger.info("On: connecting to remote " + host
 					+ " to setup client.");
 
 			SSHClient client = new SSHClient();
@@ -87,7 +77,7 @@ public class On implements Command {
 					String privateKeyFile = MacroServer.properties().getString(
 							"cicstart.pemfile");
 					File pemFile = new File(privateKeyFile);
-					logger.info("Connecting to " + host + " using keyfile "
+					jobLogger.info("Connecting to " + host + " using keyfile "
 							+ pemFile.getAbsolutePath() + " and user 'ubuntu'");
 					KeyProvider keys = client.loadKeys(pemFile.getPath());
 					client.authPublickey("ubuntu", keys);
@@ -147,7 +137,7 @@ public class On implements Command {
 				localIpAddress = "unknown";
 				localHostName = "unknown";
 			}
-			logger.info("On: skipping -> This is " + localIpAddress + "("
+			jobLogger.info("On: skipping -> This is " + localIpAddress + " ("
 					+ localHostName + ")" + " but these cmds are for " + host);
 
 		}
@@ -159,16 +149,16 @@ public class On implements Command {
 
 		Session session = client.startSession();
 		try {
-			logger.info("Running '" + command + "' on " + host);
+			jobLogger.info("Running '" + command + "' on " + host);
 			net.schmizz.sshj.connection.channel.direct.Session.Command cmd = session
 					.exec(command);
-			logger.info("On (" + host + "): STDOUT: "
+			jobLogger.info("On (" + host + "): STDOUT: "
 					+ IOUtils.readFully(cmd.getInputStream()).toString());
 			cmd.join(15, TimeUnit.SECONDS);
-			logger.info("On (" + host + "): exit status: "
+			jobLogger.info("On (" + host + "): exit status: "
 					+ cmd.getExitStatus());
 		} catch (ConnectionException ce) {
-			logger.error("Timed out completing command on " + host, ce);
+			jobLogger.error("Timed out completing command on " + host, ce);
 		} finally {
 			session.close();
 		}

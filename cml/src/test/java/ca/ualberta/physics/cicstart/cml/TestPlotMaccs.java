@@ -48,7 +48,7 @@ public class TestPlotMaccs {
 	public void testCommandOrder() {
 
 		Assert.assertEquals(
-				"on[getVFS, getCataloguedFiles, foreach[run, run, putVFS]]",
+				"startVM, on[getVFS, getCataloguedFiles, foreach[run, run, putVFS]]",
 				Joiner.on(", ").join(macro.getCommands()));
 
 	}

@@ -2,8 +2,6 @@ package ca.ualberta.physics.cicstart.cml.command;
 
 import static ch.qos.logback.classic.ClassicConstants.FINALIZE_SESSION_MARKER;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -19,13 +17,13 @@ import org.slf4j.MDC;
 import ca.ualberta.physics.cssdp.domain.catalogue.CatalogueSearchRequest;
 import ca.ualberta.physics.cssdp.domain.macro.Instance;
 import ca.ualberta.physics.cssdp.model.Mnemonic;
+import ca.ualberta.physics.cssdp.util.NetworkUtil;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
-import com.google.common.base.Throwables;
 
 public class CMLRuntime {
-	private static final Logger cmlLogger = LoggerFactory
+	private static final Logger jobLogger = LoggerFactory
 			.getLogger("JOBLOGGER");
 	public static final Logger logger = LoggerFactory
 			.getLogger(CMLRuntime.class);
@@ -42,12 +40,7 @@ public class CMLRuntime {
 		MDC.put("jobId", jobId);
 		variableData.put(JOBID, jobId);
 		variableData.put(CICSTARTSESSION, cicstartSession);
-		try {
-			variableData.put(LOCALHOST, InetAddress.getLocalHost()
-					.getHostAddress());
-		} catch (UnknownHostException e) {
-			Throwables.propagate(e);
-		}
+		variableData.put(LOCALHOST, NetworkUtil.getLocalHostIp());
 	}
 
 	public static String newJobId() {
@@ -56,42 +49,48 @@ public class CMLRuntime {
 	}
 
 	public void run(Collection<CommandDefinition> cmdDefs) {
-		cmlLogger.info("Running commands: " + Joiner.on(", ").join(cmdDefs));
+		jobLogger.info("Running commands: " + Joiner.on(", ").join(cmdDefs));
 		for (CommandDefinition cmdDef : cmdDefs) {
 			run(cmdDef);
 		}
 	}
 
 	public void run(CommandDefinition cmdDef) {
-		logger.info("building " + cmdDef.toString());
-		Command cmd = buildCommand(cmdDef);
-		logger.info("running " + cmd.toString());
-		cmd.execute(this);
-		Object result = cmd.getResult();
+		try {
+			jobLogger.info("building " + cmdDef.toString());
+			Command cmd = buildCommand(cmdDef);
+			jobLogger.info("running " + cmd.toString());
+			cmd.execute(this);
+			Object result = cmd.getResult();
 
-		if (cmd instanceof StartVM) {
-			Instance instance = (Instance) result;
-			if (instance != null) {
-				instances.put(instance.ipAddress, instance);
+			if (cmd instanceof StartVM) {
+				Instance instance = (Instance) result;
+				if (instance != null) {
+					instances.put(instance.ipAddress, instance);
+
+					String variableName = cmdDef.getAssignment();
+
+					if (result != null) {
+						variableData.put(variableName, result);
+					}
+
+				} else {
+					jobLogger.warn("Instance not started for "
+							+ cmdDef.getSignature());
+				}
+			} else {
 
 				String variableName = cmdDef.getAssignment();
 
-				if (result != null) {
+				if (result != null && !Strings.isNullOrEmpty(variableName)) {
 					variableData.put(variableName, result);
 				}
-
-			} else {
-				logger.warn("Instance not started for " + cmdDef.getSignature());
 			}
-		} else {
+		} catch (Exception e) {
+			jobLogger.error("Command failed due to " + e.getMessage(), e);
 
-			String variableName = cmdDef.getAssignment();
-
-			if (result != null && !Strings.isNullOrEmpty(variableName)) {
-				variableData.put(variableName, result);
-			}
 		}
-		logger.info(FINALIZE_SESSION_MARKER, "About to end the job");
+		jobLogger.info(FINALIZE_SESSION_MARKER, "About to end the job");
 	}
 
 	@SuppressWarnings("unchecked")
@@ -114,9 +113,11 @@ public class CMLRuntime {
 						.get(CICSTARTSESSION).toString());
 				t = (T) value;
 			} else if (value.contains("$" + LOCALHOST)) {
-				value = value.replaceAll("\\$" + LOCALHOST,
+				String ipAddress = value.replaceAll("\\$" + LOCALHOST,
 						variableData.get(LOCALHOST).toString());
-				t = (T) value;
+				Instance localHost = new Instance();
+				localHost.ipAddress = ipAddress;
+				t = (T) localHost;
 			} else {
 				for (String variableName : variableData.keySet()) {
 					/*

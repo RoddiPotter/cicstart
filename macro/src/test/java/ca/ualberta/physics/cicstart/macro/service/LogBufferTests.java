@@ -74,8 +74,8 @@ public class LogBufferTests {
 						} catch (InterruptedException e) {
 						}
 					}
-
 				}
+				ms.writeToLogBuffer("12345", "CML_STOP");
 				// let the reader finish all entries.
 				try {
 					Thread.sleep(500);
@@ -96,15 +96,15 @@ public class LogBufferTests {
 			}
 		}
 
-		// reader.interrupt();
 		try {
 			// be a good citizen
 			os.close();
 		} catch (IOException ignore) {
 		}
 
-		// we sent 200 log messages, 200 should have been printed.
-		Assert.assertEquals(200, logCount.get());
+		// we sent 200 log messages, 201 should have been printed because of the
+		// "done" message.
+		Assert.assertEquals(201, logCount.get());
 
 	}
 

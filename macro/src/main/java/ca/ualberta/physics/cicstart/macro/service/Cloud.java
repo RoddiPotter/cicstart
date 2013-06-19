@@ -27,13 +27,13 @@ public interface Cloud {
 	 *            image to use to start the instance
 	 * @param flavor
 	 *            flavor of the instance (tiny, small, etc).
-	 * @param name
+	 * @param ref
 	 *            name of the instance to refer to later
 	 * 
 	 * @return an instance object with password and ip address
 	 */
 	public Instance startInstance(Identity identity, Image image,
-			Flavor flavor, String name);
+			Flavor flavor, String ref);
 
 	/**
 	 * Creates a block storage volume

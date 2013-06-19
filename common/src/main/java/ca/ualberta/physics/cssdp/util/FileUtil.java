@@ -263,6 +263,11 @@ public class FileUtil {
 
 		public void to(File dest) {
 
+			if (!source.exists()) {
+				throw new IllegalArgumentException(source.getPath()
+						+ " does not exist, copy failed.");
+			}
+
 			for (File file : source.listFiles(thisAndParentFilter)) {
 				File to = new File(dest, file.getName());
 				if (file.isFile()) {

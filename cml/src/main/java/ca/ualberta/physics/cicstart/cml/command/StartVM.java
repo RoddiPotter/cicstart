@@ -2,9 +2,6 @@ package ca.ualberta.physics.cicstart.cml.command;
 
 import static com.jayway.restassured.RestAssured.given;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,8 +9,8 @@ import ca.ualberta.physics.cssdp.configuration.Common;
 import ca.ualberta.physics.cssdp.configuration.MacroServer;
 import ca.ualberta.physics.cssdp.domain.macro.Instance;
 import ca.ualberta.physics.cssdp.domain.macro.InstanceSpec;
+import ca.ualberta.physics.cssdp.util.NetworkUtil;
 
-import com.google.common.base.Throwables;
 import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.response.Response;
 
@@ -47,54 +44,33 @@ public class StartVM implements Command {
 		String cicstartServer = MacroServer.properties().getString(
 				"cicstart.server.internal");
 
-		boolean correctServer = false;
-		try {
-			for (InetAddress inetAddr : InetAddress.getAllByName(InetAddress
-					.getLocalHost().getHostName())) {
-				
-				logger.info("This host is " + inetAddr);
-				
-				if (inetAddr.getHostAddress().equals(cicstartServer)
-						|| inetAddr.getHostName().equals(cicstartServer)) {
+		if (NetworkUtil.currentlyRunningOn(cicstartServer)) {
 
-					InstanceSpec vmSpec = new InstanceSpec();
-					vmSpec.setCloud(cloudName);
-					vmSpec.setFlavor(flavor);
-					vmSpec.setImage(imageName);
-					vmSpec.setRequestId(jobId);
+			InstanceSpec vmSpec = new InstanceSpec();
+			vmSpec.setCloud(cloudName);
+			vmSpec.setFlavor(flavor);
+			vmSpec.setImage(imageName);
+			vmSpec.setRequestId(jobId);
 
-					logger.info("StartVM: Starting VM instance on "
-							+ cloudName + " using image " + imageName
-							+ " of size " + flavor);
-					String macroUrl = Common.properties().getString(
-							"macro.api.url");
-					Response res = given().content(vmSpec).and()
-							.contentType(ContentType.JSON).and()
-							.headers("CICSTART.session", cicstartSession)
-							.post(macroUrl + "/macro.json/vm");
+			logger.info("StartVM: Starting VM instance on " + cloudName
+					+ " using image " + imageName + " of size " + flavor);
+			String macroUrl = Common.properties().getString("macro.api.url");
+			Response res = given().content(vmSpec).and()
+					.contentType(ContentType.JSON).and()
+					.headers("CICSTART.session", cicstartSession)
+					.post(macroUrl + "/macro.json/vm");
 
-					if (res.statusCode() == 200) {
-						instance = res.as(Instance.class);
-						logger
-								.info("StartVM: Instance started with ip address "
-										+ instance.ipAddress
-										+ " and id "
-										+ instance.id);
-					}
-
-					correctServer = true;
-					break;
-				}
+			if (res.statusCode() == 200) {
+				instance = res.as(Instance.class);
+				logger.info("StartVM: Instance started with ip address "
+						+ instance.ipAddress + " and id " + instance.id);
 			}
 
-			if (!correctServer) {
-				jobLogger
-						.info("StartVM: not starting another VM from a CML spawned VM, "
-								+ "they are started only from a CICSTART server.");
-			}
+		} else {
 
-		} catch (UnknownHostException e) {
-			Throwables.propagate(e);
+			jobLogger
+					.info("StartVM: not starting another VM from a CML spawned VM, "
+							+ "they are started only from a CICSTART server.");
 		}
 
 	}
