@@ -2,6 +2,9 @@ package ca.ualberta.physics.cicstart.cml.command;
 
 import static com.jayway.restassured.RestAssured.given;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -68,9 +71,17 @@ public class StartVM implements Command {
 
 		} else {
 
+			// set the instance ip address to the local address of the host
+			// we're on
+			try {
+				instance.ipAddress = InetAddress.getLocalHost()
+						.getHostAddress();
+			} catch (UnknownHostException e) {
+			}
 			jobLogger
 					.info("StartVM: not starting another VM from a CML spawned VM, "
-							+ "they are started only from a CICSTART server.");
+							+ "they are started only from a CICSTART server.  Setting instance IP to "
+							+ instance.ipAddress);
 		}
 
 	}

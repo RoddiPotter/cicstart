@@ -64,20 +64,16 @@ public class CMLRuntime {
 			Object result = cmd.getResult();
 
 			if (cmd instanceof StartVM) {
+
 				Instance instance = (Instance) result;
-				if (instance != null) {
-					instances.put(instance.ipAddress, instance);
+				instances.put(instance.ipAddress, instance);
 
-					String variableName = cmdDef.getAssignment();
+				String variableName = cmdDef.getAssignment();
 
-					if (result != null) {
-						variableData.put(variableName, result);
-					}
-
-				} else {
-					jobLogger.warn("Instance not started for "
-							+ cmdDef.getSignature());
+				if (result != null) {
+					variableData.put(variableName, result);
 				}
+
 			} else {
 
 				String variableName = cmdDef.getAssignment();
