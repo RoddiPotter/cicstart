@@ -15,6 +15,7 @@ import net.schmizz.sshj.transport.TransportException;
 import net.schmizz.sshj.transport.verification.PromiscuousVerifier;
 import net.schmizz.sshj.userauth.keyprovider.KeyProvider;
 
+import org.jboss.logging.MDC;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,8 +27,6 @@ import ca.ualberta.physics.cssdp.util.NetworkUtil;
 import com.google.common.net.InetAddresses;
 
 public class On implements Command {
-
-	private static final Logger logger = LoggerFactory.getLogger(On.class);
 
 	private static final Logger jobLogger = LoggerFactory
 			.getLogger("JOBLOGGER");
@@ -52,6 +51,8 @@ public class On implements Command {
 	@Override
 	public void execute(CMLRuntime runtime) {
 
+		MDC.put("JobId", runtime.getRequestId());
+		
 		jobLogger.info("This is try # " + retryCount + " of " + maxRetries);
 
 		String cicstartServer = MacroServer.properties().getString(

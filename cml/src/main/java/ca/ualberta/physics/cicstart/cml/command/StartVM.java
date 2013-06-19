@@ -5,6 +5,7 @@ import static com.jayway.restassured.RestAssured.given;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+import org.jboss.logging.MDC;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,6 +44,8 @@ public class StartVM implements Command {
 	@Override
 	public void execute(CMLRuntime runtime) {
 
+		MDC.put("JobId", runtime.getRequestId());
+		
 		String cicstartServer = MacroServer.properties().getString(
 				"cicstart.server.internal");
 

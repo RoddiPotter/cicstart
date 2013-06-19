@@ -19,11 +19,6 @@ public class CMLLogger extends FileAppender<ILoggingEvent> {
 	@Inject
 	private MacroService macroService;
 
-	public CMLLogger() {
-		super();
-		InjectorHolder.inject(this);
-	}
-
 	@Override
 	protected void subAppend(ILoggingEvent event) {
 		super.subAppend(event);
@@ -36,7 +31,15 @@ public class CMLLogger extends FileAppender<ILoggingEvent> {
 
 		if (NetworkUtil.currentlyRunningOn(MacroServer.properties().getString(
 				"cicstart.server.internal"))) {
+
+			// lazy access to macro service because
+			// avoid NPE due to logging framework initializing before guice is
+			// done initializing
+			if (macroService == null) {
+				InjectorHolder.inject(this);
+			}
 			macroService.writeToLogBuffer(jobId, logMessage);
+
 		} else {
 
 			String macroResource = Common.properties().getString(
