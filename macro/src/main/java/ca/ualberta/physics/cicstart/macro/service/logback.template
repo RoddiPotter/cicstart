@@ -6,7 +6,7 @@
 		</encoder>
 	</appender>
 
-	<appender name="CMLLOGGER" class="ca.ualberta.physics.cicstart.cml.log.CMLLogger">
+	<appender name="CMLLOGGER" class="ca.ualberta.physics.cicstart.macro.CMLLogger">
 		<file>macro.log</file>
 		<append>true</append>
 		<encoder>
