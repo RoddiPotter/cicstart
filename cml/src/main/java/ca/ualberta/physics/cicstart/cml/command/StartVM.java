@@ -19,7 +19,6 @@ import com.jayway.restassured.response.Response;
 
 public class StartVM implements Command {
 
-	private static final Logger logger = LoggerFactory.getLogger(StartVM.class);
 	private static final Logger jobLogger = LoggerFactory
 			.getLogger("JOBLOGGER");
 
@@ -55,7 +54,7 @@ public class StartVM implements Command {
 			vmSpec.setImage(imageName);
 			vmSpec.setRequestId(jobId);
 
-			logger.info("StartVM: Starting VM instance on " + cloudName
+			jobLogger.info("StartVM: Starting VM instance on " + cloudName
 					+ " using image " + imageName + " of size " + flavor);
 			String macroUrl = Common.properties().getString("macro.api.url");
 			Response res = given().content(vmSpec).and()
@@ -65,7 +64,7 @@ public class StartVM implements Command {
 
 			if (res.statusCode() == 200) {
 				instance = res.as(Instance.class);
-				logger.info("StartVM: Instance started with ip address "
+				jobLogger.info("StartVM: Instance started with ip address "
 						+ instance.ipAddress + " and id " + instance.id);
 			}
 
@@ -74,6 +73,7 @@ public class StartVM implements Command {
 			// set the instance ip address to the local address of the host
 			// we're on
 			try {
+				instance = new Instance();
 				instance.ipAddress = InetAddress.getLocalHost()
 						.getHostAddress();
 			} catch (UnknownHostException e) {

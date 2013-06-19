@@ -67,7 +67,7 @@ public class On implements Command {
 			// we're on the CICSTART server so do a remote SSH to get the
 			// binary client on the spawned VM and run it
 
-			logger.info("On: connecting to remote " + host
+			jobLogger.info("On: connecting to remote " + host
 					+ " to setup client.");
 
 			SSHClient client = new SSHClient();
@@ -80,7 +80,7 @@ public class On implements Command {
 					String privateKeyFile = MacroServer.properties().getString(
 							"cicstart.pemfile");
 					File pemFile = new File(privateKeyFile);
-					logger.info("Connecting to " + host + " using keyfile "
+					jobLogger.info("Connecting to " + host + " using keyfile "
 							+ pemFile.getAbsolutePath() + " and user 'ubuntu'");
 					KeyProvider keys = client.loadKeys(pemFile.getPath());
 					client.authPublickey("ubuntu", keys);
@@ -119,7 +119,7 @@ public class On implements Command {
 
 			} catch (Exception e) {
 
-				logger.warn("something when wrong connecting to spawned vm", e);
+				jobLogger.warn("something when wrong connecting to spawned vm", e);
 				// assigned external address takes a few seconds and is
 				// non-determinant of what exception will be thrown so just
 				// retry until we can connect to the host
