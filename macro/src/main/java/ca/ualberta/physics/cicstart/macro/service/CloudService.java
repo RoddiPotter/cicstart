@@ -95,7 +95,7 @@ public class CloudService {
 			Instance instance = null;
 			try {
 				instance = cloud.startInstance(clientIdentity, image, flavor,
-						sessionToken + jobId);
+						jobId);
 			} catch (Exception e) {
 				sr.setOk(false);
 				sr.error(e.getMessage());
