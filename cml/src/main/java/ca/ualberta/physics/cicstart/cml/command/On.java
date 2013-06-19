@@ -92,8 +92,7 @@ public class On implements Command {
 					// is built if the jvm building the client can't access the
 					// internal ip of the cicstart server
 					String macroUrl = "http://"
-							+ Common.properties().getString(
-									"common.macro.api.url")
+							+ Common.properties().getString("macro.api.url")
 							+ "/bin?include_jre=false&use_internal_network=true&job_id="
 							+ runtime.getRequestId();
 
