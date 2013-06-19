@@ -1,0 +1,11 @@
+curl --user potter.rod@gmail.com:Snuf.431! -X POST http://208.75.74.81/auth/api/session.json
+
+cc1a876d-893a-40b4-9759-6e345de72d40
+
+curl -H CICSTART.session:"cc1a876d-893a-40b4-9759-6e345de72d40" -F file=@/home/rpotter/workspaces/cicstart/cml/src/test/resources/maccs.gp -F path=/ -X POST http://208.75.74.81/vfs/api/filesystem.json/1/write
+
+curl -v -H CICSTART.session:"cc1a876d-893a-40b4-9759-6e345de72d40" -H Content-Type:"application/octet-stream" --data-binary @/home/rpotter/workspaces/cicstart/cml/src/test/resources/test3.cml -X POST http://208.75.74.81/macro/api/macro.json/bin?include_jre=false > client.tar.gz
+
+curl -v -H CICSTART.session:"cc1a876d-893a-40b4-9759-6e345de72d40" -H Content-Type:"application/octet-stream" --data-binary @/home/rpotter/workspaces/cicstart/cml/src/test/resources/test3.cml -X POST http://208.75.74.81/macro/api/macro.json/run
+
+curl -v -H CICSTART.session:"cc1a876d-893a-40b4-9759-6e345de72d40" 
