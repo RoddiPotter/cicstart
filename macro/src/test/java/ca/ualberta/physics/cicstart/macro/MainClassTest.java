@@ -20,9 +20,9 @@ public class MainClassTest {
 		String script = Files.toString(new File(MainClassTest.class
 				.getResource("/test.cml").toURI()), Charset.forName("UTF-8"));
 
-		ServiceResponse<String> sr = main.runCmlScript(script, "token");
+		ServiceResponse<String> sr = main.runCmlScript(script, "token", "UNIT_TEST");
 
-		// if it hits this, then it's good.  Hanging is no good.
+		// if it hits this, then it's good. Hanging is no good.
 		Assert.assertTrue(sr.isRequestOk());
 
 	}

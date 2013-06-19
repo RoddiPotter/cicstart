@@ -92,8 +92,9 @@ public class MainClass {
 		}
 
 		String sessionToken = args[2];
-
-		ServiceResponse<String> sr = mc.runCmlScript(cmlScript, sessionToken);
+		String jobId = args[3];
+		
+		ServiceResponse<String> sr = mc.runCmlScript(cmlScript, sessionToken, jobId);
 
 		if (sr.isRequestOk()) {
 			logger.info("All done, program exiting with normal error code 0");
@@ -113,9 +114,9 @@ public class MainClass {
 	}
 
 	public ServiceResponse<String> runCmlScript(String cmlScript,
-			String sessionToken) {
+			String sessionToken, String jobId) {
 		logger.info("about to run script: " + cmlScript);
-		ServiceResponse<String> sr = macroService.run(cmlScript, sessionToken);
+		ServiceResponse<String> sr = macroService.run(cmlScript, sessionToken, jobId);
 		if (sr.isRequestOk()) {
 			String requestId = sr.getPayload();
 			logger.info("Tailing logs now");

@@ -35,6 +35,7 @@ import ca.ualberta.physics.cssdp.service.ServiceResponse;
 import ca.ualberta.physics.cssdp.util.FileUtil;
 import ca.ualberta.physics.cssdp.util.NetworkUtil;
 
+import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
 import com.google.common.io.Files;
 
@@ -63,11 +64,15 @@ public class MacroService {
 	 */
 	private final ConcurrentHashMap<String, Buffer> logBuffers = new ConcurrentHashMap<String, Buffer>();
 
+	public ServiceResponse<String> run(String cmlScript, String sessionToken) {
+		return run(cmlScript, sessionToken, null);
+	}
+
 	/*
 	 * This method is called inside the client binary JVM
 	 */
 	public ServiceResponse<String> run(String cmlScript,
-			final String sessionToken) {
+			final String sessionToken, String jobId) {
 
 		ServiceResponse<String> sr = new ServiceResponse<String>();
 
@@ -88,7 +93,9 @@ public class MacroService {
 
 		walker.walk(macro, tree);
 
-		String requestId = CMLRuntime.newJobId();
+		String requestId = Strings.isNullOrEmpty(jobId) ? CMLRuntime.newJobId()
+				: jobId;
+
 		final CMLRuntime runtime = new CMLRuntime(requestId, sessionToken);
 
 		sr.setPayload(runtime.getRequestId());
@@ -184,7 +191,7 @@ public class MacroService {
 	}
 
 	public ServiceResponse<File> assembleClient(String cmlScript,
-			String sessionToken, boolean includeJre, boolean useInternalNetwork) {
+			String sessionToken, boolean includeJre, boolean useInternalNetwork, String jobId) {
 
 		logger.debug("Got script to assemble: \n" + cmlScript);
 
@@ -287,7 +294,7 @@ public class MacroService {
 			Files.append("#!/usr/bin/env bash\n", run, Charset.forName("UTF-8"));
 			Files.append(
 					"./macro " + appProperties.getName() + " "
-							+ macroFile.getName() + " " + sessionToken, run,
+							+ macroFile.getName() + " " + sessionToken + " " + jobId, run,
 					Charset.forName("UTF-8"));
 			run.setExecutable(true, false);
 
