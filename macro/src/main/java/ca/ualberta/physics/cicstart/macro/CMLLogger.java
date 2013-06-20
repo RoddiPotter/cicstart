@@ -38,7 +38,7 @@ public class CMLLogger extends FileAppender<ILoggingEvent> {
 			if (macroService == null) {
 				InjectorHolder.inject(this);
 			}
-			macroService.writeToLogBuffer(jobId, logMessage);
+			macroService.writeToLogBuffer(jobId, logMessage + "\n");
 
 		} else {
 
