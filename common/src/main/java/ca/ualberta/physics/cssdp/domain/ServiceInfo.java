@@ -1,6 +1,6 @@
 package ca.ualberta.physics.cssdp.domain;
 
-import org.joda.time.LocalDateTime;
+import org.joda.time.DateTime;
 import org.joda.time.format.ISODateTimeFormat;
 
 import ca.ualberta.physics.cssdp.domain.ServiceStats.ServiceName;
@@ -23,6 +23,6 @@ public class ServiceInfo {
 	public String institution = "University of Alberta, Department of Physics, Space Physics";
 	// ISO8601
 	public String releaseTime = ISODateTimeFormat.dateTime().print(
-			new LocalDateTime(2013, 06, 30, 01, 01));
+			new DateTime(2013, 06, 30, 01, 01));
 
 }
