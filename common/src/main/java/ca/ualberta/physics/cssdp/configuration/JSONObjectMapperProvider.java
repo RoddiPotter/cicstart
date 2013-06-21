@@ -24,12 +24,15 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.ext.ContextResolver;
 
+import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 
 import ca.ualberta.physics.cssdp.model.Mnemonic;
 import ca.ualberta.physics.cssdp.util.JSONClassDeserializer;
 import ca.ualberta.physics.cssdp.util.JSONClassSerializer;
+import ca.ualberta.physics.cssdp.util.JSONDateTimeDeserializer;
+import ca.ualberta.physics.cssdp.util.JSONDateTimeSerializer;
 import ca.ualberta.physics.cssdp.util.JSONLocalDateDeserializer;
 import ca.ualberta.physics.cssdp.util.JSONLocalDateSerializer;
 import ca.ualberta.physics.cssdp.util.JSONLocalDateTimeDeserializer;
@@ -62,6 +65,9 @@ public class JSONObjectMapperProvider implements Provider<ObjectMapper>,
 				false);
 
 		SimpleModule module = new SimpleModule("cicstart");
+
+		module.addSerializer(DateTime.class, new JSONDateTimeSerializer());
+		module.addDeserializer(DateTime.class, new JSONDateTimeDeserializer());
 
 		module.addSerializer(LocalDate.class, new JSONLocalDateSerializer());
 		module.addDeserializer(LocalDate.class, new JSONLocalDateDeserializer());

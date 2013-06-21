@@ -2,7 +2,7 @@ package ca.ualberta.physics.cssdp.service;
 
 import javax.persistence.EntityManager;
 
-import org.joda.time.LocalDateTime;
+import org.joda.time.DateTime;
 
 import ca.ualberta.physics.cssdp.dao.ServiceStatsDao;
 import ca.ualberta.physics.cssdp.domain.ServiceStats;
@@ -41,7 +41,7 @@ public class StatsService {
 				if (stats == null) {
 					stats = new ServiceStats();
 					stats.setInvocations(0);
-					stats.setLastReset(LocalDateTime.now());
+					stats.setLastReset(DateTime.now());
 					stats.setServiceName(serviceName);
 					dao.save(stats);
 				}
@@ -70,7 +70,7 @@ public class StatsService {
 				if (stats == null) {
 					stats = new ServiceStats();
 					stats.setInvocations(1);
-					stats.setLastReset(LocalDateTime.now());
+					stats.setLastReset(DateTime.now());
 					stats.setServiceName(serviceName);
 					dao.save(stats);
 				} else {

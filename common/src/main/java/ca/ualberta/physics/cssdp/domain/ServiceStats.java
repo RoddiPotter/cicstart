@@ -9,7 +9,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
-import org.joda.time.LocalDateTime;
+import org.joda.time.DateTime;
 
 import ca.ualberta.physics.cssdp.dao.Persistent;
 
@@ -43,8 +43,8 @@ public class ServiceStats extends Persistent implements Serializable {
 	private int invocations;
 
 	@Column(name = "reset_date", nullable = false)
-	@Type(type = "ca.ualberta.physics.cssdp.dao.type.PersistentLocalDateTime")
-	private LocalDateTime lastReset;
+	@Type(type = "ca.ualberta.physics.cssdp.dao.type.PersistentDateTime")
+	private DateTime lastReset;
 
 	@Override
 	public String _pk() {
@@ -67,11 +67,11 @@ public class ServiceStats extends Persistent implements Serializable {
 		this.invocations = invocations;
 	}
 
-	public LocalDateTime getLastReset() {
+	public DateTime getLastReset() {
 		return lastReset;
 	}
 
-	public void setLastReset(LocalDateTime lastReset) {
+	public void setLastReset(DateTime lastReset) {
 		this.lastReset = lastReset;
 	}
 
