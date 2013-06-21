@@ -3,8 +3,10 @@ package ca.ualberta.physics.cssdp.resource;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import ca.ualberta.physics.cssdp.domain.ServiceInfo;
@@ -18,6 +20,7 @@ import com.wordnik.swagger.annotations.ApiError;
 import com.wordnik.swagger.annotations.ApiErrors;
 import com.wordnik.swagger.annotations.ApiOperation;
 
+@Consumes(MediaType.WILDCARD)
 public abstract class AbstractServiceResource {
 
 	protected abstract ServiceInfo buildInfo();
