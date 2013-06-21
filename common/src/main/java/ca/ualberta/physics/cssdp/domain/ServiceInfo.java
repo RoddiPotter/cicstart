@@ -23,6 +23,6 @@ public class ServiceInfo {
 	public String institution = "University of Alberta, Department of Physics, Space Physics";
 	// ISO8601
 	public String releaseTime = ISODateTimeFormat.dateTime().print(
-			new LocalDateTime(2013, 06, 30, 01, 01)) + "Z";
+			new LocalDateTime(2013, 06, 30, 01, 01));
 
 }
