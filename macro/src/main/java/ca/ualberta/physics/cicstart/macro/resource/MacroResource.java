@@ -56,10 +56,12 @@ import ca.ualberta.physics.cicstart.macro.service.MacroService;
 import ca.ualberta.physics.cicstart.macro.service.MacroService.JobStatus;
 import ca.ualberta.physics.cicstart.macro.service.OpenStackCloud.Flavor;
 import ca.ualberta.physics.cssdp.configuration.Common;
+import ca.ualberta.physics.cssdp.domain.ServiceStats.ServiceName;
 import ca.ualberta.physics.cssdp.domain.auth.User;
 import ca.ualberta.physics.cssdp.domain.macro.Instance;
 import ca.ualberta.physics.cssdp.domain.macro.InstanceSpec;
 import ca.ualberta.physics.cssdp.service.ServiceResponse;
+import ca.ualberta.physics.cssdp.service.StatsService;
 
 import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
@@ -76,9 +78,13 @@ public class MacroResource {
 
 	@Inject
 	private CloudService cloudService;
+	
+	@Inject
+	private StatsService statsService;
 
 	public MacroResource() {
 		InjectorHolder.inject(this);
+		statsService.incrementInvocationCount(ServiceName.AUTH);
 	}
 
 	@Path("/run")

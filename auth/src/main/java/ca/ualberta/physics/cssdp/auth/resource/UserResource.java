@@ -31,8 +31,10 @@ import javax.ws.rs.core.UriInfo;
 
 import ca.ualberta.physics.cssdp.auth.InjectorHolder;
 import ca.ualberta.physics.cssdp.auth.service.UserService;
+import ca.ualberta.physics.cssdp.domain.ServiceStats.ServiceName;
 import ca.ualberta.physics.cssdp.domain.auth.User;
 import ca.ualberta.physics.cssdp.service.ServiceResponse;
+import ca.ualberta.physics.cssdp.service.StatsService;
 
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
@@ -46,8 +48,12 @@ public class UserResource {
 	@Inject
 	private UserService userService;
 
+	@Inject
+	private StatsService statsService;
+	
 	public UserResource() {
 		InjectorHolder.inject(this);
+		statsService.incrementInvocationCount(ServiceName.AUTH);
 	}
 
 	@POST
@@ -60,7 +66,7 @@ public class UserResource {
 	public Response addUser(
 			@ApiParam(value = "User object to add", required = true) User user,
 			@Context UriInfo uriInfo) {
-
+		
 		if (user == null) {
 			return Response.status(Status.BAD_REQUEST).build();
 		}

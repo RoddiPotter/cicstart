@@ -40,12 +40,14 @@ import org.slf4j.LoggerFactory;
 import ca.ualberta.physics.cssdp.catalogue.InjectorHolder;
 import ca.ualberta.physics.cssdp.catalogue.service.CatalogueService;
 import ca.ualberta.physics.cssdp.client.AuthClient;
+import ca.ualberta.physics.cssdp.domain.ServiceStats.ServiceName;
 import ca.ualberta.physics.cssdp.domain.catalogue.CatalogueSearchRequest;
 import ca.ualberta.physics.cssdp.domain.catalogue.CatalogueSearchResponse;
 import ca.ualberta.physics.cssdp.domain.catalogue.DataProduct;
 import ca.ualberta.physics.cssdp.domain.catalogue.Project;
 import ca.ualberta.physics.cssdp.jaxb.Link;
 import ca.ualberta.physics.cssdp.service.ServiceResponse;
+import ca.ualberta.physics.cssdp.service.StatsService;
 
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
@@ -64,9 +66,13 @@ public class ProjectResource {
 
 	@Inject
 	private AuthClient authClient;
+	
+	@Inject
+	private StatsService statsService;
 
 	public ProjectResource() {
 		InjectorHolder.inject(this);
+		statsService.incrementInvocationCount(ServiceName.CATALOGUE);
 	}
 
 	@POST

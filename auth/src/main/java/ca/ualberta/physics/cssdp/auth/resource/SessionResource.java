@@ -36,8 +36,10 @@ import org.slf4j.LoggerFactory;
 
 import ca.ualberta.physics.cssdp.auth.InjectorHolder;
 import ca.ualberta.physics.cssdp.auth.service.UserService;
+import ca.ualberta.physics.cssdp.domain.ServiceStats.ServiceName;
 import ca.ualberta.physics.cssdp.domain.auth.Session;
 import ca.ualberta.physics.cssdp.service.ServiceResponse;
+import ca.ualberta.physics.cssdp.service.StatsService;
 
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
@@ -56,8 +58,12 @@ public class SessionResource {
 	@Inject
 	private UserService userService;
 
+	@Inject
+	private StatsService statsService;
+	
 	public SessionResource() {
 		InjectorHolder.inject(this);
+		statsService.incrementInvocationCount(ServiceName.AUTH);
 	}
 
 	/**
@@ -87,7 +93,7 @@ public class SessionResource {
 					+ "Required if using form authentication.") @FormParam("username") String username,
 			@ApiParam(value = "The password to authenticate with.  Required if using form authentication.") @FormParam("password") String password,
 			@Context HttpHeaders headers, @Context HttpServletRequest request) {
-
+		
 		// parse the username and password from the authorization string
 		List<String> authHeaders = headers.getRequestHeader("authorization");
 		if (authHeaders != null) {

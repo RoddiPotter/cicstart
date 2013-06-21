@@ -73,8 +73,26 @@ public class FileSystemResource {
 	@Inject
 	private AuthClient authClient;
 
+	// @Inject
+	// private StatsService statsService;
+
 	public FileSystemResource() {
 		InjectorHolder.inject(this);
+		
+		/*
+		 * hmmm, can't even instantiate stats service because jars aren't included for any persistence.
+		 * Have to be creative and gather stats for VFS in some other way.
+		 */
+		
+		
+		// // only do this for the common CICSTART VFS instance because 3rd
+		// party
+		// // installations won't have database access.
+		// if
+		// (NetworkUtil.currentlyRunningOn(MacroServer.properties().getString(
+		// "cicstart.server.internal"))) {
+		// statsService.incrementInvocationCount(ServiceName.VFS);
+		// }
 	}
 
 	@POST
