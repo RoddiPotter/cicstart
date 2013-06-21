@@ -66,7 +66,7 @@ public class ProjectResource {
 
 	@Inject
 	private AuthClient authClient;
-	
+
 	@Inject
 	private StatsService statsService;
 
@@ -154,8 +154,9 @@ public class ProjectResource {
 
 		ProjectLinks projects = new ProjectLinks();
 		for (Project p : sr.getPayload()) {
-			projects.addLink(new Link(p.getName(), uriInfo.getBaseUriBuilder()
-					.path(p.getExternalKey().getValue()).build()));
+			URI uri = uriInfo.getBaseUriBuilder().path(getClass())
+					.path(p.getExternalKey().getValue()).build();
+			projects.addLink(new Link(p.getName(), uri));
 		}
 
 		return Response.ok(projects).build();
@@ -205,7 +206,7 @@ public class ProjectResource {
 			@Context UriInfo uriInfo) {
 
 		authClient.validate(sessionToken);
-		
+
 		ServiceResponse<Project> projectSr = catalogueService.find(extKey);
 
 		if (projectSr.isRequestOk()) {
@@ -246,8 +247,8 @@ public class ProjectResource {
 				searchRequest.getProjectKey(),
 				searchRequest.getObservatoryKeys(),
 				searchRequest.getInstrumentTypeKeys(),
-				searchRequest.getDiscriminatorKey(),
-				searchRequest.getStart(), searchRequest.getEnd());
+				searchRequest.getDiscriminatorKey(), searchRequest.getStart(),
+				searchRequest.getEnd());
 
 		if (results.isRequestOk()) {
 			// TODO return a summary and request the actual results.

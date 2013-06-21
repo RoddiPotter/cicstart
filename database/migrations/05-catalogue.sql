@@ -133,7 +133,7 @@ create table catalogue_url_dataproduct (
 
 @DOWN
 drop table catalogue_url_dataproduct;
-drop sequence catalogue_url_dataproduct_id_seq
+drop sequence catalogue_url_dataproduct_id_seq;
 drop table catalogue_observatorygroup_members;
 drop table catalogue_observatorygroup;
 drop table catalogue_dataproduct_discriminator;
