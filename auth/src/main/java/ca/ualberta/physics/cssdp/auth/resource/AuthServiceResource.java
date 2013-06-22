@@ -38,7 +38,7 @@ public class AuthServiceResource extends AbstractServiceResource {
 	protected ServiceInfo buildInfo() {
 		ServiceInfo info = new ServiceInfo();
 		info.name = ServiceName.AUTH;
-		info.synopsis = "A generic authentication service used for user and session management.  Sessions are persistent and long lived.";
+		info.synopsis = "A generic authentication service used for user and session management.";
 		return info;
 	}
 

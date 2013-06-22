@@ -12,10 +12,12 @@ import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
 import ca.ualberta.physics.cssdp.dao.Persistent;
+import ca.ualberta.physics.cssdp.util.JSONDateTimeNoMillisSerializer;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
  * a domain object used to hold service statistics
@@ -42,8 +44,9 @@ public class ServiceStats extends Persistent implements Serializable {
 	@Column(name = "invocations", nullable = false)
 	private int invocations;
 
-	@Column(name = "reset_date", nullable = false)
+	@Column(name = "reset_date", nullable = false)	
 	@Type(type = "ca.ualberta.physics.cssdp.dao.type.PersistentDateTime")
+	@JsonSerialize(using = JSONDateTimeNoMillisSerializer.class)
 	private DateTime lastReset;
 
 	@Override
