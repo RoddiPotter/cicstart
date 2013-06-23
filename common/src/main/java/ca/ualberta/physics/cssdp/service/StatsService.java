@@ -1,6 +1,7 @@
 package ca.ualberta.physics.cssdp.service;
 
 import javax.persistence.EntityManager;
+import javax.persistence.OptimisticLockException;
 
 import org.joda.time.DateTime;
 
@@ -61,7 +62,12 @@ public class StatsService {
 
 			@Override
 			public void onError(Exception e, ServiceResponse<?> sr) {
-				sr.error(e.getMessage());
+				if (e.getCause() != null
+						&& e.getCause() instanceof OptimisticLockException) {
+					incrementInvocationCount(serviceName);
+				} else {
+					sr.error(e.getMessage());
+				}
 			}
 
 			@Override
