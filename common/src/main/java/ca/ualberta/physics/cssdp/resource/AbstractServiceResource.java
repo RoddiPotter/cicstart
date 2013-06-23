@@ -36,7 +36,6 @@ public abstract class AbstractServiceResource {
 
 	@Path("/info")
 	@GET
-	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Basic identification and provenance information about the service.", notes = "CANARIE's monitoring service will poll this URI periodically.", responseClass = "ca.ualberta.physics.cssdp.domain.ServiceInfo")
 	@ApiErrors(value = { @ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
 	public Response getInfo() {
@@ -45,7 +44,6 @@ public abstract class AbstractServiceResource {
 
 	@Path("/stats")
 	@GET
-	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "CANARIE's monitoring service will poll this URI periodically. Return information about the usage of this RPI.", notes = "If this URI fails or times out, this RPI is unavailable.", responseClass = "ca.ualberta.physics.cssdp.domain.ServiceStats")
 	@ApiErrors(value = { @ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
 	public Response getStats() {
