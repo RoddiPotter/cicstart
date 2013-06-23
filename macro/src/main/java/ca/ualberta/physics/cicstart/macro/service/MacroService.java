@@ -250,6 +250,7 @@ public class MacroService {
 			overrides.setProperty(
 					"macroserver.cicstart.test.openstack.password", "-hidden-");
 			overrides.setProperty("macroserver.cicstart.pemfile", "-hidden-");
+			overrides.setProperty("macroserver.isServer", "false");
 
 			/*
 			 * Internal IP or External IP? Determine that before decided how to

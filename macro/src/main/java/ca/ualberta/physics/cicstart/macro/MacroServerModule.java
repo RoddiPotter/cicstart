@@ -20,7 +20,9 @@ package ca.ualberta.physics.cicstart.macro;
 
 import ca.ualberta.physics.cicstart.macro.service.CloudService;
 import ca.ualberta.physics.cicstart.macro.service.MacroService;
+import ca.ualberta.physics.cssdp.configuration.CommonModule;
 import ca.ualberta.physics.cssdp.configuration.JSONObjectMapperProvider;
+import ca.ualberta.physics.cssdp.configuration.MacroServer;
 import ca.ualberta.physics.cssdp.configuration.Slf4jLoggerInitializer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,12 +37,14 @@ public class MacroServerModule extends AbstractModule {
 	@Override
 	protected void configure() {
 
-		// install(new CommonModule());
-		// macro doesn't use any JPA stuff and we especially don't want to load
-		// that up on the binary client
+		// only load common (which loads JPA) on the server
+		if (MacroServer.properties().getBoolean("isServer")) {
+			install(new CommonModule());
+		} else {
 
-		install(new Slf4jLoggerInitializer());
-		bind(ObjectMapper.class).toProvider(new JSONObjectMapperProvider());
+			install(new Slf4jLoggerInitializer());
+			bind(ObjectMapper.class).toProvider(new JSONObjectMapperProvider());
+		}
 
 		bind(MacroService.class).in(Scopes.SINGLETON);
 		bind(CloudService.class).in(Scopes.SINGLETON);

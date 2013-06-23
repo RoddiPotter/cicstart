@@ -18,7 +18,9 @@
  */
 package ca.ualberta.physics.cssdp.vfs;
 
+import ca.ualberta.physics.cssdp.configuration.CommonModule;
 import ca.ualberta.physics.cssdp.configuration.JSONObjectMapperProvider;
+import ca.ualberta.physics.cssdp.configuration.VfsServer;
 import ca.ualberta.physics.cssdp.vfs.service.FileSystemService;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,12 +35,19 @@ public class VfsServerModule extends AbstractModule {
 	@Override
 	protected void configure() {
 
-		/*
-		 * VFS is so simple (no database) that it doesn't need to install the
-		 * common modules, but it does need the object mapper for json mapping
-		 */
-		bind(ObjectMapper.class).toProvider(new JSONObjectMapperProvider());
+		// only load common (which loads JPA) on the server
+		if (VfsServer.properties().getBoolean("isServer")) {
+			install(new CommonModule());
+		} else {
 
+			/*
+			 * VFS is so simple (no database) that it doesn't need to install
+			 * the common modules, but it does need the object mapper for json
+			 * mapping
+			 */
+			bind(ObjectMapper.class).toProvider(new JSONObjectMapperProvider());
+		}
+		
 		bind(FileSystemService.class).in(Scopes.SINGLETON);
 
 	}
