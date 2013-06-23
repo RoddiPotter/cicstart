@@ -4,8 +4,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 
 import ca.ualberta.physics.cssdp.domain.ServiceInfo;
 import ca.ualberta.physics.cssdp.domain.ServiceStats;
@@ -24,7 +22,6 @@ import com.wordnik.swagger.annotations.Api;
  */
 @Path("/service")
 @Api(value = "/service", description = "Generic info about this service")
-@Produces({ MediaType.APPLICATION_JSON })
 public class VFSServiceResource extends AbstractServiceResource {
 
 	@Inject
