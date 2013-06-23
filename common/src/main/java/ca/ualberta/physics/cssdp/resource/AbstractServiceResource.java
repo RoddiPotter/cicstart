@@ -6,6 +6,7 @@ import java.net.URISyntaxException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -51,6 +52,8 @@ public abstract class AbstractServiceResource {
 	}
 
 	@Path("/doc")
+	@Consumes(MediaType.WILDCARD)
+	@Produces(MediaType.WILDCARD)
 	@GET
 	@ApiOperation(value = "Returns an HTTP redirect to the service documention on github")
 	@ApiErrors(value = { @ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
@@ -65,6 +68,8 @@ public abstract class AbstractServiceResource {
 	}
 
 	@Path("/releasenotes")
+	@Consumes(MediaType.WILDCARD)
+	@Produces(MediaType.WILDCARD)
 	@GET
 	@ApiOperation(value = "Returns an HTTP redirect to the release notes documention on github")
 	@ApiErrors(value = { @ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
@@ -82,6 +87,8 @@ public abstract class AbstractServiceResource {
 	}
 
 	@Path("/support")
+	@Consumes(MediaType.WILDCARD)
+	@Produces(MediaType.WILDCARD)
 	@GET
 	@ApiOperation(value = "Returns an HTTP redirect to the support documention on github")
 	@ApiErrors(value = { @ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
@@ -99,6 +106,8 @@ public abstract class AbstractServiceResource {
 	}
 
 	@Path("/source")
+	@Consumes(MediaType.WILDCARD)
+	@Produces(MediaType.WILDCARD)
 	@GET
 	@ApiOperation(value = "Returns an HTTP redirect to the source on github")
 	@ApiErrors(value = { @ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
@@ -113,6 +122,8 @@ public abstract class AbstractServiceResource {
 	}
 
 	@Path("/tryme")
+	@Consumes(MediaType.WILDCARD)
+	@Produces(MediaType.WILDCARD)
 	@GET
 	@ApiOperation(value = "Not implemented")
 	@ApiErrors(value = { @ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
