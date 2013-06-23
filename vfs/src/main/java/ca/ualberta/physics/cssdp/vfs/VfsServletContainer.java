@@ -48,6 +48,8 @@ public class VfsServletContainer extends CommonServletContainer {
 	@Override
 	public void init() throws ServletException {
 
+		super.init();
+
 		// start the FTP server
 		VfsFtpServer.main(new String[0]);
 
@@ -76,8 +78,6 @@ public class VfsServletContainer extends CommonServletContainer {
 		} catch (IOException e) {
 			throw Throwables.propagate(e);
 		}
-
-		super.init();
 
 	}
 
