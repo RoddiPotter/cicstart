@@ -16,6 +16,7 @@ subprojects {
     jar {
 		from('src/main/java') {
 	   		include '**/*.properties'
+	   		include '**/*.ftl'
 		}
 	}    
     dependencies {
