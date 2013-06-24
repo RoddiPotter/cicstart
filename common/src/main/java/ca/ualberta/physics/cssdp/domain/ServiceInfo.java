@@ -17,12 +17,52 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 @JsonAutoDetect(fieldVisibility = Visibility.ANY)
 public class ServiceInfo {
 
-	public ServiceName name;
-	public String synopsis;
-	public String version = "1.0";
-	public String institution = "University of Alberta, Department of Physics, Space Physics";
+	private ServiceName name;
+	private String synopsis;
+	private String version = "1.0";
+	private String institution = "University of Alberta, Department of Physics, Space Physics";
 	// ISO8601
-	public String releaseTime = ISODateTimeFormat.dateTimeNoMillis().withZoneUTC().print(
-			new DateTime(2013, 06, 30, 01, 01));
+	private String releaseTime = ISODateTimeFormat.dateTimeNoMillis()
+			.withZoneUTC().print(new DateTime(2013, 06, 30, 01, 01));
+
+	public ServiceName getName() {
+		return name;
+	}
+
+	public void setName(ServiceName name) {
+		this.name = name;
+	}
+
+	public String getSynopsis() {
+		return synopsis;
+	}
+
+	public void setSynopsis(String synopsis) {
+		this.synopsis = synopsis;
+	}
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
+	public String getInstitution() {
+		return institution;
+	}
+
+	public void setInstitution(String institution) {
+		this.institution = institution;
+	}
+
+	public String getReleaseTime() {
+		return releaseTime;
+	}
+
+	public void setReleaseTime(String releaseTime) {
+		this.releaseTime = releaseTime;
+	}
 
 }

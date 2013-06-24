@@ -34,10 +34,10 @@ public class VFSServiceResource extends AbstractServiceResource {
 	@Override
 	protected ServiceInfo buildInfo() {
 		ServiceInfo info = new ServiceInfo();
-		info.name = ServiceName.VFS;
-		info.synopsis = "Long term persistent storage that can interact with other CICSTART services.  "
+		info.setName(ServiceName.VFS);
+		info.setSynopsis("Long term persistent storage that can interact with other CICSTART services.  "
 				+ "Useful for accessing input files required by Macros running on spawned VMs.  Also useful "
-				+ "for storing output from Macros.";
+				+ "for storing output from Macros.");
 		return info;
 	}
 

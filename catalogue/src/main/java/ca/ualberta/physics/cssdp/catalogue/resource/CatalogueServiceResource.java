@@ -34,8 +34,8 @@ public class CatalogueServiceResource extends AbstractServiceResource {
 	@Override
 	protected ServiceInfo buildInfo() {
 		ServiceInfo info = new ServiceInfo();
-		info.name = ServiceName.CATALOGUE;
-		info.synopsis = "A generic catalogue service used for mapping urls to metadata.  Metadata can then be searched to find those urls.";
+		info.setName(ServiceName.CATALOGUE);
+		info.setSynopsis("A generic catalogue service used for mapping urls to metadata.  Metadata can then be searched to find those urls.");
 		return info;
 	}
 

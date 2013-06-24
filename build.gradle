@@ -34,6 +34,7 @@ subprojects {
 		compile "org.apache.commons:commons-email:1.2"
 		compile "org.apache.commons:commons-compress:1.5"
 		compile "commons-codec:commons-codec:1.6"
+		compile "org.freemarker:freemarker:2.3.19"
 	
 		compile "com.wordnik:swagger-core_2.9.1:1.2.1"
 		compile("com.wordnik:swagger-jaxrs_2.9.1:1.2.1"){

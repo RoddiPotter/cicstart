@@ -34,10 +34,10 @@ public class MacroServiceResource extends AbstractServiceResource {
 	@Override
 	protected ServiceInfo buildInfo() {
 		ServiceInfo info = new ServiceInfo();
-		info.name = ServiceName.MACRO;
-		info.synopsis = "A facility to script cloud actions and run arbitrary commands on a spawned VM.  "
+		info.setName(ServiceName.MACRO);
+		info.setSynopsis("A facility to script cloud actions and run arbitrary commands on a spawned VM.  "
 				+ "The scripting functions also allow for interaction with all other CICSTART services, providing "
-				+ "a mechanism for you to build fast, custom CICSTART clients to suite your needs.";
+				+ "a mechanism for you to build fast, custom CICSTART clients to suite your needs.");
 		return info;
 	}
 

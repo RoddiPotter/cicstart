@@ -34,8 +34,8 @@ public class AuthServiceResource extends AbstractServiceResource {
 	@Override
 	protected ServiceInfo buildInfo() {
 		ServiceInfo info = new ServiceInfo();
-		info.name = ServiceName.AUTH;
-		info.synopsis = "A generic authentication service used for user and session management.";
+		info.setName(ServiceName.AUTH);
+		info.setSynopsis("A generic authentication service used for user and session management.");
 		return info;
 	}
 

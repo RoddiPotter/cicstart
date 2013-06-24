@@ -27,7 +27,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
  */
 @Entity
 @Table(name = "service_stats")
-@JsonAutoDetect(fieldVisibility = Visibility.ANY)
+@JsonAutoDetect(getterVisibility = Visibility.PUBLIC_ONLY)
 public class ServiceStats extends Persistent implements Serializable {
 
 	public enum ServiceName {
@@ -36,7 +36,6 @@ public class ServiceStats extends Persistent implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@JsonIgnore
 	@Column(name = "service_name", length = 10, nullable = false)
 	@Enumerated(EnumType.STRING)
 	private ServiceName serviceName;
@@ -44,9 +43,8 @@ public class ServiceStats extends Persistent implements Serializable {
 	@Column(name = "invocations", nullable = false)
 	private int invocations;
 
-	@Column(name = "reset_date", nullable = false)	
+	@Column(name = "reset_date", nullable = false)
 	@Type(type = "ca.ualberta.physics.cssdp.dao.type.PersistentDateTime")
-	@JsonSerialize(using = JSONDateTimeNoMillisSerializer.class)
 	private DateTime lastReset;
 
 	@Override
@@ -54,6 +52,7 @@ public class ServiceStats extends Persistent implements Serializable {
 		return serviceName.name();
 	}
 
+	@JsonIgnore
 	public ServiceName getServiceName() {
 		return serviceName;
 	}
@@ -70,6 +69,7 @@ public class ServiceStats extends Persistent implements Serializable {
 		this.invocations = invocations;
 	}
 
+	@JsonSerialize(using = JSONDateTimeNoMillisSerializer.class)
 	public DateTime getLastReset() {
 		return lastReset;
 	}
@@ -80,6 +80,10 @@ public class ServiceStats extends Persistent implements Serializable {
 
 	public void incrementInvocations() {
 		this.invocations++;
+	}
+
+	public String toHtmlString() {
+		return null;
 	}
 
 }

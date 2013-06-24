@@ -34,8 +34,8 @@ public class FileServiceResource extends AbstractServiceResource {
 	@Override
 	protected ServiceInfo buildInfo() {
 		ServiceInfo info = new ServiceInfo();
-		info.name = ServiceName.FILE;
-		info.synopsis = "A generic file transfer and caching service.  Give it a URL and get the file data.  Useful for downloading and caching file data resulting from Catalogue search results.";
+		info.setName(ServiceName.FILE);
+		info.setSynopsis("A generic file transfer and caching service.  Give it a URL and get the file data.  Useful for downloading and caching file data resulting from Catalogue search results.");
 		return info;
 	}
 
