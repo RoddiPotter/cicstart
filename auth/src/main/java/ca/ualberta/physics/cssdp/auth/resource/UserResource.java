@@ -20,7 +20,9 @@ package ca.ualberta.physics.cssdp.auth.resource;
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Context;
@@ -32,6 +34,7 @@ import javax.ws.rs.core.UriInfo;
 import ca.ualberta.physics.cssdp.auth.InjectorHolder;
 import ca.ualberta.physics.cssdp.auth.service.UserService;
 import ca.ualberta.physics.cssdp.domain.ServiceStats.ServiceName;
+import ca.ualberta.physics.cssdp.domain.auth.Session;
 import ca.ualberta.physics.cssdp.domain.auth.User;
 import ca.ualberta.physics.cssdp.service.ServiceResponse;
 import ca.ualberta.physics.cssdp.service.StatsService;
@@ -50,7 +53,7 @@ public class UserResource {
 
 	@Inject
 	private StatsService statsService;
-	
+
 	public UserResource() {
 		InjectorHolder.inject(this);
 		statsService.incrementInvocationCount(ServiceName.AUTH);
@@ -66,7 +69,7 @@ public class UserResource {
 	public Response addUser(
 			@ApiParam(value = "User object to add", required = true) User user,
 			@Context UriInfo uriInfo) {
-		
+
 		if (user == null) {
 			return Response.status(Status.BAD_REQUEST).build();
 		}
@@ -135,4 +138,66 @@ public class UserResource {
 			@ApiParam(value = "Email used to lookup User object", required = true) @PathParam("email") String email) {
 		return Response.status(500).entity("Not implemented yet").build();
 	}
+
+	@PUT
+	@ApiOperation(value = "Modify a User", notes = "User.email must be unique.  Use get to retrieve the user id before calling this."
+			+ "HTTP status 200 returned with user object if update was successful, use location header for object url. "
+			+ "Note that an empty User object will result in odd jackson mapper error. ")
+	@ApiErrors(value = {
+			@ApiError(code = 400, reason = "No User object supplied."),
+			@ApiError(code = 400, reason = "user.id is null"),
+			@ApiError(code = 400, reason = "CICSTART.session is not for this user"),
+			@ApiError(code = 404, reason = "CICSTART.session is null"),
+			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+	public Response updateUser(
+			@ApiParam(value = "User object to update", required = true) User user,
+			@ApiParam(value = "The authenticated session token", required = true) @HeaderParam("CICSTART.session") String sessionToken,
+			@Context UriInfo uriInfo) {
+
+		if (Strings.isNullOrEmpty(sessionToken)) {
+			return Response.status(404).build();
+		}
+
+		if (user == null) {
+			return Response.status(Status.BAD_REQUEST).build();
+		}
+
+		if (user.getId() == null) {
+			return Response.status(Status.BAD_REQUEST).build();
+		}
+
+		ServiceResponse<Session> sessionSr = userService.locate(sessionToken);
+		if (sessionSr.isRequestOk()) {
+
+			Session session = sessionSr.getPayload();
+			if (session.getUser().getId().equals(user.getId())) {
+				ServiceResponse<User> sr = userService.update(user);
+
+				if (sr.isRequestOk()) {
+
+					User updatedUser = sr.getPayload();
+					updatedUser.maskPassword();
+					return Response
+							.ok(updatedUser)
+							.header("location",
+									UriBuilder.fromUri(uriInfo.getBaseUri())
+											.path(getClass())
+											.path(user.getEmail()).build())
+							.build();
+
+				} else {
+
+					return Response.status(Status.INTERNAL_SERVER_ERROR)
+							.entity(sr.getMessagesAsStrings()).build();
+
+				}
+			} else {
+				return Response.status(Status.BAD_REQUEST).build();
+			}
+		} else {
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(sessionSr.getMessagesAsStrings()).build();
+		}
+	}
+
 }

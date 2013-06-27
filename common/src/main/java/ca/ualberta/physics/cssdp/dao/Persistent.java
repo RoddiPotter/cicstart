@@ -30,7 +30,6 @@ import javax.xml.bind.annotation.XmlAttribute;
 
 import ca.ualberta.physics.cssdp.model.Model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.wordnik.swagger.annotations.ApiProperty;
 
 @MappedSuperclass
@@ -51,7 +50,6 @@ public abstract class Persistent extends Model {
 	@Version
 	private int version;
 
-	@JsonIgnore
 	public Long getId() {
 		return id;
 	}
@@ -60,7 +58,6 @@ public abstract class Persistent extends Model {
 		this.id = id;
 	}
 
-	@JsonIgnore
 	public int getVersion() {
 		return version;
 	}

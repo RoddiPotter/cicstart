@@ -31,7 +31,7 @@ import com.jayway.restassured.response.Response;
 public class UserTests extends AuthTestsScaffolding {
 
 	@Test
-	public void testCreateUser() {
+	public void testCreateAndUpdateUser() {
 
 		// use default role and deleted properties
 		User user = new User();
@@ -53,8 +53,10 @@ public class UserTests extends AuthTestsScaffolding {
 								+ "/user.json/testuser1@nowhere.com").when()
 				.post(baseUrl() + "/user.json");
 
-		User created = get(res.getHeader("location")).as(User.class);
+		String findUserUrl = res.getHeader("location");
+		User created = get(findUserUrl).as(User.class);
 
+		Assert.assertNotNull(created.getId());
 		Assert.assertTrue(created.getId() > 0);
 		Assert.assertEquals("Canada", created.getCountry());
 		Assert.assertEquals("testuser1@nowhere.com", created.getEmail());
@@ -63,6 +65,24 @@ public class UserTests extends AuthTestsScaffolding {
 		Assert.assertEquals("******", created.getPassword());
 		Assert.assertNull(created.getPasswordDigest());
 		Assert.assertNull(created.getPasswordSalt());
+
+		String sessionToken = login(created.getEmail(), "password");
+
+		created.setEmail("new_email@nowhere.com");
+		created.setInstitution("UofA");
+
+		res = given().content(created).and()
+				.header("CICSTART.session", sessionToken).and()
+				.contentType("application/json").expect().statusCode(200)
+				.when().put(baseUrl() + "/user.json");
+
+		User updated = get(res.getHeader("location")).as(User.class);
+		Assert.assertEquals("new_email@nowhere.com", updated.getEmail());
+		Assert.assertEquals("UofA", updated.getInstitution());
+		Assert.assertEquals(created.getPasswordDigest(),
+				updated.getPasswordDigest());
+		Assert.assertEquals(created.getPasswordSalt(),
+				updated.getPasswordSalt());
 
 	}
 

@@ -109,7 +109,7 @@ public class User extends Persistent implements Serializable {
 	private String country;
 
 	// TODO this should be a collection of cloud credentials (a map by cloud id)
-	
+
 	/*
 	 * The users open stack username.
 	 */
@@ -264,9 +264,10 @@ public class User extends Persistent implements Serializable {
 		setEmail(user.getEmail());
 		setInstitution(user.getInstitution());
 		setName(user.getName());
-		setPassword(user.getPassword());
-		setPasswordDigest(user.getPasswordDigest());
-		setPasswordSalt(user.getPasswordSalt());
+		// these don't get set by us
+		// setPassword(user.getPassword());
+		// setPasswordDigest(user.getPasswordDigest());
+		// setPasswordSalt(user.getPasswordSalt());
 		setRole(user.getRole());
 	}
 

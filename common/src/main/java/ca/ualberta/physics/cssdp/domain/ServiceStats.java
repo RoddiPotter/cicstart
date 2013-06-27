@@ -47,6 +47,20 @@ public class ServiceStats extends Persistent implements Serializable {
 	@Type(type = "ca.ualberta.physics.cssdp.dao.type.PersistentDateTime")
 	private DateTime lastReset;
 
+	// overridden to set jsonignore
+	@JsonIgnore
+	@Override
+	public Long getId() {
+		return super.getId();
+	}
+
+	// overridden to set jsonignore
+	@JsonIgnore
+	@Override
+	public int getVersion() {
+		return super.getVersion();
+	}
+
 	@Override
 	public String _pk() {
 		return serviceName.name();

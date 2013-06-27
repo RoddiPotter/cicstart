@@ -43,6 +43,7 @@ public class UserService {
 
 	private static final int NUM_HASHES_TO_COMPUTE = 1000;
 
+	// TODO remove this and add a TTL for session tokens
 	private Cache<User, String> ipWhiteList = CacheBuilder.newBuilder()
 			.expireAfterWrite(48, TimeUnit.HOURS).build();
 
@@ -201,6 +202,43 @@ public class UserService {
 	public ServiceResponse<Session> locate(String sessionToken) {
 		Session session = sessionDao.find(sessionToken);
 		return new ServiceResponse<Session>(session);
+	}
+
+	public ServiceResponse<User> update(final User user) {
+
+		final ServiceResponse<User> sr = new ServiceResponse<User>();
+
+		if (sr.isRequestOk()) {
+
+			new ManualTransaction(sr, em) {
+
+				@Override
+				public void onError(Exception e, ServiceResponse<?> sr) {
+					sr.error(e.getMessage());
+				}
+
+				@Override
+				public void doInTransaction() {
+					User exists = userDao.load(User.class, user.getId());
+
+					if (exists == null || exists.isDeleted()) {
+						sr.error("No user or user has been deleted");
+					} else {
+						if (user.getId().equals(exists.getId())) {
+							exists.replaceWith(user);
+							userDao.update(exists);
+							sr.setPayload(exists);
+
+							sr.info("User updated.");
+						} else {
+							sr.error("This email already exists.");
+						}
+					}
+				}
+			};
+		}
+
+		return sr;
 	}
 
 	// public void requestPasswordReset(String email, String sourceIp) {
