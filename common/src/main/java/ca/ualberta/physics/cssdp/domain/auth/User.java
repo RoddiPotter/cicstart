@@ -300,4 +300,9 @@ public class User extends Persistent implements Serializable {
 	public void setKeyname(String keyname) {
 		this.keyname = keyname;
 	}
+
+	public void maskOtherPasswords() {
+		this.openStackPassword = "****************";
+		this.openStackUsername = "****************";
+	}
 }

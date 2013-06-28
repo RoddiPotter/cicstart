@@ -38,8 +38,10 @@ import ca.ualberta.physics.cssdp.auth.InjectorHolder;
 import ca.ualberta.physics.cssdp.auth.service.UserService;
 import ca.ualberta.physics.cssdp.domain.ServiceStats.ServiceName;
 import ca.ualberta.physics.cssdp.domain.auth.Session;
+import ca.ualberta.physics.cssdp.domain.auth.User;
 import ca.ualberta.physics.cssdp.service.ServiceResponse;
 import ca.ualberta.physics.cssdp.service.StatsService;
+import ca.ualberta.physics.cssdp.util.NetworkUtil;
 
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
@@ -60,7 +62,7 @@ public class SessionResource {
 
 	@Inject
 	private StatsService statsService;
-	
+
 	public SessionResource() {
 		InjectorHolder.inject(this);
 		statsService.incrementInvocationCount(ServiceName.AUTH);
@@ -93,7 +95,7 @@ public class SessionResource {
 					+ "Required if using form authentication.") @FormParam("username") String username,
 			@ApiParam(value = "The password to authenticate with.  Required if using form authentication.") @FormParam("password") String password,
 			@Context HttpHeaders headers, @Context HttpServletRequest request) {
-		
+
 		// parse the username and password from the authorization string
 		List<String> authHeaders = headers.getRequestHeader("authorization");
 		if (authHeaders != null) {
@@ -146,13 +148,14 @@ public class SessionResource {
 	@Path("/{token}/whois")
 	@GET
 	@ApiOperation(value = "Get session token owner", notes = "Used by internal services to locate the user "
-			+ "registered to this session token", responseClass = "ca.ualberta.physics.cssdp.domain.auth.User")
+			+ "registered to this session token.  Tokens expire after 48 hours; a 404 is returned in this state", responseClass = "ca.ualberta.physics.cssdp.domain.auth.User")
 	@ApiErrors(value = {
 			@ApiError(code = 400, reason = "No token given"),
 			@ApiError(code = 404, reason = "No owner found for given token"),
 			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
 	public Response whoIs(
-			@ApiParam(value = "The token to lookup the email address for", required = true) @PathParam("token") String sessionToken) {
+			@ApiParam(value = "The token to lookup the email address for", required = true) @PathParam("token") String sessionToken,
+			@Context HttpServletRequest httpRequest) {
 
 		if (Strings.isNullOrEmpty(sessionToken)) {
 			return Response.status(400).build();
@@ -162,7 +165,14 @@ public class SessionResource {
 		if (sr.isRequestOk()) {
 			Session session = sr.getPayload();
 			if (session != null) {
-				return Response.ok(session.getUser().maskPassword()).build();
+
+				User user = session.getUser();
+				user.maskPassword();
+				// TODO or white-listed IPs
+				if (!NetworkUtil.currentlyRunningOn(httpRequest.getRemoteAddr())) {
+					user.maskOtherPasswords();
+				}
+				return Response.ok(user).build();
 			} else {
 				return Response.status(404).build();
 			}
@@ -197,6 +207,5 @@ public class SessionResource {
 	// }
 	// }
 	//
-
 
 }

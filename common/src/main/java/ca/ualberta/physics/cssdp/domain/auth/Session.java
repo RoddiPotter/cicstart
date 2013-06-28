@@ -28,6 +28,10 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.hibernate.annotations.Type;
+import org.joda.time.Hours;
+import org.joda.time.LocalDateTime;
+
 import ca.ualberta.physics.cssdp.dao.Persistent;
 
 @Entity
@@ -45,6 +49,10 @@ public class Session extends Persistent {
 	@Column(name = "token", length = 22, nullable = false)
 	private String token;
 
+	@Column(name = "token_date", nullable = false)
+	@Type(type = "ca.ualberta.physics.cssdp.dao.type.PersistentLocalDateTime")
+	private LocalDateTime tokenDate = new LocalDateTime();
+	
 	public Session() {
 		
 	}
@@ -75,6 +83,10 @@ public class Session extends Persistent {
 
 	public void setToken(String token) {
 		this.token = token;
+	}
+
+	public boolean hasExpired() {
+		return Hours.hoursBetween(tokenDate, new LocalDateTime()).getHours() > 48;
 	}
 
 }
