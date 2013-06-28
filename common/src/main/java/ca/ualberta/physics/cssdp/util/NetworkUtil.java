@@ -47,12 +47,14 @@ public class NetworkUtil {
 				Enumeration<InetAddress> inetAddrs = iface.getInetAddresses();
 				while (inetAddrs.hasMoreElements()) {
 					InetAddress inetAddr = inetAddrs.nextElement();
+					String thisHostAddress = inetAddr.getHostAddress();
+					String thisHostName = inetAddr.getHostName();
 					logger.debug("We are currently running on "
-							+ inetAddr.getHostAddress() + " ("
-							+ inetAddr.getHostName() + "), looking for "
-							+ ipOrHostname);
-					if (inetAddr.getHostAddress().equals(ipOrHostname)
-							|| inetAddr.getHostName().equals(ipOrHostname)) {
+							+ thisHostAddress + " (" + thisHostName
+							+ "), looking for " + ipOrHostname);
+					if (thisHostAddress.equals(ipOrHostname)
+							|| thisHostName.equals(ipOrHostname)) {
+						logger.debug("We are running on " + ipOrHostname);
 						return true;
 					}
 				}
