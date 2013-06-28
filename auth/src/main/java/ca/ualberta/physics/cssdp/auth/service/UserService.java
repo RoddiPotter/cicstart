@@ -202,7 +202,7 @@ public class UserService {
 	public ServiceResponse<Session> locate(String sessionToken) {
 		ServiceResponse<Session> sr = new ServiceResponse<Session>();
 		Session session = sessionDao.find(sessionToken);
-		if (!session.hasExpired()) {
+		if (session != null && !session.hasExpired()) {
 			sr.setPayload(session);
 		}
 		return sr;

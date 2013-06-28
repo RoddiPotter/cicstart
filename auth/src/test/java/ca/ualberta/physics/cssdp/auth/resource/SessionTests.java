@@ -132,6 +132,9 @@ public class SessionTests extends AuthTestsScaffolding {
 		String email = get(baseUrl() + "/session.json/{token}/whois", token)
 				.as(User.class).getEmail();
 		Assert.assertEquals(dataUser.getEmail(), email);
+		Assert.assertEquals(dataUser.getPassword(), "******");
+		Assert.assertNotEquals(dataUser.getOpenStackUsername(), "****************");
+		Assert.assertNotEquals(dataUser.getOpenStackUsername(), "****************");
 
 	}
 }

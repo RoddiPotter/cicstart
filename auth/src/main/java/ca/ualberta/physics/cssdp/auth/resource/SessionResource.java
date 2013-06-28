@@ -169,7 +169,9 @@ public class SessionResource {
 				User user = session.getUser();
 				user.maskPassword();
 				// TODO or white-listed IPs
-				if (!NetworkUtil.currentlyRunningOn(httpRequest.getRemoteAddr())) {
+				String remoteAddr = httpRequest.getRemoteAddr();
+				logger.debug("remote address is " + remoteAddr);
+				if (!NetworkUtil.currentlyRunningOn(remoteAddr)) {
 					user.maskOtherPasswords();
 				}
 				return Response.ok(user).build();
@@ -182,30 +184,5 @@ public class SessionResource {
 		}
 
 	}
-
-	// @Path("/{token}")
-	// @GET
-	// public Response getSessionActivity(@QueryParam("email") String email,
-	// @QueryParam("ip") String userIpAddress,
-	// @Context HttpServletRequest request) {
-	//
-	// if (email == null) {
-	// return Response
-	// .status(Status.BAD_REQUEST)
-	// .header("cssdp-auth-errors", "An email address is required")
-	// .build();
-	// }
-	//
-	// String requestIp = request.getRemoteAddr();
-	//
-	// if (privilegedIps.contains(requestIp)) {
-	// String ipAddress = ipWhiteList.getIfPresent(email);
-	// if (ipAddress != null) {
-	// if (ipAddress.equals(userIpAddress)) {
-	// return Response.ok().build();
-	// }
-	// }
-	// }
-	//
 
 }
