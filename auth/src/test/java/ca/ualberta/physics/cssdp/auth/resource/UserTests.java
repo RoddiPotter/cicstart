@@ -62,7 +62,7 @@ public class UserTests extends AuthTestsScaffolding {
 		Assert.assertEquals("testuser1@nowhere.com", created.getEmail());
 		Assert.assertEquals("none", created.getInstitution());
 		Assert.assertEquals("Test User", created.getName());
-		Assert.assertEquals("******", created.getPassword());
+		Assert.assertEquals("****", created.getPassword());
 		Assert.assertNull(created.getPasswordDigest());
 		Assert.assertNull(created.getPasswordSalt());
 

@@ -46,6 +46,8 @@ public class User extends Persistent implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	private static final String MASK = "****";
+
 	/*
 	 * The ordinal value of the role is used to determine which roles are more
 	 * authoritative than others: oder is important in this list! This means
@@ -125,6 +127,12 @@ public class User extends Persistent implements Serializable {
 	@Column(name = "openstack_keyname", length = 100, nullable = true)
 	private String keyname;
 
+	/*
+	 * Set to true if the sensitive data should be masked.
+	 */
+	@Transient
+	private transient boolean masked = false;
+
 	public User() {
 		// establish defaults
 		deleted = false;
@@ -165,7 +173,12 @@ public class User extends Persistent implements Serializable {
 	@ApiProperty(required = true)
 	@XmlElement
 	public String getPassword() {
-		return password;
+		if (!masked) {
+			return password;
+		} else {
+			return MASK;
+		}
+
 	}
 
 	public void setPassword(String password) {
@@ -195,7 +208,12 @@ public class User extends Persistent implements Serializable {
 	@JsonIgnore
 	@XmlTransient
 	public String getPasswordDigest() {
-		return passwordDigest;
+		if (!masked) {
+			return passwordDigest;
+		} else {
+			return MASK;
+		}
+
 	}
 
 	public void setPasswordDigest(String passwordDigest) {
@@ -205,7 +223,12 @@ public class User extends Persistent implements Serializable {
 	@JsonIgnore
 	@XmlTransient
 	public String getPasswordSalt() {
-		return passwordSalt;
+		if (!masked) {
+			return passwordSalt;
+		} else {
+			return MASK;
+		}
+
 	}
 
 	public void setPasswordSalt(String passwordSalt) {
@@ -220,11 +243,6 @@ public class User extends Persistent implements Serializable {
 
 	public void setRole(Role role) {
 		this.role = role;
-	}
-
-	public User maskPassword() {
-		setPassword("******");
-		return this;
 	}
 
 	/**
@@ -274,7 +292,12 @@ public class User extends Persistent implements Serializable {
 	@ApiProperty(required = false, notes = "The username for creating open stack resources")
 	@XmlElement
 	public String getOpenStackUsername() {
-		return openStackUsername;
+		if (!masked) {
+			return openStackUsername;
+		} else {
+			return MASK;
+		}
+
 	}
 
 	public void setOpenStackUsername(String openStackUsername) {
@@ -284,7 +307,11 @@ public class User extends Persistent implements Serializable {
 	@ApiProperty(required = false, notes = "The open stack username password")
 	@XmlElement
 	public String getOpenStackPassword() {
-		return openStackPassword;
+		if (!masked) {
+			return openStackPassword;
+		} else {
+			return MASK;
+		}
 	}
 
 	public void setOpenStackPassword(String openStackPassword) {
@@ -301,8 +328,13 @@ public class User extends Persistent implements Serializable {
 		this.keyname = keyname;
 	}
 
-	public void maskOtherPasswords() {
-		this.openStackPassword = "****************";
-		this.openStackUsername = "****************";
+	@JsonIgnore
+	@XmlTransient
+	public boolean isMasked() {
+		return masked;
+	}
+
+	public void setMasked(boolean mask) {
+		this.masked = mask;
 	}
 }

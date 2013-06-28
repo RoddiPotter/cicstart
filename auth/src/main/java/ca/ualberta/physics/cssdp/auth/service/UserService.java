@@ -139,11 +139,15 @@ public class UserService {
 		ServiceResponse<Session> sr = new ServiceResponse<Session>();
 
 		User user = userDao.find(email);
-
+				
 		String digest = null;
 		String salt = null;
 
 		if (user != null) {
+
+			// previous access may have set the state to true
+			user.setMasked(false);
+
 			digest = user.getPasswordDigest();
 			salt = user.getPasswordSalt();
 			// DATABASE VALIDATION

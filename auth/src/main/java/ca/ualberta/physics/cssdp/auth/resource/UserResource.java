@@ -115,7 +115,7 @@ public class UserResource {
 			} else {
 
 				// mask the password on the response.
-				user.maskPassword();
+				user.setMasked(true);
 
 				return Response.ok(user).build();
 			}
@@ -176,7 +176,7 @@ public class UserResource {
 				if (sr.isRequestOk()) {
 
 					User updatedUser = sr.getPayload();
-					updatedUser.maskPassword();
+					updatedUser.setMasked(true);
 					return Response
 							.ok(updatedUser)
 							.header("location",

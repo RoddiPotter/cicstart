@@ -167,12 +167,14 @@ public class SessionResource {
 			if (session != null) {
 
 				User user = session.getUser();
-				user.maskPassword();
 				// TODO or white-listed IPs
 				String remoteAddr = httpRequest.getRemoteAddr();
 				logger.debug("remote address is " + remoteAddr);
 				if (!NetworkUtil.currentlyRunningOn(remoteAddr)) {
-					user.maskOtherPasswords();
+					logger.debug("masking other passwords");
+					user.setMasked(true);
+				} else {
+					user.setMasked(false);
 				}
 				return Response.ok(user).build();
 			} else {
