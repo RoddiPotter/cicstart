@@ -23,6 +23,9 @@ import static com.jayway.restassured.RestAssured.given;
 
 import javax.ws.rs.WebApplicationException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import ca.ualberta.physics.cssdp.configuration.Common;
 import ca.ualberta.physics.cssdp.domain.auth.User;
 import ca.ualberta.physics.cssdp.service.ServiceResponse;
@@ -32,9 +35,14 @@ import com.jayway.restassured.response.Response;
 
 public class AuthClient {
 
+	private static final Logger logger = LoggerFactory
+			.getLogger(AuthClient.class);
+
 	private String authUrl = Common.properties().getString("auth.api.url");
 
 	public ServiceResponse<String> login(String username, String password) {
+
+		logger.debug("Authenticating at " + authUrl);
 
 		Response res = given().auth().preemptive().basic(username, password)
 				.post(authUrl + "/session.json");
