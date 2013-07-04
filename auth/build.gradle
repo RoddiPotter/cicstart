@@ -19,6 +19,7 @@ test.doFirst {
 war {
 	from('src/main/java') {
 	   include '**/*.properties' into ('WEB-INF/classes')
+	   include '**/*.ftl' into ('WEB-INF/classes')
 	}
 	// remove classes from the classpath (not sure why this needs to be done?)
 	classpath = configurations.runtime
