@@ -18,6 +18,7 @@
  */
 package ca.ualberta.physics.cssdp.vfs.ftp;
 
+import org.apache.ftpserver.DataConnectionConfigurationFactory;
 import org.apache.ftpserver.FtpServer;
 import org.apache.ftpserver.FtpServerFactory;
 import org.apache.ftpserver.command.CommandFactory;
@@ -48,11 +49,19 @@ public class VfsFtpServer {
 		CommandFactoryFactory commandFactoryFactory = new CommandFactoryFactory();
 		CommandFactory commandFactory = commandFactoryFactory.createCommandFactory();
 		serverFactory.setCommandFactory(commandFactory);
+		
+		// override default passive ports
+		DataConnectionConfigurationFactory dataConfigurationFactory = new DataConnectionConfigurationFactory();
+		dataConfigurationFactory.setPassivePorts("60200-60250");
+		
 		ListenerFactory factory = new ListenerFactory();
+		factory.setDataConnectionConfiguration(dataConfigurationFactory.createDataConnectionConfiguration());
+		
 		// set the port of the listener
 
 		int ftpPort = VfsServer.properties().getInt("ftpPort");
 		factory.setPort(ftpPort);
+
 		// replace the default listener
 		serverFactory.addListener("default", factory.createListener());
 		serverFactory.getFtplets().put("default", new VfsFtplet());

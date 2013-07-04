@@ -14,5 +14,6 @@
   <logger name="o.eclipse.jetty" level="info" />
   <logger name="ca.ualberta.physics.cssdp.auth" level="debug"/>
   <logger name="com.sun.grizzly" level="trace"/>
+  <logger name="javax.mail" level="debug" />
   
 </configuration>

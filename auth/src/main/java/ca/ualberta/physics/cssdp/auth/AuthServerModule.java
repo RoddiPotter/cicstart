@@ -18,6 +18,8 @@
  */
 package ca.ualberta.physics.cssdp.auth;
 
+import ca.ualberta.physics.cssdp.auth.service.EmailService;
+import ca.ualberta.physics.cssdp.auth.service.EmailServiceImpl;
 import ca.ualberta.physics.cssdp.auth.service.UserService;
 import ca.ualberta.physics.cssdp.configuration.CommonModule;
 
@@ -33,9 +35,11 @@ public class AuthServerModule extends AbstractModule {
 	protected void configure() {
 
 		install(new CommonModule());
-		
+
 		bind(UserService.class).in(Scopes.SINGLETON);
-				
+		bind(EmailService.class).to(EmailServiceImpl.class)
+				.in(Scopes.SINGLETON);
+
 	}
 
 }

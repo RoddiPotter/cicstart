@@ -18,15 +18,9 @@
  */
 package ca.ualberta.physics.cssdp.auth.service;
 
-import java.util.Properties;
-
-import javax.mail.NoSuchProviderException;
-import javax.mail.Session;
-import javax.mail.Transport;
-
 import org.apache.commons.mail.HtmlEmail;
 
-import ca.ualberta.physics.cssdp.configuration.Common;
+import ca.ualberta.physics.cssdp.configuration.AuthServer;
 
 import com.google.common.base.Throwables;
 
@@ -39,35 +33,34 @@ public class EmailServiceImpl implements EmailService {
 
 		try {
 
-			Properties props = new Properties();
-			props.setProperty("mail.transport.protocol", "smtp");
-			Session mailSession = Session.getDefaultInstance(props, null);
+			String host = AuthServer.properties().getString("smtpHost");
+			int port = AuthServer.properties().getInt("smtpPort");
+			final String user = AuthServer.properties().getString(
+					"smtpUsername");
+			final String password = AuthServer.properties().getString(
+					"smtpPassword");
+			String systemEmail = AuthServer.properties().getString(
+					"systemEmailAddress");
+			boolean useSSL = AuthServer.properties().getBoolean("smtpUseSSL");
+			boolean debug = AuthServer.properties().getBoolean("smtpDebug");
 
-			Transport transport;
-			try {
-				transport = mailSession.getTransport("smtp");
-			} catch (NoSuchProviderException e) {
-				throw Throwables.propagate(e);
-			}
-
-			transport.connect(Common.properties()
-					.getString("email_server_host"), Common.properties()
-					.getInt("email_smtp_port"),
-					Common.properties().getString("email_server_username"),
-					Common.properties().getString("email_server_password"));
-
-			HtmlEmail htmlEmail = new HtmlEmail();
-			htmlEmail.setMailSession(mailSession);
-			htmlEmail.setSubject("Password Reset Request");
-			htmlEmail.addTo(to);
-			htmlEmail.setFrom(Common.properties().getString("system_email"));
-			htmlEmail.setHtmlMsg(body);
-			htmlEmail.send();
+			HtmlEmail msg = new HtmlEmail();
+			msg.setHostName(host);
+			msg.setAuthentication(user, password);
+			msg.setSmtpPort(port);
+			msg.setSSL(useSSL);
+			msg.setDebug(debug);
+			msg.setSubject("Password Reset Request");
+			msg.addTo(to);
+			msg.setFrom(systemEmail);
+			msg.setHtmlMsg(body);
+			msg.send();
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw Throwables.propagate(Throwables.getRootCause(e));
+		} finally {
 		}
 
 	}
-
 }

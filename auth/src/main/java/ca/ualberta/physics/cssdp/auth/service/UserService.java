@@ -18,9 +18,13 @@
  */
 package ca.ualberta.physics.cssdp.auth.service;
 
+import java.io.StringWriter;
+import java.io.Writer;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -28,6 +32,7 @@ import javax.persistence.EntityManager;
 
 import ca.ualberta.physics.cssdp.auth.dao.SessionDao;
 import ca.ualberta.physics.cssdp.auth.dao.UserDao;
+import ca.ualberta.physics.cssdp.configuration.AuthServer;
 import ca.ualberta.physics.cssdp.domain.auth.Session;
 import ca.ualberta.physics.cssdp.domain.auth.User;
 import ca.ualberta.physics.cssdp.service.ManualTransaction;
@@ -35,9 +40,14 @@ import ca.ualberta.physics.cssdp.service.ServiceResponse;
 import ca.ualberta.physics.cssdp.service.Transactional;
 import ca.ualberta.physics.cssdp.util.HashUtils;
 
+import com.google.common.base.Throwables;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.inject.Inject;
+
+import freemarker.template.Configuration;
+import freemarker.template.DefaultObjectWrapper;
+import freemarker.template.Template;
 
 public class UserService {
 
@@ -45,6 +55,9 @@ public class UserService {
 
 	// TODO remove this and add a TTL for session tokens
 	private Cache<User, String> ipWhiteList = CacheBuilder.newBuilder()
+			.expireAfterWrite(48, TimeUnit.HOURS).build();
+
+	private Cache<String, String> resetTokens = CacheBuilder.newBuilder()
 			.expireAfterWrite(48, TimeUnit.HOURS).build();
 
 	@Inject
@@ -55,6 +68,9 @@ public class UserService {
 
 	@Inject
 	private EntityManager em;
+
+	@Inject
+	private EmailService emailService;
 
 	@Transactional
 	public ServiceResponse<Void> create(User user) {
@@ -139,7 +155,7 @@ public class UserService {
 		ServiceResponse<Session> sr = new ServiceResponse<Session>();
 
 		User user = userDao.find(email);
-				
+
 		String digest = null;
 		String salt = null;
 
@@ -249,111 +265,113 @@ public class UserService {
 		return sr;
 	}
 
-	// public void requestPasswordReset(String email, String sourceIp) {
-	//
-	// User user = userDao.find(email);
-	// if (user != null && !user.isDeleted()) {
-	//
-	// // generate the token and save it in the cache
-	// SecureRandom random;
-	// try {
-	// random = SecureRandom.getInstance("SHA1PRNG");
-	// } catch (NoSuchAlgorithmException e) {
-	// throw Throwables.propagate(e);
-	// }
-	// // Salt generation 64 bits long
-	// byte[] bToken = new byte[8];
-	// random.nextBytes(bToken);
-	// String sToken = HashUtils.byteToBase64(bToken);
-	//
-	// resetTokens.put(email, sToken);
-	//
-	// Configuration cfg = new Configuration();
-	// cfg.setClassForTemplateLoading(getClass(), "");
-	//
-	// cfg.setObjectWrapper(new DefaultObjectWrapper());
-	//
-	// try {
-	// Template temp = cfg.getTemplate("ResetPassword.ftl");
-	//
-	// Map<String, String> root = new HashMap<String, String>();
-	// root.put("baseUrl",
-	// Server.properties().getString("base_webapp_url"));
-	// root.put("resetPath",
-	// Server.properties().getString("password_reset_path"));
-	// root.put("resetToken", "/" + sToken);
-	// root.put("sourceIp", sourceIp);
-	// root.put("email", email);
-	// root.put("website",
-	// Server.properties().getString("base_webapp_url"));
-	// root.put("supportPath",
-	// Server.properties().getString("support_path"));
-	//
-	// Writer out = new StringWriter();
-	// temp.process(root, out);
-	// out.flush();
-	//
-	// // send it
-	// emailService.sendEmail(
-	// Server.properties().getString("system_email"), email,
-	// "Password Reset Request", out.toString());
-	//
-	// } catch (Exception e) {
-	// throw Throwables.propagate(e);
-	// }
-	//
-	// }
-	//
-	// }
-	//
-	// @Transactional
-	// public ServiceResponse<Void> resetPassword(String email, String password,
-	// String resetToken) {
-	//
-	// ServiceResponse<Void> sr = new ServiceResponse<Void>();
-	// // ensure the token is valid
-	// String token = resetTokens.getIfPresent(email);
-	// if (token == null) {
-	// sr.error("Reset token has expired, please obtain a new one");
-	// return sr;
-	// } else {
-	// if (!token.equals(resetToken)) {
-	// sr.error("Reset token does not match, please obtain a new one");
-	// // prevent someone from trying over and over.
-	// resetTokens.invalidate(email);
-	// return sr;
-	// }
-	// }
-	//
-	// // remove the token so it can't be used again by anyone else.
-	// resetTokens.invalidate(email);
-	//
-	// // lookup the user
-	// User user = userDao.find(email);
-	// if (user == null || user.isDeleted()) {
-	// sr.error("User account not found");
-	// return sr;
-	// }
-	//
-	// // update the password digest
-	// SecureRandom random;
-	// try {
-	// random = SecureRandom.getInstance("SHA1PRNG");
-	// } catch (NoSuchAlgorithmException e) {
-	// sr.error("Unable to complete request:" + e.getMessage());
-	// return sr;
-	// }
-	//
-	// user.setPassword(password);
-	//
-	// updatePasswordDigestAndSalt(user, random);
-	//
-	// // save the user
-	// userDao.update(user);
-	//
-	// sr.info("Password updated");
-	//
-	// return sr;
-	// }
+	public ServiceResponse<String> requestPasswordReset(String email) {
+
+		ServiceResponse<String> sr = new ServiceResponse<String>();
+
+		User user = userDao.find(email);
+		if (user != null && !user.isDeleted()) {
+
+			// generate the token and save it in the cache
+			SecureRandom random;
+			try {
+				random = SecureRandom.getInstance("SHA1PRNG");
+			} catch (NoSuchAlgorithmException e) {
+				throw Throwables.propagate(e);
+			}
+			// Salt generation 64 bits long
+			byte[] bToken = new byte[8];
+			random.nextBytes(bToken);
+			String sToken = HashUtils.byteToBase64(bToken);
+			sToken = sToken.replaceAll("[\\/\\|\\= \\?\\&]", "z");
+			resetTokens.put(email, sToken);
+
+			sr.setPayload(sToken);
+
+			Configuration cfg = new Configuration();
+			cfg.setClassForTemplateLoading(getClass(), "");
+
+			cfg.setObjectWrapper(new DefaultObjectWrapper());
+
+			try {
+				Template temp = cfg.getTemplate("ResetPasswordEmail.ftl");
+
+				Map<String, String> root = new HashMap<String, String>();
+
+				root.put("passwordResetUrl",
+						AuthServer.properties().getString("passwordResetUrl"));
+				root.put("resetToken", sToken);
+				root.put("email", email);
+				root.put("supportUrl",
+						AuthServer.properties().getString("supportUrl"));
+
+				Writer out = new StringWriter();
+				temp.process(root, out);
+				out.flush();
+
+				// send it
+				emailService
+						.sendEmail(
+								AuthServer.properties().getString(
+										"systemEmailAddress"), email,
+								"Password Reset Request", out.toString());
+
+			} catch (Exception e) {
+				sr.error("Could not send reset email, " + e.getMessage());
+			}
+		}
+		return sr;
+
+	}
+
+	@Transactional
+	public ServiceResponse<Void> resetPassword(String email, String password,
+			String resetToken) {
+
+		ServiceResponse<Void> sr = new ServiceResponse<Void>();
+		// ensure the token is valid
+		String token = resetTokens.getIfPresent(email);
+		if (token == null) {
+			sr.error("Reset token has expired, please obtain a new one");
+			return sr;
+		} else {
+			if (!token.equals(resetToken)) {
+				sr.error("Reset token does not match, please obtain a new one");
+				// prevent someone from trying over and over.
+				resetTokens.invalidate(email);
+				return sr;
+			}
+		}
+
+		// remove the token so it can't be used again by anyone else.
+		resetTokens.invalidate(email);
+
+		// lookup the user
+		User user = userDao.find(email);
+		if (user == null || user.isDeleted()) {
+			sr.error("User account not found");
+			return sr;
+		}
+
+		// update the password digest
+		SecureRandom random;
+		try {
+			random = SecureRandom.getInstance("SHA1PRNG");
+		} catch (NoSuchAlgorithmException e) {
+			sr.error("Unable to complete request:" + e.getMessage());
+			return sr;
+		}
+
+		user.setPassword(password);
+
+		updatePasswordDigestAndSalt(user, random);
+
+		// save the user
+		userDao.update(user);
+
+		sr.info("Password updated");
+
+		return sr;
+	}
 
 }
