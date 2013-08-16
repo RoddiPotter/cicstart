@@ -22,11 +22,8 @@ import org.slf4j.LoggerFactory;
 
 import ca.ualberta.physics.cssdp.domain.ServiceInfo;
 import ca.ualberta.physics.cssdp.domain.ServiceStats;
-import ca.ualberta.physics.cssdp.domain.ServiceStats.ServiceName;
-import ca.ualberta.physics.cssdp.service.StatsService;
 
 import com.google.common.base.Throwables;
-import com.google.inject.Inject;
 import com.wordnik.swagger.annotations.ApiError;
 import com.wordnik.swagger.annotations.ApiErrors;
 import com.wordnik.swagger.annotations.ApiOperation;
@@ -47,9 +44,6 @@ public abstract class AbstractServiceResource {
 	protected abstract ServiceStats buildStats();
 
 	protected abstract URI getDocURI() throws URISyntaxException;
-
-	@Inject
-	private StatsService statsService;
 
 	@Path("/info")
 	@GET
@@ -76,8 +70,6 @@ public abstract class AbstractServiceResource {
 	@ApiOperation(value = "CANARIE's monitoring service will poll this URI periodically. Return information about the usage of this RPI.", notes = "If this URI fails or times out, this RPI is unavailable.", responseClass = "ca.ualberta.physics.cssdp.domain.ServiceStats")
 	@ApiErrors(value = { @ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
 	public Response getStats(@Context HttpHeaders headers) {
-		// keep track of how many times CANARIE is polling the service
-		statsService.incrementInvocationCount(ServiceName.STATS);
 		for (MediaType type : headers.getAcceptableMediaTypes()) {
 			if (type.equals(MediaType.APPLICATION_JSON_TYPE)) {
 				return Response.ok(buildStats()).build();
