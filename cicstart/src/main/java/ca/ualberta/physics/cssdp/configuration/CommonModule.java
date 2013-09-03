@@ -61,7 +61,7 @@ public class CommonModule extends AbstractModule {
 		 * don't want any of this stuff to load on the client.
 		 */
 		if (MacroServer.properties().getBoolean("isServer")
-				|| VfsServer.properties().getBoolean("isServer")) {
+				&& VfsServer.properties().getBoolean("isServer")) {
 
 			install(new JpaModule());
 			install(new TransactionalModule());
