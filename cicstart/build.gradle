@@ -18,6 +18,7 @@ task copyResources(type:Copy) {
 	from('src/main/java') {
 	   include '**/*.properties'
 	   include '**/*.ftl'
+	   include '**/logback.template';
 	}
 	into('build/classes/main')
 }
@@ -28,6 +29,7 @@ war {
 	from('src/main/java') {
 	   include '**/*.properties' into ('WEB-INF/classes')
 	   include '**/*.ftl' into ('WEB-INF/classes')
+	   include '**/logback.template' into ('WEB-INF/classes')
 	}
 	// remove classes from the classpath
 	classpath = configurations.runtime
