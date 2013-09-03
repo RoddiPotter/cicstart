@@ -111,7 +111,7 @@ public class EntityManagerInterceptor implements Filter {
 				String url = ((HttpServletRequest) request).getRequestURL()
 						.toString();
 
-				if (url.contains("api-docs.json")) {
+				if (url.contains("api-docs.json") && url.contains("service")) {
 					// don't count stats on these.
 				} else {
 

@@ -39,7 +39,7 @@ import ca.ualberta.physics.cssdp.file.dao.HostEntryDao;
 import ca.ualberta.physics.cssdp.file.remote.RemoteServers;
 import ca.ualberta.physics.cssdp.file.remote.RemoteServersImpl;
 import ca.ualberta.physics.cssdp.file.service.CacheService;
-import ca.ualberta.physics.cssdp.vfs.configuration.VfsServerModule;
+import ca.ualberta.physics.cssdp.vfs.service.FileSystemService;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.AbstractModule;
@@ -54,8 +54,8 @@ public class CommonModule extends AbstractModule {
 		bind(ObjectMapper.class).toProvider(new JSONObjectMapperProvider());
 
 		/*
-		 * Because Macro clients run outside of the server, we don't want any of
-		 * this stuff to load on the client.
+		 * Because Macro clients (and VFS clients) run outside of the server, we
+		 * don't want any of this stuff to load on the client.
 		 */
 		if (MacroServer.properties().getBoolean("isServer")) {
 
@@ -86,14 +86,14 @@ public class CommonModule extends AbstractModule {
 					Scopes.SINGLETON);
 			bind(CacheService.class).in(Scopes.SINGLETON);
 
-			// VFS stuff
-			install(new VfsServerModule());
-
 		}
 
 		// Macro stuff
 		bind(MacroService.class).in(Scopes.SINGLETON);
 		bind(CloudService.class).in(Scopes.SINGLETON);
+
+		// VFS stuff
+		bind(FileSystemService.class).in(Scopes.SINGLETON);
 
 	}
 
