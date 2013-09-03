@@ -14,15 +14,22 @@ repositories {
 	mavenCentral()
 }
 
-task copyResources(type:Copy) {
+war {
 	from('src/main/java') {
-	   include '**/*.properties'
-	   include '**/*.ftl'
+	   include '**/*.properties' into ('WEB-INF/classes')
+	   include '**/*.ftl' into ('WEB-INF/classes')
 	}
-	into('build/classes/main')
-}
+	// remove classes from the classpath
+	classpath = configurations.runtime
 
-jar.dependsOn copyResources
+	// add them in explicitly, with the filtering applied
+	webInf {
+		into('classes') {
+			from sourceSets.main.output
+			exclude '**/logback.xml'
+		}
+	}
+}
 
 dependencies {
 	compile "org.slf4j:slf4j-api:1.7.2"
