@@ -23,6 +23,7 @@
   <logger name="ca.ualberta.physics" level="debug"/>
   <logger name="com.sun.grizzly" level="trace"/>
   <logger name="javax.mail" level="debug" />
+  <logger name="com.coderod" level="debug"/>
   
   <logger name="JOBLOGGER" level="info" additivity="true">
 	<appender-ref ref="CMLLOGGER" />

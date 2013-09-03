@@ -14,6 +14,16 @@ repositories {
 	mavenCentral()
 }
 
+task copyResources(type:Copy) {
+	from('src/main/java') {
+	   include '**/*.properties'
+	   include '**/*.ftl'
+	}
+	into('build/classes/main')
+}
+
+jar.dependsOn copyResources
+
 war {
 	from('src/main/java') {
 	   include '**/*.properties' into ('WEB-INF/classes')

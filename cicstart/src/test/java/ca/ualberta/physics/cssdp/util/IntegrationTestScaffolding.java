@@ -26,12 +26,13 @@ import java.util.Properties;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.junit.Before;
+import org.junit.BeforeClass;
 
 import ca.ualberta.physics.cicstart.macro.configuration.MacroServer;
 import ca.ualberta.physics.cssdp.configuration.ApplicationProperties;
-import ca.ualberta.physics.cssdp.configuration.CicstartServletContainer;
 import ca.ualberta.physics.cssdp.configuration.Common;
 import ca.ualberta.physics.cssdp.configuration.JSONObjectMapperProvider;
+import ca.ualberta.physics.cssdp.dao.EntityManagerInterceptor;
 import ca.ualberta.physics.cssdp.domain.auth.User;
 import ca.ualberta.physics.cssdp.domain.auth.User.Role;
 
@@ -47,8 +48,9 @@ public abstract class IntegrationTestScaffolding {
 
 	private static Server server;
 
-	public IntegrationTestScaffolding() {
-
+	@BeforeClass
+	public static void setupDb() {
+		
 		ApplicationProperties.dropOverrides();
 
 		// initialize default properties
@@ -62,14 +64,9 @@ public abstract class IntegrationTestScaffolding {
 		overrides
 				.setProperty(
 						"common.hibernate.connection.url",
-						"jdbc:h2:mem:test;MODE=PostgreSQL;TRACE_LEVEL_FILE=0");
+						"jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;MODE=PostgreSQL;TRACE_LEVEL_FILE=0;");
 		ApplicationProperties.overrideDefaults(overrides);
-	}
-
-	// start an auth server for tests that depend on the auth resources
-	@Before
-	public void setup() throws Exception {
-
+		
 		String url = Common.properties().getString("hibernate.connection.url");
 		String driver = Common.properties().getString(
 				"hibernate.connection.driver_class");
@@ -83,6 +80,13 @@ public abstract class IntegrationTestScaffolding {
 				scriptsDir);
 		migrator.initDb();
 		migrator.migrateUpAll();
+
+	}
+	
+	// start an auth server for tests that depend on the auth resources
+	@Before
+	public void setup() throws Exception {
+
 
 		config().objectMapperConfig(
 				new ObjectMapperConfig()
@@ -99,7 +103,7 @@ public abstract class IntegrationTestScaffolding {
 		if (server == null || !server.isStarted()) {
 
 			// override some common setup needed during actual runtime on servers
-			CicstartServletContainer.readWebXml.set(Boolean.FALSE);
+			EntityManagerInterceptor.readWebXml.set(Boolean.FALSE);
 
 			// configure Jetty as an embedded web application server
 			server = new Server(8080);

@@ -10019,3 +10019,7 @@ dependencies {
 23:52:34.207 [main] INFO  JOBLOGGER - About to end the job
 23:52:34.328 [main] INFO  JOBLOGGER - About to end the job
 23:52:34.578 [main] INFO  JOBLOGGER - PutVFS: writing file macro.log to http://localhost:8080/api/vfs/filesystem.json/{owner}/write, owner=1
+13:10:56.895 [main] INFO  JOBLOGGER - GetCatalogueFiles: finding data at http://localhost:8080/api/catalogue/project.json/find
+13:10:57.121 [main] INFO  JOBLOGGER - GetCatalogueFiles: search request is CatalogueSearchRequest{project=APACHE1, observatories=, instrument types=, discriminator=null, start=null, end=null}
+13:10:57.309 [main] INFO  JOBLOGGER - GetCatalogueFiles: found url ftp://sunsite.ualberta.ca/pub/Mirror/apache/commons/daemon/binaries/commons-daemon-1.0.15.jar, requesting data download
+13:10:57.851 [main] INFO  JOBLOGGER - GetCatalogueFiles: cache hit! Downloading it now.
