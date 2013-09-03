@@ -1,5 +1,5 @@
 // start a vm
-vm = startVM($CICSTART.session, "DAIR", "Ubuntu 12.04 cloudimg amd64", "m1.tiny");
+vm = startVM("DAIR", "Ubuntu 10.04 amd64", "m1.tiny");
 
 // use special $localhost to run on all vm's or to test locally
 on $vm {	
@@ -11,7 +11,7 @@ on $vm {
 	maccsData = getCataloguedFiles({
 		project=("MACCS"),
 		observatories=("PG"),
-		dateRange=("2010-01-01","2011-01-01")
+		dateRange=("2010-01-01","2010-01-03")
 	});
 			
 	// Loop over each MACCS data file we grabbed

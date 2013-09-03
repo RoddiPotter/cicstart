@@ -16,15 +16,13 @@ import ca.ualberta.physics.cssdp.resource.AbstractServiceResource;
 import ca.ualberta.physics.cssdp.service.StatsService;
 
 import com.google.inject.Inject;
-import com.wordnik.swagger.annotations.Api;
 
 /*
  * Normally paths at class levels end with .json or .xml so the auto-api documentation
  * works properly.  This won't work but we are constrainted due to CANARIE's requirements
  * for this service.
  */
-@Path("/service/vfs")
-@Api(value = "/service/vfs", description = "Generic info about this service")
+@Path("/vfs/service")
 public class VFSServiceResource extends AbstractServiceResource {
 
 	private static final Logger logger = LoggerFactory.getLogger(VFSServiceResource.class);
