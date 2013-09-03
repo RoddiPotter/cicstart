@@ -5,6 +5,9 @@ import java.net.URISyntaxException;
 
 import javax.ws.rs.Path;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import ca.ualberta.physics.cssdp.configuration.InjectorHolder;
 import ca.ualberta.physics.cssdp.domain.ServiceInfo;
 import ca.ualberta.physics.cssdp.domain.ServiceStats;
@@ -23,6 +26,8 @@ import com.wordnik.swagger.annotations.Api;
 @Api(value = "/service/vfs", description = "Generic info about this service")
 public class VFSServiceResource extends AbstractServiceResource {
 
+	private static final Logger logger = LoggerFactory.getLogger(VFSServiceResource.class);
+	
 	private StatsService statsService;
 
 	public VFSServiceResource() {
@@ -41,6 +46,7 @@ public class VFSServiceResource extends AbstractServiceResource {
 
 	@Override
 	protected ServiceStats buildStats() {
+		logger.debug("Have a stats service " + statsService);
 		return statsService.find(ServiceName.VFS).getPayload();
 	}
 

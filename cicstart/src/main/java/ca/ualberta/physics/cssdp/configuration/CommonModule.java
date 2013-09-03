@@ -39,6 +39,7 @@ import ca.ualberta.physics.cssdp.file.dao.HostEntryDao;
 import ca.ualberta.physics.cssdp.file.remote.RemoteServers;
 import ca.ualberta.physics.cssdp.file.remote.RemoteServersImpl;
 import ca.ualberta.physics.cssdp.file.service.CacheService;
+import ca.ualberta.physics.cssdp.service.StatsService;
 import ca.ualberta.physics.cssdp.vfs.service.FileSystemService;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -65,6 +66,9 @@ public class CommonModule extends AbstractModule {
 			bind(EntityManager.class).toProvider(EntityManagerProvider.class)
 					.asEagerSingleton();
 
+			// Common service for stats and info
+			bind(StatsService.class).in(Scopes.SINGLETON);
+			
 			// Auth server stuff
 			bind(UserService.class).in(Scopes.SINGLETON);
 			bind(EmailService.class).to(EmailServiceImpl.class).in(
@@ -85,6 +89,7 @@ public class CommonModule extends AbstractModule {
 			bind(RemoteServers.class).to(RemoteServersImpl.class).in(
 					Scopes.SINGLETON);
 			bind(CacheService.class).in(Scopes.SINGLETON);
+			
 
 		}
 
