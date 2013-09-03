@@ -15,6 +15,7 @@ import ca.ualberta.physics.cssdp.domain.ServiceStats.ServiceName;
 import ca.ualberta.physics.cssdp.resource.AbstractServiceResource;
 import ca.ualberta.physics.cssdp.service.StatsService;
 
+import com.google.inject.Inject;
 import com.wordnik.swagger.annotations.Api;
 
 /*
@@ -28,6 +29,7 @@ public class VFSServiceResource extends AbstractServiceResource {
 
 	private static final Logger logger = LoggerFactory.getLogger(VFSServiceResource.class);
 	
+	@Inject
 	private StatsService statsService;
 
 	public VFSServiceResource() {

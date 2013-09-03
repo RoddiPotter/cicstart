@@ -34,12 +34,14 @@ import ca.ualberta.physics.cssdp.catalogue.dao.ProjectDao;
 import ca.ualberta.physics.cssdp.catalogue.dao.UrlDataProductDao;
 import ca.ualberta.physics.cssdp.catalogue.service.CatalogueService;
 import ca.ualberta.physics.cssdp.dao.EntityManagerProvider;
+import ca.ualberta.physics.cssdp.dao.ServiceStatsDao;
 import ca.ualberta.physics.cssdp.file.dao.CachedFileDao;
 import ca.ualberta.physics.cssdp.file.dao.HostEntryDao;
 import ca.ualberta.physics.cssdp.file.remote.RemoteServers;
 import ca.ualberta.physics.cssdp.file.remote.RemoteServersImpl;
 import ca.ualberta.physics.cssdp.file.service.CacheService;
 import ca.ualberta.physics.cssdp.service.StatsService;
+import ca.ualberta.physics.cssdp.vfs.configuration.VfsServer;
 import ca.ualberta.physics.cssdp.vfs.service.FileSystemService;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -58,7 +60,8 @@ public class CommonModule extends AbstractModule {
 		 * Because Macro clients (and VFS clients) run outside of the server, we
 		 * don't want any of this stuff to load on the client.
 		 */
-		if (MacroServer.properties().getBoolean("isServer")) {
+		if (MacroServer.properties().getBoolean("isServer")
+				|| VfsServer.properties().getBoolean("isServer")) {
 
 			install(new JpaModule());
 			install(new TransactionalModule());
@@ -67,8 +70,9 @@ public class CommonModule extends AbstractModule {
 					.asEagerSingleton();
 
 			// Common service for stats and info
+			bind(ServiceStatsDao.class).in(Scopes.SINGLETON);
 			bind(StatsService.class).in(Scopes.SINGLETON);
-			
+
 			// Auth server stuff
 			bind(UserService.class).in(Scopes.SINGLETON);
 			bind(EmailService.class).to(EmailServiceImpl.class).in(
@@ -89,7 +93,6 @@ public class CommonModule extends AbstractModule {
 			bind(RemoteServers.class).to(RemoteServersImpl.class).in(
 					Scopes.SINGLETON);
 			bind(CacheService.class).in(Scopes.SINGLETON);
-			
 
 		}
 
