@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app>
+	<context-param>
+		<param-name>application.properties</param-name>
+		<param-value>/cicstart/config/application.properties</param-value>
+	</context-param>
+
+	<filter>
+		<filter-name>EntityManagerInterceptor</filter-name>
+		<filter-class>ca.ualberta.physics.cssdp.dao.EntityManagerInterceptor</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>EntityManagerInterceptor</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<servlet>
+		<servlet-name>jersey</servlet-name>
+		<servlet-class>ca.ualberta.physics.cssdp.configuration.CicstartServletContainer</servlet-class>
+		<init-param>
+			<param-name>com.sun.jersey.config.property.packages</param-name>
+			<param-value>ca.ualberta.physics.cssdp;ca.ualberta.physics.cicstart;com.wordnik.swagger.jaxrs.listing;</param-value>
+		</init-param>
+		<init-param>
+			<param-name>com.sun.jersey.spi.container.ContainerRequestFilters</param-name>
+			<param-value>com.sun.jersey.api.container.filter.PostReplaceFilter</param-value>
+		</init-param>
+		<init-param>
+			<param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+			<param-value>true</param-value>
+		</init-param>
+		<init-param>
+			<param-name>swagger.config.reader</param-name>
+			<param-value>ca.ualberta.physics.cssdp.configuration.SwaggerConfigReader</param-value>
+		</init-param>
+		<init-param>
+			<param-name>common.properties_url.key</param-name>
+			<param-value>external.api.url</param-value>
+		</init-param>
+		<init-param>
+			<param-name>common.properties_doc.url.key</param-name>
+			<param-value>doc.url</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>jersey</servlet-name>
+		<url-pattern>/api/*</url-pattern>
+	</servlet-mapping>
+	<filter>
+		<filter-name>ApiOriginFilter</filter-name>
+		<filter-class>ca.ualberta.physics.cssdp.util.ApiOriginFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>ApiOriginFilter</filter-name>
+		<url-pattern>/api/*</url-pattern>
+	</filter-mapping>
+
+</web-app>
