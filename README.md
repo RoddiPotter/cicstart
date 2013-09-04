@@ -19,62 +19,84 @@ This object is achieved with the following goals:
 
 This framework is currently accessible on the CANARIE [DAIR](http://www.canarie.ca/en/dair-program/about) network, but may also be 
 downloaded and configured to run on your infrastructure.  You may wish to download and setup your own platform for access to your 
-specific licensed software and hardware resources not available on the DAIR cloud.
+specific licensed software and hardware resources that are not available on the DAIR cloud.
 
 The components that make up the CICSTART platform are:
 
-## [Catalogue](//github.com/roddipotter/cicstart/wiki/Catalogue)
+## Authentication Service
+> The Authentication Service used for creating CICSTART accounts and user management (password reset, etc.).  Authorization is required for
+> all operations on CICSTART that have end-user data associated with it, as well as some higher level functions like adding a new data server. 
+> Note that this component currently does not use HTTPS.  A discussion has been started on the Google group about this. 
+> [More details](//github.com/roddipotter/cicstart/wiki/Auth)
+### API Documentation
+> [User](http://208.75.74.81/cicstart/docs/?input_baseUrl=http://208.75.74.81/cicstart/api/api-docs.json#!/user)
+
+> [Session](http://208.75.74.81/cicstart/docs/?input_baseUrl=http://208.75.74.81/cicstart/api/api-docs.json#!/session)
+
+## Catalogue for File Metadata 
 > A Catalogue Service used to identify and locate data resources on the Internet. This service is 
 > a stand-alone component that can be used by end users (e.g., via a portal) independent of the platform. This component 
 > can also be used to automate the look-up and retrieval of data by any client software running within the platform. 
 > At the same time, this service allows any research software to automatically catalogue the output generated data from computational models. 
-> This component enabled a piping mechanism to move data from one computational model job to the next.
+> This component enables a method for piping data from one computational job to the next. [More details](//github.com/roddipotter/cicstart/wiki/Catalogue)
+### API Documentation
+> [Project](http://208.75.74.81/cicstart/docs/?input_baseUrl=http://208.75.74.81/cicstart/api/api-docs.json#!/project)
 
-## [File](//github.com/roddipotter/cicstart/wiki/File)
-> A File Service used to transfer data resources across the Internet to the computational models or end users. This service isolates 
-> the software and end user from dealing with the complexities of low-level details of differing network protocols, authentication, 
-> and specific file locations of the data files in the remote servers.  This component also caches data for efficiencies and allows for
-> arbitrary mapping of external keys to the file's MD5 hash.
+## File Transfer and Cache
+> A File Service used to transfer data resources across the Internet to the computational jobs running on cloud resources or directly to end users. 
+> This service isolates the researcher from the complexities and details of differing network protocols, 
+> authentication, and file locations on the remote data servers.  This component also caches data for improved network efficiency and 
+> allows for arbitrary mapping of external keys to the file's MD5 hash.  The arbitrary mapping of keys to file hashes eliminates duplicate file
+> data in the cache and provides unlimited vectors for users to organize and recall data files.
+### API Documentation
+> [Cache](http://208.75.74.81/cicstart/docs/?input_baseUrl=http://208.75.74.81/cicstart/api/api-docs.json#!/cache)
 
-## [Auth](//github.com/roddipotter/cicstart/wiki/Auth)
-> An Authentication Service used to authenticate users and software so that authorization of services and resources can be enforced. The
-> VFS and other components may use this service to identify the user or request authentication prior to authorizing access to the resource.
-> Note that this component currently does not use HTTPS.  A discussion has been started on the Google group about this.
+> [Host](http://208.75.74.81/cicstart/docs/?input_baseUrl=http://208.75.74.81/cicstart/api/api-docs.json#!/host)
 
-## [VFS](//github.com/roddipotter/cicstart/wiki/VFS)
-> A Virtual 'File System Service' (VFS) that allows (s)ftp directory-based access using off-the-shelf ftp client software, as well as 
-> web service access by research software and/or other users of the platform to data files. This service also enables an innovative 
-> mechanism for distributed storage in the platform.
+## Virtual File System (VFS)
+> A Virtual 'File System Service' that allows end-users and computational jobs to place and get data files from.  The CICSTART services on
+> DAIR allow for a limited capacity of VFS space, however the tool can be downloaded and a VFS space can be created on your local environment.
+> This system allows for user-control over long term storage of job results, input files, and log data.  The VFS can be access via REST
+> interface and has the potential to also offer FTP and SFTP access to the same data (the DAIR installation of CICSTART does not offer FTP or
+> SFTP services at this time).  The VFS system interacts with the Auth service for authentication and authorization to VFS resources.
+> [More details](//github.com/roddipotter/cicstart/wiki/VFS)  
+### API Documentation
+> [File System](http://208.75.74.81/cicstart/docs/?input_baseUrl=http://208.75.74.81/cicstart/api/api-docs.json#!/filesystem)
 
-## [Macro](//github.com/roddipotter/cicstart/wiki/VFS)
-> A service that is used to generate CML client binary software for running on arbitrary computing resources.  In-progress work to
-> start VM instances on behalf of CICSTART users and dispatch CML scripts to those VMs.
+## Macro Service and CICSTART Macro Language
+> This service allows the end user to define a set of steps (like a workflow) in the form of a macro using the [CICSTART Macro Language](//github.com/roddipotter/cicstart/wiki/CML) to
+> launch VMs (on DAIR).  The macro can interact with other CICSTART services, like getting data from the VFS, the catalogue, and putting data 
+> to the VFS.  It can also run arbitrary commands on the system running the macro.  The Macro service can also be used to generate a client 
+> that can be downloaded and run locally, still fully interacting with CICSTART services (except for launch VMs).  This can be used for 
+> debugging or for cases that do no require a VM, such as accessing software licenses for the local machine only. 
+> [More details](//github.com/roddipotter/cicstart/wiki/Macro)
+### API Documentation
+> [Macro](http://208.75.74.81/cicstart/docs/?input_baseUrl=http://208.75.74.81/cicstart/api/api-docs.json#!/macro)
 
-## CICSTART Macro Language : [CML](//github.com/roddipotter/cicstart/wiki/CML)
-> A scripting language used to interact with CICSTART resources (Catalogue and VFS) and run arbitrary command line processes.  A script
-> can be used to find and access scientific data and then run arbitrary software against that data.  The script can also be used to
-> define where the results should be placed.  This is an evolving work-in-progress. 
+> [CICSTART Macro Language Documentation](//github.com/roddipotter/cicstart/wiki/CML)
 
 ---------------------------------------
 
-There are plenty of [examples](//github.com/roddipotter/cicstart/wiki/Examples) for reference, as well as full 
-[REST API Documentation](//github.com/roddipotter/cicstart/wiki/ComponentsAndRESTAPIs)
+##To help you get started:
 
-The documentation is split into a few categories:
+There are plenty of [examples](//github.com/roddipotter/cicstart/wiki/Examples) for reference.
 
 ### For the platform developer
 You are extending the CICSTART components for general use or your own interests. The software is built on Java 1.6 and JAXRS.  
 The server components need a database to talk with (PostgreSQL is default), but the VFS and Proxy components do not require a database.
+
 1. See [building and deploying the components](//github.com/roddipotter/cicstart/wiki/BuildAndDeploy)
     
 ### For the platform implementor
 You are using the REST APIs offered by CICSTART to build your own data portal.
-1. See [Components & REST APIs](//github.com/roddipotter/cicstart/wiki/ComponentsAndRESTAPIs)
+
+1. See [REST APIs](http://208.75.74.81/cicstart/docs/?input_baseUrl=http://208.75.74.81/cicstart/api/api-docs.json)
     
 ### For the model developer
 You are developing a computational model and you want it served by CICSTART
+
 1. See [Macro](//github.com/roddipotter/cicstart/wiki/Macro) and [CML](//github.com/roddipotter/cicstart/wiki/CML) documentation
-2. See [Components & REST APIs](//github.com/roddipotter/cicstart/wiki/ComponentsAndRESTAPIs)
+2. See [REST APIs](http://208.75.74.81/cicstart/docs/?input_baseUrl=http://208.75.74.81/cicstart/api/api-docs.json)
 
 ---------------------------------------
 
