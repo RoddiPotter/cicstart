@@ -47,7 +47,7 @@ The components that make up the CICSTART platform are:
 > This service isolates the researcher from the complexities and details of differing network protocols, 
 > authentication, and file locations on the remote data servers.  This component also caches data for improved network efficiency and 
 > allows for arbitrary mapping of external keys to the file's MD5 hash.  The arbitrary mapping of keys to file hashes eliminates duplicate file
-> data in the cache and provides unlimited vectors for users to organize and recall data files.
+> data in the cache and provides unlimited vectors for users to organize and recall data files. [More details](//github.com/roddipotter/cicstart/wiki/File)
 ### API Documentation
 > [Cache](http://208.75.74.81/cicstart/docs/?input_baseUrl=http://208.75.74.81/cicstart/api/api-docs.json#!/cache)
 
