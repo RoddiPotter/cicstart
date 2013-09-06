@@ -45,8 +45,8 @@ public class StatsService {
 			public void doInTransaction() {
 				logger.debug("about to find stats for service " + serviceName);
 				ServiceStats stats = dao.find(serviceName);
-				logger.debug("found stats: " + stats != null ? stats.toString()
-						: "null");
+				logger.debug("found stats: " + (stats != null ? stats.toString()
+						: "null"));
 				if (stats == null) {
 					stats = new ServiceStats();
 					stats.setInvocations(0);
