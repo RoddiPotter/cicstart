@@ -24,9 +24,9 @@ import ca.ualberta.physics.cssdp.configuration.ApplicationProperties;
 import ca.ualberta.physics.cssdp.configuration.Common;
 import ca.ualberta.physics.cssdp.configuration.ComponentProperties;
 import ca.ualberta.physics.cssdp.configuration.InjectorHolder;
-import ca.ualberta.physics.cssdp.domain.ServiceStats.ServiceName;
 import ca.ualberta.physics.cssdp.file.configuration.FileServer;
 import ca.ualberta.physics.cssdp.service.StatsService;
+import ca.ualberta.physics.cssdp.service.StatsService.ServiceName;
 import ca.ualberta.physics.cssdp.vfs.configuration.VfsServer;
 
 import com.google.common.base.Strings;
@@ -116,21 +116,21 @@ public class EntityManagerInterceptor implements Filter {
 				} else {
 
 					if (url.contains("auth")) {
-						statsService.incrementInvocationCount(ServiceName.AUTH);
+						statsService.incrementInvocationCount(StatsService.ServiceName.AUTH);
 					}
 					if (url.contains("catalogue")) {
 						statsService
-								.incrementInvocationCount(ServiceName.CATALOGUE);
+								.incrementInvocationCount(StatsService.ServiceName.CATALOGUE);
 					}
 					if (url.contains("file")) {
-						statsService.incrementInvocationCount(ServiceName.FILE);
+						statsService.incrementInvocationCount(StatsService.ServiceName.FILE);
 					}
 					if (url.contains("macro")) {
 						statsService
-								.incrementInvocationCount(ServiceName.MACRO);
+								.incrementInvocationCount(StatsService.ServiceName.MACRO);
 					}
 					if (url.contains("vfs")) {
-						statsService.incrementInvocationCount(ServiceName.VFS);
+						statsService.incrementInvocationCount(StatsService.ServiceName.VFS);
 					}
 					
 				}

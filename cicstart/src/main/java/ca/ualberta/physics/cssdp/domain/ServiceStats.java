@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ca.ualberta.physics.cssdp.dao.Persistent;
+import ca.ualberta.physics.cssdp.service.StatsService;
 import ca.ualberta.physics.cssdp.util.JSONDateTimeNoMillisSerializer;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -34,15 +35,11 @@ public class ServiceStats extends Persistent implements Serializable {
 
 	private static final Logger logger = LoggerFactory.getLogger(ServiceStats.class);
 	
-	public static enum ServiceName {
-		AUTH, FILE, CATALOGUE, MACRO, VFS, STATS
-	}
-
 	private static final long serialVersionUID = 1L;
 
 	@Column(name = "service_name", length = 10, nullable = false)
 	@Enumerated(EnumType.STRING)
-	private ServiceName serviceName;
+	private StatsService.ServiceName serviceName;
 
 	@Column(name = "invocations", nullable = false)
 	private int invocations;
@@ -72,11 +69,11 @@ public class ServiceStats extends Persistent implements Serializable {
 	}
 
 	@JsonIgnore
-	public ServiceName getServiceName() {
+	public StatsService.ServiceName getServiceName() {
 		return serviceName;
 	}
 
-	public void setServiceName(ServiceName serviceName) {
+	public void setServiceName(StatsService.ServiceName serviceName) {
 		this.serviceName = serviceName;
 	}
 

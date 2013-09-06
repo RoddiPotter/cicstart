@@ -8,9 +8,9 @@ import javax.ws.rs.Path;
 import ca.ualberta.physics.cssdp.configuration.InjectorHolder;
 import ca.ualberta.physics.cssdp.domain.ServiceInfo;
 import ca.ualberta.physics.cssdp.domain.ServiceStats;
-import ca.ualberta.physics.cssdp.domain.ServiceStats.ServiceName;
 import ca.ualberta.physics.cssdp.resource.AbstractServiceResource;
 import ca.ualberta.physics.cssdp.service.StatsService;
+import ca.ualberta.physics.cssdp.service.StatsService.ServiceName;
 
 import com.google.inject.Inject;
 
@@ -32,14 +32,14 @@ public class CatalogueServiceResource extends AbstractServiceResource {
 	@Override
 	protected ServiceInfo buildInfo() {
 		ServiceInfo info = new ServiceInfo();
-		info.setName(ServiceName.CATALOGUE);
+		info.setName(StatsService.ServiceName.CATALOGUE);
 		info.setSynopsis("A generic catalogue service used for mapping urls to metadata.  Metadata can then be searched to find those urls.");
 		return info;
 	}
 
 	@Override
 	protected ServiceStats buildStats() {
-		return statsService.find(ServiceName.CATALOGUE).getPayload();
+		return statsService.find(StatsService.ServiceName.CATALOGUE).getPayload();
 	}
 
 	@Override

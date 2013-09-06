@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 
 import ca.ualberta.physics.cssdp.dao.ServiceStatsDao;
 import ca.ualberta.physics.cssdp.domain.ServiceStats;
-import ca.ualberta.physics.cssdp.domain.ServiceStats.ServiceName;
 
 import com.google.inject.Inject;
 
@@ -21,6 +20,10 @@ import com.google.inject.Inject;
  */
 public class StatsService {
 
+	public static enum ServiceName {
+		AUTH, FILE, CATALOGUE, MACRO, VFS, STATS
+	}
+
 	private static final Logger logger = LoggerFactory
 			.getLogger(StatsService.class);
 
@@ -30,7 +33,7 @@ public class StatsService {
 	@Inject
 	private EntityManager em;
 
-	public ServiceResponse<ServiceStats> find(final ServiceName serviceName) {
+	public ServiceResponse<ServiceStats> find(final StatsService.ServiceName serviceName) {
 		final ServiceResponse<ServiceStats> sr = new ServiceResponse<ServiceStats>();
 
 		new ManualTransaction(sr, em) {
@@ -68,7 +71,7 @@ public class StatsService {
 	 * wait and see how it does.
 	 */
 	public synchronized ServiceResponse<ServiceStats> incrementInvocationCount(
-			final ServiceName serviceName) {
+			final StatsService.ServiceName serviceName) {
 
 		final ServiceResponse<ServiceStats> sr = new ServiceResponse<ServiceStats>();
 

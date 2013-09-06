@@ -8,9 +8,9 @@ import javax.ws.rs.Path;
 import ca.ualberta.physics.cssdp.configuration.InjectorHolder;
 import ca.ualberta.physics.cssdp.domain.ServiceInfo;
 import ca.ualberta.physics.cssdp.domain.ServiceStats;
-import ca.ualberta.physics.cssdp.domain.ServiceStats.ServiceName;
 import ca.ualberta.physics.cssdp.resource.AbstractServiceResource;
 import ca.ualberta.physics.cssdp.service.StatsService;
+import ca.ualberta.physics.cssdp.service.StatsService.ServiceName;
 
 import com.google.inject.Inject;
 
@@ -32,14 +32,14 @@ public class AuthServiceResource extends AbstractServiceResource {
 	@Override
 	protected ServiceInfo buildInfo() {
 		ServiceInfo info = new ServiceInfo();
-		info.setName(ServiceName.AUTH);
+		info.setName(StatsService.ServiceName.AUTH);
 		info.setSynopsis("A generic authentication service used for user and session management.");
 		return info;
 	}
 
 	@Override
 	protected ServiceStats buildStats() {
-		return statsService.find(ServiceName.AUTH).getPayload();
+		return statsService.find(StatsService.ServiceName.AUTH).getPayload();
 	}
 
 	@Override

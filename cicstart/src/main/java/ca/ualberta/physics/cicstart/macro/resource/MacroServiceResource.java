@@ -8,9 +8,9 @@ import javax.ws.rs.Path;
 import ca.ualberta.physics.cssdp.configuration.InjectorHolder;
 import ca.ualberta.physics.cssdp.domain.ServiceInfo;
 import ca.ualberta.physics.cssdp.domain.ServiceStats;
-import ca.ualberta.physics.cssdp.domain.ServiceStats.ServiceName;
 import ca.ualberta.physics.cssdp.resource.AbstractServiceResource;
 import ca.ualberta.physics.cssdp.service.StatsService;
+import ca.ualberta.physics.cssdp.service.StatsService.ServiceName;
 
 import com.google.inject.Inject;
 
@@ -32,7 +32,7 @@ public class MacroServiceResource extends AbstractServiceResource {
 	@Override
 	protected ServiceInfo buildInfo() {
 		ServiceInfo info = new ServiceInfo();
-		info.setName(ServiceName.MACRO);
+		info.setName(StatsService.ServiceName.MACRO);
 		info.setSynopsis("A facility to script cloud actions and run arbitrary commands on a spawned VM.  "
 				+ "The scripting functions also allow for interaction with all other CICSTART services, providing "
 				+ "a mechanism for you to build fast, custom CICSTART clients to suite your needs.");
@@ -41,7 +41,7 @@ public class MacroServiceResource extends AbstractServiceResource {
 
 	@Override
 	protected ServiceStats buildStats() {
-		return statsService.find(ServiceName.MACRO).getPayload();
+		return statsService.find(StatsService.ServiceName.MACRO).getPayload();
 	}
 
 	@Override

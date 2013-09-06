@@ -11,9 +11,9 @@ import org.slf4j.LoggerFactory;
 import ca.ualberta.physics.cssdp.configuration.InjectorHolder;
 import ca.ualberta.physics.cssdp.domain.ServiceInfo;
 import ca.ualberta.physics.cssdp.domain.ServiceStats;
-import ca.ualberta.physics.cssdp.domain.ServiceStats.ServiceName;
 import ca.ualberta.physics.cssdp.resource.AbstractServiceResource;
 import ca.ualberta.physics.cssdp.service.StatsService;
+import ca.ualberta.physics.cssdp.service.StatsService.ServiceName;
 
 import com.google.inject.Inject;
 
@@ -37,7 +37,7 @@ public class VFSServiceResource extends AbstractServiceResource {
 	@Override
 	protected ServiceInfo buildInfo() {
 		ServiceInfo info = new ServiceInfo();
-		info.setName(ServiceName.VFS);
+		info.setName(StatsService.ServiceName.VFS);
 		info.setSynopsis("Long term persistent storage that can interact with other CICSTART services.  "
 				+ "Useful for accessing input files required by Macros running on spawned VMs.  Also useful "
 				+ "for storing output from Macros.");
@@ -47,7 +47,7 @@ public class VFSServiceResource extends AbstractServiceResource {
 	@Override
 	protected ServiceStats buildStats() {
 		logger.debug("Have a stats service " + statsService);
-		return statsService.find(ServiceName.VFS).getPayload();
+		return statsService.find(StatsService.ServiceName.VFS).getPayload();
 	}
 
 	@Override

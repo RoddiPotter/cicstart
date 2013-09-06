@@ -3,7 +3,8 @@ package ca.ualberta.physics.cssdp.domain;
 import org.joda.time.DateTime;
 import org.joda.time.format.ISODateTimeFormat;
 
-import ca.ualberta.physics.cssdp.domain.ServiceStats.ServiceName;
+import ca.ualberta.physics.cssdp.service.StatsService;
+import ca.ualberta.physics.cssdp.service.StatsService.ServiceName;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
@@ -17,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 @JsonAutoDetect(fieldVisibility = Visibility.ANY)
 public class ServiceInfo {
 
-	private ServiceName name;
+	private StatsService.ServiceName name;
 	private String synopsis;
 	private String version = "1.0";
 	private String institution = "University of Alberta, Department of Physics, Space Physics";
@@ -25,11 +26,11 @@ public class ServiceInfo {
 	private String releaseTime = ISODateTimeFormat.dateTimeNoMillis()
 			.withZoneUTC().print(new DateTime(2013, 06, 30, 01, 01));
 
-	public ServiceName getName() {
+	public StatsService.ServiceName getName() {
 		return name;
 	}
 
-	public void setName(ServiceName name) {
+	public void setName(StatsService.ServiceName name) {
 		this.name = name;
 	}
 

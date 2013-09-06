@@ -3,13 +3,21 @@ package ca.ualberta.physics.cssdp.dao;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import ca.ualberta.physics.cssdp.domain.ServiceStats;
-import ca.ualberta.physics.cssdp.domain.ServiceStats.ServiceName;
+import ca.ualberta.physics.cssdp.service.StatsService;
 
 public class ServiceStatsDao extends AbstractJpaDao<ServiceStats> {
 
-	public ServiceStats find(ServiceName serviceName) {
-		
+	private static final Logger logger = LoggerFactory
+			.getLogger(ServiceStatsDao.class);
+
+	public ServiceStats find(StatsService.ServiceName serviceName) {
+
+		logger.debug("Finding a stats record for service " + serviceName);
+
 		String qlString = "select ss from ServiceStats ss where ss.serviceName = :serviceName";
 		Query q = em.createQuery(qlString);
 		q.setParameter("serviceName", serviceName);
@@ -25,5 +33,5 @@ public class ServiceStatsDao extends AbstractJpaDao<ServiceStats> {
 		return stats;
 
 	}
-		
+
 }
