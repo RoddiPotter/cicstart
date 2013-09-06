@@ -21,8 +21,9 @@ import com.google.inject.Inject;
  */
 public class StatsService {
 
-	private static final Logger logger = LoggerFactory.getLogger(StatsService.class);
-	
+	private static final Logger logger = LoggerFactory
+			.getLogger(StatsService.class);
+
 	@Inject
 	private ServiceStatsDao dao;
 
@@ -42,9 +43,10 @@ public class StatsService {
 
 			@Override
 			public void doInTransaction() {
-				logger.debug("about to find");
+				logger.debug("about to find stats for service " + serviceName);
 				ServiceStats stats = dao.find(serviceName);
-				logger.debug("found stats: " + stats);
+				logger.debug("found stats: " + stats != null ? stats.toString()
+						: "null");
 				if (stats == null) {
 					stats = new ServiceStats();
 					stats.setInvocations(0);
