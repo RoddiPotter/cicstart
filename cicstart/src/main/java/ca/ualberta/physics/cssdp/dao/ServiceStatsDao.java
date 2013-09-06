@@ -26,6 +26,7 @@ public class ServiceStatsDao extends AbstractJpaDao<ServiceStats> {
 
 		try {
 			stats = (ServiceStats) q.getSingleResult();
+			logger.debug("Found a stats record " + stats.getId());
 		} catch (NoResultException nre) {
 			// ignored
 		}
