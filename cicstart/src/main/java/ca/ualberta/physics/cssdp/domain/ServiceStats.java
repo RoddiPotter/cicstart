@@ -65,7 +65,7 @@ public class ServiceStats extends Persistent implements Serializable {
 	@Override
 	public String _pk() {
 		logger.debug("service name in domain object is " + serviceName);
-		return serviceName.name();
+		return serviceName == null ? getId() + "" : serviceName.name();
 	}
 
 	@JsonIgnore
