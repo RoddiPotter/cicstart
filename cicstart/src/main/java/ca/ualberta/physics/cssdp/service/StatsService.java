@@ -3,6 +3,8 @@ package ca.ualberta.physics.cssdp.service;
 import javax.persistence.EntityManager;
 
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ca.ualberta.physics.cssdp.dao.ServiceStatsDao;
 import ca.ualberta.physics.cssdp.domain.ServiceStats;
@@ -19,6 +21,8 @@ import com.google.inject.Inject;
  */
 public class StatsService {
 
+	private static final Logger logger = LoggerFactory.getLogger(StatsService.class);
+	
 	@Inject
 	private ServiceStatsDao dao;
 
@@ -33,17 +37,21 @@ public class StatsService {
 			@Override
 			public void onError(Exception e, ServiceResponse<?> sr) {
 				sr.error(e.getMessage());
+				logger.error("transaction failed due to " + e.getMessage());
 			}
 
 			@Override
 			public void doInTransaction() {
+				logger.debug("about to find");
 				ServiceStats stats = dao.find(serviceName);
+				logger.debug("found stats: " + stats);
 				if (stats == null) {
 					stats = new ServiceStats();
 					stats.setInvocations(0);
 					stats.setLastReset(DateTime.now());
 					stats.setServiceName(serviceName);
 					dao.save(stats);
+					logger.debug("saved new stats: " + stats);
 				}
 				sr.setPayload(stats);
 			}

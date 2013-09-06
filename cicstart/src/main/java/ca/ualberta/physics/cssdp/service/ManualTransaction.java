@@ -32,9 +32,12 @@ public abstract class ManualTransaction {
 	public ManualTransaction(ServiceResponse<?> sr, EntityManager em) {
 
 		EntityTransaction tx = em.getTransaction();
-		if (tx == null || tx.isActive() == false) {
+		boolean shouldCommit = true;
+		if (tx != null && tx.isActive() == false) {
 			tx.begin();
 			logger.debug("Started Transaction");
+		} else {
+			shouldCommit = false;
 		}
 		try {
 
@@ -42,7 +45,7 @@ public abstract class ManualTransaction {
 			// only commit the transaction if the request is ok still.
 			// Validation errors from the concrete class may invalidate the
 			// transaction.
-			if (tx != null && tx.isActive() == true) {
+			if (tx != null && tx.isActive() == true && shouldCommit) {
 				if (sr.isRequestOk()) {
 					tx.commit();
 					logger.debug("Committed Transaction");
@@ -59,7 +62,7 @@ public abstract class ManualTransaction {
 			}
 			em.clear();
 			onError(e, sr);
-			logger.warn("Rolled back Transaction: ", e);
+			logger.error("Rolled back Transaction: ", e);
 		} finally {
 
 		}

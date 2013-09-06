@@ -50,7 +50,7 @@ dependencies {
 	compile "com.google.inject:guice:3.0"
 	compile "joda-time:joda-time:2.2"
 	
-	compile "org.hibernate:hibernate-entitymanager:4.1.9.Final"
+	compile "org.hibernate:hibernate-entitymanager:4.2.5.Final"
 	compile "com.jolbox:bonecp:0.8.0-rc1"
 	compile "com.jolbox:bonecp-jdk-compat:0.8.0-rc1"
 	compile "com.jolbox:bonecp-provider:0.8.0-alpha1"

@@ -10023,3 +10023,136 @@ dependencies {
 13:10:57.121 [main] INFO  JOBLOGGER - GetCatalogueFiles: search request is CatalogueSearchRequest{project=APACHE1, observatories=, instrument types=, discriminator=null, start=null, end=null}
 13:10:57.309 [main] INFO  JOBLOGGER - GetCatalogueFiles: found url ftp://sunsite.ualberta.ca/pub/Mirror/apache/commons/daemon/binaries/commons-daemon-1.0.15.jar, requesting data download
 13:10:57.851 [main] INFO  JOBLOGGER - GetCatalogueFiles: cache hit! Downloading it now.
+00:15:41.065 [main] INFO  JOBLOGGER - PutVFS: writing file build.gradle to http://localhost:8080/api/vfs/filesystem.json/{owner}/write, owner=1
+00:15:44.027 [main] INFO  JOBLOGGER - ForEach: Iterating over 3 items
+00:15:44.221 [Thread-18] INFO  JOBLOGGER - ForEach: Iteration variable now set to 1, running commands in loop
+00:15:44.227 [Thread-19] INFO  JOBLOGGER - ForEach: Iteration variable now set to 2, running commands in loop
+00:15:44.241 [Thread-20] INFO  JOBLOGGER - ForEach: Iteration variable now set to 3, running commands in loop
+00:15:44.365 [Thread-19] INFO  JOBLOGGER - Running commands: debug, debug
+00:15:44.367 [Thread-20] INFO  JOBLOGGER - Running commands: debug, debug
+00:15:44.368 [Thread-18] INFO  JOBLOGGER - Running commands: debug, debug
+00:15:44.490 [Thread-19] INFO  JOBLOGGER - building debug
+00:15:44.495 [Thread-18] INFO  JOBLOGGER - building debug
+00:15:44.503 [Thread-20] INFO  JOBLOGGER - building debug
+00:15:44.624 [Thread-19] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@334cb9
+00:15:44.625 [Thread-18] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@1f21112
+00:15:44.627 [Thread-20] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@da9ae
+00:15:44.750 [Thread-19] INFO  JOBLOGGER - About to end the job
+00:15:44.756 [Thread-20] INFO  JOBLOGGER - About to end the job
+00:15:44.757 [Thread-18] INFO  JOBLOGGER - About to end the job
+00:15:44.886 [Thread-19] INFO  JOBLOGGER - building debug
+00:15:44.889 [Thread-20] INFO  JOBLOGGER - building debug
+00:15:44.901 [Thread-18] INFO  JOBLOGGER - building debug
+00:15:45.022 [Thread-18] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@c195e3
+00:15:45.024 [Thread-20] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@1bfc9d
+00:15:45.030 [Thread-19] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@1c7c4c
+00:15:45.148 [Thread-20] INFO  JOBLOGGER - About to end the job
+00:15:45.153 [Thread-19] INFO  JOBLOGGER - About to end the job
+00:15:45.160 [Thread-18] INFO  JOBLOGGER - About to end the job
+00:15:45.289 [main] INFO  JOBLOGGER - ForEach: Iterating over 3 items
+00:15:45.414 [main] INFO  JOBLOGGER - ForEach: Iteration variable now set to 1, running commands in loop
+00:15:45.543 [main] INFO  JOBLOGGER - Running commands: debug, debug
+00:15:45.674 [main] INFO  JOBLOGGER - building debug
+00:15:45.804 [main] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@21c3b0
+00:16:36.900 [main] INFO  JOBLOGGER - PutVFS: writing file build.gradle to http://localhost:8080/api/vfs/filesystem.json/{owner}/write, owner=1
+00:16:39.792 [main] INFO  JOBLOGGER - ForEach: Iterating over 3 items
+00:16:39.970 [Thread-18] INFO  JOBLOGGER - ForEach: Iteration variable now set to 2, running commands in loop
+00:16:39.971 [Thread-17] INFO  JOBLOGGER - ForEach: Iteration variable now set to 1, running commands in loop
+00:16:39.983 [Thread-19] INFO  JOBLOGGER - ForEach: Iteration variable now set to 3, running commands in loop
+00:16:40.113 [Thread-18] INFO  JOBLOGGER - Running commands: debug, debug
+00:16:40.115 [Thread-19] INFO  JOBLOGGER - Running commands: debug, debug
+00:16:40.115 [Thread-17] INFO  JOBLOGGER - Running commands: debug, debug
+00:16:40.242 [Thread-19] INFO  JOBLOGGER - building debug
+00:16:40.243 [Thread-18] INFO  JOBLOGGER - building debug
+00:16:40.249 [Thread-17] INFO  JOBLOGGER - building debug
+00:16:40.383 [Thread-18] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@97df94
+00:16:40.384 [Thread-17] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@d78fb4
+00:16:40.389 [Thread-19] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@194a0ad
+00:16:40.510 [Thread-18] INFO  JOBLOGGER - About to end the job
+00:16:40.512 [Thread-19] INFO  JOBLOGGER - About to end the job
+00:16:40.518 [Thread-17] INFO  JOBLOGGER - About to end the job
+00:16:40.649 [Thread-17] INFO  JOBLOGGER - building debug
+00:16:40.656 [Thread-19] INFO  JOBLOGGER - building debug
+00:16:40.657 [Thread-18] INFO  JOBLOGGER - building debug
+00:16:40.780 [Thread-18] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@14719db
+00:16:40.780 [Thread-19] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@f29c65
+00:16:40.785 [Thread-17] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@1ddf47e
+00:16:40.917 [Thread-17] INFO  JOBLOGGER - About to end the job
+00:16:40.922 [Thread-18] INFO  JOBLOGGER - About to end the job
+00:16:40.924 [Thread-19] INFO  JOBLOGGER - About to end the job
+00:16:41.061 [main] INFO  JOBLOGGER - ForEach: Iterating over 3 items
+00:16:41.189 [main] INFO  JOBLOGGER - ForEach: Iteration variable now set to 1, running commands in loop
+00:16:41.321 [main] INFO  JOBLOGGER - Running commands: debug, debug
+00:16:41.451 [main] INFO  JOBLOGGER - building debug
+00:16:41.581 [main] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@127acc3
+00:16:41.705 [main] INFO  JOBLOGGER - About to end the job
+00:16:41.838 [main] INFO  JOBLOGGER - building debug
+00:16:41.974 [main] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@10772d2
+00:16:42.095 [main] INFO  JOBLOGGER - About to end the job
+00:16:42.221 [main] INFO  JOBLOGGER - ForEach: Iteration variable now set to 2, running commands in loop
+00:16:42.353 [main] INFO  JOBLOGGER - Running commands: debug, debug
+00:16:42.479 [main] INFO  JOBLOGGER - building debug
+00:16:42.603 [main] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@15ad0c6
+00:16:42.743 [main] INFO  JOBLOGGER - About to end the job
+00:16:42.869 [main] INFO  JOBLOGGER - building debug
+00:16:42.990 [main] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@84506d
+00:16:43.114 [main] INFO  JOBLOGGER - About to end the job
+00:16:43.239 [main] INFO  JOBLOGGER - ForEach: Iteration variable now set to 3, running commands in loop
+00:16:43.371 [main] INFO  JOBLOGGER - Running commands: debug, debug
+00:16:43.491 [main] INFO  JOBLOGGER - building debug
+00:16:43.623 [main] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@3e0b62
+00:16:43.753 [main] INFO  JOBLOGGER - About to end the job
+00:16:43.872 [main] INFO  JOBLOGGER - building debug
+00:16:43.994 [main] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@1bc1fe5
+00:16:44.118 [main] INFO  JOBLOGGER - About to end the job
+00:17:51.200 [main] INFO  JOBLOGGER - PutVFS: writing file build.gradle to http://localhost:8080/api/vfs/filesystem.json/{owner}/write, owner=1
+00:17:54.192 [main] INFO  JOBLOGGER - ForEach: Iterating over 3 items
+00:17:54.365 [Thread-16] INFO  JOBLOGGER - ForEach: Iteration variable now set to 1, running commands in loop
+00:17:54.365 [Thread-17] INFO  JOBLOGGER - ForEach: Iteration variable now set to 2, running commands in loop
+00:17:54.373 [Thread-18] INFO  JOBLOGGER - ForEach: Iteration variable now set to 3, running commands in loop
+00:17:54.499 [Thread-17] INFO  JOBLOGGER - Running commands: debug, debug
+00:17:54.513 [Thread-18] INFO  JOBLOGGER - Running commands: debug, debug
+00:17:54.524 [Thread-16] INFO  JOBLOGGER - Running commands: debug, debug
+00:17:54.638 [Thread-17] INFO  JOBLOGGER - building debug
+00:17:54.639 [Thread-18] INFO  JOBLOGGER - building debug
+00:17:54.647 [Thread-16] INFO  JOBLOGGER - building debug
+00:17:54.759 [Thread-17] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@17378ab
+00:17:54.764 [Thread-18] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@5bf9cf
+00:17:54.768 [Thread-16] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@d78fb4
+00:17:54.897 [Thread-16] INFO  JOBLOGGER - About to end the job
+00:17:54.897 [Thread-17] INFO  JOBLOGGER - About to end the job
+00:17:54.897 [Thread-18] INFO  JOBLOGGER - About to end the job
+00:17:55.040 [Thread-18] INFO  JOBLOGGER - building debug
+00:17:55.041 [Thread-17] INFO  JOBLOGGER - building debug
+00:17:55.049 [Thread-16] INFO  JOBLOGGER - building debug
+00:17:55.163 [Thread-17] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@f2f761
+00:17:55.166 [Thread-18] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@14f1541
+00:17:55.172 [Thread-16] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@89cb3b
+00:17:55.292 [Thread-18] INFO  JOBLOGGER - About to end the job
+00:17:55.298 [Thread-17] INFO  JOBLOGGER - About to end the job
+00:17:55.302 [Thread-16] INFO  JOBLOGGER - About to end the job
+00:17:55.434 [main] INFO  JOBLOGGER - ForEach: Iterating over 3 items
+00:17:55.557 [main] INFO  JOBLOGGER - ForEach: Iteration variable now set to 1, running commands in loop
+00:17:55.685 [main] INFO  JOBLOGGER - Running commands: debug, debug
+00:17:55.822 [main] INFO  JOBLOGGER - building debug
+00:17:55.947 [main] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@743b0f
+00:17:56.075 [main] INFO  JOBLOGGER - About to end the job
+00:17:56.213 [main] INFO  JOBLOGGER - building debug
+00:17:56.334 [main] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@2bf6c0
+00:17:56.460 [main] INFO  JOBLOGGER - About to end the job
+00:17:56.584 [main] INFO  JOBLOGGER - ForEach: Iteration variable now set to 2, running commands in loop
+00:17:56.705 [main] INFO  JOBLOGGER - Running commands: debug, debug
+00:17:56.833 [main] INFO  JOBLOGGER - building debug
+00:17:56.957 [main] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@17368db
+00:17:57.085 [main] INFO  JOBLOGGER - About to end the job
+00:17:57.209 [main] INFO  JOBLOGGER - building debug
+00:17:57.328 [main] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@1bdd27a
+00:17:57.449 [main] INFO  JOBLOGGER - About to end the job
+00:17:57.572 [main] INFO  JOBLOGGER - ForEach: Iteration variable now set to 3, running commands in loop
+00:17:57.699 [main] INFO  JOBLOGGER - Running commands: debug, debug
+00:17:57.830 [main] INFO  JOBLOGGER - building debug
+00:17:57.959 [main] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@1ad5519
+00:17:58.084 [main] INFO  JOBLOGGER - About to end the job
+00:17:58.213 [main] INFO  JOBLOGGER - building debug
+00:17:58.335 [main] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@4d107e
+00:17:58.465 [main] INFO  JOBLOGGER - About to end the job
