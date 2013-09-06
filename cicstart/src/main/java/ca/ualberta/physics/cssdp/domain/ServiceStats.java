@@ -10,6 +10,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ca.ualberta.physics.cssdp.dao.Persistent;
 import ca.ualberta.physics.cssdp.util.JSONDateTimeNoMillisSerializer;
@@ -30,7 +32,9 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 @JsonAutoDetect(getterVisibility = Visibility.PUBLIC_ONLY)
 public class ServiceStats extends Persistent implements Serializable {
 
-	public enum ServiceName {
+	private static final Logger logger = LoggerFactory.getLogger(ServiceStats.class);
+	
+	public static enum ServiceName {
 		AUTH, FILE, CATALOGUE, MACRO, VFS, STATS
 	}
 
@@ -63,6 +67,7 @@ public class ServiceStats extends Persistent implements Serializable {
 
 	@Override
 	public String _pk() {
+		logger.debug("service name in domain object is " + serviceName);
 		return serviceName.name();
 	}
 
