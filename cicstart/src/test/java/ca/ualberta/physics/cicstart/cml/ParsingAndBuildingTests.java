@@ -3,6 +3,7 @@ package ca.ualberta.physics.cicstart.cml;
 import java.io.File;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
@@ -13,7 +14,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import scala.actors.threadpool.Arrays;
 import ca.ualberta.physics.cicstart.cml.command.CMLRuntime;
 import ca.ualberta.physics.cicstart.cml.command.Command;
 import ca.ualberta.physics.cicstart.cml.command.CommandDefinition;
@@ -92,10 +92,12 @@ public class ParsingAndBuildingTests {
 				cmdDef.getParameterNames());
 		Assert.assertEquals("MACCS",
 				cmdDef.getStructParameters("project").get(0));
-		Assert.assertEquals(Arrays.asList(new String[] { "PG", "RNK" }),
+		Assert.assertEquals(
+				Arrays.asList(new String[] { "PG", "RNK" }),
 				cmdDef.getStructParameters("observatories"));
 		Assert.assertEquals(
-				Arrays.asList(new String[] { "2010-01-01", "2011-01-01" }),
+				Arrays.asList(new String[] { "2010-01-01",
+						"2011-01-01" }),
 				cmdDef.getStructParameters("dateRange"));
 
 		ForEachCommandDefinition forEachCmdDef = (ForEachCommandDefinition) cmds

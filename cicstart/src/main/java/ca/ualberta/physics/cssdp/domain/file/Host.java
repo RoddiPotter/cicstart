@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import ca.ualberta.physics.cssdp.dao.Persistent;
 
 import com.google.common.base.Objects;
-import com.wordnik.swagger.annotations.ApiProperty;
+import com.wordnik.swagger.annotations.ApiModelProperty;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.PROPERTY)
@@ -63,12 +63,12 @@ public class Host extends Persistent {
 	@Column(name = "max_connections", nullable = false)
 	private int maxConnections = 1;
 
-	@ApiProperty(value="Milliseconds before tiemout")
+	@ApiModelProperty(value="Milliseconds before tiemout")
 	@Column(name = "timeout", nullable = false)
 	private int timeout = (int) TimeUnit.MILLISECONDS.convert(1,
 			TimeUnit.MINUTES);
 
-	@ApiProperty(value="Milliseconds to wait")
+	@ApiModelProperty(value="Milliseconds to wait")
 	@Column(name = "retry_wait", nullable = false)
 	private int retryWait = (int) TimeUnit.MILLISECONDS.convert(1,
 			TimeUnit.MINUTES);
@@ -179,7 +179,7 @@ public class Host extends Persistent {
 	}
 
 	@XmlElement(name = "protocol")
-	@ApiProperty(allowableValues = "file, ftp, sftp, ftps")
+	@ApiModelProperty(allowableValues = "file, ftp, sftp, ftps")
 	public Protocol getProtocol() {
 		return protocol;
 	}

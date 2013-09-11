@@ -1,7 +1,7 @@
 {
-    "email":"test@test.com",
+    "email":"canariedemo@nowhere.com",
     "name":"Mr. Tester",
     "institution":"Testing Uni",
-    "password":"testpassword",
+    "password":"password",
     "country":"Kingdom of Test"
 }

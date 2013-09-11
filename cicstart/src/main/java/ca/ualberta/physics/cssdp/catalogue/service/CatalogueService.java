@@ -38,7 +38,7 @@ import bsh.Interpreter;
 import ca.ualberta.physics.cssdp.catalogue.dao.DataProductDao;
 import ca.ualberta.physics.cssdp.catalogue.dao.ProjectDao;
 import ca.ualberta.physics.cssdp.catalogue.dao.UrlDataProductDao;
-import ca.ualberta.physics.cssdp.configuration.Common;
+import ca.ualberta.physics.cssdp.configuration.ResourceUrls;
 import ca.ualberta.physics.cssdp.domain.catalogue.DataProduct;
 import ca.ualberta.physics.cssdp.domain.catalogue.Discriminator;
 import ca.ualberta.physics.cssdp.domain.catalogue.Project;
@@ -190,8 +190,8 @@ public class CatalogueService {
 		ServiceResponse<Void> sr = new ServiceResponse<Void>();
 		List<String> roots = project.getScanDirectories();
 		String host = project.getHost();
-		String fileUrl = Common.properties().getString("api.url") + "/file";
-		String hostResource = fileUrl + "/host.json";
+//		String fileUrl = Common.properties().getString("api.url") + "/file";
+		String hostResource = ResourceUrls.HOST;
 
 		List<UrlDataProduct> unsavedUrlDataProducts = new ArrayList<UrlDataProduct>();
 
@@ -305,10 +305,10 @@ public class CatalogueService {
 
 				} else if (dataProduct.shouldInclude(url)) {
 
-					// logger.debug("INCLUDED: " + url);
+					logger.debug("INCLUDED: " + url);
 					urlDataProduct = map(url, dataProduct);
 					if (urlDataProduct != null) {
-
+						// TODO implement observer pattern to inline writing to database
 					} else {
 						logger.error("There was a problem mapping the url and data product, "
 								+ "check the BeanShell and Regular Expressions!");

@@ -33,6 +33,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import ca.ualberta.physics.cssdp.configuration.Common;
+import ca.ualberta.physics.cssdp.configuration.ResourceUrls;
 import ca.ualberta.physics.cssdp.domain.auth.User;
 import ca.ualberta.physics.cssdp.domain.catalogue.CatalogueSearchRequest;
 import ca.ualberta.physics.cssdp.domain.catalogue.CatalogueSearchResponse;
@@ -46,11 +47,16 @@ import ca.ualberta.physics.cssdp.domain.file.Host;
 import ca.ualberta.physics.cssdp.domain.file.Host.Protocol;
 import ca.ualberta.physics.cssdp.model.Mnemonic;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.inject.Inject;
 import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.response.Response;
 
 public class ProjectResourceTest extends CatalogueTestsScaffolding {
 
+	@Inject
+	private ObjectMapper objectMapper;
+	
 	@Test
 	public void testCreateGetAndDeleteWithJSONAndXML() throws Exception {
 
@@ -84,7 +90,7 @@ public class ProjectResourceTest extends CatalogueTestsScaffolding {
 		System.out.println(projectJSON);
 		Response res = given().body(projectJSON).and()
 				.contentType("application/json").expect().statusCode(201)
-				.when().post(baseUrl() + "/project.json");
+				.when().post(ResourceUrls.PROJECT);
 
 		Project createdProject = get(res.getHeader("location")).as(
 				Project.class);
@@ -127,8 +133,8 @@ public class ProjectResourceTest extends CatalogueTestsScaffolding {
 		String xml = writer.toString();
 		System.out.println(xml);
 		res = given().content(xml).and().contentType("application/xml")
-				.expect().statusCode(201).when()
-				.post(baseUrl() + "/project.xml");
+				.expect().statusCode(201).when().contentType(ContentType.XML)
+				.post(ResourceUrls.PROJECT);
 
 		createdProject = get(res.getHeader("location")).as(Project.class);
 
@@ -193,7 +199,7 @@ public class ProjectResourceTest extends CatalogueTestsScaffolding {
 
 		Response res = given().body(apacheJSON).and()
 				.contentType("application/json").expect().statusCode(201)
-				.when().post(baseUrl() + "/project.json");
+				.when().post(ResourceUrls.PROJECT);
 
 		User dataManager = setupDataManager();
 		String sessionToken = login(dataManager.getEmail(), "password");
@@ -213,16 +219,19 @@ public class ProjectResourceTest extends CatalogueTestsScaffolding {
 		// scan the host first
 		res = given().header("CICSTART.session", sessionToken).expect()
 				.statusCode(202).when()
-				.put(baseUrl() + "/project.json/APACHE-2/scan");
+				.put(ResourceUrls.PROJECT + "/APACHE-2/scan");
 
 		System.out.println(res.asString());
 
 		CatalogueSearchRequest searchRequest = new CatalogueSearchRequest();
 		searchRequest.setProjectKey(Mnemonic.of("APACHE-2"));
 
+		String searchRequestJson = objectMapper.writeValueAsString(searchRequest);
+		System.out.println(searchRequestJson);
+		
 		res = given().content(searchRequest).and()
 				.contentType(ContentType.JSON)
-				.post(baseUrl() + "/project.json/find");
+				.post(ResourceUrls.PROJECT + "/find");
 
 		// System.out.println(res.asString());
 

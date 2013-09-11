@@ -8,7 +8,7 @@ import java.io.File;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ca.ualberta.physics.cssdp.configuration.Common;
+import ca.ualberta.physics.cssdp.configuration.ResourceUrls;
 import ca.ualberta.physics.cssdp.domain.auth.User;
 
 import com.jayway.restassured.response.Response;
@@ -31,20 +31,20 @@ public class PutVFS implements Command {
 	@Override
 	public void execute(CMLRuntime runtime) {
 
-		String authResource = Common.properties().getString("api.url") + "/auth";
+//		String authResource = Common.properties().getString("api.url") + "/auth";
 
-		String whoisUrl = authResource + "/session.json/{session}/whois";
+		String whoisUrl = ResourceUrls.SESSION + "/{session}/whois";
 		jobLogger.debug("PutVFS: locating whois for session var at " + whoisUrl);
 		User user = get(whoisUrl, cicstartSession).as(User.class);
 		jobLogger.debug("PutVFS: found user " + user.getEmail()
 				+ ", owner id=" + user.getId() + " with session var "
 				+ cicstartSession);
 
-		String vfsResource = Common.properties().getString("api.url") + "/vfs";
+//		String vfsResource = Common.properties().getString("api.url") + "/vfs";
 
 		File fileToUpload = new File(file);
 
-		String writeUrl = vfsResource + "/filesystem.json/{owner}/write";
+		String writeUrl = ResourceUrls.FILESYSTEM + "/{owner}/write";
 		jobLogger.info("PutVFS: writing file " + file + " to " + writeUrl + ", owner="
 				+ user.getId());
 

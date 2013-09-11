@@ -10156,3 +10156,1779 @@ dependencies {
 00:17:58.213 [main] INFO  JOBLOGGER - building debug
 00:17:58.335 [main] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@4d107e
 00:17:58.465 [main] INFO  JOBLOGGER - About to end the job
+00:57:29.534 [main] INFO  JOBLOGGER - ForEach: Iterating over 3 items
+00:57:35.007 [Thread-12] INFO  JOBLOGGER - ForEach: Iteration variable now set to 1, running commands in loop
+00:57:35.007 [Thread-13] INFO  JOBLOGGER - ForEach: Iteration variable now set to 2, running commands in loop
+00:57:35.013 [Thread-14] INFO  JOBLOGGER - ForEach: Iteration variable now set to 3, running commands in loop
+00:57:35.165 [Thread-13] INFO  JOBLOGGER - Running commands: debug, debug
+00:57:35.168 [Thread-12] INFO  JOBLOGGER - Running commands: debug, debug
+00:57:35.169 [Thread-14] INFO  JOBLOGGER - Running commands: debug, debug
+00:57:35.308 [Thread-12] INFO  JOBLOGGER - building debug
+00:57:35.308 [Thread-13] INFO  JOBLOGGER - building debug
+00:57:35.309 [Thread-14] INFO  JOBLOGGER - building debug
+00:57:35.447 [Thread-14] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@1651229
+00:57:35.453 [Thread-12] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@125b4f
+00:57:35.455 [Thread-13] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@128bb44
+00:57:35.612 [Thread-13] INFO  JOBLOGGER - About to end the job
+00:57:35.612 [Thread-14] INFO  JOBLOGGER - About to end the job
+00:57:35.617 [Thread-12] INFO  JOBLOGGER - About to end the job
+00:57:35.756 [Thread-14] INFO  JOBLOGGER - building debug
+00:57:35.757 [Thread-13] INFO  JOBLOGGER - building debug
+00:57:35.766 [Thread-12] INFO  JOBLOGGER - building debug
+00:57:35.889 [Thread-13] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@9c61d3
+00:57:35.890 [Thread-12] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@da7565
+00:57:35.894 [Thread-14] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@2abb
+00:57:36.020 [Thread-12] INFO  JOBLOGGER - About to end the job
+00:57:36.020 [Thread-13] INFO  JOBLOGGER - About to end the job
+00:57:36.023 [Thread-14] INFO  JOBLOGGER - About to end the job
+22:36:45.476 [main] INFO  JOBLOGGER - GetCatalogueFiles: finding data at http://localhost:8080/cicstart/api/catalogue/project.json/find
+22:36:45.640 [main] INFO  JOBLOGGER - GetCatalogueFiles: search request is CatalogueSearchRequest{project=APACHE1, observatories=, instrument types=, discriminator=null, start=null, end=null}
+22:36:45.777 [main] INFO  JOBLOGGER - GetCatalogueFiles: found url ftp://sunsite.ualberta.ca/pub/Mirror/apache/commons/daemon/binaries/commons-daemon-1.0.15.jar, requesting data download
+22:36:45.980 [main] INFO  JOBLOGGER - GetCatalogueFiles: data not in cache, trying next one
+22:36:46.097 [main] INFO  JOBLOGGER - GetCatalogueFiles: found url ftp://sunsite.ualberta.ca/pub/Mirror/apache/commons/email/binaries/commons-email-1.2.jar, requesting data download
+22:36:46.227 [main] INFO  JOBLOGGER - GetCatalogueFiles: data not in cache, trying next one
+22:36:46.338 [main] INFO  JOBLOGGER - GetCatalogueFiles: found url ftp://sunsite.ualberta.ca/pub/Mirror/apache/commons/primitives/binaries/commons-primitives-1.0.jar, requesting data download
+22:36:46.474 [main] INFO  JOBLOGGER - GetCatalogueFiles: data not in cache, trying next one
+22:36:46.589 [main] INFO  JOBLOGGER - GetCatalogueFiles: found url ftp://sunsite.ualberta.ca/pub/Mirror/apache/commons/transaction/binaries/commons-transaction-1.2.jar, requesting data download
+22:36:46.708 [main] INFO  JOBLOGGER - GetCatalogueFiles: data not in cache, trying next one
+22:36:48.885 [main] INFO  JOBLOGGER - GetCatalogueFiles: file data saved to /home/rpotter/workspaces/cicstart/cicstart/commons-daemon-1.0.15.jar
+22:36:51.065 [main] INFO  JOBLOGGER - GetCatalogueFiles: file data saved to /home/rpotter/workspaces/cicstart/cicstart/commons-email-1.2.jar
+22:36:58.340 [main] INFO  JOBLOGGER - GetCatalogueFiles: file data saved to /home/rpotter/workspaces/cicstart/cicstart/commons-primitives-1.0.jar
+22:37:01.549 [main] INFO  JOBLOGGER - GetCatalogueFiles: file data saved to /home/rpotter/workspaces/cicstart/cicstart/commons-transaction-1.2.jar
+22:37:09.323 [main] INFO  JOBLOGGER - GetCatalogueFiles: finding data at http://localhost:8080/cicstart/api/catalogue/project.json/find
+22:37:09.433 [main] INFO  JOBLOGGER - GetCatalogueFiles: search request is CatalogueSearchRequest{project=APACHE1, observatories=, instrument types=, discriminator=null, start=null, end=null}
+22:37:09.569 [main] INFO  JOBLOGGER - GetCatalogueFiles: found url ftp://sunsite.ualberta.ca/pub/Mirror/apache/commons/daemon/binaries/commons-daemon-1.0.15.jar, requesting data download
+22:37:09.706 [main] INFO  JOBLOGGER - GetCatalogueFiles: cache hit! Downloading it now.
+22:37:09.814 [main] INFO  JOBLOGGER - GetCatalogueFiles: file data saved to /home/rpotter/workspaces/cicstart/cicstart/commons-daemon-1.0.15.jar
+22:37:09.929 [main] INFO  JOBLOGGER - GetCatalogueFiles: found url ftp://sunsite.ualberta.ca/pub/Mirror/apache/commons/email/binaries/commons-email-1.2.jar, requesting data download
+22:37:10.066 [main] INFO  JOBLOGGER - GetCatalogueFiles: cache hit! Downloading it now.
+22:37:10.181 [main] INFO  JOBLOGGER - GetCatalogueFiles: file data saved to /home/rpotter/workspaces/cicstart/cicstart/commons-email-1.2.jar
+22:37:10.301 [main] INFO  JOBLOGGER - GetCatalogueFiles: found url ftp://sunsite.ualberta.ca/pub/Mirror/apache/commons/primitives/binaries/commons-primitives-1.0.jar, requesting data download
+22:37:10.445 [main] INFO  JOBLOGGER - GetCatalogueFiles: cache hit! Downloading it now.
+22:37:10.558 [main] INFO  JOBLOGGER - GetCatalogueFiles: file data saved to /home/rpotter/workspaces/cicstart/cicstart/commons-primitives-1.0.jar
+22:37:10.670 [main] INFO  JOBLOGGER - GetCatalogueFiles: found url ftp://sunsite.ualberta.ca/pub/Mirror/apache/commons/transaction/binaries/commons-transaction-1.2.jar, requesting data download
+22:37:10.792 [main] INFO  JOBLOGGER - GetCatalogueFiles: cache hit! Downloading it now.
+22:37:10.915 [main] INFO  JOBLOGGER - GetCatalogueFiles: file data saved to /home/rpotter/workspaces/cicstart/cicstart/commons-transaction-1.2.jar
+22:37:11.208 [main] INFO  JOBLOGGER - PutVFS: writing file build.gradle to http://localhost:8080/cicstart/api/vfs/filesystem.json/{owner}/write, owner=1
+22:37:12.487 [main] INFO  JOBLOGGER - ForEach: Iterating over 3 items
+22:37:12.602 [Thread-31] INFO  JOBLOGGER - ForEach: Iteration variable now set to 1, running commands in loop
+22:37:12.610 [Thread-32] INFO  JOBLOGGER - ForEach: Iteration variable now set to 2, running commands in loop
+22:37:12.621 [Thread-33] INFO  JOBLOGGER - ForEach: Iteration variable now set to 3, running commands in loop
+22:37:12.726 [Thread-31] INFO  JOBLOGGER - Running commands: debug, debug
+22:37:12.744 [Thread-33] INFO  JOBLOGGER - Running commands: debug, debug
+22:37:12.745 [Thread-32] INFO  JOBLOGGER - Running commands: debug, debug
+22:37:12.847 [Thread-31] INFO  JOBLOGGER - building debug
+22:37:12.855 [Thread-33] INFO  JOBLOGGER - building debug
+22:37:12.856 [Thread-32] INFO  JOBLOGGER - building debug
+22:37:12.971 [Thread-32] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@1d33544
+22:37:12.972 [Thread-31] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@14e3bb0
+22:37:12.981 [Thread-33] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@13f54ae
+22:37:13.096 [Thread-33] INFO  JOBLOGGER - About to end the job
+22:37:13.097 [Thread-31] INFO  JOBLOGGER - About to end the job
+22:37:13.098 [Thread-32] INFO  JOBLOGGER - About to end the job
+22:37:13.209 [Thread-31] INFO  JOBLOGGER - building debug
+22:37:13.213 [Thread-33] INFO  JOBLOGGER - building debug
+22:37:13.215 [Thread-32] INFO  JOBLOGGER - building debug
+22:37:13.345 [Thread-33] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@17ebc89
+22:37:13.350 [Thread-31] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@d51b41
+22:37:13.352 [Thread-32] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@f0541d
+22:37:13.472 [Thread-31] INFO  JOBLOGGER - About to end the job
+22:37:13.473 [Thread-32] INFO  JOBLOGGER - About to end the job
+22:37:13.479 [Thread-33] INFO  JOBLOGGER - About to end the job
+22:37:13.607 [main] INFO  JOBLOGGER - ForEach: Iterating over 3 items
+22:37:13.725 [main] INFO  JOBLOGGER - ForEach: Iteration variable now set to 1, running commands in loop
+22:37:13.840 [main] INFO  JOBLOGGER - Running commands: debug, debug
+22:37:13.952 [main] INFO  JOBLOGGER - building debug
+22:37:14.068 [main] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@6a21b2
+22:37:14.181 [main] INFO  JOBLOGGER - About to end the job
+22:37:14.298 [main] INFO  JOBLOGGER - building debug
+22:37:14.420 [main] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@8bca43
+22:37:14.532 [main] INFO  JOBLOGGER - About to end the job
+22:37:14.638 [main] INFO  JOBLOGGER - ForEach: Iteration variable now set to 2, running commands in loop
+22:37:14.744 [main] INFO  JOBLOGGER - Running commands: debug, debug
+22:37:14.866 [main] INFO  JOBLOGGER - building debug
+22:37:14.988 [main] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@ace9d4
+22:37:15.100 [main] INFO  JOBLOGGER - About to end the job
+22:37:15.218 [main] INFO  JOBLOGGER - building debug
+22:37:15.334 [main] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@99833
+22:37:15.453 [main] INFO  JOBLOGGER - About to end the job
+22:37:15.559 [main] INFO  JOBLOGGER - ForEach: Iteration variable now set to 3, running commands in loop
+22:37:15.667 [main] INFO  JOBLOGGER - Running commands: debug, debug
+22:37:15.783 [main] INFO  JOBLOGGER - building debug
+22:37:15.894 [main] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@1fb672f
+22:37:16.001 [main] INFO  JOBLOGGER - About to end the job
+22:37:16.118 [main] INFO  JOBLOGGER - building debug
+22:37:16.226 [main] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@176bfaa
+22:37:16.335 [main] INFO  JOBLOGGER - About to end the job
+22:37:23.086 [main] INFO  JOBLOGGER - GetVFS: locating whois for session var at http://localhost:8080/cicstart/api/auth/session.json/{session}/whois
+22:37:23.306 [main] INFO  JOBLOGGER - GetVFS: read file data from http://localhost:8080/cicstart/api/vfs/filesystem.json/1/read?path={file}, file=maccs.test
+22:37:23.555 [main] INFO  JOBLOGGER - GetVFS: read success, data saved to /home/rpotter/workspaces/cicstart/cicstart/maccs.test
+22:37:23.844 [pool-9-thread-1] INFO  JOBLOGGER - Running commands: on[run]
+22:37:23.956 [pool-9-thread-1] INFO  JOBLOGGER - building on[run]
+22:37:24.073 [pool-9-thread-1] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.On@116a6bf
+22:37:24.188 [pool-9-thread-1] INFO  JOBLOGGER - This is try # 0 of 10
+22:37:24.396 [pool-9-thread-1] INFO  JOBLOGGER - On: running commands on 127.0.0.1
+22:37:24.519 [pool-9-thread-1] INFO  JOBLOGGER - Running commands: run
+22:37:24.640 [pool-9-thread-1] INFO  JOBLOGGER - building run
+22:37:24.758 [pool-9-thread-1] INFO  JOBLOGGER - running date
+22:37:24.948 [Thread-46] INFO  JOBLOGGER - Run: 'date' output logged with reference 5, timeout set to 1 minutes
+22:37:25.071 [Thread-46] INFO  JOBLOGGER - Run: working directory is: /home/rpotter/workspaces/cicstart/cicstart/.
+22:37:25.179 [Thread-46] INFO  JOBLOGGER -      5| Tue Sep 10 22:37:25 MDT 2013
+22:37:25.288 [pool-9-thread-1] INFO  JOBLOGGER - Run: 5 exited with value 0
+22:37:25.393 [pool-9-thread-1] INFO  JOBLOGGER - About to end the job
+22:37:25.500 [pool-9-thread-1] INFO  JOBLOGGER - About to end the job
+22:37:25.628 [Thread-47] INFO  JOBLOGGER - Run: 'ls -l' output logged with reference 6, timeout set to 1 minutes
+22:37:25.741 [Thread-47] INFO  JOBLOGGER - Run: working directory is: /home/rpotter/workspaces/cicstart/cicstart/.
+22:37:25.852 [Thread-47] INFO  JOBLOGGER -      6| total 828
+drwxr-xr-x 4 rpotter rpotter   4096 2013-09-10 22:18 bin
+-rw-r--r-- 1 rpotter rpotter   3188 2013-09-10 22:17 build.gradle
+-rw-r--r-- 1 rpotter rpotter   1476 2013-03-10 22:48 cssdp-vfs-cert.pem
+-rw-r--r-- 1 rpotter rpotter   1675 2013-03-10 22:48 cssdp-vfs.key
+-rw-r--r-- 1 rpotter rpotter   1675 2013-03-10 22:48 cssdp-vfs.pem
+-rw-r--r-- 1 rpotter rpotter 818241 2013-09-10 22:37 macro.log
+drwxr-xr-x 4 rpotter rpotter   4096 2013-08-31 23:40 src
+22:37:25.971 [main] INFO  JOBLOGGER - Run: 6 exited with value 0
+22:37:26.113 [Thread-48] INFO  JOBLOGGER - Run: 'gradle build -x test' output logged with reference 7, timeout set to 1 minutes
+22:37:26.234 [Thread-48] INFO  JOBLOGGER - Run: working directory is: /home/rpotter/workspaces/cicstart/cicstart/.
+22:37:33.584 [Thread-48] INFO  JOBLOGGER -      7| :cicstart:compileJava
+22:37:44.006 [Thread-48] INFO  JOBLOGGER -      7| :cicstart:processResources
+22:37:44.153 [Thread-48] INFO  JOBLOGGER -      7| :cicstart:classes
+:cicstart:war
+22:37:52.767 [Thread-48] INFO  JOBLOGGER -      7| :cicstart:assemble
+22:37:52.892 [Thread-48] INFO  JOBLOGGER -      7| 
+:cicstart:check
+:cicstart:build
+
+BUILD SUCCESSFUL
+
+Total time: 26.494 secs
+22:37:53.006 [main] INFO  JOBLOGGER - Run: 7 exited with value 0
+22:37:53.195 [Thread-49] INFO  JOBLOGGER - Run: 'cat build.gradle' output logged with reference 8, timeout set to 1 minutes
+22:37:53.316 [Thread-49] INFO  JOBLOGGER - Run: working directory is: /home/rpotter/workspaces/cicstart/cicstart/.
+22:37:53.430 [Thread-49] INFO  JOBLOGGER -      8| apply plugin: 'eclipse'
+apply plugin: 'war';
+apply plugin: 'application'
+
+mainClassName = "ca.ualberta.physics.cicstart.macro.MainClass"
+
+group = 'ca.ualberta.physics.cssdp'
+version = '1.0'
+
+sourceCompatibility=1.6
+targetCompatibility=1.6
+
+repositories {
+	mavenCentral()
+}
+
+task copyResources(type:Copy) {
+	from('src/main/java') {
+	   include '**/*.properties'
+	   include '**/*.ftl'
+	   include '**/logback.template';
+	}
+	into('build/classes/main')
+}
+
+jar.dependsOn copyResources
+
+war {
+	from('src/main/java') {
+	   include '**/*.properties' into ('WEB-INF/classes')
+	   include '**/*.ftl' into ('WEB-INF/classes')
+	   include '**/logback.template' into ('WEB-INF/classes')
+	}
+	// remove classes from the classpath
+	classpath = configurations.runtime
+
+	// add them in explicitly, with the filtering applied
+	webInf {
+		into('classes') {
+			from sourceSets.main.output
+			exclude '**/logback.xml'
+		}
+	}
+}
+
+dependencies {
+	compile "org.slf4j:slf4j-api:1.7.2"
+	compile "ch.qos.logback:logback-classic:1.0.9"
+	compile "com.goo
+22:37:53.554 [Thread-49] INFO  JOBLOGGER -      8| gle.guava:guava:14.0"
+	compile "com.google.inject:guice:3.0"
+	compile "joda-time:joda-time:2.2"
+	
+	compile "org.hibernate:hibernate-entitymanager:4.2.5.Final"
+	compile "com.jolbox:bonecp:0.8.0-rc1"
+	compile "com.jolbox:bonecp-jdk-compat:0.8.0-rc1"
+	compile "com.jolbox:bonecp-provider:0.8.0-alpha1"
+	compile "postgresql:postgresql:9.1-901.jdbc4"
+
+	compile "org.apache.commons:commons-email:1.2"
+	compile "org.apache.commons:commons-compress:1.5"
+	compile "commons-codec:commons-codec:1.6"
+	compile "org.freemarker:freemarker:2.3.19"
+
+	// compile "com.wordnik:swagger-core_2.9.1:1.2.1"
+	// compile("com.wordnik:swagger-jaxrs_2.9.1:1.2.1"){
+    //		exclude group: 'com.sun.jersey'
+	//	exclude group: 'com.sun.jersey.contribs'
+	// }
+	compile "com.wordnik:swagger-jersey-jaxrs_2.10:1.3.0"
+
+
+	// latest 1.17.1 is broken near @formdataparam
+	compile "com.sun.jersey:jersey-core:1.13"
+	compile "com.sun.jersey:jersey-server:1.13"
+	compile "com.sun.jersey:jersey-servlet:1.13"
+	compile "com.sun.jersey.contribs:jersey-multipart:1.13
+22:37:53.669 [Thread-49] INFO  JOBLOGGER -      8| "
+
+	compile "com.fasterxml.jackson.core:jackson-core:2.1.4"
+	compile "com.fasterxml.jackson.core:jackson-databind:2.1.4"
+	compile "com.fasterxml.jackson.core:jackson-annotations:2.1.4"
+	compile "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.1.4"
+
+	compile "org.beanshell:bsh:2.0b5"
+	compile "org.bouncycastle:bcprov-jdk16:1.46"
+	compile "net.schmizz:sshj:0.8.1"
+	// see https://issues.apache.org/jira/browse/NET-465 change to 3.3 when released
+	compile "commons-net:commons-net:3.1"
+
+	// keep apache-sshd at 0.7.0 until this bug is fixed: https://issues.apache.org/jira/browse/FTPSERVER-437
+	compile "org.apache.ftpserver:ftpserver-core:1.0.6"
+	compile("org.apache.sshd:apache-sshd:0.7.0") {
+		exclude group: 'org.slf4j'
+	}
+	compile "javax.servlet:javax.servlet-api:3.0.1"
+	compile "com.jayway.restassured:rest-assured:1.7.2"
+	
+	compile "org.antlr:antlr4-runtime:4.0"
+		
+	testCompile "junit:junit:4.+"
+	testCompile files ('../database/db-migrator-0.5.jar')
+	testCompile "com.h2database:h2:1.3.171"
+	testCompile "
+22:37:53.779 [Thread-49] INFO  JOBLOGGER -      8| org.eclipse.jetty:jetty-webapp:8.0.4.v20111024"
+	testCompile "org.eclipse.jetty:jetty-servlets:8.0.4.v20111024"
+}
+
+22:37:53.891 [main] INFO  JOBLOGGER - Run: 8 exited with value 0
+22:37:54.058 [Thread-50] INFO  JOBLOGGER - Run: 'grep plugin build.gradle' output logged with reference 9, timeout set to 1 minutes
+22:37:54.200 [Thread-50] INFO  JOBLOGGER - Run: working directory is: /home/rpotter/workspaces/cicstart/cicstart/.
+22:37:54.315 [Thread-50] INFO  JOBLOGGER -      9| apply plugin: 'eclipse'
+apply plugin: 'war';
+apply plugin: 'application'
+22:37:54.433 [main] INFO  JOBLOGGER - Run: 9 exited with value 0
+22:37:54.566 [Thread-51] INFO  JOBLOGGER - Run: 'grep "plugin: 'war'" build.gradle' output logged with reference 10, timeout set to 1 minutes
+22:37:54.686 [Thread-51] INFO  JOBLOGGER - Run: working directory is: /home/rpotter/workspaces/cicstart/cicstart/.
+22:37:54.803 [Thread-51] INFO  JOBLOGGER -      10| apply plugin: 'war';
+22:37:54.923 [main] INFO  JOBLOGGER - Run: 10 exited with value 0
+22:37:55.066 [Thread-52] INFO  JOBLOGGER - Run: 'cat build.gradle' output logged with reference 11, timeout set to 1 minutes
+22:37:55.182 [Thread-52] INFO  JOBLOGGER - Run: working directory is: /home/rpotter/workspaces/cicstart/cicstart/.
+22:37:55.299 [Thread-52] INFO  JOBLOGGER -      11| apply plugin: 'eclipse'
+apply plugin: 'war';
+apply plugin: 'application'
+
+mainClassName = "ca.ualberta.physics.cicstart.macro.MainClass"
+
+group = 'ca.ualberta.physics.cssdp'
+version = '1.0'
+
+sourceCompatibility=1.6
+targetCompatibility=1.6
+
+repositories {
+	mavenCentral()
+}
+
+task copyResources(type:Copy) {
+	from('src/main/java') {
+	   include '**/*.properties'
+	   include '**/*.ftl'
+	   include '**/logback.template';
+	}
+	into('build/classes/main')
+}
+
+jar.dependsOn copyResources
+
+war {
+	from('src/main/java') {
+	   include '**/*.properties' into ('WEB-INF/classes')
+	   include '**/*.ftl' into ('WEB-INF/classes')
+	   include '**/logback.template' into ('WEB-INF/classes')
+	}
+	// remove classes from the classpath
+	classpath = configurations.runtime
+
+	// add them in explicitly, with the filtering applied
+	webInf {
+		into('classes') {
+			from sourceSets.main.output
+			exclude '**/logback.xml'
+		}
+	}
+}
+
+dependencies {
+	compile "org.slf4j:slf4j-api:1.7.2"
+	compile "ch.qos.logback:logback-classic:1.0.9"
+	compile "com.goo
+22:37:55.419 [Thread-52] INFO  JOBLOGGER -      11| gle.guava:guava:14.0"
+	compile "com.google.inject:guice:3.0"
+	compile "joda-time:joda-time:2.2"
+	
+	compile "org.hibernate:hibernate-entitymanager:4.2.5.Final"
+	compile "com.jolbox:bonecp:0.8.0-rc1"
+	compile "com.jolbox:bonecp-jdk-compat:0.8.0-rc1"
+	compile "com.jolbox:bonecp-provider:0.8.0-alpha1"
+	compile "postgresql:postgresql:9.1-901.jdbc4"
+
+	compile "org.apache.commons:commons-email:1.2"
+	compile "org.apache.commons:commons-compress:1.5"
+	compile "commons-codec:commons-codec:1.6"
+	compile "org.freemarker:freemarker:2.3.19"
+
+	// compile "com.wordnik:swagger-core_2.9.1:1.2.1"
+	// compile("com.wordnik:swagger-jaxrs_2.9.1:1.2.1"){
+    //		exclude group: 'com.sun.jersey'
+	//	exclude group: 'com.sun.jersey.contribs'
+	// }
+	compile "com.wordnik:swagger-jersey-jaxrs_2.10:1.3.0"
+
+
+	// latest 1.17.1 is broken near @formdataparam
+	compile "com.sun.jersey:jersey-core:1.13"
+	compile "com.sun.jersey:jersey-server:1.13"
+	compile "com.sun.jersey:jersey-servlet:1.13"
+	compile "com.sun.jersey.contribs:jersey-multipart:1.13
+22:37:55.540 [Thread-52] INFO  JOBLOGGER -      11| "
+
+	compile "com.fasterxml.jackson.core:jackson-core:2.1.4"
+	compile "com.fasterxml.jackson.core:jackson-databind:2.1.4"
+	compile "com.fasterxml.jackson.core:jackson-annotations:2.1.4"
+	compile "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.1.4"
+
+	compile "org.beanshell:bsh:2.0b5"
+	compile "org.bouncycastle:bcprov-jdk16:1.46"
+	compile "net.schmizz:sshj:0.8.1"
+	// see https://issues.apache.org/jira/browse/NET-465 change to 3.3 when released
+	compile "commons-net:commons-net:3.1"
+
+	// keep apache-sshd at 0.7.0 until this bug is fixed: https://issues.apache.org/jira/browse/FTPSERVER-437
+	compile "org.apache.ftpserver:ftpserver-core:1.0.6"
+	compile("org.apache.sshd:apache-sshd:0.7.0") {
+		exclude group: 'org.slf4j'
+	}
+	compile "javax.servlet:javax.servlet-api:3.0.1"
+	compile "com.jayway.restassured:rest-assured:1.7.2"
+	
+	compile "org.antlr:antlr4-runtime:4.0"
+		
+	testCompile "junit:junit:4.+"
+	testCompile files ('../database/db-migrator-0.5.jar')
+	testCompile "com.h2database:h2:1.3.171"
+	testCompile "
+22:37:55.658 [Thread-52] INFO  JOBLOGGER -      11| org.eclipse.jetty:jetty-webapp:8.0.4.v20111024"
+	testCompile "org.eclipse.jetty:jetty-servlets:8.0.4.v20111024"
+}
+
+22:37:55.776 [main] INFO  JOBLOGGER - Run: 11 exited with value 0
+22:37:55.954 [Thread-53] INFO  JOBLOGGER - Run: 'wc -l build.gradle' output logged with reference 12, timeout set to 2 minutes
+22:37:56.074 [Thread-53] INFO  JOBLOGGER - Run: working directory is: /home/rpotter/workspaces/cicstart/cicstart/.
+22:37:56.190 [Thread-53] INFO  JOBLOGGER -      12| 106 build.gradle
+22:37:56.298 [main] INFO  JOBLOGGER - Run: 12 exited with value 0
+00:24:40.914 [main] INFO  JOBLOGGER - GetCatalogueFiles: finding data at http://localhost:8080/cicstart/api/catalogue/project/find
+00:24:41.103 [main] INFO  JOBLOGGER - GetCatalogueFiles: search request is CatalogueSearchRequest{project=APACHE1, observatories=, instrument types=, discriminator=null, start=null, end=null}
+00:24:41.255 [main] INFO  JOBLOGGER - GetCatalogueFiles: found url ftp://sunsite.ualberta.ca/pub/Mirror/apache/commons/daemon/binaries/commons-daemon-1.0.15.jar, requesting data download
+00:24:41.414 [main] INFO  JOBLOGGER - GetCatalogueFiles: data not in cache, trying next one
+00:24:41.525 [main] INFO  JOBLOGGER - GetCatalogueFiles: found url ftp://sunsite.ualberta.ca/pub/Mirror/apache/commons/email/binaries/commons-email-1.2.jar, requesting data download
+00:24:41.648 [main] INFO  JOBLOGGER - GetCatalogueFiles: data not in cache, trying next one
+00:24:41.765 [main] INFO  JOBLOGGER - GetCatalogueFiles: found url ftp://sunsite.ualberta.ca/pub/Mirror/apache/commons/primitives/binaries/commons-primitives-1.0.jar, requesting data download
+00:24:41.907 [main] INFO  JOBLOGGER - GetCatalogueFiles: data not in cache, trying next one
+00:24:42.017 [main] INFO  JOBLOGGER - GetCatalogueFiles: found url ftp://sunsite.ualberta.ca/pub/Mirror/apache/commons/transaction/binaries/commons-transaction-1.2.jar, requesting data download
+00:24:42.150 [main] INFO  JOBLOGGER - GetCatalogueFiles: data not in cache, trying next one
+00:24:44.325 [main] INFO  JOBLOGGER - GetCatalogueFiles: file data saved to /home/rpotter/workspaces/cicstart/cicstart/commons-daemon-1.0.15.jar
+00:24:46.504 [main] INFO  JOBLOGGER - GetCatalogueFiles: file data saved to /home/rpotter/workspaces/cicstart/cicstart/commons-email-1.2.jar
+00:24:53.786 [main] INFO  JOBLOGGER - GetCatalogueFiles: file data saved to /home/rpotter/workspaces/cicstart/cicstart/commons-primitives-1.0.jar
+00:24:56.998 [main] INFO  JOBLOGGER - GetCatalogueFiles: file data saved to /home/rpotter/workspaces/cicstart/cicstart/commons-transaction-1.2.jar
+00:25:04.734 [main] INFO  JOBLOGGER - GetCatalogueFiles: finding data at http://localhost:8080/cicstart/api/catalogue/project/find
+00:25:04.851 [main] INFO  JOBLOGGER - GetCatalogueFiles: search request is CatalogueSearchRequest{project=APACHE1, observatories=, instrument types=, discriminator=null, start=null, end=null}
+00:25:04.980 [main] INFO  JOBLOGGER - GetCatalogueFiles: found url ftp://sunsite.ualberta.ca/pub/Mirror/apache/commons/daemon/binaries/commons-daemon-1.0.15.jar, requesting data download
+00:25:05.098 [main] INFO  JOBLOGGER - GetCatalogueFiles: cache hit! Downloading it now.
+00:25:05.207 [main] INFO  JOBLOGGER - GetCatalogueFiles: file data saved to /home/rpotter/workspaces/cicstart/cicstart/commons-daemon-1.0.15.jar
+00:25:05.320 [main] INFO  JOBLOGGER - GetCatalogueFiles: found url ftp://sunsite.ualberta.ca/pub/Mirror/apache/commons/email/binaries/commons-email-1.2.jar, requesting data download
+00:25:05.445 [main] INFO  JOBLOGGER - GetCatalogueFiles: cache hit! Downloading it now.
+00:25:05.552 [main] INFO  JOBLOGGER - GetCatalogueFiles: file data saved to /home/rpotter/workspaces/cicstart/cicstart/commons-email-1.2.jar
+00:25:05.661 [main] INFO  JOBLOGGER - GetCatalogueFiles: found url ftp://sunsite.ualberta.ca/pub/Mirror/apache/commons/primitives/binaries/commons-primitives-1.0.jar, requesting data download
+00:25:05.789 [main] INFO  JOBLOGGER - GetCatalogueFiles: cache hit! Downloading it now.
+00:25:05.913 [main] INFO  JOBLOGGER - GetCatalogueFiles: file data saved to /home/rpotter/workspaces/cicstart/cicstart/commons-primitives-1.0.jar
+00:25:06.023 [main] INFO  JOBLOGGER - GetCatalogueFiles: found url ftp://sunsite.ualberta.ca/pub/Mirror/apache/commons/transaction/binaries/commons-transaction-1.2.jar, requesting data download
+00:25:06.142 [main] INFO  JOBLOGGER - GetCatalogueFiles: cache hit! Downloading it now.
+00:25:06.260 [main] INFO  JOBLOGGER - GetCatalogueFiles: file data saved to /home/rpotter/workspaces/cicstart/cicstart/commons-transaction-1.2.jar
+00:25:06.554 [main] INFO  JOBLOGGER - PutVFS: writing file build.gradle to http://localhost:8080/cicstart/api/vfs/filesystem/{owner}/write, owner=1
+00:25:07.494 [main] INFO  JOBLOGGER - ForEach: Iterating over 3 items
+00:25:07.608 [Thread-31] INFO  JOBLOGGER - ForEach: Iteration variable now set to 1, running commands in loop
+00:25:07.608 [Thread-32] INFO  JOBLOGGER - ForEach: Iteration variable now set to 2, running commands in loop
+00:25:07.616 [Thread-33] INFO  JOBLOGGER - ForEach: Iteration variable now set to 3, running commands in loop
+00:25:07.737 [Thread-31] INFO  JOBLOGGER - Running commands: debug, debug
+00:25:07.740 [Thread-33] INFO  JOBLOGGER - Running commands: debug, debug
+00:25:07.746 [Thread-32] INFO  JOBLOGGER - Running commands: debug, debug
+00:25:07.858 [Thread-32] INFO  JOBLOGGER - building debug
+00:25:07.858 [Thread-31] INFO  JOBLOGGER - building debug
+00:25:07.858 [Thread-33] INFO  JOBLOGGER - building debug
+00:25:07.977 [Thread-33] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@146018
+00:25:07.986 [Thread-31] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@1a44220
+00:25:07.987 [Thread-32] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@f16070
+00:25:08.102 [Thread-33] INFO  JOBLOGGER - About to end the job
+00:25:08.104 [Thread-31] INFO  JOBLOGGER - About to end the job
+00:25:08.108 [Thread-32] INFO  JOBLOGGER - About to end the job
+00:25:08.214 [Thread-31] INFO  JOBLOGGER - building debug
+00:25:08.216 [Thread-32] INFO  JOBLOGGER - building debug
+00:25:08.219 [Thread-33] INFO  JOBLOGGER - building debug
+00:25:08.327 [Thread-32] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@9ad4be
+00:25:08.330 [Thread-33] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@3a3001
+00:25:08.330 [Thread-31] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@25a649
+00:25:08.449 [Thread-33] INFO  JOBLOGGER - About to end the job
+00:25:08.454 [Thread-32] INFO  JOBLOGGER - About to end the job
+00:25:08.455 [Thread-31] INFO  JOBLOGGER - About to end the job
+00:25:08.580 [main] INFO  JOBLOGGER - ForEach: Iterating over 3 items
+00:25:08.700 [main] INFO  JOBLOGGER - ForEach: Iteration variable now set to 1, running commands in loop
+00:25:08.813 [main] INFO  JOBLOGGER - Running commands: debug, debug
+00:25:08.929 [main] INFO  JOBLOGGER - building debug
+00:25:09.042 [main] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@1fc0936
+00:25:09.159 [main] INFO  JOBLOGGER - About to end the job
+00:25:09.279 [main] INFO  JOBLOGGER - building debug
+00:25:09.397 [main] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@54d7ac
+00:25:09.509 [main] INFO  JOBLOGGER - About to end the job
+00:25:09.634 [main] INFO  JOBLOGGER - ForEach: Iteration variable now set to 2, running commands in loop
+00:25:09.756 [main] INFO  JOBLOGGER - Running commands: debug, debug
+00:25:09.875 [main] INFO  JOBLOGGER - building debug
+00:25:09.989 [main] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@dc6180
+00:25:10.107 [main] INFO  JOBLOGGER - About to end the job
+00:25:10.227 [main] INFO  JOBLOGGER - building debug
+00:25:10.346 [main] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@1a51852
+00:25:10.455 [main] INFO  JOBLOGGER - About to end the job
+00:25:10.573 [main] INFO  JOBLOGGER - ForEach: Iteration variable now set to 3, running commands in loop
+00:25:10.684 [main] INFO  JOBLOGGER - Running commands: debug, debug
+00:25:10.800 [main] INFO  JOBLOGGER - building debug
+00:25:10.912 [main] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@1962cfa
+00:25:11.029 [main] INFO  JOBLOGGER - About to end the job
+00:25:11.183 [main] INFO  JOBLOGGER - building debug
+00:25:11.295 [main] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@1959b32
+00:25:11.405 [main] INFO  JOBLOGGER - About to end the job
+00:25:19.880 [main] INFO  JOBLOGGER - GetVFS: locating whois for session var at http://localhost:8080/cicstart/api/auth/session/{session}/whois
+00:25:20.113 [main] INFO  JOBLOGGER - GetVFS: read file data from http://localhost:8080/cicstart/api/vfs/filesystem/1/read?path={file}, file=maccs.test
+00:25:20.363 [main] INFO  JOBLOGGER - GetVFS: read success, data saved to /home/rpotter/workspaces/cicstart/cicstart/maccs.test
+00:25:20.602 [pool-9-thread-1] INFO  JOBLOGGER - Running commands: on[run]
+00:25:20.725 [pool-9-thread-1] INFO  JOBLOGGER - building on[run]
+00:25:20.835 [pool-9-thread-1] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.On@15f1c40
+00:25:20.946 [pool-9-thread-1] INFO  JOBLOGGER - This is try # 0 of 10
+00:25:21.163 [pool-9-thread-1] INFO  JOBLOGGER - On: running commands on 127.0.0.1
+00:25:21.279 [pool-9-thread-1] INFO  JOBLOGGER - Running commands: run
+00:25:21.397 [pool-9-thread-1] INFO  JOBLOGGER - building run
+00:25:21.508 [pool-9-thread-1] INFO  JOBLOGGER - running date
+00:25:21.650 [Thread-50] INFO  JOBLOGGER - Run: 'date' output logged with reference 5, timeout set to 1 minutes
+00:25:21.761 [Thread-50] INFO  JOBLOGGER - Run: working directory is: /home/rpotter/workspaces/cicstart/cicstart/.
+00:25:21.870 [Thread-50] INFO  JOBLOGGER -      5| Wed Sep 11 00:25:21 MDT 2013
+00:25:21.986 [pool-9-thread-1] INFO  JOBLOGGER - Run: 5 exited with value 0
+00:25:22.106 [pool-9-thread-1] INFO  JOBLOGGER - About to end the job
+00:25:22.223 [pool-9-thread-1] INFO  JOBLOGGER - About to end the job
+00:25:22.391 [Thread-51] INFO  JOBLOGGER - Run: 'ls -l' output logged with reference 6, timeout set to 1 minutes
+00:25:22.505 [Thread-51] INFO  JOBLOGGER - Run: working directory is: /home/rpotter/workspaces/cicstart/cicstart/.
+00:25:22.630 [Thread-51] INFO  JOBLOGGER -      6| total 852
+drwxr-xr-x 4 rpotter rpotter   4096 2013-09-10 22:18 bin
+drwxr-xr-x 7 rpotter rpotter   4096 2013-09-10 22:37 build
+-rw-r--r-- 1 rpotter rpotter   3188 2013-09-10 22:17 build.gradle
+-rw-r--r-- 1 rpotter rpotter   1476 2013-03-10 22:48 cssdp-vfs-cert.pem
+-rw-r--r-- 1 rpotter rpotter   1675 2013-03-10 22:48 cssdp-vfs.key
+-rw-r--r-- 1 rpotter rpotter   1675 2013-03-10 22:48 cssdp-vfs.pem
+-rw-r--r-- 1 rpotter rpotter 838011 2013-09-11 00:25 macro.log
+drwxr-xr-x 4 rpotter rpotter   4096 2013-08-31 23:40 src
+00:25:22.746 [main] INFO  JOBLOGGER - Run: 6 exited with value 0
+00:25:22.916 [Thread-52] INFO  JOBLOGGER - Run: 'gradle build -x test' output logged with reference 7, timeout set to 1 minutes
+00:25:23.029 [Thread-52] INFO  JOBLOGGER - Run: working directory is: /home/rpotter/workspaces/cicstart/cicstart/.
+00:25:34.672 [Thread-52] INFO  JOBLOGGER -      7| :cicstart:compileJava
+00:25:44.252 [Thread-52] INFO  JOBLOGGER -      7| :cicstart:processResources
+00:25:44.518 [Thread-52] INFO  JOBLOGGER -      7|  UP-TO-DATE
+:cicstart:classes
+:cicstart:war
+00:25:51.824 [Thread-52] INFO  JOBLOGGER -      7| :cicstart:assemble
+00:25:51.940 [Thread-52] INFO  JOBLOGGER -      7| 
+:cicstart:check
+:cicstart:build
+
+BUILD SUCCESSFUL
+
+Total time: 28.51 secs
+00:25:52.049 [main] INFO  JOBLOGGER - Run: 7 exited with value 0
+00:25:52.191 [Thread-53] INFO  JOBLOGGER - Run: 'cat build.gradle' output logged with reference 8, timeout set to 1 minutes
+00:25:52.319 [Thread-53] INFO  JOBLOGGER - Run: working directory is: /home/rpotter/workspaces/cicstart/cicstart/.
+00:25:52.431 [Thread-53] INFO  JOBLOGGER -      8| apply plugin: 'eclipse'
+apply plugin: 'war';
+apply plugin: 'application'
+
+mainClassName = "ca.ualberta.physics.cicstart.macro.MainClass"
+
+group = 'ca.ualberta.physics.cssdp'
+version = '1.0'
+
+sourceCompatibility=1.6
+targetCompatibility=1.6
+
+repositories {
+	mavenCentral()
+}
+
+task copyResources(type:Copy) {
+	from('src/main/java') {
+	   include '**/*.properties'
+	   include '**/*.ftl'
+	   include '**/logback.template';
+	}
+	into('build/classes/main')
+}
+
+jar.dependsOn copyResources
+
+war {
+	from('src/main/java') {
+	   include '**/*.properties' into ('WEB-INF/classes')
+	   include '**/*.ftl' into ('WEB-INF/classes')
+	   include '**/logback.template' into ('WEB-INF/classes')
+	}
+	// remove classes from the classpath
+	classpath = configurations.runtime
+
+	// add them in explicitly, with the filtering applied
+	webInf {
+		into('classes') {
+			from sourceSets.main.output
+			exclude '**/logback.xml'
+		}
+	}
+}
+
+dependencies {
+	compile "org.slf4j:slf4j-api:1.7.2"
+	compile "ch.qos.logback:logback-classic:1.0.9"
+	compile "com.goo
+00:25:52.542 [Thread-53] INFO  JOBLOGGER -      8| gle.guava:guava:14.0"
+	compile "com.google.inject:guice:3.0"
+	compile "joda-time:joda-time:2.2"
+	
+	compile "org.hibernate:hibernate-entitymanager:4.2.5.Final"
+	compile "com.jolbox:bonecp:0.8.0-rc1"
+	compile "com.jolbox:bonecp-jdk-compat:0.8.0-rc1"
+	compile "com.jolbox:bonecp-provider:0.8.0-alpha1"
+	compile "postgresql:postgresql:9.1-901.jdbc4"
+
+	compile "org.apache.commons:commons-email:1.2"
+	compile "org.apache.commons:commons-compress:1.5"
+	compile "commons-codec:commons-codec:1.6"
+	compile "org.freemarker:freemarker:2.3.19"
+
+	// compile "com.wordnik:swagger-core_2.9.1:1.2.1"
+	// compile("com.wordnik:swagger-jaxrs_2.9.1:1.2.1"){
+    //		exclude group: 'com.sun.jersey'
+	//	exclude group: 'com.sun.jersey.contribs'
+	// }
+	compile "com.wordnik:swagger-jersey-jaxrs_2.10:1.3.0"
+
+
+	// latest 1.17.1 is broken near @formdataparam
+	compile "com.sun.jersey:jersey-core:1.13"
+	compile "com.sun.jersey:jersey-server:1.13"
+	compile "com.sun.jersey:jersey-servlet:1.13"
+	compile "com.sun.jersey.contribs:jersey-multipart:1.13
+00:25:52.658 [Thread-53] INFO  JOBLOGGER -      8| "
+
+	compile "com.fasterxml.jackson.core:jackson-core:2.1.4"
+	compile "com.fasterxml.jackson.core:jackson-databind:2.1.4"
+	compile "com.fasterxml.jackson.core:jackson-annotations:2.1.4"
+	compile "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.1.4"
+
+	compile "org.beanshell:bsh:2.0b5"
+	compile "org.bouncycastle:bcprov-jdk16:1.46"
+	compile "net.schmizz:sshj:0.8.1"
+	// see https://issues.apache.org/jira/browse/NET-465 change to 3.3 when released
+	compile "commons-net:commons-net:3.1"
+
+	// keep apache-sshd at 0.7.0 until this bug is fixed: https://issues.apache.org/jira/browse/FTPSERVER-437
+	compile "org.apache.ftpserver:ftpserver-core:1.0.6"
+	compile("org.apache.sshd:apache-sshd:0.7.0") {
+		exclude group: 'org.slf4j'
+	}
+	compile "javax.servlet:javax.servlet-api:3.0.1"
+	compile "com.jayway.restassured:rest-assured:1.7.2"
+	
+	compile "org.antlr:antlr4-runtime:4.0"
+		
+	testCompile "junit:junit:4.+"
+	testCompile files ('../database/db-migrator-0.5.jar')
+	testCompile "com.h2database:h2:1.3.171"
+	testCompile "
+00:25:52.778 [Thread-53] INFO  JOBLOGGER -      8| org.eclipse.jetty:jetty-webapp:8.0.4.v20111024"
+	testCompile "org.eclipse.jetty:jetty-servlets:8.0.4.v20111024"
+}
+
+00:25:52.888 [main] INFO  JOBLOGGER - Run: 8 exited with value 0
+00:25:53.037 [Thread-54] INFO  JOBLOGGER - Run: 'grep plugin build.gradle' output logged with reference 9, timeout set to 1 minutes
+00:25:53.163 [Thread-54] INFO  JOBLOGGER - Run: working directory is: /home/rpotter/workspaces/cicstart/cicstart/.
+00:25:53.271 [Thread-54] INFO  JOBLOGGER -      9| apply plugin: 'eclipse'
+apply plugin: 'war';
+apply plugin: 'application'
+00:25:53.392 [main] INFO  JOBLOGGER - Run: 9 exited with value 0
+00:25:53.528 [Thread-55] INFO  JOBLOGGER - Run: 'grep "plugin: 'war'" build.gradle' output logged with reference 10, timeout set to 1 minutes
+00:25:53.645 [Thread-55] INFO  JOBLOGGER - Run: working directory is: /home/rpotter/workspaces/cicstart/cicstart/.
+00:25:53.753 [Thread-55] INFO  JOBLOGGER -      10| apply plugin: 'war';
+00:25:53.871 [main] INFO  JOBLOGGER - Run: 10 exited with value 0
+00:25:54.006 [Thread-56] INFO  JOBLOGGER - Run: 'cat build.gradle' output logged with reference 11, timeout set to 1 minutes
+00:25:54.126 [Thread-56] INFO  JOBLOGGER - Run: working directory is: /home/rpotter/workspaces/cicstart/cicstart/.
+00:25:54.241 [Thread-56] INFO  JOBLOGGER -      11| apply plugin: 'eclipse'
+apply plugin: 'war';
+apply plugin: 'application'
+
+mainClassName = "ca.ualberta.physics.cicstart.macro.MainClass"
+
+group = 'ca.ualberta.physics.cssdp'
+version = '1.0'
+
+sourceCompatibility=1.6
+targetCompatibility=1.6
+
+repositories {
+	mavenCentral()
+}
+
+task copyResources(type:Copy) {
+	from('src/main/java') {
+	   include '**/*.properties'
+	   include '**/*.ftl'
+	   include '**/logback.template';
+	}
+	into('build/classes/main')
+}
+
+jar.dependsOn copyResources
+
+war {
+	from('src/main/java') {
+	   include '**/*.properties' into ('WEB-INF/classes')
+	   include '**/*.ftl' into ('WEB-INF/classes')
+	   include '**/logback.template' into ('WEB-INF/classes')
+	}
+	// remove classes from the classpath
+	classpath = configurations.runtime
+
+	// add them in explicitly, with the filtering applied
+	webInf {
+		into('classes') {
+			from sourceSets.main.output
+			exclude '**/logback.xml'
+		}
+	}
+}
+
+dependencies {
+	compile "org.slf4j:slf4j-api:1.7.2"
+	compile "ch.qos.logback:logback-classic:1.0.9"
+	compile "com.goo
+00:25:54.353 [Thread-56] INFO  JOBLOGGER -      11| gle.guava:guava:14.0"
+	compile "com.google.inject:guice:3.0"
+	compile "joda-time:joda-time:2.2"
+	
+	compile "org.hibernate:hibernate-entitymanager:4.2.5.Final"
+	compile "com.jolbox:bonecp:0.8.0-rc1"
+	compile "com.jolbox:bonecp-jdk-compat:0.8.0-rc1"
+	compile "com.jolbox:bonecp-provider:0.8.0-alpha1"
+	compile "postgresql:postgresql:9.1-901.jdbc4"
+
+	compile "org.apache.commons:commons-email:1.2"
+	compile "org.apache.commons:commons-compress:1.5"
+	compile "commons-codec:commons-codec:1.6"
+	compile "org.freemarker:freemarker:2.3.19"
+
+	// compile "com.wordnik:swagger-core_2.9.1:1.2.1"
+	// compile("com.wordnik:swagger-jaxrs_2.9.1:1.2.1"){
+    //		exclude group: 'com.sun.jersey'
+	//	exclude group: 'com.sun.jersey.contribs'
+	// }
+	compile "com.wordnik:swagger-jersey-jaxrs_2.10:1.3.0"
+
+
+	// latest 1.17.1 is broken near @formdataparam
+	compile "com.sun.jersey:jersey-core:1.13"
+	compile "com.sun.jersey:jersey-server:1.13"
+	compile "com.sun.jersey:jersey-servlet:1.13"
+	compile "com.sun.jersey.contribs:jersey-multipart:1.13
+00:25:54.469 [Thread-56] INFO  JOBLOGGER -      11| "
+
+	compile "com.fasterxml.jackson.core:jackson-core:2.1.4"
+	compile "com.fasterxml.jackson.core:jackson-databind:2.1.4"
+	compile "com.fasterxml.jackson.core:jackson-annotations:2.1.4"
+	compile "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.1.4"
+
+	compile "org.beanshell:bsh:2.0b5"
+	compile "org.bouncycastle:bcprov-jdk16:1.46"
+	compile "net.schmizz:sshj:0.8.1"
+	// see https://issues.apache.org/jira/browse/NET-465 change to 3.3 when released
+	compile "commons-net:commons-net:3.1"
+
+	// keep apache-sshd at 0.7.0 until this bug is fixed: https://issues.apache.org/jira/browse/FTPSERVER-437
+	compile "org.apache.ftpserver:ftpserver-core:1.0.6"
+	compile("org.apache.sshd:apache-sshd:0.7.0") {
+		exclude group: 'org.slf4j'
+	}
+	compile "javax.servlet:javax.servlet-api:3.0.1"
+	compile "com.jayway.restassured:rest-assured:1.7.2"
+	
+	compile "org.antlr:antlr4-runtime:4.0"
+		
+	testCompile "junit:junit:4.+"
+	testCompile files ('../database/db-migrator-0.5.jar')
+	testCompile "com.h2database:h2:1.3.171"
+	testCompile "
+00:25:54.580 [Thread-56] INFO  JOBLOGGER -      11| org.eclipse.jetty:jetty-webapp:8.0.4.v20111024"
+	testCompile "org.eclipse.jetty:jetty-servlets:8.0.4.v20111024"
+}
+
+00:25:54.699 [main] INFO  JOBLOGGER - Run: 11 exited with value 0
+00:25:54.888 [Thread-57] INFO  JOBLOGGER - Run: 'wc -l build.gradle' output logged with reference 12, timeout set to 2 minutes
+00:25:55.001 [Thread-57] INFO  JOBLOGGER - Run: working directory is: /home/rpotter/workspaces/cicstart/cicstart/.
+00:25:55.110 [Thread-57] INFO  JOBLOGGER -      12| 106 build.gradle
+00:25:55.226 [main] INFO  JOBLOGGER - Run: 12 exited with value 0
+00:30:18.586 [Thread-12] INFO  JOBLOGGER - Run: './run' output logged with reference 1, timeout set to 1 minutes
+00:30:19.242 [Thread-12] INFO  JOBLOGGER - Run: working directory is: /tmp/1378881014488-0/bin
+00:30:19.531 [Thread-12] INFO  JOBLOGGER -      1| 00:30:18.919 [main] INFO  c.u.physics.cicstart.macro.MainClass - Loading property overrides from application.properties
+Properties for component: fileserver
+..... file.cache.root=/home/rpotter/cssdp/file_cache
+..... file.cache.storeUncompressedFiles=true
+Properties for component: macroserver
+..... DAIR.authUrl=http://208.75.74.10:5000/v2.0
+..... DAIR.implementation=ca.ualberta.physics.cicstart.macro.service.OpenStackCloud
+..... DAIR.nova=http://208.75.74.10:8774/v2
+..... cicstart.pemfile=-hidden-
+..... cicstart.public.key=ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQDI9bEqF4QE5fIWQ0Q9T0ye8qCLq5FeUIMh2GmhOfO+EEYeVSdAsOQrfwJa81htMZfMS3VoqhI+pUT3MP8lv7qHuTox0Xjh8nN5qhAg4NBoaltcwrWHrxsmCBBTP3YYa0OwtN984VcANlOzuBnj6Hjmdm7XqYbrXnVHhviP+g+Z0Q== Generated by Nova
+
+..... cicstart.server.external=208.75.74.81
+..... cicstart.server.internal=10.0.28.3
+..... cicstart.test.openstack.password=*********** (password filtered from casual observation)
+..... cicstart.test.openstack.username=-hidden-
+..... clouds=DAIR
+..... isServer=fal
+00:30:19.652 [Thread-12] INFO  JOBLOGGER -      1| se
+..... macro.client.build.dir=/home/rpotter/workspaces/cicstart/build/
+..... macro.client.dir=/home/rpotter/workspaces/cicstart/cicstart/build/distributions/cicstart-1.0
+Properties for component: authserver
+..... passwordResetUrl=*********** (password filtered from casual observation)
+..... smtpDebug=true
+..... smtpHost=smtp.gmail.com
+..... smtpPassword=
+..... smtpPort=465
+..... smtpUseSSL=true
+..... smtpUsername=
+..... supportUrl=https://github.com/RoddiPotter/cicstart/wiki/Support
+..... systemEmailAddress=potter.rod@gmail.com
+Properties for component: common
+..... api.url=http://localhost:8080/cicstart/api
+..... auth.api.version=1.0
+..... bonecp.acquireIncrement=10
+..... bonecp.idleConnectionTestPeriod=60
+..... bonecp.idleMaxAge=240
+..... bonecp.maxConnectionAge=0
+..... bonecp.maxConnectionsPerPartition=30
+..... bonecp.minConnectionsPerPartition=20
+..... bonecp.partitionCount=3
+..... bonecp.releaseHelperThreads=3
+..... bonecp.statementsCacheSize=50
+..... catalogue.api.version=1.0
+..... doc.url=http://loca
+00:30:19.772 [Thread-12] INFO  JOBLOGGER -      1| lhost:8080/cicstart/docs
+..... external.api.url=http://localhost:8080/cicstart/api
+..... file.api.version=1.0
+..... hibernate.connection.autocommit=false
+..... hibernate.connection.driver_class=org.postgresql.Driver
+..... hibernate.connection.password=*********** (password filtered from casual observation)
+..... hibernate.connection.provider_class=com.jolbox.bonecp.provider.BoneCPConnectionProvider
+..... hibernate.connection.url=-hidden-
+..... hibernate.connection.username=-hidden-
+..... hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+..... hibernate.jdbc.batch_size=100
+..... hibernate.transaction.flush_before_completion=false
+..... logback.configuration=logback.xml
+..... macro.api.version=1.0
+..... vfs.api.version=1.0
+Properties for component: catalogueserver
+Properties for component: vfsserver
+..... default_user_quota=10737418240
+..... ftpPort=2121
+..... isServer=true
+..... pemKeyFile=/home/rpotter/cssdp/cssdp-vfs.pem
+..... sftpPort=2222
+..... vfs_root=/home/rpotter/cssdp/vfs
+Overriding logback.xm
+00:30:19.892 [Thread-12] INFO  JOBLOGGER -      1| l found on classpath and configuring logback from file /tmp/1378881014488-0/bin/logback.xml
+00:30:22.274 [Thread-12] INFO  JOBLOGGER -      1| 00:30:20.441 [pool-2-thread-1] INFO  JOBLOGGER - Running commands: on[run]
+00:30:22.412 [Thread-12] INFO  JOBLOGGER -      1| 00:30:22.274 [pool-2-thread-1] INFO  JOBLOGGER - building on[run]
+00:30:22.537 [Thread-12] INFO  JOBLOGGER -      1| 00:30:22.415 [pool-2-thread-1] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.On@41b635
+00:30:22.668 [Thread-12] INFO  JOBLOGGER -      1| 00:30:22.539 [pool-2-thread-1] INFO  JOBLOGGER - This is try # 0 of 10
+00:30:22.871 [Thread-12] INFO  JOBLOGGER -      1| 00:30:22.757 [pool-2-thread-1] INFO  JOBLOGGER - On: running commands on 127.0.0.1
+00:30:22.996 [Thread-12] INFO  JOBLOGGER -      1| 00:30:22.873 [pool-2-thread-1] INFO  JOBLOGGER - Running commands: run
+00:30:23.130 [Thread-12] INFO  JOBLOGGER -      1| 00:30:22.995 [pool-2-thread-1] INFO  JOBLOGGER - building run
+00:30:23.259 [Thread-12] INFO  JOBLOGGER -      1| 00:30:23.123 [pool-2-thread-1] INFO  JOBLOGGER - running date
+00:30:23.379 [Thread-12] INFO  JOBLOGGER -      1| 00:30:23.272 [Thread-1] INFO  JOBLOGGER - Run: 'date' output logged with reference 1, timeout set to 1 minutes
+00:30:23.500 [Thread-12] INFO  JOBLOGGER -      1| 00:30:23.379 [Thread-1] INFO  JOBLOGGER - Run: working directory is: /tmp/1378881014488-0/bin/.
+00:30:23.615 [Thread-12] INFO  JOBLOGGER -      1| 00:30:23.498 [Thread-1] INFO  JOBLOGGER -      1| Wed Sep 11 00:30:23 MDT 2013
+00:30:23.740 [Thread-12] INFO  JOBLOGGER -      1| 00:30:23.608 [pool-2-thread-1] INFO  JOBLOGGER - Run: 1 exited with value 0
+00:30:23.869 [Thread-12] INFO  JOBLOGGER -      1| 00:30:23.733 [pool-2-thread-1] INFO  JOBLOGGER - About to end the job
+00:30:23.981 [Thread-12] INFO  JOBLOGGER -      1| 00:30:23.853 [pool-2-thread-1] INFO  JOBLOGGER - About to end the job
+done.
+00:30:24.102 [main] INFO  JOBLOGGER - Run: 1 exited with value 0
+00:31:02.125 [main] INFO  JOBLOGGER - Running commands: on[getCataloguedFiles, run, foreach[run, putVFS]]
+00:31:02.265 [main] INFO  JOBLOGGER - building on[getCataloguedFiles, run, foreach[run, putVFS]]
+00:31:02.390 [main] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.On@2b7632
+00:31:02.513 [main] INFO  JOBLOGGER - This is try # 0 of 10
+00:31:02.747 [main] INFO  JOBLOGGER - On: running commands on 127.0.0.1
+00:31:02.871 [main] INFO  JOBLOGGER - Running commands: getCataloguedFiles, run, foreach[run, putVFS]
+00:31:03.005 [main] INFO  JOBLOGGER - building getCataloguedFiles
+00:31:03.121 [main] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.GetCataloguedFiles@450448
+00:31:03.238 [main] INFO  JOBLOGGER - GetCatalogueFiles: finding data at http://localhost:8080/cicstart/api/catalogue/project/find
+00:31:03.355 [main] INFO  JOBLOGGER - GetCatalogueFiles: search request is CatalogueSearchRequest{project=APACHE3, observatories=, instrument types=, discriminator=null, start=null, end=null}
+00:31:03.508 [main] INFO  JOBLOGGER - GetCatalogueFiles: found url ftp://sunsite.ualberta.ca/pub/Mirror/apache/commons/daemon/binaries/commons-daemon-1.0.15.jar, requesting data download
+00:31:03.716 [main] INFO  JOBLOGGER - GetCatalogueFiles: data not in cache, trying next one
+00:31:03.834 [main] INFO  JOBLOGGER - GetCatalogueFiles: found url ftp://sunsite.ualberta.ca/pub/Mirror/apache/commons/email/binaries/commons-email-1.2.jar, requesting data download
+00:31:03.972 [main] INFO  JOBLOGGER - GetCatalogueFiles: data not in cache, trying next one
+00:31:04.097 [main] INFO  JOBLOGGER - GetCatalogueFiles: found url ftp://sunsite.ualberta.ca/pub/Mirror/apache/commons/primitives/binaries/commons-primitives-1.0.jar, requesting data download
+00:31:04.232 [main] INFO  JOBLOGGER - GetCatalogueFiles: data not in cache, trying next one
+00:31:04.357 [main] INFO  JOBLOGGER - GetCatalogueFiles: found url ftp://sunsite.ualberta.ca/pub/Mirror/apache/commons/transaction/binaries/commons-transaction-1.2.jar, requesting data download
+00:31:04.490 [main] INFO  JOBLOGGER - GetCatalogueFiles: data not in cache, trying next one
+00:31:06.674 [main] INFO  JOBLOGGER - GetCatalogueFiles: file data saved to /home/rpotter/workspaces/cicstart/cicstart/commons-daemon-1.0.15.jar
+00:31:08.852 [main] INFO  JOBLOGGER - GetCatalogueFiles: file data saved to /home/rpotter/workspaces/cicstart/cicstart/commons-email-1.2.jar
+00:31:15.120 [main] INFO  JOBLOGGER - GetCatalogueFiles: file data saved to /home/rpotter/workspaces/cicstart/cicstart/commons-primitives-1.0.jar
+00:31:17.298 [main] INFO  JOBLOGGER - GetCatalogueFiles: file data saved to /home/rpotter/workspaces/cicstart/cicstart/commons-transaction-1.2.jar
+00:31:17.417 [main] INFO  JOBLOGGER - About to end the job
+00:31:17.536 [main] INFO  JOBLOGGER - building run
+00:31:17.655 [main] INFO  JOBLOGGER - running mkdir temp
+00:31:17.795 [Thread-17] INFO  JOBLOGGER - Run: 'mkdir temp' output logged with reference 1, timeout set to 1 minutes
+00:31:17.921 [Thread-17] INFO  JOBLOGGER - Run: working directory is: /home/rpotter/workspaces/cicstart/cicstart/.
+00:31:18.069 [main] INFO  JOBLOGGER - Run: 1 exited with value 0
+00:31:18.185 [main] INFO  JOBLOGGER - About to end the job
+00:31:18.304 [main] INFO  JOBLOGGER - building foreach[run, putVFS]
+00:31:18.417 [main] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.ForEach@1ed2ccd
+00:31:18.535 [main] INFO  JOBLOGGER - ForEach: Iterating over 4 items
+00:31:18.656 [main] INFO  JOBLOGGER - ForEach: Iteration variable now set to commons-daemon-1.0.15.jar, running commands in loop
+00:31:18.768 [main] INFO  JOBLOGGER - Running commands: run, putVFS
+00:31:18.892 [main] INFO  JOBLOGGER - building run
+00:31:19.019 [main] INFO  JOBLOGGER - running unzip -o commons-daemon-1.0.15.jar -d temp
+00:31:19.156 [Thread-18] INFO  JOBLOGGER - Run: 'unzip -o commons-daemon-1.0.15.jar -d temp' output logged with reference 2, timeout set to 1 minutes
+00:31:19.288 [Thread-18] INFO  JOBLOGGER - Run: working directory is: /home/rpotter/workspaces/cicstart/cicstart/.
+00:31:19.401 [Thread-18] INFO  JOBLOGGER -      2| Archive:  commons-daemon-1.0.15.jar
+   creating: temp/META-INF/
+  inflating: temp/META-INF/MANIFEST.MF  
+   creating: temp/org/
+   creating: temp/org/apache/
+   creating: temp/org/apache/commons/
+   creating: temp/org/apache/commons/daemon/
+   creating: temp/org/apache/commons/daemon/support/
+  inflating: temp/META-INF/LICENSE.txt  
+  inflating: temp/META-INF/NOTICE.txt  
+  inflating: temp/org/apache/commons/daemon/support/DaemonWrapper$Invoker.class  
+  inflating: temp/org/apache/commons/daemon/support/DaemonLoader.class  
+  inflating: temp/org/apache/commons/daemon/support/DaemonLoader$Controller.class  
+  inflating: temp/org/apache/commons/daemon/support/DaemonConfiguration.class  
+  inflating: temp/org/apache/commons/daemon/support/DaemonWrapper.class  
+  inflating: temp/org/apache/commons/daemon/support/DaemonLoader$1.class  
+  inflating: temp/org/apache/commons/daemon/support/DaemonLoader$Context.class  
+  inflating: temp/org/apache/commons/daemon/DaemonController.class  
+  inflating: temp/org/apache/co
+00:31:19.520 [Thread-18] INFO  JOBLOGGER -      2| mmons/daemon/DaemonListener.class  
+  inflating: temp/org/apache/commons/daemon/DaemonUserSignal.class  
+  inflating: temp/org/apache/commons/daemon/DaemonPermission.class  
+  inflating: temp/org/apache/commons/daemon/DaemonInitException.class  
+  inflating: temp/org/apache/commons/daemon/DaemonContext.class  
+  inflating: temp/org/apache/commons/daemon/Daemon.class  
+   creating: temp/META-INF/maven/
+   creating: temp/META-INF/maven/commons-daemon/
+   creating: temp/META-INF/maven/commons-daemon/commons-daemon/
+  inflating: temp/META-INF/maven/commons-daemon/commons-daemon/pom.xml  
+  inflating: temp/META-INF/maven/commons-daemon/commons-daemon/pom.properties  
+00:31:19.642 [main] INFO  JOBLOGGER - Run: 2 exited with value 0
+00:31:19.777 [main] INFO  JOBLOGGER - About to end the job
+00:31:19.887 [main] INFO  JOBLOGGER - building putVFS
+00:31:19.995 [main] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.PutVFS@1ef252a
+00:31:20.234 [main] INFO  JOBLOGGER - PutVFS: writing file commons-daemon-1.0.15.jar to http://localhost:8080/cicstart/api/vfs/filesystem/{owner}/write, owner=1
+00:31:20.558 [main] INFO  JOBLOGGER - About to end the job
+00:31:20.671 [main] INFO  JOBLOGGER - ForEach: Iteration variable now set to commons-email-1.2.jar, running commands in loop
+00:31:20.786 [main] INFO  JOBLOGGER - Running commands: run, putVFS
+00:31:20.908 [main] INFO  JOBLOGGER - building run
+00:31:21.023 [main] INFO  JOBLOGGER - running unzip -o commons-email-1.2.jar -d temp
+00:31:21.164 [Thread-19] INFO  JOBLOGGER - Run: 'unzip -o commons-email-1.2.jar -d temp' output logged with reference 3, timeout set to 1 minutes
+00:31:21.275 [Thread-19] INFO  JOBLOGGER - Run: working directory is: /home/rpotter/workspaces/cicstart/cicstart/.
+00:31:21.391 [Thread-19] INFO  JOBLOGGER -      3| Archive:  commons-email-1.2.jar
+  inflating: temp/META-INF/MANIFEST.MF  
+   creating: temp/org/apache/commons/mail/
+  inflating: temp/META-INF/LICENSE.txt  
+  inflating: temp/META-INF/NOTICE.txt  
+  inflating: temp/org/apache/commons/mail/ByteArrayDataSource.class  
+  inflating: temp/org/apache/commons/mail/DefaultAuthenticator.class  
+  inflating: temp/org/apache/commons/mail/Email.class  
+  inflating: temp/org/apache/commons/mail/EmailAttachment.class  
+  inflating: temp/org/apache/commons/mail/EmailException.class  
+  inflating: temp/org/apache/commons/mail/EmailUtils.class  
+  inflating: temp/org/apache/commons/mail/HtmlEmail$InlineImage.class  
+  inflating: temp/org/apache/commons/mail/HtmlEmail.class  
+  inflating: temp/org/apache/commons/mail/MultiPartEmail.class  
+  inflating: temp/org/apache/commons/mail/SimpleEmail.class  
+   creating: temp/META-INF/maven/org.apache.commons/
+   creating: temp/META-INF/maven/org.apache.commons/commons-email/
+  inflating: temp/META-INF/maven/org.apache.commons/commons
+00:31:21.505 [Thread-19] INFO  JOBLOGGER -      3| -email/pom.xml  
+  inflating: temp/META-INF/maven/org.apache.commons/commons-email/pom.properties  
+00:31:21.622 [main] INFO  JOBLOGGER - Run: 3 exited with value 0
+00:31:21.739 [main] INFO  JOBLOGGER - About to end the job
+00:31:21.862 [main] INFO  JOBLOGGER - building putVFS
+00:31:21.970 [main] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.PutVFS@14719db
+00:31:22.203 [main] INFO  JOBLOGGER - PutVFS: writing file commons-email-1.2.jar to http://localhost:8080/cicstart/api/vfs/filesystem/{owner}/write, owner=1
+00:31:22.511 [main] INFO  JOBLOGGER - About to end the job
+00:31:22.620 [main] INFO  JOBLOGGER - ForEach: Iteration variable now set to commons-primitives-1.0.jar, running commands in loop
+00:31:22.742 [main] INFO  JOBLOGGER - Running commands: run, putVFS
+00:31:22.854 [main] INFO  JOBLOGGER - building run
+00:31:22.971 [main] INFO  JOBLOGGER - running unzip -o commons-primitives-1.0.jar -d temp
+00:31:23.109 [Thread-20] INFO  JOBLOGGER - Run: 'unzip -o commons-primitives-1.0.jar -d temp' output logged with reference 4, timeout set to 1 minutes
+00:31:23.219 [Thread-20] INFO  JOBLOGGER - Run: working directory is: /home/rpotter/workspaces/cicstart/cicstart/.
+00:31:23.333 [Thread-20] INFO  JOBLOGGER -      4| Archive:  commons-primitives-1.0.jar
+  inflating: temp/META-INF/MANIFEST.MF  
+   creating: temp/org/apache/commons/collections/
+   creating: temp/org/apache/commons/collections/primitives/
+   creating: temp/org/apache/commons/collections/primitives/adapters/
+   creating: temp/org/apache/commons/collections/primitives/adapters/io/
+   creating: temp/org/apache/commons/collections/primitives/decorators/
+  inflating: temp/org/apache/commons/collections/primitives/adapters/io/ByteIteratorInputStream.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/io/CharIteratorReader.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/io/InputStreamByteIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/io/ReaderCharIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/AbstractByteCollectionCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/AbstractByteListList.class  
+  infl
+00:31:23.458 [Thread-20] INFO  JOBLOGGER -      4| ating: temp/org/apache/commons/collections/primitives/adapters/AbstractCharCollectionCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/AbstractCharListList.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/AbstractCollectionByteCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/AbstractCollectionCharCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/AbstractCollectionDoubleCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/AbstractCollectionFloatCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/AbstractCollectionIntCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/AbstractCollectionLongCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/AbstractCollectionShortCollection.class  
+  inflating: temp/org/apache/commons/collections/
+00:31:23.574 [Thread-20] INFO  JOBLOGGER -      4| primitives/adapters/AbstractDoubleCollectionCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/AbstractDoubleListList.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/AbstractFloatCollectionCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/AbstractFloatListList.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/AbstractIntCollectionCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/AbstractIntListList.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/AbstractListByteList.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/AbstractListCharList.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/AbstractListDoubleList.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/AbstractListFloatList.class  
+  inflating: temp/org/apache/commons/collections/p
+00:31:23.683 [Thread-20] INFO  JOBLOGGER -      4| rimitives/adapters/AbstractListIntList.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/AbstractListLongList.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/AbstractListShortList.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/AbstractLongCollectionCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/AbstractLongListList.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/AbstractShortCollectionCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/AbstractShortListList.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/ByteCollectionCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/ByteIteratorIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/ByteListIteratorListIterator.class  
+  inflating: temp/org/apache/commons/collections/primiti
+00:31:23.801 [Thread-20] INFO  JOBLOGGER -      4| ves/adapters/ByteListList.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/CharCollectionCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/CharIteratorIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/CharListIteratorListIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/CharListList.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/CollectionByteCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/CollectionCharCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/CollectionDoubleCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/CollectionFloatCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/CollectionIntCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/CollectionLon
+00:31:23.918 [Thread-20] INFO  JOBLOGGER -      4| gCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/CollectionShortCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/DoubleCollectionCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/DoubleIteratorIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/DoubleListIteratorListIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/DoubleListList.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/FloatCollectionCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/FloatIteratorIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/FloatListIteratorListIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/FloatListList.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/IntCollectionCollection.clas
+00:31:24.044 [Thread-20] INFO  JOBLOGGER -      4| s  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/IntIteratorIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/IntListIteratorListIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/IntListList.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/IteratorByteIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/IteratorCharIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/IteratorDoubleIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/IteratorFloatIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/IteratorIntIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/IteratorLongIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/IteratorShortIterator.class  
+  inflating: temp/org/apache/commons/col
+00:31:24.162 [Thread-20] INFO  JOBLOGGER -      4| lections/primitives/adapters/ListByteList.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/ListCharList.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/ListDoubleList.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/ListFloatList.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/ListIntList.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/ListIteratorByteListIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/ListIteratorCharListIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/ListIteratorDoubleListIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/ListIteratorFloatListIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/ListIteratorIntListIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/ListIterato
+00:31:24.280 [Thread-20] INFO  JOBLOGGER -      4| rLongListIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/ListIteratorShortListIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/ListLongList.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/ListShortList.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/LongCollectionCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/LongIteratorIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/LongListIteratorListIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/LongListList.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/NonSerializableByteCollectionCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/NonSerializableByteListList.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/NonSerializableCharColl
+00:31:24.398 [Thread-20] INFO  JOBLOGGER -      4| ectionCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/NonSerializableCharListList.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/NonSerializableCollectionByteCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/NonSerializableCollectionCharCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/NonSerializableCollectionDoubleCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/NonSerializableCollectionFloatCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/NonSerializableCollectionIntCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/NonSerializableCollectionLongCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/NonSerializableCollectionShortCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/Non
+00:31:24.518 [Thread-20] INFO  JOBLOGGER -      4| SerializableDoubleCollectionCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/NonSerializableDoubleListList.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/NonSerializableFloatCollectionCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/NonSerializableFloatListList.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/NonSerializableIntCollectionCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/NonSerializableIntListList.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/NonSerializableListByteList.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/ShortIteratorIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/NonSerializableListCharList.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/NonSerializableListDoubleList.class  
+  inflatin
+00:31:24.638 [Thread-20] INFO  JOBLOGGER -      4| g: temp/org/apache/commons/collections/primitives/adapters/NonSerializableListFloatList.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/NonSerializableListIntList.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/NonSerializableListLongList.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/NonSerializableListShortList.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/NonSerializableLongCollectionCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/NonSerializableLongListList.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/NonSerializableShortCollectionCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/NonSerializableShortListList.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/ShortCollectionCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/adap
+00:31:24.750 [Thread-20] INFO  JOBLOGGER -      4| ters/ShortListIteratorListIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/adapters/ShortListList.class  
+  inflating: temp/org/apache/commons/collections/primitives/ByteIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/CharIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/ByteCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/ByteList.class  
+  inflating: temp/org/apache/commons/collections/primitives/ByteListIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/CharCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/CharList.class  
+  inflating: temp/org/apache/commons/collections/primitives/CharListIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/DoubleCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/DoubleIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/FloatColle
+00:31:24.867 [Thread-20] INFO  JOBLOGGER -      4| ction.class  
+  inflating: temp/org/apache/commons/collections/primitives/FloatIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/IntCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/IntIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/LongCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/LongIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/ShortCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/ShortIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/DoubleList.class  
+  inflating: temp/org/apache/commons/collections/primitives/DoubleListIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/FloatList.class  
+  inflating: temp/org/apache/commons/collections/primitives/FloatListIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/IntList.class  
+  inflating: temp/org/apache/c
+00:31:24.987 [Thread-20] INFO  JOBLOGGER -      4| ommons/collections/primitives/IntListIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/LongList.class  
+  inflating: temp/org/apache/commons/collections/primitives/LongListIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/ShortList.class  
+  inflating: temp/org/apache/commons/collections/primitives/ShortListIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/AbstractByteCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/AbstractCharCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/AbstractDoubleCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/AbstractFloatCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/AbstractIntCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/AbstractLongCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/AbstractShortCollection.class  
+  in
+00:31:25.099 [Thread-20] INFO  JOBLOGGER -      4| flating: temp/org/apache/commons/collections/primitives/ArrayByteList.class  
+  inflating: temp/org/apache/commons/collections/primitives/RandomAccessByteList$ComodChecker.class  
+  inflating: temp/org/apache/commons/collections/primitives/RandomAccessByteList$RandomAccessByteListIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/RandomAccessByteList$RandomAccessByteSubList.class  
+  inflating: temp/org/apache/commons/collections/primitives/RandomAccessByteList.class  
+  inflating: temp/org/apache/commons/collections/primitives/ArrayCharList.class  
+  inflating: temp/org/apache/commons/collections/primitives/RandomAccessCharList$ComodChecker.class  
+  inflating: temp/org/apache/commons/collections/primitives/RandomAccessCharList$RandomAccessCharListIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/RandomAccessCharList$RandomAccessCharSubList.class  
+  inflating: temp/org/apache/commons/collections/primitives/RandomAccessCharList.class  
+  inflating: temp/or
+00:31:25.207 [Thread-20] INFO  JOBLOGGER -      4| g/apache/commons/collections/primitives/ArrayDoubleList.class  
+  inflating: temp/org/apache/commons/collections/primitives/RandomAccessDoubleList$ComodChecker.class  
+  inflating: temp/org/apache/commons/collections/primitives/RandomAccessDoubleList$RandomAccessDoubleListIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/RandomAccessDoubleList$RandomAccessDoubleSubList.class  
+  inflating: temp/org/apache/commons/collections/primitives/RandomAccessDoubleList.class  
+  inflating: temp/org/apache/commons/collections/primitives/ArrayFloatList.class  
+  inflating: temp/org/apache/commons/collections/primitives/RandomAccessFloatList$ComodChecker.class  
+  inflating: temp/org/apache/commons/collections/primitives/RandomAccessFloatList$RandomAccessFloatListIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/RandomAccessFloatList$RandomAccessFloatSubList.class  
+  inflating: temp/org/apache/commons/collections/primitives/RandomAccessFloatList.class  
+  inflating: te
+00:31:25.324 [Thread-20] INFO  JOBLOGGER -      4| mp/org/apache/commons/collections/primitives/ArrayIntList.class  
+  inflating: temp/org/apache/commons/collections/primitives/RandomAccessIntList$ComodChecker.class  
+  inflating: temp/org/apache/commons/collections/primitives/RandomAccessIntList$RandomAccessIntListIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/RandomAccessIntList$RandomAccessIntSubList.class  
+  inflating: temp/org/apache/commons/collections/primitives/RandomAccessIntList.class  
+  inflating: temp/org/apache/commons/collections/primitives/ArrayLongList.class  
+  inflating: temp/org/apache/commons/collections/primitives/RandomAccessLongList$ComodChecker.class  
+  inflating: temp/org/apache/commons/collections/primitives/RandomAccessLongList$RandomAccessLongListIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/RandomAccessLongList$RandomAccessLongSubList.class  
+  inflating: temp/org/apache/commons/collections/primitives/RandomAccessLongList.class  
+  inflating: temp/org/apache/commons/c
+00:31:25.443 [Thread-20] INFO  JOBLOGGER -      4| ollections/primitives/ArrayShortList.class  
+  inflating: temp/org/apache/commons/collections/primitives/RandomAccessShortList$ComodChecker.class  
+  inflating: temp/org/apache/commons/collections/primitives/RandomAccessShortList$RandomAccessShortListIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/RandomAccessShortList$RandomAccessShortSubList.class  
+  inflating: temp/org/apache/commons/collections/primitives/RandomAccessShortList.class  
+  inflating: temp/org/apache/commons/collections/primitives/ArrayUnsignedByteList.class  
+  inflating: temp/org/apache/commons/collections/primitives/ArrayUnsignedIntList.class  
+  inflating: temp/org/apache/commons/collections/primitives/ArrayUnsignedShortList.class  
+  inflating: temp/org/apache/commons/collections/primitives/IntCollections.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/BaseProxyIntCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/BaseProxyIntList.class  
+00:31:25.570 [Thread-20] INFO  JOBLOGGER -      4|   inflating: temp/org/apache/commons/collections/primitives/decorators/BaseUnmodifiableIntList.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/NonSerializableUnmodifiableIntList.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/ProxyIntIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/ProxyIntListIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/UnmodifiableIntIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/UnmodifiableIntList.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/UnmodifiableIntListIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/ProxyLongIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/ProxyLongListIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/UnmodifiableLongIterator.class  
+00:31:25.684 [Thread-20] INFO  JOBLOGGER -      4|   inflating: temp/org/apache/commons/collections/primitives/decorators/UnmodifiableLongList.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/BaseUnmodifiableLongList.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/BaseProxyLongList.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/BaseProxyLongCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/UnmodifiableLongListIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/NonSerializableUnmodifiableLongList.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/BaseProxyByteCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/BaseProxyByteList.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/BaseUnmodifiableByteList.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/NonSerializableUnmodif
+00:31:25.792 [Thread-20] INFO  JOBLOGGER -      4| iableByteList.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/ProxyByteIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/ProxyByteListIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/UnmodifiableByteIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/UnmodifiableByteList.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/UnmodifiableByteListIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/BaseProxyShortCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/BaseProxyShortList.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/BaseUnmodifiableShortList.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/NonSerializableUnmodifiableShortList.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorator
+00:31:25.899 [Thread-20] INFO  JOBLOGGER -      4| s/ProxyShortIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/ProxyShortListIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/UnmodifiableShortIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/UnmodifiableShortList.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/UnmodifiableShortListIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/BaseProxyCharCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/BaseProxyCharList.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/NonSerializableUnmodifiableCharList.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/BaseUnmodifiableCharList.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/ProxyCharIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/de
+00:31:26.019 [Thread-20] INFO  JOBLOGGER -      4| corators/ProxyCharListIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/UnmodifiableCharIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/UnmodifiableCharList.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/UnmodifiableCharListIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/BaseProxyDoubleCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/BaseProxyDoubleList.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/BaseUnmodifiableDoubleList.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/NonSerializableUnmodifiableDoubleList.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/BaseProxyFloatCollection.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/ProxyDoubleListIterator.class  
+  inflating: temp/org/apache/commons/co
+00:31:26.133 [Thread-20] INFO  JOBLOGGER -      4| llections/primitives/decorators/ProxyDoubleIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/UnmodifiableDoubleIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/UnmodifiableDoubleList.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/UnmodifiableDoubleListIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/BaseProxyFloatList.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/BaseUnmodifiableFloatList.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/NonSerializableUnmodifiableFloatList.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/ProxyFloatIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/ProxyFloatListIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/UnmodifiableFloatIterator.class  
+  inflating: temp/org/
+00:31:26.248 [Thread-20] INFO  JOBLOGGER -      4| apache/commons/collections/primitives/decorators/UnmodifiableFloatList.class  
+  inflating: temp/org/apache/commons/collections/primitives/decorators/UnmodifiableFloatListIterator.class  
+  inflating: temp/org/apache/commons/collections/primitives/LongCollections.class  
+  inflating: temp/org/apache/commons/collections/primitives/ByteCollections.class  
+  inflating: temp/org/apache/commons/collections/primitives/ShortCollections.class  
+  inflating: temp/org/apache/commons/collections/primitives/CharCollections.class  
+  inflating: temp/org/apache/commons/collections/primitives/DoubleCollections.class  
+  inflating: temp/org/apache/commons/collections/primitives/FloatCollections.class  
+  inflating: temp/META-INF/LICENSE.txt  
+  inflating: temp/META-INF/INDEX.LIST  
+00:31:26.367 [main] INFO  JOBLOGGER - Run: 4 exited with value 0
+00:31:26.488 [main] INFO  JOBLOGGER - About to end the job
+00:31:26.606 [main] INFO  JOBLOGGER - building putVFS
+00:31:26.725 [main] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.PutVFS@899e53
+00:31:26.962 [main] INFO  JOBLOGGER - PutVFS: writing file commons-primitives-1.0.jar to http://localhost:8080/cicstart/api/vfs/filesystem/{owner}/write, owner=1
+00:31:27.220 [main] INFO  JOBLOGGER - About to end the job
+00:31:27.339 [main] INFO  JOBLOGGER - ForEach: Iteration variable now set to commons-transaction-1.2.jar, running commands in loop
+00:31:27.460 [main] INFO  JOBLOGGER - Running commands: run, putVFS
+00:31:27.578 [main] INFO  JOBLOGGER - building run
+00:31:27.703 [main] INFO  JOBLOGGER - running unzip -o commons-transaction-1.2.jar -d temp
+00:31:27.839 [Thread-21] INFO  JOBLOGGER - Run: 'unzip -o commons-transaction-1.2.jar -d temp' output logged with reference 5, timeout set to 1 minutes
+00:31:27.955 [Thread-21] INFO  JOBLOGGER - Run: working directory is: /home/rpotter/workspaces/cicstart/cicstart/.
+00:31:28.073 [Thread-21] INFO  JOBLOGGER -      5| Archive:  commons-transaction-1.2.jar
+  inflating: temp/META-INF/MANIFEST.MF  
+   creating: temp/org/apache/commons/transaction/
+   creating: temp/org/apache/commons/transaction/file/
+   creating: temp/org/apache/commons/transaction/locking/
+   creating: temp/org/apache/commons/transaction/memory/
+   creating: temp/org/apache/commons/transaction/memory/jca/
+   creating: temp/org/apache/commons/transaction/util/
+   creating: temp/org/apache/commons/transaction/util/xa/
+  inflating: temp/META-INF/LICENSE.txt  
+  inflating: temp/META-INF/NOTICE.txt  
+  inflating: temp/org/apache/commons/transaction/file/FileResourceManager$InputStreamWrapper.class  
+  inflating: temp/org/apache/commons/transaction/file/FileResourceManager$TransactionContext.class  
+  inflating: temp/org/apache/commons/transaction/file/FileResourceManager.class  
+  inflating: temp/org/apache/commons/transaction/file/FileSequence.class  
+  inflating: temp/org/apache/commons/transaction/file/JDK14URLEncodeIdMapper.class  
+  inflating: temp/org/apac
+00:31:28.192 [Thread-21] INFO  JOBLOGGER -      5| he/commons/transaction/file/NoOpTransactionIdToPathMapper.class  
+  inflating: temp/org/apache/commons/transaction/file/ResourceIdToPathMapper.class  
+  inflating: temp/org/apache/commons/transaction/file/ResourceManager.class  
+  inflating: temp/org/apache/commons/transaction/file/ResourceManagerErrorCodes.class  
+  inflating: temp/org/apache/commons/transaction/file/ResourceManagerException.class  
+  inflating: temp/org/apache/commons/transaction/file/ResourceManagerSystemException.class  
+  inflating: temp/org/apache/commons/transaction/file/TransactionIdToPathMapper.class  
+  inflating: temp/org/apache/commons/transaction/file/URLEncodeIdMapper.class  
+  inflating: temp/org/apache/commons/transaction/locking/GenericLock$LockOwner.class  
+  inflating: temp/org/apache/commons/transaction/locking/GenericLock.class  
+  inflating: temp/org/apache/commons/transaction/locking/GenericLockManager.class  
+  inflating: temp/org/apache/commons/transaction/locking/LockException.class  
+  inflating: temp/org/apache/com
+00:31:28.310 [Thread-21] INFO  JOBLOGGER -      5| mons/transaction/locking/LockManager.class  
+  inflating: temp/org/apache/commons/transaction/locking/LockManager2.class  
+  inflating: temp/org/apache/commons/transaction/locking/MultiLevelLock.class  
+  inflating: temp/org/apache/commons/transaction/locking/MultiLevelLock2.class  
+  inflating: temp/org/apache/commons/transaction/locking/ReadWriteLock.class  
+  inflating: temp/org/apache/commons/transaction/locking/ReadWriteLockManager.class  
+  inflating: temp/org/apache/commons/transaction/locking/ReadWriteUpgradeLock.class  
+  inflating: temp/org/apache/commons/transaction/locking/ReadWriteUpgradeLockManager.class  
+  inflating: temp/org/apache/commons/transaction/memory/ConflictException.class  
+  inflating: temp/org/apache/commons/transaction/memory/HashMapFactory.class  
+  inflating: temp/org/apache/commons/transaction/memory/HashSetFactory.class  
+  inflating: temp/org/apache/commons/transaction/memory/LockException.class  
+  inflating: temp/org/apache/commons/transaction/memory/MapFactory.class  
+  i
+00:31:28.429 [Thread-21] INFO  JOBLOGGER -      5| nflating: temp/org/apache/commons/transaction/memory/OptimisticMapWrapper$CopyingTxContext.class  
+  inflating: temp/org/apache/commons/transaction/memory/OptimisticMapWrapper.class  
+  inflating: temp/org/apache/commons/transaction/memory/PessimisticMapWrapper$LockingTxContext.class  
+  inflating: temp/org/apache/commons/transaction/memory/PessimisticMapWrapper.class  
+  inflating: temp/org/apache/commons/transaction/memory/SetFactory.class  
+  inflating: temp/org/apache/commons/transaction/memory/TransactionalMapWrapper$HashEntry.class  
+  inflating: temp/org/apache/commons/transaction/memory/TransactionalMapWrapper$TxContext.class  
+  inflating: temp/org/apache/commons/transaction/memory/TransactionalMapWrapper.class  
+  inflating: temp/org/apache/commons/transaction/memory/jca/MapConnection.class  
+  inflating: temp/org/apache/commons/transaction/memory/jca/MapConnectionFactory.class  
+  inflating: temp/org/apache/commons/transaction/memory/jca/MapConnectionSpec.class  
+  inflating: temp/org/apache/common
+00:31:28.542 [Thread-21] INFO  JOBLOGGER -      5| s/transaction/memory/jca/MapLocalTransaction.class  
+  inflating: temp/org/apache/commons/transaction/memory/jca/MapManagedConnection.class  
+  inflating: temp/org/apache/commons/transaction/memory/jca/MapManagedConnectionFactory.class  
+  inflating: temp/org/apache/commons/transaction/memory/jca/MapXAResource$MapTransactionalResource.class  
+  inflating: temp/org/apache/commons/transaction/memory/jca/MapXAResource.class  
+  inflating: temp/org/apache/commons/transaction/memory/jca/MemoryMapResourceManager.class  
+  inflating: temp/org/apache/commons/transaction/util/CommonsLoggingLogger.class  
+  inflating: temp/org/apache/commons/transaction/util/FileHelper.class  
+  inflating: temp/org/apache/commons/transaction/util/Jdk14Logger.class  
+  inflating: temp/org/apache/commons/transaction/util/Log4jLogger.class  
+  inflating: temp/org/apache/commons/transaction/util/LoggerFacade.class  
+  inflating: temp/org/apache/commons/transaction/util/PrintWriterLogger.class  
+  inflating: temp/org/apache/commons/transact
+00:31:28.659 [Thread-21] INFO  JOBLOGGER -      5| ion/util/RendezvousBarrier.class  
+  inflating: temp/org/apache/commons/transaction/util/TurnBarrier.class  
+  inflating: temp/org/apache/commons/transaction/util/xa/AbstractTransactionalResource.class  
+  inflating: temp/org/apache/commons/transaction/util/xa/AbstractXAResource.class  
+  inflating: temp/org/apache/commons/transaction/util/xa/TransactionalResource.class  
+  inflating: temp/org/apache/commons/transaction/util/xa/XidWrapper.class  
+00:31:28.770 [main] INFO  JOBLOGGER - Run: 5 exited with value 0
+00:31:28.876 [main] INFO  JOBLOGGER - About to end the job
+00:31:28.986 [main] INFO  JOBLOGGER - building putVFS
+00:31:29.108 [main] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.PutVFS@17dae59
+00:31:29.342 [main] INFO  JOBLOGGER - PutVFS: writing file commons-transaction-1.2.jar to http://localhost:8080/cicstart/api/vfs/filesystem/{owner}/write, owner=1
+00:31:29.595 [main] INFO  JOBLOGGER - About to end the job
+00:31:29.705 [main] INFO  JOBLOGGER - About to end the job
+00:31:29.815 [main] INFO  JOBLOGGER - About to end the job
+00:31:30.052 [main] INFO  JOBLOGGER - PutVFS: writing file macro.log to http://localhost:8080/cicstart/api/vfs/filesystem/{owner}/write, owner=1
+00:33:12.227 [main] INFO  JOBLOGGER - GetCatalogueFiles: finding data at http://localhost:8080/cicstart/api/catalogue/project/find
+00:33:12.372 [main] INFO  JOBLOGGER - GetCatalogueFiles: search request is CatalogueSearchRequest{project=APACHE1, observatories=, instrument types=, discriminator=null, start=null, end=null}
+00:33:12.521 [main] INFO  JOBLOGGER - GetCatalogueFiles: found url ftp://sunsite.ualberta.ca/pub/Mirror/apache/commons/daemon/binaries/commons-daemon-1.0.15.jar, requesting data download
+00:33:12.699 [main] INFO  JOBLOGGER - GetCatalogueFiles: data not in cache, trying next one
+00:33:12.812 [main] INFO  JOBLOGGER - GetCatalogueFiles: found url ftp://sunsite.ualberta.ca/pub/Mirror/apache/commons/email/binaries/commons-email-1.2.jar, requesting data download
+00:33:12.935 [main] INFO  JOBLOGGER - GetCatalogueFiles: data not in cache, trying next one
+00:33:13.049 [main] INFO  JOBLOGGER - GetCatalogueFiles: found url ftp://sunsite.ualberta.ca/pub/Mirror/apache/commons/primitives/binaries/commons-primitives-1.0.jar, requesting data download
+00:33:13.186 [main] INFO  JOBLOGGER - GetCatalogueFiles: data not in cache, trying next one
+00:33:13.303 [main] INFO  JOBLOGGER - GetCatalogueFiles: found url ftp://sunsite.ualberta.ca/pub/Mirror/apache/commons/transaction/binaries/commons-transaction-1.2.jar, requesting data download
+00:33:13.436 [main] INFO  JOBLOGGER - GetCatalogueFiles: data not in cache, trying next one
+00:33:15.608 [main] INFO  JOBLOGGER - GetCatalogueFiles: file data saved to /home/rpotter/workspaces/cicstart/cicstart/commons-daemon-1.0.15.jar
+00:33:17.789 [main] INFO  JOBLOGGER - GetCatalogueFiles: file data saved to /home/rpotter/workspaces/cicstart/cicstart/commons-email-1.2.jar
+00:33:24.046 [main] INFO  JOBLOGGER - GetCatalogueFiles: file data saved to /home/rpotter/workspaces/cicstart/cicstart/commons-primitives-1.0.jar
+00:33:26.262 [main] INFO  JOBLOGGER - GetCatalogueFiles: file data saved to /home/rpotter/workspaces/cicstart/cicstart/commons-transaction-1.2.jar
+00:33:33.883 [main] INFO  JOBLOGGER - GetCatalogueFiles: finding data at http://localhost:8080/cicstart/api/catalogue/project/find
+00:33:34.001 [main] INFO  JOBLOGGER - GetCatalogueFiles: search request is CatalogueSearchRequest{project=APACHE1, observatories=, instrument types=, discriminator=null, start=null, end=null}
+00:33:34.130 [main] INFO  JOBLOGGER - GetCatalogueFiles: found url ftp://sunsite.ualberta.ca/pub/Mirror/apache/commons/daemon/binaries/commons-daemon-1.0.15.jar, requesting data download
+00:33:34.250 [main] INFO  JOBLOGGER - GetCatalogueFiles: cache hit! Downloading it now.
+00:33:34.358 [main] INFO  JOBLOGGER - GetCatalogueFiles: file data saved to /home/rpotter/workspaces/cicstart/cicstart/commons-daemon-1.0.15.jar
+00:33:34.479 [main] INFO  JOBLOGGER - GetCatalogueFiles: found url ftp://sunsite.ualberta.ca/pub/Mirror/apache/commons/email/binaries/commons-email-1.2.jar, requesting data download
+00:33:34.610 [main] INFO  JOBLOGGER - GetCatalogueFiles: cache hit! Downloading it now.
+00:33:34.717 [main] INFO  JOBLOGGER - GetCatalogueFiles: file data saved to /home/rpotter/workspaces/cicstart/cicstart/commons-email-1.2.jar
+00:33:34.835 [main] INFO  JOBLOGGER - GetCatalogueFiles: found url ftp://sunsite.ualberta.ca/pub/Mirror/apache/commons/primitives/binaries/commons-primitives-1.0.jar, requesting data download
+00:33:34.951 [main] INFO  JOBLOGGER - GetCatalogueFiles: cache hit! Downloading it now.
+00:33:35.060 [main] INFO  JOBLOGGER - GetCatalogueFiles: file data saved to /home/rpotter/workspaces/cicstart/cicstart/commons-primitives-1.0.jar
+00:33:35.175 [main] INFO  JOBLOGGER - GetCatalogueFiles: found url ftp://sunsite.ualberta.ca/pub/Mirror/apache/commons/transaction/binaries/commons-transaction-1.2.jar, requesting data download
+00:33:35.303 [main] INFO  JOBLOGGER - GetCatalogueFiles: cache hit! Downloading it now.
+00:33:35.417 [main] INFO  JOBLOGGER - GetCatalogueFiles: file data saved to /home/rpotter/workspaces/cicstart/cicstart/commons-transaction-1.2.jar
+00:33:35.734 [main] INFO  JOBLOGGER - PutVFS: writing file build.gradle to http://localhost:8080/cicstart/api/vfs/filesystem/{owner}/write, owner=1
+00:33:45.198 [Thread-32] INFO  JOBLOGGER - Run: './run' output logged with reference 1, timeout set to 1 minutes
+00:33:45.316 [Thread-32] INFO  JOBLOGGER - Run: working directory is: /tmp/1378881221344-0/bin
+00:33:45.551 [Thread-32] INFO  JOBLOGGER -      1| 00:33:45.546 [main] INFO  c.u.physics.cicstart.macro.MainClass - Loading property overrides from application.properties
+00:33:45.711 [Thread-32] INFO  JOBLOGGER -      1| Properties for component: fileserver
+..... file.cache.root=/home/rpotter/cssdp/file_cache
+..... file.cache.storeUncompressedFiles=true
+Properties for component: macroserver
+..... DAIR.authUrl=http://208.75.74.10:5000/v2.0
+..... DAIR.implementation=ca.ualberta.physics.cicstart.macro.service.OpenStackCloud
+..... DAIR.nova=http://208.75.74.10:8774/v2
+..... cicstart.pemfile=-hidden-
+..... cicstart.public.key=ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQDI9bEqF4QE5fIWQ0Q9T0ye8qCLq5FeUIMh2GmhOfO+EEYeVSdAsOQrfwJa81htMZfMS3VoqhI+pUT3MP8lv7qHuTox0Xjh8nN5qhAg4NBoaltcwrWHrxsmCBBTP3YYa0OwtN984VcANlOzuBnj6Hjmdm7XqYbrXnVHhviP+g+Z0Q== Generated by Nova
+
+..... cicstart.server.external=208.75.74.81
+..... cicstart.server.internal=10.0.28.3
+..... cicstart.test.openstack.password=*********** (password filtered from casual observation)
+..... cicstart.test.openstack.username=-hidden-
+..... clouds=DAIR
+..... isServer=false
+..... macro.client.build.dir=/home/rpotter/workspaces/cicstart/build/
+..... macro.client.dir=/home/rpotter/workspaces
+00:33:45.911 [Thread-32] INFO  JOBLOGGER -      1| /cicstart/cicstart/build/distributions/cicstart-1.0
+Properties for component: authserver
+..... passwordResetUrl=*********** (password filtered from casual observation)
+..... smtpDebug=true
+..... smtpHost=smtp.gmail.com
+..... smtpPassword=
+..... smtpPort=465
+..... smtpUseSSL=true
+..... smtpUsername=
+..... supportUrl=https://github.com/RoddiPotter/cicstart/wiki/Support
+..... systemEmailAddress=potter.rod@gmail.com
+Properties for component: common
+..... api.url=http://localhost:8080/cicstart/api
+..... auth.api.version=1.0
+..... bonecp.acquireIncrement=10
+..... bonecp.idleConnectionTestPeriod=60
+..... bonecp.idleMaxAge=240
+..... bonecp.maxConnectionAge=0
+..... bonecp.maxConnectionsPerPartition=30
+..... bonecp.minConnectionsPerPartition=20
+..... bonecp.partitionCount=3
+..... bonecp.releaseHelperThreads=3
+..... bonecp.statementsCacheSize=50
+..... catalogue.api.version=1.0
+..... doc.url=http://localhost:8080/cicstart/docs
+..... external.api.url=http://localhost:8080/cicstart/api
+..... file.api.version=1.0
+..... hibe
+00:33:46.070 [Thread-32] INFO  JOBLOGGER -      1| rnate.connection.autocommit=false
+..... hibernate.connection.driver_class=org.postgresql.Driver
+..... hibernate.connection.password=*********** (password filtered from casual observation)
+..... hibernate.connection.provider_class=com.jolbox.bonecp.provider.BoneCPConnectionProvider
+..... hibernate.connection.url=-hidden-
+..... hibernate.connection.username=-hidden-
+..... hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+..... hibernate.jdbc.batch_size=100
+..... hibernate.transaction.flush_before_completion=false
+..... logback.configuration=logback.xml
+..... macro.api.version=1.0
+..... vfs.api.version=1.0
+Properties for component: catalogueserver
+Properties for component: vfsserver
+..... default_user_quota=10737418240
+..... ftpPort=2121
+..... isServer=true
+..... pemKeyFile=/home/rpotter/cssdp/cssdp-vfs.pem
+..... sftpPort=2222
+..... vfs_root=/home/rpotter/cssdp/vfs
+Overriding logback.xml found on classpath and configuring logback from file /tmp/1378881221344-0/bin/logback.xml
+00:33:48.031 [Thread-32] INFO  JOBLOGGER -      1| 00:33:46.365 [pool-2-thread-1] INFO  JOBLOGGER - Running commands: on[run]
+00:33:48.165 [Thread-32] INFO  JOBLOGGER -      1| 00:33:48.030 [pool-2-thread-1] INFO  JOBLOGGER - building on[run]
+00:33:48.287 [Thread-32] INFO  JOBLOGGER -      1| 00:33:48.168 [pool-2-thread-1] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.On@41b635
+00:33:48.425 [Thread-32] INFO  JOBLOGGER -      1| 00:33:48.298 [pool-2-thread-1] INFO  JOBLOGGER - This is try # 0 of 10
+00:33:48.633 [Thread-32] INFO  JOBLOGGER -      1| 00:33:48.521 [pool-2-thread-1] INFO  JOBLOGGER - On: running commands on 127.0.0.1
+00:33:48.756 [Thread-32] INFO  JOBLOGGER -      1| 00:33:48.634 [pool-2-thread-1] INFO  JOBLOGGER - Running commands: run
+00:33:48.880 [Thread-32] INFO  JOBLOGGER -      1| 00:33:48.756 [pool-2-thread-1] INFO  JOBLOGGER - building run
+00:33:49.018 [Thread-32] INFO  JOBLOGGER -      1| 00:33:48.882 [pool-2-thread-1] INFO  JOBLOGGER - running date
+00:33:49.145 [Thread-32] INFO  JOBLOGGER -      1| 00:33:49.027 [Thread-1] INFO  JOBLOGGER - Run: 'date' output logged with reference 1, timeout set to 1 minutes
+00:33:49.258 [Thread-32] INFO  JOBLOGGER -      1| 00:33:49.145 [Thread-1] INFO  JOBLOGGER - Run: working directory is: /tmp/1378881221344-0/bin/.
+00:33:49.379 [Thread-32] INFO  JOBLOGGER -      1| 00:33:49.257 [Thread-1] INFO  JOBLOGGER -      1| Wed Sep 11 00:33:49 MDT 2013
+00:33:49.492 [Thread-32] INFO  JOBLOGGER -      1| 00:33:49.373 [pool-2-thread-1] INFO  JOBLOGGER - Run: 1 exited with value 0
+00:33:49.619 [Thread-32] INFO  JOBLOGGER -      1| 00:33:49.490 [pool-2-thread-1] INFO  JOBLOGGER - About to end the job
+00:33:49.730 [Thread-32] INFO  JOBLOGGER -      1| 00:33:49.611 [pool-2-thread-1] INFO  JOBLOGGER - About to end the job
+done.
+00:33:49.838 [main] INFO  JOBLOGGER - Run: 1 exited with value 0
+00:33:50.137 [main] INFO  JOBLOGGER - ForEach: Iterating over 3 items
+00:33:50.252 [Thread-33] INFO  JOBLOGGER - ForEach: Iteration variable now set to 1, running commands in loop
+00:33:50.252 [Thread-34] INFO  JOBLOGGER - ForEach: Iteration variable now set to 2, running commands in loop
+00:33:50.252 [Thread-35] INFO  JOBLOGGER - ForEach: Iteration variable now set to 3, running commands in loop
+00:33:50.367 [Thread-33] INFO  JOBLOGGER - Running commands: debug, debug
+00:33:50.371 [Thread-34] INFO  JOBLOGGER - Running commands: debug, debug
+00:33:50.376 [Thread-35] INFO  JOBLOGGER - Running commands: debug, debug
+00:33:50.484 [Thread-35] INFO  JOBLOGGER - building debug
+00:33:50.487 [Thread-34] INFO  JOBLOGGER - building debug
+00:33:50.490 [Thread-33] INFO  JOBLOGGER - building debug
+00:33:50.600 [Thread-34] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@1d248b4
+00:33:50.600 [Thread-33] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@a34435
+00:33:50.601 [Thread-35] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@d30557
+00:33:50.731 [Thread-35] INFO  JOBLOGGER - About to end the job
+00:33:50.731 [Thread-33] INFO  JOBLOGGER - About to end the job
+00:33:50.731 [Thread-34] INFO  JOBLOGGER - About to end the job
+00:33:50.848 [Thread-33] INFO  JOBLOGGER - building debug
+00:33:50.849 [Thread-34] INFO  JOBLOGGER - building debug
+00:33:50.851 [Thread-35] INFO  JOBLOGGER - building debug
+00:33:50.958 [Thread-35] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@cc52fc
+00:33:50.962 [Thread-33] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@9292cb
+00:33:50.967 [Thread-34] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@1daa156
+00:33:51.073 [Thread-33] INFO  JOBLOGGER - About to end the job
+00:33:51.077 [Thread-35] INFO  JOBLOGGER - About to end the job
+00:33:51.079 [Thread-34] INFO  JOBLOGGER - About to end the job
+00:33:51.207 [main] INFO  JOBLOGGER - ForEach: Iterating over 3 items
+00:33:51.317 [main] INFO  JOBLOGGER - ForEach: Iteration variable now set to 1, running commands in loop
+00:33:51.423 [main] INFO  JOBLOGGER - Running commands: debug, debug
+00:33:51.529 [main] INFO  JOBLOGGER - building debug
+00:33:51.641 [main] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@c2adcb
+00:33:51.749 [main] INFO  JOBLOGGER - About to end the job
+00:33:51.869 [main] INFO  JOBLOGGER - building debug
+00:33:51.985 [main] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@24e11c
+00:33:52.099 [main] INFO  JOBLOGGER - About to end the job
+00:33:52.214 [main] INFO  JOBLOGGER - ForEach: Iteration variable now set to 2, running commands in loop
+00:33:52.336 [main] INFO  JOBLOGGER - Running commands: debug, debug
+00:33:52.453 [main] INFO  JOBLOGGER - building debug
+00:33:52.571 [main] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@4ca30b
+00:33:52.684 [main] INFO  JOBLOGGER - About to end the job
+00:33:52.803 [main] INFO  JOBLOGGER - building debug
+00:33:52.913 [main] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@13dbe08
+00:33:53.034 [main] INFO  JOBLOGGER - About to end the job
+00:33:53.173 [main] INFO  JOBLOGGER - ForEach: Iteration variable now set to 3, running commands in loop
+00:33:53.284 [main] INFO  JOBLOGGER - Running commands: debug, debug
+00:33:53.405 [main] INFO  JOBLOGGER - building debug
+00:33:53.523 [main] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@4a9dcd
+00:33:53.633 [main] INFO  JOBLOGGER - About to end the job
+00:33:53.750 [main] INFO  JOBLOGGER - building debug
+00:33:53.862 [main] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.DebugCmd@1cad3a6
+00:33:53.980 [main] INFO  JOBLOGGER - About to end the job
+00:34:02.635 [main] INFO  JOBLOGGER - GetVFS: locating whois for session var at http://localhost:8080/cicstart/api/auth/session/{session}/whois
+00:34:02.865 [main] INFO  JOBLOGGER - GetVFS: read file data from http://localhost:8080/cicstart/api/vfs/filesystem/1/read?path={file}, file=maccs.test
+00:34:03.118 [main] INFO  JOBLOGGER - GetVFS: read success, data saved to /home/rpotter/workspaces/cicstart/cicstart/maccs.test
+00:34:03.354 [pool-9-thread-1] INFO  JOBLOGGER - Running commands: on[run]
+00:34:03.465 [pool-9-thread-1] INFO  JOBLOGGER - building on[run]
+00:34:03.572 [pool-9-thread-1] INFO  JOBLOGGER - running ca.ualberta.physics.cicstart.cml.command.On@b51c2d
+00:34:03.686 [pool-9-thread-1] INFO  JOBLOGGER - This is try # 0 of 10
+00:34:03.899 [pool-9-thread-1] INFO  JOBLOGGER - On: running commands on 127.0.0.1
+00:34:04.005 [pool-9-thread-1] INFO  JOBLOGGER - Running commands: run
+00:34:04.120 [pool-9-thread-1] INFO  JOBLOGGER - building run
+00:34:04.237 [pool-9-thread-1] INFO  JOBLOGGER - running date
+00:34:04.373 [Thread-43] INFO  JOBLOGGER - Run: 'date' output logged with reference 6, timeout set to 1 minutes
+00:34:04.493 [Thread-43] INFO  JOBLOGGER - Run: working directory is: /home/rpotter/workspaces/cicstart/cicstart/.
+00:34:04.602 [Thread-43] INFO  JOBLOGGER -      6| Wed Sep 11 00:34:04 MDT 2013
+00:34:04.709 [pool-9-thread-1] INFO  JOBLOGGER - Run: 6 exited with value 0
+00:34:04.820 [pool-9-thread-1] INFO  JOBLOGGER - About to end the job
+00:34:04.935 [pool-9-thread-1] INFO  JOBLOGGER - About to end the job
+00:34:05.073 [Thread-44] INFO  JOBLOGGER - Run: 'ls -l' output logged with reference 7, timeout set to 1 minutes
+00:34:05.190 [Thread-44] INFO  JOBLOGGER - Run: working directory is: /home/rpotter/workspaces/cicstart/cicstart/.
+00:34:05.305 [Thread-44] INFO  JOBLOGGER -      7| total 932
+drwxr-xr-x 4 rpotter rpotter   4096 2013-09-10 22:18 bin
+drwxr-xr-x 9 rpotter rpotter   4096 2013-09-11 00:29 build
+-rw-r--r-- 1 rpotter rpotter   3188 2013-09-10 22:17 build.gradle
+-rw-r--r-- 1 rpotter rpotter   1476 2013-03-10 22:48 cssdp-vfs-cert.pem
+-rw-r--r-- 1 rpotter rpotter   1675 2013-03-10 22:48 cssdp-vfs.key
+-rw-r--r-- 1 rpotter rpotter   1675 2013-03-10 22:48 cssdp-vfs.pem
+-rw-r--r-- 1 rpotter rpotter 913578 2013-09-11 00:34 macro.log
+drwxr-xr-x 4 rpotter rpotter   4096 2013-08-31 23:40 src
+drwxr-xr-x 4 rpotter rpotter   4096 2013-09-11 00:31 temp
+00:34:05.434 [main] INFO  JOBLOGGER - Run: 7 exited with value 0
+00:34:05.570 [Thread-45] INFO  JOBLOGGER - Run: 'gradle build -x test' output logged with reference 8, timeout set to 1 minutes
+00:34:05.691 [Thread-45] INFO  JOBLOGGER - Run: working directory is: /home/rpotter/workspaces/cicstart/cicstart/.
+00:34:12.160 [Thread-45] INFO  JOBLOGGER -      8| :cicstart:compileJava
+00:34:14.803 [Thread-45] INFO  JOBLOGGER -      8| UP-TO-DATE
+00:34:14.917 [Thread-45] INFO  JOBLOGGER -      8| :cicstart:processResources UP-TO-DATE
+:cicstart:classes UP-TO-DATE
+:cicstart:war
+00:34:22.920 [Thread-45] INFO  JOBLOGGER -      8| :cicstart:assemble
+00:34:23.032 [Thread-45] INFO  JOBLOGGER -      8| 
+:cicstart:check
+:cicstart:build
+
+BUILD SUCCESSFUL
+
+Total time: 16.924 secs
+00:34:23.149 [main] INFO  JOBLOGGER - Run: 8 exited with value 0
+00:34:23.294 [Thread-46] INFO  JOBLOGGER - Run: 'cat build.gradle' output logged with reference 9, timeout set to 1 minutes
+00:34:23.414 [Thread-46] INFO  JOBLOGGER - Run: working directory is: /home/rpotter/workspaces/cicstart/cicstart/.
+00:34:23.519 [Thread-46] INFO  JOBLOGGER -      9| apply plugin: 'eclipse'
+apply plugin: 'war';
+apply plugin: 'application'
+
+mainClassName = "ca.ualberta.physics.cicstart.macro.MainClass"
+
+group = 'ca.ualberta.physics.cssdp'
+version = '1.0'
+
+sourceCompatibility=1.6
+targetCompatibility=1.6
+
+repositories {
+	mavenCentral()
+}
+
+task copyResources(type:Copy) {
+	from('src/main/java') {
+	   include '**/*.properties'
+	   include '**/*.ftl'
+	   include '**/logback.template';
+	}
+	into('build/classes/main')
+}
+
+jar.dependsOn copyResources
+
+war {
+	from('src/main/java') {
+	   include '**/*.properties' into ('WEB-INF/classes')
+	   include '**/*.ftl' into ('WEB-INF/classes')
+	   include '**/logback.template' into ('WEB-INF/classes')
+	}
+	// remove classes from the classpath
+	classpath = configurations.runtime
+
+	// add them in explicitly, with the filtering applied
+	webInf {
+		into('classes') {
+			from sourceSets.main.output
+			exclude '**/logback.xml'
+		}
+	}
+}
+
+dependencies {
+	compile "org.slf4j:slf4j-api:1.7.2"
+	compile "ch.qos.logback:logback-classic:1.0.9"
+	compile "com.goo
+00:34:23.625 [Thread-46] INFO  JOBLOGGER -      9| gle.guava:guava:14.0"
+	compile "com.google.inject:guice:3.0"
+	compile "joda-time:joda-time:2.2"
+	
+	compile "org.hibernate:hibernate-entitymanager:4.2.5.Final"
+	compile "com.jolbox:bonecp:0.8.0-rc1"
+	compile "com.jolbox:bonecp-jdk-compat:0.8.0-rc1"
+	compile "com.jolbox:bonecp-provider:0.8.0-alpha1"
+	compile "postgresql:postgresql:9.1-901.jdbc4"
+
+	compile "org.apache.commons:commons-email:1.2"
+	compile "org.apache.commons:commons-compress:1.5"
+	compile "commons-codec:commons-codec:1.6"
+	compile "org.freemarker:freemarker:2.3.19"
+
+	// compile "com.wordnik:swagger-core_2.9.1:1.2.1"
+	// compile("com.wordnik:swagger-jaxrs_2.9.1:1.2.1"){
+    //		exclude group: 'com.sun.jersey'
+	//	exclude group: 'com.sun.jersey.contribs'
+	// }
+	compile "com.wordnik:swagger-jersey-jaxrs_2.10:1.3.0"
+
+
+	// latest 1.17.1 is broken near @formdataparam
+	compile "com.sun.jersey:jersey-core:1.13"
+	compile "com.sun.jersey:jersey-server:1.13"
+	compile "com.sun.jersey:jersey-servlet:1.13"
+	compile "com.sun.jersey.contribs:jersey-multipart:1.13
+00:34:23.742 [Thread-46] INFO  JOBLOGGER -      9| "
+
+	compile "com.fasterxml.jackson.core:jackson-core:2.1.4"
+	compile "com.fasterxml.jackson.core:jackson-databind:2.1.4"
+	compile "com.fasterxml.jackson.core:jackson-annotations:2.1.4"
+	compile "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.1.4"
+
+	compile "org.beanshell:bsh:2.0b5"
+	compile "org.bouncycastle:bcprov-jdk16:1.46"
+	compile "net.schmizz:sshj:0.8.1"
+	// see https://issues.apache.org/jira/browse/NET-465 change to 3.3 when released
+	compile "commons-net:commons-net:3.1"
+
+	// keep apache-sshd at 0.7.0 until this bug is fixed: https://issues.apache.org/jira/browse/FTPSERVER-437
+	compile "org.apache.ftpserver:ftpserver-core:1.0.6"
+	compile("org.apache.sshd:apache-sshd:0.7.0") {
+		exclude group: 'org.slf4j'
+	}
+	compile "javax.servlet:javax.servlet-api:3.0.1"
+	compile "com.jayway.restassured:rest-assured:1.7.2"
+	
+	compile "org.antlr:antlr4-runtime:4.0"
+		
+	testCompile "junit:junit:4.+"
+	testCompile files ('../database/db-migrator-0.5.jar')
+	testCompile "com.h2database:h2:1.3.171"
+	testCompile "
+00:34:23.851 [Thread-46] INFO  JOBLOGGER -      9| org.eclipse.jetty:jetty-webapp:8.0.4.v20111024"
+	testCompile "org.eclipse.jetty:jetty-servlets:8.0.4.v20111024"
+}
+
+00:34:24.358 [main] INFO  JOBLOGGER - Run: 9 exited with value 0
+00:34:24.494 [Thread-57] INFO  JOBLOGGER - Run: 'grep plugin build.gradle' output logged with reference 10, timeout set to 1 minutes
+00:34:24.614 [Thread-57] INFO  JOBLOGGER - Run: working directory is: /home/rpotter/workspaces/cicstart/cicstart/.
+00:34:24.724 [Thread-57] INFO  JOBLOGGER -      10| apply plugin: 'eclipse'
+apply plugin: 'war';
+apply plugin: 'application'
+00:34:24.841 [main] INFO  JOBLOGGER - Run: 10 exited with value 0
+00:34:24.985 [Thread-58] INFO  JOBLOGGER - Run: 'grep "plugin: 'war'" build.gradle' output logged with reference 11, timeout set to 1 minutes
+00:34:25.107 [Thread-58] INFO  JOBLOGGER - Run: working directory is: /home/rpotter/workspaces/cicstart/cicstart/.
+00:34:25.222 [Thread-58] INFO  JOBLOGGER -      11| apply plugin: 'war';
+00:34:25.336 [main] INFO  JOBLOGGER - Run: 11 exited with value 0
+00:34:25.471 [Thread-59] INFO  JOBLOGGER - Run: 'cat build.gradle' output logged with reference 12, timeout set to 1 minutes
+00:34:25.589 [Thread-59] INFO  JOBLOGGER - Run: working directory is: /home/rpotter/workspaces/cicstart/cicstart/.
+00:34:25.698 [Thread-59] INFO  JOBLOGGER -      12| apply plugin: 'eclipse'
+apply plugin: 'war';
+apply plugin: 'application'
+
+mainClassName = "ca.ualberta.physics.cicstart.macro.MainClass"
+
+group = 'ca.ualberta.physics.cssdp'
+version = '1.0'
+
+sourceCompatibility=1.6
+targetCompatibility=1.6
+
+repositories {
+	mavenCentral()
+}
+
+task copyResources(type:Copy) {
+	from('src/main/java') {
+	   include '**/*.properties'
+	   include '**/*.ftl'
+	   include '**/logback.template';
+	}
+	into('build/classes/main')
+}
+
+jar.dependsOn copyResources
+
+war {
+	from('src/main/java') {
+	   include '**/*.properties' into ('WEB-INF/classes')
+	   include '**/*.ftl' into ('WEB-INF/classes')
+	   include '**/logback.template' into ('WEB-INF/classes')
+	}
+	// remove classes from the classpath
+	classpath = configurations.runtime
+
+	// add them in explicitly, with the filtering applied
+	webInf {
+		into('classes') {
+			from sourceSets.main.output
+			exclude '**/logback.xml'
+		}
+	}
+}
+
+dependencies {
+	compile "org.slf4j:slf4j-api:1.7.2"
+	compile "ch.qos.logback:logback-classic:1.0.9"
+	compile "com.goo
+00:34:25.809 [Thread-59] INFO  JOBLOGGER -      12| gle.guava:guava:14.0"
+	compile "com.google.inject:guice:3.0"
+	compile "joda-time:joda-time:2.2"
+	
+	compile "org.hibernate:hibernate-entitymanager:4.2.5.Final"
+	compile "com.jolbox:bonecp:0.8.0-rc1"
+	compile "com.jolbox:bonecp-jdk-compat:0.8.0-rc1"
+	compile "com.jolbox:bonecp-provider:0.8.0-alpha1"
+	compile "postgresql:postgresql:9.1-901.jdbc4"
+
+	compile "org.apache.commons:commons-email:1.2"
+	compile "org.apache.commons:commons-compress:1.5"
+	compile "commons-codec:commons-codec:1.6"
+	compile "org.freemarker:freemarker:2.3.19"
+
+	// compile "com.wordnik:swagger-core_2.9.1:1.2.1"
+	// compile("com.wordnik:swagger-jaxrs_2.9.1:1.2.1"){
+    //		exclude group: 'com.sun.jersey'
+	//	exclude group: 'com.sun.jersey.contribs'
+	// }
+	compile "com.wordnik:swagger-jersey-jaxrs_2.10:1.3.0"
+
+
+	// latest 1.17.1 is broken near @formdataparam
+	compile "com.sun.jersey:jersey-core:1.13"
+	compile "com.sun.jersey:jersey-server:1.13"
+	compile "com.sun.jersey:jersey-servlet:1.13"
+	compile "com.sun.jersey.contribs:jersey-multipart:1.13
+00:34:25.923 [Thread-59] INFO  JOBLOGGER -      12| "
+
+	compile "com.fasterxml.jackson.core:jackson-core:2.1.4"
+	compile "com.fasterxml.jackson.core:jackson-databind:2.1.4"
+	compile "com.fasterxml.jackson.core:jackson-annotations:2.1.4"
+	compile "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.1.4"
+
+	compile "org.beanshell:bsh:2.0b5"
+	compile "org.bouncycastle:bcprov-jdk16:1.46"
+	compile "net.schmizz:sshj:0.8.1"
+	// see https://issues.apache.org/jira/browse/NET-465 change to 3.3 when released
+	compile "commons-net:commons-net:3.1"
+
+	// keep apache-sshd at 0.7.0 until this bug is fixed: https://issues.apache.org/jira/browse/FTPSERVER-437
+	compile "org.apache.ftpserver:ftpserver-core:1.0.6"
+	compile("org.apache.sshd:apache-sshd:0.7.0") {
+		exclude group: 'org.slf4j'
+	}
+	compile "javax.servlet:javax.servlet-api:3.0.1"
+	compile "com.jayway.restassured:rest-assured:1.7.2"
+	
+	compile "org.antlr:antlr4-runtime:4.0"
+		
+	testCompile "junit:junit:4.+"
+	testCompile files ('../database/db-migrator-0.5.jar')
+	testCompile "com.h2database:h2:1.3.171"
+	testCompile "
+00:34:26.044 [Thread-59] INFO  JOBLOGGER -      12| org.eclipse.jetty:jetty-webapp:8.0.4.v20111024"
+	testCompile "org.eclipse.jetty:jetty-servlets:8.0.4.v20111024"
+}
+
+00:34:26.160 [main] INFO  JOBLOGGER - Run: 12 exited with value 0
+00:34:26.306 [Thread-60] INFO  JOBLOGGER - Run: 'wc -l build.gradle' output logged with reference 13, timeout set to 2 minutes
+00:34:26.419 [Thread-60] INFO  JOBLOGGER - Run: working directory is: /home/rpotter/workspaces/cicstart/cicstart/.
+00:34:26.534 [Thread-60] INFO  JOBLOGGER -      13| 106 build.gradle
+00:34:26.655 [main] INFO  JOBLOGGER - Run: 13 exited with value 0

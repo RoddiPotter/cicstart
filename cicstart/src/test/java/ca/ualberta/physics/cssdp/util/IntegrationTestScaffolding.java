@@ -32,6 +32,7 @@ import ca.ualberta.physics.cicstart.macro.configuration.MacroServer;
 import ca.ualberta.physics.cssdp.configuration.ApplicationProperties;
 import ca.ualberta.physics.cssdp.configuration.Common;
 import ca.ualberta.physics.cssdp.configuration.JSONObjectMapperProvider;
+import ca.ualberta.physics.cssdp.configuration.ResourceUrls;
 import ca.ualberta.physics.cssdp.dao.EntityManagerInterceptor;
 import ca.ualberta.physics.cssdp.domain.auth.User;
 import ca.ualberta.physics.cssdp.domain.auth.User.Role;
@@ -118,7 +119,7 @@ public abstract class IntegrationTestScaffolding {
 			WebAppContext context = new WebAppContext();
 			context.setDescriptor("src/main/webapp/WEB-INF/web.xml");
 			context.setResourceBase("src/main/webapp");
-			context.setContextPath("/");
+			context.setContextPath("/cicstart");
 			context.setParentLoaderPriority(true);
 
 			server.setHandler(context);
@@ -137,10 +138,6 @@ public abstract class IntegrationTestScaffolding {
 	}
 
 	protected abstract String getComponetContext();
-
-	protected String baseUrl() {
-		return "/api" + getComponetContext();
-	}
 
 	protected User setupDataManager() {
 
@@ -180,9 +177,9 @@ public abstract class IntegrationTestScaffolding {
 	 * @return
 	 */
 	protected String login(String username, String password) {
-		String authUrl = Common.properties().getString("api.url") + "/auth";
+//		String authUrl = Common.properties().getString("api.url") + "/auth";
 		return given().formParam("username", username)
 				.formParam("password", password)
-				.post(authUrl + "/session.json").asString();
+				.post(ResourceUrls.SESSION).asString();
 	}
 }

@@ -26,6 +26,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ca.ualberta.physics.cssdp.configuration.ResourceUrls;
 import ca.ualberta.physics.cssdp.domain.auth.User;
 import ca.ualberta.physics.cssdp.domain.file.DirectoryListing;
 import ca.ualberta.physics.cssdp.domain.file.Host;
@@ -64,17 +65,16 @@ public class HostResourceTest extends FileTestsScaffolding {
 				.statusCode(201)
 				.and()
 				.header("location",
-						"http://localhost:8080" + baseUrl()
-								+ "/host.json/hostname").when()
-				.post(baseUrl() + "/host.json");
+						ResourceUrls.HOST + "/hostname").when()
+				.post(ResourceUrls.HOST);
 
-		Host created = get(baseUrl() + "/host.json/hostname").as(Host.class);
+		Host created = get(ResourceUrls.HOST + "/hostname").as(Host.class);
 
 		Assert.assertTrue(created.getId() > 0);
 		Assert.assertEquals("hostname", created.getHostname());
 		Assert.assertEquals(Protocol.file, created.getProtocol());
-		Assert.assertEquals("******", created.getPassword());
-		Assert.assertEquals("******", created.getUsername());
+		Assert.assertEquals("password", created.getPassword());
+		Assert.assertEquals("username", created.getUsername());
 
 	}
 
@@ -99,15 +99,14 @@ public class HostResourceTest extends FileTestsScaffolding {
 				.statusCode(201)
 				.and()
 				.header("location",
-						"http://localhost:8080" + baseUrl()
-								+ "/host.json/delete").when()
-				.post(baseUrl() + "/host.json");
+						ResourceUrls.HOST + "/delete").when()
+				.post(ResourceUrls.HOST);
 
 		given().header("CICSTART.session", session).expect().statusCode(200)
-				.when().delete(baseUrl() + "/host.json/delete");
+				.when().delete(ResourceUrls.HOST + "/delete");
 
 		given().header("CICSTART.session", session).expect().statusCode(404)
-				.when().get(baseUrl() + "/host.json/delete");
+				.when().get(ResourceUrls.HOST + "/delete");
 
 	}
 
@@ -136,9 +135,8 @@ public class HostResourceTest extends FileTestsScaffolding {
 				.statusCode(201)
 				.and()
 				.header("location",
-						"http://localhost:8080" + baseUrl()
-								+ "/host.json/localhost2").when()
-				.post(baseUrl() + "/host.json");
+						ResourceUrls.HOST + "/localhost2").when()
+				.post(ResourceUrls.HOST);
 
 		System.out.println(res.asString());
 
@@ -147,8 +145,7 @@ public class HostResourceTest extends FileTestsScaffolding {
 				.expect()
 				.statusCode(200)
 				.when()
-				.get(baseUrl()
-						+ "/host.json/localhost2/ls?path=/home/rpotter&depth=2");
+				.get(ResourceUrls.HOST + "/localhost2/ls?path=/home/rpotter&depth=2");
 
 		/*
 		 * RestAssured sucks at deserializing json... so it's best to access the
@@ -199,18 +196,15 @@ public class HostResourceTest extends FileTestsScaffolding {
 				.contentType("application/json")
 				.and()
 				.header("location",
-						"http://localhost:8080" + baseUrl()
-								+ "/host.json/sunsite.ualberta.ca").when()
-				.post(baseUrl() + "/host.json");
+						ResourceUrls.HOST + "/sunsite.ualberta.ca").when()
+				.post(ResourceUrls.HOST);
 
 		Response res = given()
 				.header("CICSTART.session", session)
 				.expect()
 				.statusCode(200)
 				.when()
-				.get("http://localhost:8080"
-						+ baseUrl()
-						+ "/host.json/sunsite.ualberta.ca/ls?path=/pub/Mirror/apache/commons/daemon&depth=5");
+				.get(ResourceUrls.HOST + "/sunsite.ualberta.ca/ls?path=/pub/Mirror/apache/commons/daemon&depth=5");
 
 		/*
 		 * RestAssured sucks at deserializing json... so it's best to access the
@@ -268,17 +262,15 @@ public class HostResourceTest extends FileTestsScaffolding {
 				.statusCode(201)
 				.and()
 				.header("location",
-						"http://localhost:8080" + baseUrl()
-								+ "/host.json/localhost1").when()
-				.post(baseUrl() + "/host.json");
+						ResourceUrls.HOST + "/localhost1").when()
+				.post(ResourceUrls.HOST);
 
 		Response res = given()
 				.header("CICSTART.session", session)
 				.expect()
 				.statusCode(200)
 				.when()
-				.get("http://localhost:8080" + baseUrl()
-						+ "/host.json/localhost1/ls?path=/home/rpotter&depth=0");
+				.get(ResourceUrls.HOST + "/localhost1/ls?path=/home/rpotter&depth=0");
 
 		/*
 		 * RestAssured sucks at deserializing json... so it's best to access the

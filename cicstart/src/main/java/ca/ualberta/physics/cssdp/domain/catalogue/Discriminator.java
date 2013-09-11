@@ -41,10 +41,10 @@ import ca.ualberta.physics.cssdp.util.JSONMnemonicSerializer;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.wordnik.swagger.annotations.ApiClass;
-import com.wordnik.swagger.annotations.ApiProperty;
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiModelProperty;
 
-@ApiClass(value = "An arbitratory identifier to make one Data Product "
+@Api(value = "An arbitratory identifier to make one Data Product "
 		+ "unique from another within a Project that would otherwise be "
 		+ "the same if described by Observatories and Instrument Types alone.")
 @XmlRootElement
@@ -62,14 +62,14 @@ public class Discriminator extends Persistent {
 
 	@JsonSerialize(using = JSONMnemonicSerializer.class)
 	@JsonDeserialize(using = JSONMnemonicDeserializer.class)
-	@ApiProperty(required = true, value = "The external key for lookup of this Discriminator", dataType = "Mnemonic")
+	@ApiModelProperty(required = true, value = "The external key for lookup of this Discriminator", dataType = "Mnemonic")
 	@XmlAttribute
 	@XmlJavaTypeAdapter(MnemonicAdapter.class)
 	@Column(name = "ext_key", length = 50, nullable = false)
 	@Type(type = "ca.ualberta.physics.cssdp.dao.MnemonicType")
 	private Mnemonic externalKey;
 
-	@ApiProperty(required = false, value = "A description of this Discriminator.  Max length 1024.")
+	@ApiModelProperty(required = false, value = "A description of this Discriminator.  Max length 1024.")
 	@XmlElement
 	@Column(name = "description", length = 1024, nullable = true)
 	private String description;

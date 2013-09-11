@@ -25,7 +25,10 @@ import static com.jayway.restassured.RestAssured.given;
 import org.junit.Assert;
 import org.junit.Test;
 
+import ca.ualberta.physics.cssdp.configuration.ResourceUrls;
 import ca.ualberta.physics.cssdp.domain.auth.User;
+
+import com.jayway.restassured.http.ContentType;
 
 public class SessionTests extends AuthTestsScaffolding {
 
@@ -33,7 +36,7 @@ public class SessionTests extends AuthTestsScaffolding {
 	public void testAuthenticate_BASIC() {
 		/*
 		 * curl --user does@exist.com:anything -X POST
-		 * http://localhost:8080/auth/session.json
+		 * http://localhost:8080/cicstart/api/auth/session
 		 */
 
 		// preemptive() is required to always send authentication header since
@@ -41,31 +44,35 @@ public class SessionTests extends AuthTestsScaffolding {
 
 		// no user
 		given().auth().preemptive().basic("doesnot@exist.com", "anything")
-				.expect().statusCode(404).when()
-				.post(baseUrl() + "/session.json");
+				.contentType(ContentType.JSON).expect().statusCode(404).when()
+				.post(ResourceUrls.SESSION);
 		given().auth().preemptive().basic("doesnot@exist.com", "anything")
-				.expect().statusCode(404).when()
-				.post(baseUrl() + "/session.xml");
+				.contentType(ContentType.XML).expect().statusCode(404).when()
+				.post(ResourceUrls.SESSION);
 
 		// success
 		String sessionToken = given().auth().preemptive()
-				.basic("datauser@nowhere.com", "password").expect()
-				.statusCode(200).post(baseUrl() + "/session.json").asString();
+				.basic("datauser@nowhere.com", "password")
+				.contentType(ContentType.JSON).expect().statusCode(200)
+				.post(ResourceUrls.SESSION).asString();
 		Assert.assertEquals(36, sessionToken.length());
 
 		sessionToken = given().auth().preemptive()
-				.basic("datauser@nowhere.com", "password").expect()
-				.statusCode(200).post(baseUrl() + "/session.xml").asString();
+				.basic("datauser@nowhere.com", "password")
+				.contentType(ContentType.XML).expect().statusCode(200)
+				.post(ResourceUrls.SESSION).asString();
 		Assert.assertEquals(36, sessionToken.length());
 
 		// fail
 		given().auth().preemptive()
-				.basic("datauser@nowhere.com", "wrongpassword").expect()
-				.statusCode(404).post(baseUrl() + "/session.json");
+				.basic("datauser@nowhere.com", "wrongpassword")
+				.contentType(ContentType.JSON).expect().statusCode(404)
+				.post(ResourceUrls.SESSION);
 
 		given().auth().preemptive()
-				.basic("datauser@nowhere.com", "wrongpassword").expect()
-				.statusCode(404).post(baseUrl() + "/session.xml");
+				.basic("datauser@nowhere.com", "wrongpassword")
+				.contentType(ContentType.XML).expect().statusCode(404)
+				.post(ResourceUrls.SESSION);
 
 	}
 
@@ -73,40 +80,44 @@ public class SessionTests extends AuthTestsScaffolding {
 	public void testAuthentication_form() {
 		/*
 		 * curl --data "username=datauser@nowhere.com" --data
-		 * "password=password" -X POST http://localhost:8080/auth/session.json
+		 * "password=password" -X POST
+		 * http://localhost:8080/cicstart/api/auth/session
 		 */
 
 		// no user
 		given().formParam("username", "doesnot@exist.com")
-				.formParam("password", "anything").expect().statusCode(404)
-				.when().post(baseUrl() + "/session.json");
+				.formParam("password", "anything")
+				.contentType(ContentType.JSON).expect().statusCode(404).when()
+				.post(ResourceUrls.SESSION);
 
 		given().formParam("username", "doesnot@exist.com")
-				.formParam("password", "anything").expect().statusCode(404)
-				.when().post(baseUrl() + "/session.xml");
+				.formParam("password", "anything").contentType(ContentType.XML)
+				.expect().statusCode(404).when().post(ResourceUrls.SESSION);
 
 		// success
 		String sessionToken = given()
 				.formParam("username", "datauser@nowhere.com")
-				.formParam("password", "password").expect().statusCode(200)
-				.when().post(baseUrl() + "/session.json").asString();
+				.formParam("password", "password")
+				.contentType(ContentType.JSON).expect().statusCode(200).when()
+				.post(ResourceUrls.SESSION).asString();
 		Assert.assertEquals(36, sessionToken.length());
 
 		sessionToken = given().formParam("username", "datauser@nowhere.com")
 				.formParam("password", "password").expect().statusCode(200)
-				.when().post(baseUrl() + "/session.xml").asString();
+				.when().contentType(ContentType.XML).post(ResourceUrls.SESSION)
+				.asString();
 		Assert.assertEquals(36, sessionToken.length());
 
 		// fail
 		given().formParam("username", "datauser@nowhere.com")
-				.formParam("password", "wrongpassword").expect()
-				.statusCode(404).when().post(baseUrl() + "/session.json")
-				.asString();
+				.formParam("password", "wrongpassword")
+				.contentType(ContentType.JSON).expect().statusCode(404).when()
+				.post(ResourceUrls.SESSION).asString();
 
 		given().formParam("username", "datauser@nowhere.com")
-				.formParam("password", "wrongpassword").expect()
-				.statusCode(404).when().post(baseUrl() + "/session.xml")
-				.asString();
+				.formParam("password", "wrongpassword")
+				.contentType(ContentType.XML).expect().statusCode(404).when()
+				.post(ResourceUrls.SESSION).asString();
 
 	}
 
@@ -114,23 +125,22 @@ public class SessionTests extends AuthTestsScaffolding {
 	public void testWhoIs() {
 
 		/*
-		 * curl
-		 * http://localhost:8080/auth/session.json/asdfasdfas234234q23asdfasdfas
-		 * /whois
+		 * curl http://localhost:8080/cicstart/api/auth/session/
+		 * asdfasdfas234234q23asdfasdfas /whois
 		 */
 
 		// token not valid
 		expect().statusCode(404)
 				.when()
-				.get(baseUrl() + "/session.json/{token}/whois",
+				.get(ResourceUrls.SESSION + "/{token}/whois",
 						"not-a-valid-token");
 
 		// get a token to validate lookup
 		String token = given().auth().preemptive()
 				.basic("datauser@nowhere.com", "password")
-				.post(baseUrl() + "/session.json").asString();
-		String email = get(baseUrl() + "/session.json/{token}/whois", token)
-				.as(User.class).getEmail();
+				.post(ResourceUrls.SESSION).asString();
+		String email = get(ResourceUrls.SESSION + "/{token}/whois", token).as(
+				User.class).getEmail();
 		Assert.assertEquals(dataUser.getEmail(), email);
 		Assert.assertEquals(dataUser.getPassword(), "****");
 		Assert.assertEquals(dataUser.getOpenStackUsername(), "****");

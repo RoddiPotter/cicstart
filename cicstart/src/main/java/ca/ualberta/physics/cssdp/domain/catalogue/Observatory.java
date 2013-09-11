@@ -42,10 +42,10 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.base.Objects;
-import com.wordnik.swagger.annotations.ApiClass;
-import com.wordnik.swagger.annotations.ApiProperty;
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiModelProperty;
 
-@ApiClass(value = "An Observatory object")
+@Api(value = "An Observatory object")
 @XmlRootElement
 @Entity
 @Table(name = "catalogue_observatory")
@@ -61,24 +61,24 @@ public class Observatory extends Persistent {
 
 	@JsonSerialize(using = JSONMnemonicSerializer.class)
 	@JsonDeserialize(using = JSONMnemonicDeserializer.class)
-	@ApiProperty(required = true, value = "The external key for lookup of this Observatory", dataType = "Mnemonic")
+	@ApiModelProperty(required = true, value = "The external key for lookup of this Observatory", dataType = "Mnemonic")
 	@XmlAttribute
 	@XmlJavaTypeAdapter(MnemonicAdapter.class)
 	@Column(name = "ext_key", length = 50, nullable = false)
 	@Type(type = "ca.ualberta.physics.cssdp.dao.MnemonicType")
 	private Mnemonic externalKey;
 
-	@ApiProperty(required = false, value = "The geographic latitude of this Observatory")
+	@ApiModelProperty(required = false, value = "The geographic latitude of this Observatory")
 	@XmlElement
 	@Column(name = "latitude", nullable = true)
 	private Double latitude;
 
-	@ApiProperty(required = false, value = "The geographic longitude of this Observatory")
+	@ApiModelProperty(required = false, value = "The geographic longitude of this Observatory")
 	@XmlElement
 	@Column(name = "longitude", nullable = true)
 	private Double longitude;
 
-	@ApiProperty(required = false, value = "A description of this Observatory.  Max length 1024.")
+	@ApiModelProperty(required = false, value = "A description of this Observatory.  Max length 1024.")
 	@XmlElement
 	@Column(name = "description", length = 1024, nullable = true)
 	private String description;

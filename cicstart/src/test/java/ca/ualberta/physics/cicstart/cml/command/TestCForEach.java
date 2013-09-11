@@ -1,16 +1,14 @@
 package ca.ualberta.physics.cicstart.cml.command;
 
+import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import scala.actors.threadpool.Arrays;
-
 public class TestCForEach {
 
 	@Test
-	@SuppressWarnings("unchecked")
 	public void testCForEach() {
 
 		final AtomicInteger ai = new AtomicInteger();
@@ -36,7 +34,6 @@ public class TestCForEach {
 	}
 
 	@Test
-	@SuppressWarnings("unchecked")
 	public void testForEach() {
 
 		final AtomicInteger ai = new AtomicInteger();

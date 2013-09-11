@@ -7,8 +7,8 @@ import org.slf4j.MDC;
 
 import ca.ualberta.physics.cicstart.macro.configuration.MacroServer;
 import ca.ualberta.physics.cicstart.macro.service.MacroService;
-import ca.ualberta.physics.cssdp.configuration.Common;
 import ca.ualberta.physics.cssdp.configuration.InjectorHolder;
+import ca.ualberta.physics.cssdp.configuration.ResourceUrls;
 import ca.ualberta.physics.cssdp.util.NetworkUtil;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.FileAppender;
@@ -47,9 +47,9 @@ public class CMLLogger extends FileAppender<ILoggingEvent> {
 
 		} else {
 
-			String macroResource = Common.properties().getString("api.url")
-					+ "/macro";
-			String writeUrl = macroResource + "/macro.json/{requestId}/log";
+//			String macroResource = Common.properties().getString("api.url")
+//					+ "/macro";
+			String writeUrl = ResourceUrls.MACRO + "/{requestId}/log";
 			given().content(logMessage).put(writeUrl, jobId);
 		}
 

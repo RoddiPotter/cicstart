@@ -27,7 +27,7 @@ import org.apache.sshd.server.session.ServerSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ca.ualberta.physics.cssdp.configuration.Common;
+import ca.ualberta.physics.cssdp.configuration.ResourceUrls;
 
 import com.jayway.restassured.response.Response;
 
@@ -36,13 +36,8 @@ public class CssdpPasswordAuthenticator implements PasswordAuthenticator {
 	private static final Logger logger = LoggerFactory
 			.getLogger(CssdpPasswordAuthenticator.class);
 
-	// private final Client client;
-	private final String authUrl;
 
 	public CssdpPasswordAuthenticator() {
-
-		authUrl = Common.properties().getString("api.url") + "/auth";
-
 	}
 
 	@Override
@@ -55,7 +50,7 @@ public class CssdpPasswordAuthenticator implements PasswordAuthenticator {
 		Response res = given().formParam("email", username)
 				.formParam("password", password)
 				.formParam("ip", remoteIpAddress).when()
-				.post(authUrl + "/session.json");
+				.post(ResourceUrls.SESSION);
 
 		if (res.getStatusCode() == 200) {
 			logger.debug(username

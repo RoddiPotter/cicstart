@@ -16,6 +16,7 @@ import ca.ualberta.physics.cicstart.cml.command.CMLRuntime;
 import ca.ualberta.physics.cicstart.cml.command.Run;
 import ca.ualberta.physics.cssdp.auth.service.AuthClient;
 import ca.ualberta.physics.cssdp.configuration.InjectorHolder;
+import ca.ualberta.physics.cssdp.configuration.ResourceUrls;
 import ca.ualberta.physics.cssdp.domain.auth.User;
 import ca.ualberta.physics.cssdp.domain.auth.User.Role;
 import ca.ualberta.physics.cssdp.util.FileUtil;
@@ -75,7 +76,7 @@ public class TestBinary extends IntegrationTestScaffolding {
 				.and()
 				.header("CICSTART.session",
 						login(dataManager.getEmail(), "password")).expect()
-				.statusCode(200).when().post(baseUrl() + "/macro.json/bin");
+				.statusCode(200).when().post(ResourceUrls.MACRO + "/bin");
 
 		File tempDir = Files.createTempDir();
 		String contentDisposition = res.getHeader("Content-Disposition");

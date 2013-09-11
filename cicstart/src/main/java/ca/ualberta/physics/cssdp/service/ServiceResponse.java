@@ -25,9 +25,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.google.common.base.Joiner;
-
 import ca.ualberta.physics.cssdp.util.CollectionPrinter;
+
+import com.google.common.base.Joiner;
 
 public class ServiceResponse<T> implements Serializable {
 

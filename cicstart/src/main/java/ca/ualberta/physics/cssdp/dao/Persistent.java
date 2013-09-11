@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 
 import ca.ualberta.physics.cssdp.model.Model;
 
-import com.wordnik.swagger.annotations.ApiProperty;
+import com.wordnik.swagger.annotations.ApiModelProperty;
 
 @MappedSuperclass
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -39,14 +39,14 @@ public abstract class Persistent extends Model {
 	private static final long serialVersionUID = 1L;
 
 	@XmlAttribute
-	@ApiProperty(value = "Omit for adding new objects. Required for udpates.")
+	@ApiModelProperty(value = "Omit for adding new objects. Required for udpates.")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long id;
 
 	@XmlAttribute
-	@ApiProperty(value = "Omit for adding new objects. Required for udpates.")
+	@ApiModelProperty(value = "Omit for adding new objects. Required for udpates.")
 	@Version
 	private int version;
 

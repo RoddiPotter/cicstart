@@ -19,7 +19,7 @@
 		<servlet-class>ca.ualberta.physics.cssdp.configuration.CicstartServletContainer</servlet-class>
 		<init-param>
 			<param-name>com.sun.jersey.config.property.packages</param-name>
-			<param-value>ca.ualberta.physics.cssdp;ca.ualberta.physics.cicstart;com.wordnik.swagger.jaxrs.listing;</param-value>
+			<param-value>ca.ualberta.physics.cssdp;ca.ualberta.physics.cicstart;com.wordnik.swagger.jaxrs.listing</param-value>
 		</init-param>
 		<init-param>
 			<param-name>com.sun.jersey.spi.container.ContainerRequestFilters</param-name>
@@ -29,10 +29,11 @@
 			<param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
 			<param-value>true</param-value>
 		</init-param>
-		<init-param>
-			<param-name>swagger.config.reader</param-name>
-			<param-value>ca.ualberta.physics.cssdp.configuration.SwaggerConfigReader</param-value>
-		</init-param>
+	</servlet>
+	<!-- 
+	<servlet>
+		<servlet-name>SwaggerConfig</servlet-name>
+		<servlet-class>ca.ualberta.physics.cssdp.configuration.SwaggerConfigReader</servlet-class>
 		<init-param>
 			<param-name>common.properties_url.key</param-name>
 			<param-value>external.api.url</param-value>
@@ -41,13 +42,33 @@
 			<param-name>common.properties_doc.url.key</param-name>
 			<param-value>doc.url</param-value>
 		</init-param>
-		<load-on-startup>1</load-on-startup>
+		<init-param>
+    		<param-name>api.version</param-name>
+    		<param-value>1.0</param-value>
+  		</init-param>
+		<load-on-startup>2</load-on-startup>
 	</servlet>
-
+    -->
+<servlet>
+  <servlet-name>JerseyJaxrsConfig</servlet-name>
+  <servlet-class>com.wordnik.swagger.jersey.config.JerseyJaxrsConfig</servlet-class>
+  <init-param>
+    <param-name>api.version</param-name>
+    <param-value>1.0</param-value>
+  </init-param>
+  <init-param>
+    <param-name>swagger.api.basepath</param-name>
+    <param-value>http://localhost:8080/cicstart/api</param-value>
+  </init-param>
+  <load-on-startup>2</load-on-startup>
+</servlet>
+  
+  
 	<servlet-mapping>
 		<servlet-name>jersey</servlet-name>
 		<url-pattern>/api/*</url-pattern>
 	</servlet-mapping>
+	<!-- 
 	<filter>
 		<filter-name>ApiOriginFilter</filter-name>
 		<filter-class>ca.ualberta.physics.cssdp.util.ApiOriginFilter</filter-class>
@@ -56,5 +77,5 @@
 		<filter-name>ApiOriginFilter</filter-name>
 		<url-pattern>/api/*</url-pattern>
 	</filter-mapping>
-
+ -->
 </web-app>

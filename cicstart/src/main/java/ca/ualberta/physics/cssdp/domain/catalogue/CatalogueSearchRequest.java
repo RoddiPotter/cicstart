@@ -33,6 +33,8 @@ import org.joda.time.LocalDateTime;
 import ca.ualberta.physics.cssdp.jaxb.LocalDateTimeAdapter;
 import ca.ualberta.physics.cssdp.jaxb.MnemonicAdapter;
 import ca.ualberta.physics.cssdp.model.Mnemonic;
+import ca.ualberta.physics.cssdp.util.JSONMnemonicDeserializer;
+import ca.ualberta.physics.cssdp.util.JSONMnemonicSerializer;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
@@ -42,49 +44,51 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
-import com.wordnik.swagger.annotations.ApiClass;
-import com.wordnik.swagger.annotations.ApiProperty;
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiModelProperty;
 
 @JsonAutoDetect(getterVisibility = Visibility.NONE, fieldVisibility = Visibility.ANY, creatorVisibility = Visibility.NONE, isGetterVisibility = Visibility.NONE, setterVisibility = Visibility.NONE)
-@ApiClass(value = "The search request", description = "Less values expands the search")
+@Api(value = "The search request", description = "Less values expands the search")
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class CatalogueSearchRequest {
 
-	@ApiProperty(value = "The project key", dataType = "Mnemonic")
+	@JsonSerialize(using = JSONMnemonicSerializer.class)
+	@JsonDeserialize(using = JSONMnemonicDeserializer.class)
+	@ApiModelProperty(value = "The project key", dataType = "Mnemonic")
 	@XmlElement(name = "project")
 	@XmlJavaTypeAdapter(MnemonicAdapter.class)
 	private Mnemonic projectKey;
 
 	@JsonInclude(Include.NON_EMPTY)
-	@ApiProperty(value = "The observatory keys to search", dataType = "Mnemonic")
+	@ApiModelProperty(value = "The observatory keys to search", dataType = "Mnemonic")
 	@XmlElementWrapper(name = "observatories")
 	@XmlElement(name = "observatory")
 	@XmlJavaTypeAdapter(MnemonicAdapter.class)
 	private List<Mnemonic> observatoryKeys = new ArrayList<Mnemonic>();
 
 	@JsonInclude(Include.NON_EMPTY)
-	@ApiProperty(value = "The instrument types to search", dataType = "Mnemonic")
+	@ApiModelProperty(value = "The instrument types to search", dataType = "Mnemonic")
 	@XmlElementWrapper(name = "instrumentTypes")
 	@XmlElement(name = "instrumentType")
 	@XmlJavaTypeAdapter(MnemonicAdapter.class)
 	private List<Mnemonic> instrumentTypeKeys = new ArrayList<Mnemonic>();
 
-	@ApiProperty(value = "The discriminator to search", dataType = "Mnemonic")
+	@ApiModelProperty(value = "The discriminator to search", dataType = "Mnemonic")
 	@XmlElement(name = "discriminator")
 	@XmlJavaTypeAdapter(MnemonicAdapter.class)
 	private Mnemonic discriminatorKey;
 
 	@JsonSerialize(using = ca.ualberta.physics.cssdp.util.JSONLocalDateTimeSerializer.class)
 	@JsonDeserialize(using = ca.ualberta.physics.cssdp.util.JSONLocalDateTimeDeserializer.class)
-	@ApiProperty(value = "The file start date range to include.  Date format follows ISO8601 YYYY-MM-DDThh:mm:ss.SSS", dataType = "String")
+	@ApiModelProperty(value = "The file start date range to include.  Date format follows ISO8601 YYYY-MM-DDThh:mm:ss.SSS", dataType = "String")
 	@XmlElement
 	@XmlJavaTypeAdapter(LocalDateTimeAdapter.class)
 	private LocalDateTime start;
 
 	@JsonSerialize(using = ca.ualberta.physics.cssdp.util.JSONLocalDateTimeSerializer.class)
 	@JsonDeserialize(using = ca.ualberta.physics.cssdp.util.JSONLocalDateTimeDeserializer.class)
-	@ApiProperty(value = "The file end date range to include. Date format follows ISO8601 YYYY-MM-DDThh:mm:ss.SSS", dataType = "String")
+	@ApiModelProperty(value = "The file end date range to include. Date format follows ISO8601 YYYY-MM-DDThh:mm:ss.SSS", dataType = "String")
 	@XmlElement
 	@XmlJavaTypeAdapter(LocalDateTimeAdapter.class)
 	private LocalDateTime end;

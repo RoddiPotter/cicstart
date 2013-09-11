@@ -62,11 +62,11 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
-import com.wordnik.swagger.annotations.ApiClass;
-import com.wordnik.swagger.annotations.ApiProperty;
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiModelProperty;
 
 @JsonAutoDetect(getterVisibility = Visibility.NONE, fieldVisibility = Visibility.ANY, creatorVisibility = Visibility.NONE, isGetterVisibility = Visibility.NONE, setterVisibility = Visibility.NONE)
-@ApiClass(value = "Describes a set of data files that should be logically grouped together.")
+@Api(value = "Describes a set of data files that should be logically grouped together.")
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 @Entity
@@ -83,14 +83,14 @@ public class DataProduct extends Persistent {
 
 	@JsonSerialize(using = JSONMnemonicSerializer.class)
 	@JsonDeserialize(using = JSONMnemonicDeserializer.class)
-	@ApiProperty(required = true, value = "The external key for lookup of this Data Product", dataType = "Mnemonic")
+	@ApiModelProperty(required = true, value = "The external key for lookup of this Data Product", dataType = "Mnemonic")
 	@XmlAttribute
 	@XmlJavaTypeAdapter(MnemonicAdapter.class)
 	@Column(name = "ext_key", length = 50, nullable = false)
 	@Type(type = "ca.ualberta.physics.cssdp.dao.MnemonicType")
 	private Mnemonic externalKey;
 
-	@ApiProperty(required = false, value = "A description of this Data Product.  Max length 1024.")
+	@ApiModelProperty(required = false, value = "A description of this Data Product.  Max length 1024.")
 	@XmlElement
 	@Column(name = "description", length = 1024, nullable = true)
 	private String description;
@@ -103,7 +103,7 @@ public class DataProduct extends Persistent {
 
 	@JsonInclude(Include.NON_EMPTY)
 	@Transient
-	@ApiProperty(required = false, value = "A list of Observatory keys that are related to this Data Product", dataType = "Mnemonic")
+	@ApiModelProperty(required = false, value = "A list of Observatory keys that are related to this Data Product", dataType = "Mnemonic")
 	@XmlElementWrapper(name = "observatories")
 	@XmlElement(name = "observatory")
 	@XmlJavaTypeAdapter(MnemonicAdapter.class)
@@ -117,14 +117,14 @@ public class DataProduct extends Persistent {
 
 	@JsonInclude(Include.NON_EMPTY)
 	@Transient
-	@ApiProperty(required = false, value = "A list of Instrument Type keys that are related to this Data Product", dataType = "Mnemonic")
+	@ApiModelProperty(required = false, value = "A list of Instrument Type keys that are related to this Data Product", dataType = "Mnemonic")
 	@XmlElementWrapper(name = "instrumentTypes")
 	@XmlElement(name = "instrumentType")
 	@XmlJavaTypeAdapter(MnemonicAdapter.class)
 	private List<Mnemonic> instrumentTypeKeys = new ArrayList<Mnemonic>();
 
 	@XmlElement
-	@ApiProperty(required = false, value = "The configuration used to map Data Files to this Data Product during a directory scan of the server", dataType = "MetadataParserConfig")
+	@ApiModelProperty(required = false, value = "The configuration used to map Data Files to this Data Product during a directory scan of the server", dataType = "MetadataParserConfig")
 	@ManyToOne(cascade = { CascadeType.ALL })
 	@JoinColumn(name = "metadataparserconfig_id")
 	private MetadataParserConfig metadataParserConfig;
@@ -139,7 +139,7 @@ public class DataProduct extends Persistent {
 	@JsonDeserialize(using = JSONMnemonicDeserializer.class)
 	@JsonInclude(Include.NON_NULL)
 	@Transient
-	@ApiProperty(required = false, value = "A Discriminator key that helps to make this Data Product unique within a project", dataType = "Mnemonic")
+	@ApiModelProperty(required = false, value = "A Discriminator key that helps to make this Data Product unique within a project", dataType = "Mnemonic")
 	@XmlElement(name = "discriminator")
 	@XmlJavaTypeAdapter(MnemonicAdapter.class)
 	private Mnemonic discriminatorKey;

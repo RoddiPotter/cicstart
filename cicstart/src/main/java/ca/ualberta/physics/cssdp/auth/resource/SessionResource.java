@@ -27,8 +27,10 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.slf4j.Logger;
@@ -45,11 +47,15 @@ import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.sun.jersey.core.util.Base64;
-import com.wordnik.swagger.annotations.ApiError;
-import com.wordnik.swagger.annotations.ApiErrors;
+import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
+import com.wordnik.swagger.annotations.ApiResponse;
+import com.wordnik.swagger.annotations.ApiResponses;
 
+@Path("/auth/session")
+@Api(value = "/auth/session", description = "Operations about sessions")
+@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 public class SessionResource {
 
 	private static final Logger logger = LoggerFactory
@@ -78,12 +84,12 @@ public class SessionResource {
 			+ "You can use HTTP BASIC or simple form based authentication; both are available at this end point.  "
 			+ "Note the server will not request BASIC so you must always send the authentication header.  "
 			+ "Returns a session token to use for future requests.  "
-			+ "curl --user datamanager@nowhere.com:password -X POST http://localhost:8081/auth/session.json", responseClass = "java.lang.String")
-	@ApiErrors(value = {
-			@ApiError(code = 400, reason = "No email value supplied"),
-			@ApiError(code = 400, reason = "No password value supplied"),
-			@ApiError(code = 404, reason = "Invalid credentials - see http://stackoverflow.com/questions/9220432/http-401-unauthorized-or-403-forbidden-for-a-disabled-user to avoid information leakage."),
-			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+			+ "curl --user datamanager@nowhere.com:password -X POST http://localhost:8080/cicstart/api/auth/session", response = java.lang.String.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "No email value supplied"),
+			@ApiResponse(code = 400, message = "No password value supplied"),
+			@ApiResponse(code = 404, message = "Invalid credentials - see http://stackoverflow.com/questions/9220432/http-401-unauthorized-or-403-forbidden-for-a-disabled-user to avoid information leakage."),
+			@ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
 	public Response authenticate(
 			@ApiParam(value = "The username (email address) to authenticate with.  "
 					+ "Required if using form authentication.") @FormParam("username") String username,
@@ -142,11 +148,11 @@ public class SessionResource {
 	@Path("/{token}/whois")
 	@GET
 	@ApiOperation(value = "Get session token owner", notes = "Used by internal services to locate the user "
-			+ "registered to this session token.  Tokens expire after 48 hours; a 404 is returned in this state", responseClass = "ca.ualberta.physics.cssdp.domain.auth.User")
-	@ApiErrors(value = {
-			@ApiError(code = 400, reason = "No token given"),
-			@ApiError(code = 404, reason = "No owner found for given token"),
-			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+			+ "registered to this session token.  Tokens expire after 48 hours; a 404 is returned in this state", response = ca.ualberta.physics.cssdp.domain.auth.User.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "No token given"),
+			@ApiResponse(code = 404, message = "No owner found for given token"),
+			@ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
 	public Response whoIs(
 			@ApiParam(value = "The token to lookup the email address for", required = true) @PathParam("token") String sessionToken,
 			@Context HttpServletRequest httpRequest) {

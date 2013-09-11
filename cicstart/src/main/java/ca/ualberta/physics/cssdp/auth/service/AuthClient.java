@@ -26,7 +26,7 @@ import javax.ws.rs.WebApplicationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ca.ualberta.physics.cssdp.configuration.Common;
+import ca.ualberta.physics.cssdp.configuration.ResourceUrls;
 import ca.ualberta.physics.cssdp.domain.auth.User;
 import ca.ualberta.physics.cssdp.service.ServiceResponse;
 
@@ -38,14 +38,14 @@ public class AuthClient {
 	private static final Logger logger = LoggerFactory
 			.getLogger(AuthClient.class);
 
-	private String authUrl = Common.properties().getString("api.url") + "/auth";
+//	private String authUrl = Common.properties().getString("api.url") + "/auth";
 
 	public ServiceResponse<String> login(String username, String password) {
 
-		logger.debug("Authenticating at " + authUrl);
+		logger.debug("Authenticating at " + ResourceUrls.SESSION);
 
 		Response res = given().auth().preemptive().basic(username, password)
-				.post(authUrl + "/session.json");
+				.post(ResourceUrls.SESSION);
 
 		ServiceResponse<String> sr = new ServiceResponse<String>();
 		if (res.getStatusCode() == 200) {
@@ -58,7 +58,7 @@ public class AuthClient {
 
 	public void validate(String sessionToken) {
 
-		Response res = RestAssured.get(authUrl + "/session.json/"
+		Response res = RestAssured.get(ResourceUrls.SESSION + "/"
 				+ sessionToken + "/whois");
 
 		if (res.statusCode() != 200) {
@@ -69,7 +69,7 @@ public class AuthClient {
 	public User addUser(User newUser) {
 
 		String location = given().content(newUser).and()
-				.contentType("application/json").post(authUrl + "/user.json")
+				.contentType("application/json").post(ResourceUrls.USER)
 				.getHeader("location");
 
 		User user = get(location).as(User.class);
@@ -79,7 +79,7 @@ public class AuthClient {
 	}
 
 	public User whois(String sessionToken) {
-		Response res = RestAssured.get(authUrl + "/session.json/"
+		Response res = RestAssured.get(ResourceUrls.SESSION + "/"
 				+ sessionToken + "/whois");
 		if (res.getStatusCode() == 200) {
 			return res.as(User.class);

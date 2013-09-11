@@ -36,7 +36,7 @@ import ca.ualberta.physics.cssdp.dao.Persistent;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.Objects;
-import com.wordnik.swagger.annotations.ApiProperty;
+import com.wordnik.swagger.annotations.ApiModelProperty;
 
 @Entity
 @Table(name = "auth_user")
@@ -150,7 +150,7 @@ public class User extends Persistent implements Serializable {
 				.add("name", name).toString();
 	}
 
-	@ApiProperty(required = true, notes = "max length 100")
+	@ApiModelProperty(required = true, notes = "max length 100")
 	@XmlElement
 	public String getEmail() {
 		return email;
@@ -160,7 +160,7 @@ public class User extends Persistent implements Serializable {
 		this.email = email;
 	}
 
-	@ApiProperty(required = true, notes = "max length 100")
+	@ApiModelProperty(required = true, notes = "max length 100")
 	@XmlElement
 	public String getName() {
 		return name;
@@ -170,7 +170,7 @@ public class User extends Persistent implements Serializable {
 		this.name = name;
 	}
 
-	@ApiProperty(required = true)
+	@ApiModelProperty(required = true)
 	@XmlElement
 	public String getPassword() {
 		if (!masked) {
@@ -185,7 +185,7 @@ public class User extends Persistent implements Serializable {
 		this.password = password;
 	}
 
-	@ApiProperty(required = false, notes = "max length 100")
+	@ApiModelProperty(required = false, notes = "max length 100")
 	@XmlElement
 	public String getInstitution() {
 		return institution;
@@ -195,7 +195,7 @@ public class User extends Persistent implements Serializable {
 		this.institution = institution;
 	}
 
-	@ApiProperty(required = false, notes = "max length 100")
+	@ApiModelProperty(required = false, notes = "max length 100")
 	@XmlElement
 	public String getCountry() {
 		return country;
@@ -236,7 +236,7 @@ public class User extends Persistent implements Serializable {
 	}
 
 	@XmlElement
-	@ApiProperty(allowableValues = "ROOT, DATA_MANAGER, DATA_USER", required = false, notes = "default value is DATA_USER")
+	@ApiModelProperty(allowableValues = "ROOT, DATA_MANAGER, DATA_USER", required = false, notes = "default value is DATA_USER")
 	public Role getRole() {
 		return role;
 	}
@@ -266,7 +266,7 @@ public class User extends Persistent implements Serializable {
 		return hasRole;
 	}
 
-	@ApiProperty(required = false, notes = "The system only logically deletes entries.  This value is ignored on creates and updates.")
+	@ApiModelProperty(required = false, notes = "The system only logically deletes entries.  This value is ignored on creates and updates.")
 	@XmlElement
 	public boolean isDeleted() {
 		return deleted;
@@ -289,7 +289,7 @@ public class User extends Persistent implements Serializable {
 		setRole(user.getRole());
 	}
 
-	@ApiProperty(required = false, notes = "The username for creating open stack resources")
+	@ApiModelProperty(required = false, notes = "The username for creating open stack resources")
 	@XmlElement
 	public String getOpenStackUsername() {
 		if (!masked) {
@@ -304,7 +304,7 @@ public class User extends Persistent implements Serializable {
 		this.openStackUsername = openStackUsername;
 	}
 
-	@ApiProperty(required = false, notes = "The open stack username password")
+	@ApiModelProperty(required = false, notes = "The open stack username password")
 	@XmlElement
 	public String getOpenStackPassword() {
 		if (!masked) {
@@ -318,7 +318,7 @@ public class User extends Persistent implements Serializable {
 		this.openStackPassword = openStackPassword;
 	}
 
-	@ApiProperty(required = false, notes = "The name of the public/private keypair you want injected into the instance")
+	@ApiModelProperty(required = false, notes = "The name of the public/private keypair you want injected into the instance")
 	@XmlElement
 	public String getKeyname() {
 		return keyname;

@@ -19,8 +19,8 @@ import ca.ualberta.physics.cicstart.cml.CMLLexer;
 import ca.ualberta.physics.cicstart.cml.CMLParser;
 import ca.ualberta.physics.cicstart.cml.ParsingAndBuildingTests;
 import ca.ualberta.physics.cssdp.auth.service.AuthClient;
-import ca.ualberta.physics.cssdp.configuration.Common;
 import ca.ualberta.physics.cssdp.configuration.InjectorHolder;
+import ca.ualberta.physics.cssdp.configuration.ResourceUrls;
 import ca.ualberta.physics.cssdp.domain.auth.User;
 import ca.ualberta.physics.cssdp.domain.catalogue.CatalogueSearchRequest;
 import ca.ualberta.physics.cssdp.domain.catalogue.CatalogueSearchResponse;
@@ -91,11 +91,11 @@ public class FullScriptTest extends IntegrationTestScaffolding {
 
 		String apacheJSON = mapper.writeValueAsString(apache);
 
-		String catalogueUrl = Common.properties()
-				.getString("api.url") + "/catalogue";
+//		String catalogueUrl = Common.properties()
+//				.getString("api.url") + "/catalogue";
 		Response res = given().body(apacheJSON).and()
 				.contentType("application/json").expect().statusCode(201)
-				.when().post(catalogueUrl + "/project.json");
+				.when().post(ResourceUrls.PROJECT);
 
 		dataManager = setupDataManager();
 		sessionToken = login(dataManager.getEmail(), "password");
@@ -106,16 +106,16 @@ public class FullScriptTest extends IntegrationTestScaffolding {
 		host.setUsername("anonymous");
 		host.setPassword("anonymous");
 
-		String fileUrl = Common.properties().getString("api.url") + "/file";
+//		String fileUrl = Common.properties().getString("api.url") + "/file";
 		expect().statusCode(201).when().given().content(host).and()
 				.contentType(ContentType.JSON).and()
 				.headers("CICSTART.session", sessionToken)
-				.post(fileUrl + "/host.json");
+				.post(ResourceUrls.HOST);
 
 		// scan the host first
 		res = given().header("CICSTART.session", sessionToken).expect()
 				.statusCode(202).when()
-				.put(catalogueUrl + "/project.json/APACHE3/scan");
+				.put(ResourceUrls.PROJECT + "/APACHE3/scan");
 
 		System.out.println(res.asString());
 
@@ -124,7 +124,7 @@ public class FullScriptTest extends IntegrationTestScaffolding {
 
 		res = given().content(searchRequest).and()
 				.contentType(ContentType.JSON)
-				.post(catalogueUrl + "/project.json/find");
+				.post(ResourceUrls.PROJECT + "/find");
 
 		Assert.assertEquals(4, res.as(CatalogueSearchResponse.class).getUris()
 				.size());

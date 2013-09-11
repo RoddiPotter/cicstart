@@ -27,16 +27,16 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.wordnik.swagger.annotations.ApiProperty;
-
 import ca.ualberta.physics.cssdp.jaxb.Link;
+
+import com.wordnik.swagger.annotations.ApiModelProperty;
 
 @XmlRootElement(name = "Projects")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ProjectLinks {
 
 	@XmlElement(name = "Project")
-	@ApiProperty(value="The list of links", dataType="Link")
+	@ApiModelProperty(value="The list of links", dataType="Link")
 	private List<Link> projectLinks = new ArrayList<Link>();
 
 	public void addLink(Link link) {

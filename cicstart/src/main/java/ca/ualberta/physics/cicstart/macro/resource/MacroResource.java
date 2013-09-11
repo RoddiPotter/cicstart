@@ -56,8 +56,8 @@ import ca.ualberta.physics.cicstart.macro.service.Image;
 import ca.ualberta.physics.cicstart.macro.service.MacroService;
 import ca.ualberta.physics.cicstart.macro.service.MacroService.JobStatus;
 import ca.ualberta.physics.cicstart.macro.service.OpenStackCloud.Flavor;
-import ca.ualberta.physics.cssdp.configuration.Common;
 import ca.ualberta.physics.cssdp.configuration.InjectorHolder;
+import ca.ualberta.physics.cssdp.configuration.ResourceUrls;
 import ca.ualberta.physics.cssdp.domain.auth.User;
 import ca.ualberta.physics.cssdp.domain.macro.Instance;
 import ca.ualberta.physics.cssdp.domain.macro.InstanceSpec;
@@ -66,11 +66,15 @@ import ca.ualberta.physics.cssdp.service.ServiceResponse;
 import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
 import com.google.inject.Inject;
-import com.wordnik.swagger.annotations.ApiError;
-import com.wordnik.swagger.annotations.ApiErrors;
+import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
+import com.wordnik.swagger.annotations.ApiResponse;
+import com.wordnik.swagger.annotations.ApiResponses;
 
+@Path("/macro/macro")
+@Api(value = "/macro/macro", description = "Operations about Macros")
+@Produces({ "application/json","application/xml" })
 public class MacroResource {
 
 	private static final Logger logger = LoggerFactory.getLogger(MacroResource.class);
@@ -89,9 +93,9 @@ public class MacroResource {
 	@POST
 	@ApiOperation(value = "Run a macro", notes = "Run the given macro.  HTTP 201 is returned along with a "
 			+ "location header which can be used to access status and logs")
-	@ApiErrors(value = {
-			@ApiError(code = 400, reason = "No CML script supplied"),
-			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "No CML script supplied"),
+			@ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
 	public Response runScript(
 			@ApiParam(value = "Script to run", required = true) String cmlScript,
 			@ApiParam(value = "The authenticated session token", required = true) @HeaderParam("CICSTART.session") String sessionToken,
@@ -118,11 +122,11 @@ public class MacroResource {
 
 	@Path("/{requestId}/status")
 	@GET
-	@ApiOperation(value = "Get the status of this request", notes = "The status is either queued, running, or stopped.", responseClass = "java.lang.String")
-	@ApiErrors(value = {
-			@ApiError(code = 400, reason = "No request id supplied"),
-			@ApiError(code = 404, reason = "Request not found"),
-			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+	@ApiOperation(value = "Get the status of this request", notes = "The status is either queued, running, or stopped.", response = java.lang.String.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "No request id supplied"),
+			@ApiResponse(code = 404, message = "Request not found"),
+			@ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
 	public Response getStatus(
 			@ApiParam(value = "The request id", required = true) @PathParam("requestId") String requestId,
 			@Context UriInfo uriInfo) {
@@ -168,11 +172,11 @@ public class MacroResource {
 	@Path("/{requestId}/log/tail")
 	@GET
 	@Produces({ "text/plain" })
-	@ApiOperation(value = "Tail the log file", notes = "Just like the command version using the -f option 'tail -f'", responseClass = "java.lang.String")
-	@ApiErrors(value = {
-			@ApiError(code = 400, reason = "No request id supplied"),
-			@ApiError(code = 404, reason = "Request not found"),
-			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+	@ApiOperation(value = "Tail the log file", notes = "Just like the command version using the -f option 'tail -f'", response = java.lang.String.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "No request id supplied"),
+			@ApiResponse(code = 404, message = "Request not found"),
+			@ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
 	public StreamingOutput tailLog(
 			@ApiParam(value = "The request id", required = true) @PathParam("requestId") final String requestId) {
 
@@ -192,10 +196,10 @@ public class MacroResource {
 	@Path("/{requestId}/log")
 	@GET
 	@ApiOperation(value = "Download the entire log file. Makes a request to your VFS to get the log file.")
-	@ApiErrors(value = {
-			@ApiError(code = 400, reason = "No request id supplied"),
-			@ApiError(code = 404, reason = "Request not found"),
-			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "No request id supplied"),
+			@ApiResponse(code = 404, message = "Request not found"),
+			@ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
 	public StreamingOutput getLog(
 			@ApiParam(value = "The request id", required = true) @PathParam("requestId") final String requestId,
 			/*
@@ -204,12 +208,12 @@ public class MacroResource {
 			 */
 			@ApiParam(value = "The authenticated session token", required = true) @HeaderParam("CICSTART.session") final String sessionToken) {
 
-		String authResource = Common.properties().getString("api.url");
-		String whoisUrl = authResource + "/session.json/{session}/whois";
+//		String authResource = Common.properties().getString("api.url");
+		String whoisUrl = ResourceUrls.SESSION + "/{session}/whois";
 		final User user = get(whoisUrl, sessionToken).as(User.class);
-		String vfsResource = Common.properties().getString("api.url") + "/vfs";
+//		String vfsResource = Common.properties().getString("api.url") + "/vfs";
 
-		final String readUrl = vfsResource + "/filesystem.json/{owner}/read";
+		final String readUrl = ResourceUrls.FILESYSTEM + "/{owner}/read";
 
 		// FIXME this does nothing.
 		return new StreamingOutput() {
@@ -230,10 +234,10 @@ public class MacroResource {
 	@Path("/{requestId}/log")
 	@PUT
 	@ApiOperation(value = "Append to the log file", notes = "This is normally called by the binary running the macro.")
-	@ApiErrors(value = {
-			@ApiError(code = 400, reason = "No request id supplied"),
-			@ApiError(code = 404, reason = "Request not found"),
-			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "No request id supplied"),
+			@ApiResponse(code = 404, message = "Request not found"),
+			@ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
 	public Response appendLog(
 			@ApiParam(value = "The request id", required = true) @PathParam("requestId") String requestId,
 			@ApiParam(value = "value", required = true) @QueryParam("value") String value) {
@@ -254,10 +258,10 @@ public class MacroResource {
 	@Produces(MediaType.APPLICATION_OCTET_STREAM)
 	@ApiOperation(value = "Download the macro binary that would run on the server", notes = "optionally contains an embedded JRE if "
 			+ "none are available on the resource running the macro")
-	@ApiErrors(value = {
-			@ApiError(code = 400, reason = "No request id supplied"),
-			@ApiError(code = 404, reason = "Request not found"),
-			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "No request id supplied"),
+			@ApiResponse(code = 404, message = "Request not found"),
+			@ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
 	public Response getMacroBinaryClient(
 			@ApiParam(value = "Script to run", required = true) byte[] cmlScript,
 			@ApiParam(value = "The authenticated session token", required = true) @HeaderParam("CICSTART.session") String sessionToken,
@@ -298,10 +302,10 @@ public class MacroResource {
 	@Path("/vm")
 	@POST
 	@ApiOperation(value = "starts a remote VM defined by a macro script", notes = "")
-	@ApiErrors(value = {
-			@ApiError(code = 400, reason = "No request id supplied"),
-			@ApiError(code = 404, reason = "Request not found"),
-			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "No request id supplied"),
+			@ApiResponse(code = 404, message = "Request not found"),
+			@ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
 	public Response startVM(
 			@ApiParam(value = "The instance specification to use when starting the VM", required = true) InstanceSpec instanceSpec,
 			@ApiParam(value = "The authenticated session token", required = true) @HeaderParam("CICSTART.session") String sessionToken) {
@@ -352,10 +356,10 @@ public class MacroResource {
 	@Path("/vm")
 	@DELETE
 	@ApiOperation(value = "stops a remote VM", notes = "")
-	@ApiErrors(value = {
-			@ApiError(code = 400, reason = "No request id supplied"),
-			@ApiError(code = 404, reason = "Request not found"),
-			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "No request id supplied"),
+			@ApiResponse(code = 404, message = "Request not found"),
+			@ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
 	public Response stopVM(
 			@ApiParam(value = "The instance to stop", required = true) Instance instance,
 			@ApiParam(value = "The authenticated session token", required = true) @HeaderParam("CICSTART.session") String sessionToken) {

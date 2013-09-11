@@ -4,7 +4,6 @@ import org.joda.time.DateTime;
 import org.joda.time.format.ISODateTimeFormat;
 
 import ca.ualberta.physics.cssdp.service.StatsService;
-import ca.ualberta.physics.cssdp.service.StatsService.ServiceName;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;

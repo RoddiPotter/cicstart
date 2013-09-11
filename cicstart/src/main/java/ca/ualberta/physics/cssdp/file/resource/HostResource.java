@@ -26,13 +26,16 @@ import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
 import ca.ualberta.physics.cssdp.auth.service.AuthClient;
+import ca.ualberta.physics.cssdp.configuration.Common;
 import ca.ualberta.physics.cssdp.configuration.InjectorHolder;
 import ca.ualberta.physics.cssdp.domain.auth.User;
 import ca.ualberta.physics.cssdp.domain.auth.User.Role;
@@ -43,14 +46,20 @@ import ca.ualberta.physics.cssdp.file.remote.RemoteServers;
 import ca.ualberta.physics.cssdp.file.remote.command.RecursiveLs;
 import ca.ualberta.physics.cssdp.file.service.HostService;
 import ca.ualberta.physics.cssdp.service.ServiceResponse;
+import ca.ualberta.physics.cssdp.util.NetworkUtil;
+import ca.ualberta.physics.cssdp.util.UrlParser;
 
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
-import com.wordnik.swagger.annotations.ApiError;
-import com.wordnik.swagger.annotations.ApiErrors;
+import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
+import com.wordnik.swagger.annotations.ApiResponse;
+import com.wordnik.swagger.annotations.ApiResponses;
 
+@Path("/file/host")
+@Api(value = "/file/host", description = "Operations about hosts")
+@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 public class HostResource {
 
 	@Inject
@@ -61,7 +70,7 @@ public class HostResource {
 
 	@Inject
 	private AuthClient authClient;
-	
+
 	public HostResource() {
 		InjectorHolder.inject(this);
 	}
@@ -69,10 +78,10 @@ public class HostResource {
 	@GET
 	@ApiOperation(value = "Get a Host object", notes = "Get details about a host.  Username and password are masked in response.")
 	@Path("/{hostname}")
-	@ApiErrors(value = {
-			@ApiError(code = 400, reason = "No hostname supplied"),
-			@ApiError(code = 404, reason = "Hostname not found in registry"),
-			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "No hostname supplied"),
+			@ApiResponse(code = 404, message = "Hostname not found in registry"),
+			@ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
 	public Response getHostEntry(
 			@ApiParam(value = "The hostname to lookup", required = true) @PathParam("hostname") String hostname,
 			@Context UriInfo urlInfo) {
@@ -85,8 +94,11 @@ public class HostResource {
 		if (sr.isRequestOk()) {
 			Host host = sr.getPayload();
 			if (host != null) {
-				host.maskUser();
-				host.maskPassword();
+				if (!NetworkUtil.currentlyRunningOn(UrlParser
+						.getHostname(Common.properties().getString("api.url")))) {
+					host.maskUser();
+					host.maskPassword();
+				}
 				return Response.ok(host).build();
 			} else {
 				return Response.status(404).build();
@@ -100,10 +112,10 @@ public class HostResource {
 
 	@POST
 	@ApiOperation(value = "Add Host", notes = "Adds a new host object.  This operation requires the user to be logged in.")
-	@ApiErrors(value = {
-			@ApiError(code = 400, reason = "No host object value supplied"),
-			@ApiError(code = 404, reason = "No session found"),
-			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "No host object value supplied"),
+			@ApiResponse(code = 404, message = "No session found"),
+			@ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
 	public Response addHost(
 			@ApiParam(value = "The Host object to add", required = true) Host host,
 			@ApiParam(value = "The authenticated session token", required = true) @HeaderParam("CICSTART.session") String sessionToken,
@@ -132,10 +144,10 @@ public class HostResource {
 	@DELETE
 	@Path("/{hostname}")
 	@ApiOperation(value = "Delete Host", notes = "Deletes a host object.  This operation requires the user to be logged in.")
-	@ApiErrors(value = {
-			@ApiError(code = 400, reason = "No host object value supplied"),
-			@ApiError(code = 404, reason = "No session found"),
-			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "No host object value supplied"),
+			@ApiResponse(code = 404, message = "No session found"),
+			@ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
 	public Response deleteHostEntry(
 			@ApiParam(value = "The Host object to add", required = true) @PathParam("hostname") String hostname,
 			@ApiParam(value = "The authenticated session token", required = true) @HeaderParam("CICSTART.session") String sessionToken) {
@@ -171,14 +183,14 @@ public class HostResource {
 
 	@GET
 	@Path("/{hostname}/ls")
-	@ApiOperation(value = "Directory listings", notes = "Performs a recursive 'ls' on the remote host.", responseClass = "ca.ualberta.physics.cssdp.domain.file.DirectoryListing")
-	@ApiErrors(value = {
-			@ApiError(code = 400, reason = "No hostname value supplied"),
-			@ApiError(code = 400, reason = "No path to do ls on supplied"),
-			@ApiError(code = 404, reason = "Host not registered for given hostname"),
-			@ApiError(code = 404, reason = "No session found"),
-			@ApiError(code = 204, reason = "No contents listed (remote host timed out, could not log into remote host, etc)"),
-			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+	@ApiOperation(value = "Directory listings", notes = "Performs a recursive 'ls' on the remote host.", response = ca.ualberta.physics.cssdp.domain.file.DirectoryListing.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "No hostname value supplied"),
+			@ApiResponse(code = 400, message = "No path to do ls on supplied"),
+			@ApiResponse(code = 404, message = "Host not registered for given hostname"),
+			@ApiResponse(code = 404, message = "No session found"),
+			@ApiResponse(code = 204, message = "No contents listed (remote host timed out, could not log into remote host, etc)"),
+			@ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
 	public Response ls(
 			@ApiParam(value = "The hostname to do the ls on", required = true) @PathParam("hostname") String hostname,
 			@ApiParam(value = "The path on the host to do the ls in", required = true) @QueryParam("path") String path,

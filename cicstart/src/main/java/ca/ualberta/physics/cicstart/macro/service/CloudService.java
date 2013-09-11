@@ -9,7 +9,7 @@ import java.util.Map;
 import ca.ualberta.physics.cicstart.macro.configuration.MacroServer;
 import ca.ualberta.physics.cicstart.macro.service.OpenStackCloud.Flavor;
 import ca.ualberta.physics.cicstart.macro.service.OpenStackCloud.Identity;
-import ca.ualberta.physics.cssdp.configuration.Common;
+import ca.ualberta.physics.cssdp.configuration.ResourceUrls;
 import ca.ualberta.physics.cssdp.domain.auth.User;
 import ca.ualberta.physics.cssdp.domain.macro.Instance;
 import ca.ualberta.physics.cssdp.service.ServiceResponse;
@@ -81,8 +81,8 @@ public class CloudService {
 		Cloud cloud = clouds.get(cloudName);
 		if (cloud != null) {
 
-			String authResource = Common.properties().getString("api.url") + "/auth";
-			String whoisUrl = authResource + "/session.json/{session}/whois";
+//			String authResource = Common.properties().getString("api.url") + "/auth";
+			String whoisUrl = ResourceUrls.SESSION + "/{session}/whois";
 			User user = get(whoisUrl, sessionToken).as(User.class);
 
 			Identity clientIdentity = cloud.authenticate(
@@ -118,8 +118,8 @@ public class CloudService {
 		Cloud cloud = clouds.get(instance.cloudName);
 		if (cloud != null) {
 
-			String authResource = Common.properties().getString("api.url") + "/auth";
-			String whoisUrl = authResource + "/session.json/{session}/whois";
+//			String authResource = Common.properties().getString("api.url") + "/auth";
+			String whoisUrl = ResourceUrls.SESSION + "/{session}/whois";
 			User user = get(whoisUrl, sessionToken).as(User.class);
 
 			Identity identity = cloud.authenticate(user.getOpenStackUsername(),
@@ -140,8 +140,8 @@ public class CloudService {
 		Cloud cloud = clouds.get(cloudName);
 		if (cloud != null) {
 
-			String authResource = Common.properties().getString("api.url") + "/auth";
-			String whoisUrl = authResource + "/session.json/{session}/whois";
+//			String authResource = Common.properties().getString("api.url") + "/auth";
+			String whoisUrl = ResourceUrls.SESSION + "/{session}/whois";
 			User user = get(whoisUrl, sessionToken).as(User.class);
 
 			Identity identity = cloud.authenticate(user.getOpenStackUsername(),

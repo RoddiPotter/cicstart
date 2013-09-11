@@ -31,8 +31,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.collect.Sets;
 import com.google.common.primitives.Chars;
-import com.wordnik.swagger.annotations.ApiClass;
-import com.wordnik.swagger.annotations.ApiProperty;
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiModelProperty;
 
 /**
  * A Mnemonic is used to refer to entities of meta-data in the system. They make
@@ -40,7 +40,7 @@ import com.wordnik.swagger.annotations.ApiProperty;
  * Deployments, Nodes, and Sensors. For example, the Chamela site in Mexico
  * would have the
  */
-@ApiClass(value = "A pattern of letters, numbers, and characters that assists in remembering something.", description = "Max 20 chars.  Allow")
+@Api(value = "A pattern of letters, numbers, and characters that assists in remembering something.", description = "Max 20 chars.  Allow")
 @JsonSerialize(using = JSONMnemonicSerializer.class)
 @JsonDeserialize(using = JSONMnemonicDeserializer.class)
 public class Mnemonic extends Model {
@@ -58,7 +58,7 @@ public class Mnemonic extends Model {
 	// TODO make this a property
 	public static int maxLength = 20;
 
-	@ApiProperty(value = "Max length = 20.  Allowed chars [a-z0-9\\-_+./]", required = true)
+	@ApiModelProperty(value = "Max length = 20.  Allowed chars [a-z0-9\\-_+./]", required = true)
 	private String value;
 
 	public Mnemonic() {

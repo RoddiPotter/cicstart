@@ -24,9 +24,9 @@ import ca.ualberta.physics.cssdp.domain.ServiceInfo;
 import ca.ualberta.physics.cssdp.domain.ServiceStats;
 
 import com.google.common.base.Throwables;
-import com.wordnik.swagger.annotations.ApiError;
-import com.wordnik.swagger.annotations.ApiErrors;
 import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiResponse;
+import com.wordnik.swagger.annotations.ApiResponses;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -48,8 +48,8 @@ public abstract class AbstractServiceResource {
 	@Path("/info")
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.TEXT_HTML })
-	@ApiOperation(value = "Basic identification and provenance information about the service.", notes = "CANARIE's monitoring service will poll this URI periodically.", responseClass = "ca.ualberta.physics.cssdp.domain.ServiceInfo")
-	@ApiErrors(value = { @ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+	@ApiOperation(value = "Basic identification and provenance information about the service.", notes = "CANARIE's monitoring service will poll this URI periodically.", response = ca.ualberta.physics.cssdp.domain.ServiceInfo.class)
+	@ApiResponses(value = { @ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
 	public Response getInfo(@Context HttpHeaders headers) {
 		for (MediaType type : headers.getAcceptableMediaTypes()) {
 			if (type.equals(MediaType.APPLICATION_JSON_TYPE)) {
@@ -67,8 +67,8 @@ public abstract class AbstractServiceResource {
 	@Path("/stats")
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.TEXT_HTML })
-	@ApiOperation(value = "CANARIE's monitoring service will poll this URI periodically. Return information about the usage of this RPI.", notes = "If this URI fails or times out, this RPI is unavailable.", responseClass = "ca.ualberta.physics.cssdp.domain.ServiceStats")
-	@ApiErrors(value = { @ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+	@ApiOperation(value = "CANARIE's monitoring service will poll this URI periodically. Return information about the usage of this RPI.", notes = "If this URI fails or times out, this RPI is unavailable.", response = ca.ualberta.physics.cssdp.domain.ServiceStats.class)
+	@ApiResponses(value = { @ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
 	public Response getStats(@Context HttpHeaders headers) {
 		for (MediaType type : headers.getAcceptableMediaTypes()) {
 			if (type.equals(MediaType.APPLICATION_JSON_TYPE)) {
@@ -86,7 +86,7 @@ public abstract class AbstractServiceResource {
 	@Path("/doc")
 	@GET
 	@ApiOperation(value = "Returns an HTTP redirect to the service documention on github")
-	@ApiErrors(value = { @ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+	@ApiResponses(value = { @ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
 	public Response getDoc() {
 		try {
 			return Response.seeOther(getDocURI()).build();
@@ -100,7 +100,7 @@ public abstract class AbstractServiceResource {
 	@Path("/releasenotes")
 	@GET
 	@ApiOperation(value = "Returns an HTTP redirect to the release notes documention on github")
-	@ApiErrors(value = { @ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+	@ApiResponses(value = { @ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
 	public Response getReleaseNotes() {
 		try {
 			return Response
@@ -117,7 +117,7 @@ public abstract class AbstractServiceResource {
 	@Path("/support")
 	@GET
 	@ApiOperation(value = "Returns an HTTP redirect to the support documention on github")
-	@ApiErrors(value = { @ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+	@ApiResponses(value = { @ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
 	public Response getSupport() {
 		try {
 			return Response
@@ -134,7 +134,7 @@ public abstract class AbstractServiceResource {
 	@Path("/source")
 	@GET
 	@ApiOperation(value = "Returns an HTTP redirect to the source on github")
-	@ApiErrors(value = { @ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+	@ApiResponses(value = { @ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
 	public Response getSource() {
 		try {
 			return Response.seeOther(
@@ -148,7 +148,7 @@ public abstract class AbstractServiceResource {
 	@Path("/tryme")
 	@GET
 	@ApiOperation(value = "Not implemented")
-	@ApiErrors(value = { @ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+	@ApiResponses(value = { @ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
 	public Response getTryMe() {
 		return Response.noContent().build();
 	}

@@ -21,10 +21,10 @@ package ca.ualberta.physics.cssdp.file.dao;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
-import com.google.common.collect.Sets;
-
 import ca.ualberta.physics.cssdp.dao.AbstractJpaDao;
 import ca.ualberta.physics.cssdp.domain.file.CachedFile;
+
+import com.google.common.collect.Sets;
 
 public class CachedFileDao extends AbstractJpaDao<CachedFile> {
 

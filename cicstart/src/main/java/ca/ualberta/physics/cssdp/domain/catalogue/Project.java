@@ -50,10 +50,10 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
-import com.wordnik.swagger.annotations.ApiClass;
-import com.wordnik.swagger.annotations.ApiProperty;
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiModelProperty;
 
-@ApiClass(value = "A Project object describes Data Products which are mapped to Data Files "
+@Api(value = "A Project object describes Data Products which are mapped to Data Files "
 		+ "located on a Host.  Mapping is accomplished through scanning the directories of the "
 		+ "host and using the metadata configured on the Project and Data Product.")
 @XmlRootElement
@@ -66,96 +66,96 @@ public class Project extends Persistent {
 
 	@JsonSerialize(using = JSONMnemonicSerializer.class)
 	@JsonDeserialize(using = JSONMnemonicDeserializer.class)
-	@ApiProperty(required = true, value = "Must be unique system wide.", dataType = "Mnemonic")
+	@ApiModelProperty(required = true, value = "Must be unique system wide.", dataType = "Mnemonic")
 	@XmlAttribute
 	@XmlJavaTypeAdapter(MnemonicAdapter.class)
 	@Column(name = "ext_key", length = 50, nullable = false)
 	@Type(type = "ca.ualberta.physics.cssdp.dao.MnemonicType")
 	private Mnemonic externalKey;
 
-	@ApiProperty(required = true, value = "Max length is 1024 chars")
+	@ApiModelProperty(required = true, value = "Max length is 1024 chars")
 	@XmlElement
 	@Column(name = "name", length = 1024, nullable = false)
 	private String name;
 
-	@ApiProperty(required = false, value = "Max length is 1024 chars")
+	@ApiModelProperty(required = false, value = "Max length is 1024 chars")
 	@XmlElement
 	@Column(name = "url", length = 1024, nullable = true)
 	private String url;
 
-	@ApiProperty(required = false, value = "Points to the \"Rules of the road\" document.  Max "
+	@ApiModelProperty(required = false, value = "Points to the \"Rules of the road\" document.  Max "
 			+ "length is 1024 chars")
 	@XmlElement
 	@Column(name = "rules_url", length = 1024, nullable = true)
 	private String rulesUrl;
 
 	@JsonManagedReference("project-observatories")
-	@ApiProperty(required = false, value = "The list of observatories used in data products", dataType = "Observatory")
+	@ApiModelProperty(required = false, value = "The list of observatories used in data products", dataType = "Observatory")
 	@XmlElementWrapper(name = "observatories")
 	@XmlElement(name = "observatory")
 	@OneToMany(mappedBy = "project", cascade = { CascadeType.ALL })
 	private List<Observatory> observatories = new ArrayList<Observatory>();
 
 	@JsonManagedReference("project-instrumentTypes")
-	@ApiProperty(required = false, value = "The list of instrument types used in data products", dataType = "InstrumentType")
+	@ApiModelProperty(required = false, value = "The list of instrument types used in data products", dataType = "InstrumentType")
 	@XmlElementWrapper(name = "instrumentTypes")
 	@XmlElement(name = "instrumentType")
 	@OneToMany(mappedBy = "project", cascade = { CascadeType.ALL })
 	private List<InstrumentType> instrumentTypes = new ArrayList<InstrumentType>();
 
 	@JsonManagedReference("project-discriminators")
-	@ApiProperty(required = false, value = "The list of arbitrary descriminators used in data products", dataType = "Discriminator")
+	@ApiModelProperty(required = false, value = "The list of arbitrary descriminators used in data products", dataType = "Discriminator")
 	@XmlElementWrapper(name = "discriminators")
 	@XmlElement(name = "discriminator")
 	@OneToMany(mappedBy = "project", cascade = { CascadeType.ALL })
 	private List<Discriminator> discriminators = new ArrayList<Discriminator>();
 
 	@JsonManagedReference("project-dataProducts")
-	@ApiProperty(required = false, value = "The list of data products describing the files found on the host", dataType = "DataProduct")
+	@ApiModelProperty(required = false, value = "The list of data products describing the files found on the host", dataType = "DataProduct")
 	@XmlElementWrapper(name = "dataProducts")
 	@XmlElement(name = "dataProduct")
 	@OneToMany(mappedBy = "project", cascade = { CascadeType.ALL })
 	private List<DataProduct> dataProducts = new ArrayList<DataProduct>();
 
-	@ApiProperty(required = false, value = "Regular expression that parses the start date out of "
+	@ApiModelProperty(required = false, value = "Regular expression that parses the start date out of "
 			+ "file names on the server.  Follow http://docs.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html "
 			+ "for regex rules.")
 	@XmlElement
 	@Column(name = "start_date_regex", length = 1024, nullable = true)
 	private String startDateRegex;
 
-	@ApiProperty(required = false, value = "Regular expression that parses the end date out of file "
+	@ApiModelProperty(required = false, value = "Regular expression that parses the end date out of file "
 			+ "names on the server.  Follow http://docs.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html "
 			+ "for regex rules.")
 	@XmlElement
 	@Column(name = "end_date_regex", length = 1024, nullable = true)
 	private String endDateRegex;
 
-	@ApiProperty(required = false, value = "The regular expression used to include files while scanning "
+	@ApiModelProperty(required = false, value = "The regular expression used to include files while scanning "
 			+ "the host. Follow http://docs.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html for regex "
 			+ "rules.  Matches against the entire URL.")
 	@XmlElement
 	@Column(name = "excludes_regex", length = 1024, nullable = true)
 	private String excludesRegex;
 
-	@ApiProperty(required = false, value = "Beanshell that parses the start date out of file "
+	@ApiModelProperty(required = false, value = "Beanshell that parses the start date out of file "
 			+ "names on the server.")
 	@XmlElement
 	@Column(name = "start_date_bean_shell", nullable = true)
 	private String startDateBeanShell;
 
-	@ApiProperty(required = false, value = "Beanshell that parses or calculates the start date out "
+	@ApiModelProperty(required = false, value = "Beanshell that parses or calculates the start date out "
 			+ "of file names on the server.")
 	@XmlElement
 	@Column(name = "end_date_bean_shell", nullable = true)
 	private String endDateBeanShell;
 
-	@ApiProperty(required = false, value = "The host that stores the project data files.")
+	@ApiModelProperty(required = false, value = "The host that stores the project data files.")
 	@XmlElement
 	@Column(name = "host", nullable = true)
 	private String host;
 
-	@ApiProperty(required = false, value = "The list of directories to start scanning at.  Don't end with a slash.")
+	@ApiModelProperty(required = false, value = "The list of directories to start scanning at.  Don't end with a slash.")
 	@XmlElementWrapper(name = "scanDirectories")
 	@XmlElement(name = "directory")
 	@ElementCollection

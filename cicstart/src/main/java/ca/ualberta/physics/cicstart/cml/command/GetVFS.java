@@ -8,7 +8,7 @@ import java.io.File;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ca.ualberta.physics.cssdp.configuration.Common;
+import ca.ualberta.physics.cssdp.configuration.ResourceUrls;
 import ca.ualberta.physics.cssdp.domain.auth.User;
 import ca.ualberta.physics.cssdp.util.UrlParser;
 
@@ -32,9 +32,9 @@ public class GetVFS implements Command {
 	@Override
 	public void execute(CMLRuntime runtime) {
 
-		String authResource = Common.properties().getString("api.url") + "/auth";
+//		String authResource = Common.properties().getString("api.url") + "/auth";
 
-		String whoisUrl = authResource + "/session.json/{session}/whois";
+		String whoisUrl = ResourceUrls.SESSION + "/{session}/whois";
 		jobLoger.info("GetVFS: locating whois for session var at " + whoisUrl);
 
 		User user = get(whoisUrl, cicstartSession).as(User.class);
@@ -42,9 +42,9 @@ public class GetVFS implements Command {
 				+ ", owner id=" + user.getId() + " with session var "
 				+ cicstartSession);
 
-		String vfsResource = Common.properties().getString("api.url") + "/vfs";
+//		String vfsResource = Common.properties().getString("api.url") + "/vfs";
 
-		String readUrl = vfsResource + "/filesystem.json/" + user.getId()
+		String readUrl = ResourceUrls.FILESYSTEM + "/" + user.getId()
 				+ "/read?path={file}";
 		jobLoger.info("GetVFS: read file data from " + readUrl + ", file="
 				+ path);

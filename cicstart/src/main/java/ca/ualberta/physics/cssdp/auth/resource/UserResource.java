@@ -54,15 +54,19 @@ import ca.ualberta.physics.cssdp.service.ServiceResponse;
 import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
 import com.google.inject.Inject;
-import com.wordnik.swagger.annotations.ApiError;
-import com.wordnik.swagger.annotations.ApiErrors;
+import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
+import com.wordnik.swagger.annotations.ApiResponse;
+import com.wordnik.swagger.annotations.ApiResponses;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
+@Path("/auth/user")
+@Api(value = "/auth/user", description = "Operations about Users")
+@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 public class UserResource {
 
 	private static final Logger logger = LoggerFactory
@@ -79,9 +83,9 @@ public class UserResource {
 	@ApiOperation(value = "Add a User", notes = "User.email must be unique. "
 			+ "HTTP status 201 returned if create was successful, use location header for object url. "
 			+ "Note that an empty User object will result in odd jackson mapper error. ")
-	@ApiErrors(value = {
-			@ApiError(code = 400, reason = "No User object supplied"),
-			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "No User object supplied"),
+			@ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
 	public Response addUser(
 			@ApiParam(value = "User object to add", required = true) User user,
 			@Context UriInfo uriInfo) {
@@ -109,10 +113,10 @@ public class UserResource {
 	@Path("/{email}")
 	@GET
 	@ApiOperation(value = "Get a User", notes = "If the user is not found or deleted, an empty response will be returned.  "
-			+ "Passwords are all masked in responses.", responseClass = "ca.ualberta.physics.cssdp.domain.auth.User")
-	@ApiErrors(value = {
-			@ApiError(code = 400, reason = "No email supplied"),
-			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+			+ "Passwords are all masked in responses.", response = ca.ualberta.physics.cssdp.domain.auth.User.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "No email supplied"),
+			@ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
 	public Response get(
 			@ApiParam(value = "Email used to lookup User object", required = true) @PathParam("email") String email) {
 
@@ -146,10 +150,10 @@ public class UserResource {
 
 	@Path("/{email}")
 	@DELETE
-	@ApiOperation(value = "Delete a User", notes = "Not implemented yet", responseClass = "ca.ualberta.physics.cssdp.domain.auth.User")
-	@ApiErrors(value = {
-			@ApiError(code = 400, reason = "No email supplied"),
-			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+	@ApiOperation(value = "Delete a User", notes = "Not implemented yet", response = ca.ualberta.physics.cssdp.domain.auth.User.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "No email supplied"),
+			@ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
 	public Response delete(
 			@ApiParam(value = "Email used to lookup User object", required = true) @PathParam("email") String email) {
 		return Response.status(500).entity("Not implemented yet").build();
@@ -159,12 +163,12 @@ public class UserResource {
 	@ApiOperation(value = "Modify a User", notes = "User.email must be unique.  Use get to retrieve the user id before calling this."
 			+ "HTTP status 200 returned with user object if update was successful, use location header for object url. "
 			+ "Note that an empty User object will result in odd jackson mapper error. ")
-	@ApiErrors(value = {
-			@ApiError(code = 400, reason = "No User object supplied."),
-			@ApiError(code = 400, reason = "user.id is null"),
-			@ApiError(code = 400, reason = "CICSTART.session is not for this user"),
-			@ApiError(code = 404, reason = "CICSTART.session is null"),
-			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "No User object supplied."),
+			@ApiResponse(code = 400, message = "user.id is null"),
+			@ApiResponse(code = 400, message = "CICSTART.session is not for this user"),
+			@ApiResponse(code = 404, message = "CICSTART.session is null"),
+			@ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
 	public Response updateUser(
 			@ApiParam(value = "User object to update", required = true) User user,
 			@ApiParam(value = "The authenticated session token", required = true) @HeaderParam("CICSTART.session") String sessionToken,
@@ -219,9 +223,9 @@ public class UserResource {
 	@Path("/requestpasswordreset")
 	@POST
 	@ApiOperation(value = "Requests a password reset email to be sent")
-	@ApiErrors(value = {
-			@ApiError(code = 400, reason = "No email supplied"),
-			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "No email supplied"),
+			@ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
 	public Response requestResetPassword(
 			@ApiParam(value = "Email used to lookup User object", required = true) @QueryParam("email") String email) {
 		if (Strings.isNullOrEmpty(email)) {
@@ -243,13 +247,13 @@ public class UserResource {
 	@Produces({ MediaType.TEXT_HTML })
 	@GET
 	@ApiOperation(value = "Resets the password given.  If no password is given, an html form is returned for password entry.")
-	@ApiErrors(value = {
-			@ApiError(code = 400, reason = "No token supplied"),
-			@ApiError(code = 400, reason = "No email supplied"),
-			@ApiError(code = 404, reason = "Token expired"),
-			@ApiError(code = 400, reason = "Token and email don't match"),
-			@ApiError(code = 400, reason = "newpassword1 <> newpassword2"),
-			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "No token supplied"),
+			@ApiResponse(code = 400, message = "No email supplied"),
+			@ApiResponse(code = 404, message = "Token expired"),
+			@ApiResponse(code = 400, message = "Token and email don't match"),
+			@ApiResponse(code = 400, message = "newpassword1 <> newpassword2"),
+			@ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
 	public Response buildResetPasswordForm(
 			@ApiParam(value = "Email used to lookup User object", required = true) @QueryParam("email") String email,
 			@ApiParam(value = "Email used to lookup User object", required = true) @PathParam("token") String token,
@@ -275,13 +279,13 @@ public class UserResource {
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@POST
 	@ApiOperation(value = "Resets the password given.  If no password is given, an html form is returned for password entry.")
-	@ApiErrors(value = {
-			@ApiError(code = 400, reason = "No token supplied"),
-			@ApiError(code = 400, reason = "No email supplied"),
-			@ApiError(code = 404, reason = "Token expired"),
-			@ApiError(code = 400, reason = "Token and email don't match"),
-			@ApiError(code = 400, reason = "newpassword1 <> newpassword2"),
-			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "No token supplied"),
+			@ApiResponse(code = 400, message = "No email supplied"),
+			@ApiResponse(code = 404, message = "Token expired"),
+			@ApiResponse(code = 400, message = "Token and email don't match"),
+			@ApiResponse(code = 400, message = "newpassword1 <> newpassword2"),
+			@ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
 	public Response resetPassword(
 			@ApiParam(value = "Email used to lookup User object", required = true) @FormParam("email") String email,
 			@ApiParam(value = "Email used to lookup User object", required = true) @FormParam("token") String token,

@@ -52,10 +52,11 @@ import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
-import com.wordnik.swagger.annotations.ApiError;
-import com.wordnik.swagger.annotations.ApiErrors;
+import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
+import com.wordnik.swagger.annotations.ApiResponse;
+import com.wordnik.swagger.annotations.ApiResponses;
 
 /**
  * A virtual file system accessible via REST commands. Delete is a special case
@@ -65,6 +66,9 @@ import com.wordnik.swagger.annotations.ApiParam;
  * @author rpotter
  * 
  */
+@Path("/vfs/filesystem")
+@Api(value = "/vfs/filesystem", description = "Operations about the files on a users VFS instance")
+@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 public class FileSystemResource {
 
 	@Inject
@@ -83,12 +87,12 @@ public class FileSystemResource {
 	@ApiOperation(value = "Write a file to this filesystem at the given path.  "
 			+ "If the file already exists, a '(n)' is suffixed to the filename. "
 			+ "Non-existing paths will automatically be created.")
-	@ApiErrors(value = {
-			@ApiError(code = 400, reason = "No owner specified"),
-			@ApiError(code = 400, reason = "No path specified"),
-			@ApiError(code = 400, reason = "No file data specified"),
-			@ApiError(code = 404, reason = "No session found"),
-			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "No owner specified"),
+			@ApiResponse(code = 400, message = "No path specified"),
+			@ApiResponse(code = 400, message = "No file data specified"),
+			@ApiResponse(code = 404, message = "No session found"),
+			@ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
 	public Response write(
 			@ApiParam(value = "The owner of this file system", required = true) @PathParam("owner") Long owner,
 			@ApiParam(value = "The path to write the data to", required = true) @FormDataParam("path") String path,
@@ -143,12 +147,12 @@ public class FileSystemResource {
 	@Path("/{owner}/read")
 	@Produces(MediaType.APPLICATION_OCTET_STREAM)
 	@ApiOperation(value = "Read a file from this filesystem")
-	@ApiErrors(value = {
-			@ApiError(code = 400, reason = "No owner specified"),
-			@ApiError(code = 400, reason = "No path specified"),
-			@ApiError(code = 404, reason = "File not found"),
-			@ApiError(code = 404, reason = "No session found"),
-			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "No owner specified"),
+			@ApiResponse(code = 400, message = "No path specified"),
+			@ApiResponse(code = 404, message = "File not found"),
+			@ApiResponse(code = 404, message = "No session found"),
+			@ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
 	public Response read(
 			@ApiParam(value = "The owner of this filesystem", required = true) @PathParam("owner") Long owner,
 			@ApiParam(value = "The path of the file to read", required = true) @QueryParam("path") String path,
@@ -179,13 +183,13 @@ public class FileSystemResource {
 
 	@GET
 	@Path("/{owner}/ls")
-	@ApiOperation(value = "List the contents of a directory in this filesystem", responseClass = "ca.ualberta.physics.cssdp.domain.vfs.VfsListing")
-	@ApiErrors(value = {
-			@ApiError(code = 400, reason = "No owner specified"),
-			@ApiError(code = 400, reason = "No path specified"),
-			@ApiError(code = 404, reason = "Path not found"),
-			@ApiError(code = 404, reason = "No session found"),
-			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+	@ApiOperation(value = "List the contents of a directory in this filesystem", response = ca.ualberta.physics.cssdp.domain.vfs.VfsListing.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "No owner specified"),
+			@ApiResponse(code = 400, message = "No path specified"),
+			@ApiResponse(code = 404, message = "Path not found"),
+			@ApiResponse(code = 404, message = "No session found"),
+			@ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
 	public Response ls(
 			@ApiParam(value = "The owner of this filesystem", required = true) @PathParam("owner") Long owner,
 			@ApiParam(value = "The path of the file to read", required = true) @QueryParam("path") String path,
@@ -251,12 +255,12 @@ public class FileSystemResource {
 	@POST
 	@Path("/{owner}/rm")
 	@ApiOperation(value = "Remove a file or files in a directory in this filesystem")
-	@ApiErrors(value = {
-			@ApiError(code = 400, reason = "No owner specified"),
-			@ApiError(code = 400, reason = "No path specified"),
-			@ApiError(code = 404, reason = "File or path not found"),
-			@ApiError(code = 404, reason = "No session found"),
-			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "No owner specified"),
+			@ApiResponse(code = 400, message = "No path specified"),
+			@ApiResponse(code = 404, message = "File or path not found"),
+			@ApiResponse(code = 404, message = "No session found"),
+			@ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
 	public Response rm(
 			@ApiParam(value = "The owner of this filesystem", required = true) @PathParam("owner") Long owner,
 			@ApiParam(value = "The path of the file to read", required = true) @QueryParam("path") String path,

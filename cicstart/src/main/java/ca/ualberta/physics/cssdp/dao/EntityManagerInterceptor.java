@@ -26,7 +26,6 @@ import ca.ualberta.physics.cssdp.configuration.ComponentProperties;
 import ca.ualberta.physics.cssdp.configuration.InjectorHolder;
 import ca.ualberta.physics.cssdp.file.configuration.FileServer;
 import ca.ualberta.physics.cssdp.service.StatsService;
-import ca.ualberta.physics.cssdp.service.StatsService.ServiceName;
 import ca.ualberta.physics.cssdp.vfs.configuration.VfsServer;
 
 import com.google.common.base.Strings;
@@ -111,7 +110,7 @@ public class EntityManagerInterceptor implements Filter {
 				String url = ((HttpServletRequest) request).getRequestURL()
 						.toString();
 
-				if (url.contains("api-docs.json") || url.contains("service")) {
+				if (url.contains("api-docs") || url.contains("service")) {
 					// don't count stats on these.
 				} else {
 

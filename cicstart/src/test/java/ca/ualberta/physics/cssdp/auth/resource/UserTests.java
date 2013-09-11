@@ -24,6 +24,7 @@ import static com.jayway.restassured.RestAssured.given;
 import org.junit.Assert;
 import org.junit.Test;
 
+import ca.ualberta.physics.cssdp.configuration.ResourceUrls;
 import ca.ualberta.physics.cssdp.domain.auth.User;
 
 import com.jayway.restassured.response.Response;
@@ -49,9 +50,8 @@ public class UserTests extends AuthTestsScaffolding {
 				.statusCode(201)
 				.and()
 				.header("location",
-						"http://localhost:8080" + baseUrl()
-								+ "/user.json/testuser1@nowhere.com").when()
-				.post(baseUrl() + "/user.json");
+						ResourceUrls.USER + "/testuser1@nowhere.com").when()
+				.post(ResourceUrls.USER);
 
 		String findUserUrl = res.getHeader("location");
 		User created = get(findUserUrl).as(User.class);
@@ -74,7 +74,7 @@ public class UserTests extends AuthTestsScaffolding {
 		res = given().content(created).and()
 				.header("CICSTART.session", sessionToken).and()
 				.contentType("application/json").expect().statusCode(200)
-				.when().put(baseUrl() + "/user.json");
+				.when().put(ResourceUrls.USER);
 
 		User updated = get(res.getHeader("location")).as(User.class);
 		Assert.assertEquals("new_email@nowhere.com", updated.getEmail());

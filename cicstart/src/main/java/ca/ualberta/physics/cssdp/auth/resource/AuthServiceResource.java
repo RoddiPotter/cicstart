@@ -10,15 +10,10 @@ import ca.ualberta.physics.cssdp.domain.ServiceInfo;
 import ca.ualberta.physics.cssdp.domain.ServiceStats;
 import ca.ualberta.physics.cssdp.resource.AbstractServiceResource;
 import ca.ualberta.physics.cssdp.service.StatsService;
-import ca.ualberta.physics.cssdp.service.StatsService.ServiceName;
 
 import com.google.inject.Inject;
 
-/*
- * Normally paths at class levels end with .json or .xml so the auto-api documentation
- * works properly.  This won't work but we are constrainted due to CANARIE's requirements
- * for this service.
- */
+
 @Path("/auth/service")
 public class AuthServiceResource extends AbstractServiceResource {
 

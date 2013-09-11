@@ -52,10 +52,11 @@ import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
-import com.wordnik.swagger.annotations.ApiError;
-import com.wordnik.swagger.annotations.ApiErrors;
+import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
+import com.wordnik.swagger.annotations.ApiResponse;
+import com.wordnik.swagger.annotations.ApiResponses;
 
 /**
  * download is more like a host operation and will always cache the data; and
@@ -78,6 +79,9 @@ import com.wordnik.swagger.annotations.ApiParam;
  * @author rpotter
  * 
  */
+@Path("/file/cache")
+@Api(value = "/file/cache", description = "Operations about the file cache")
+@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 public class CacheResource {
 
 	@Inject
@@ -98,11 +102,11 @@ public class CacheResource {
 	@ApiOperation(value = "Upload a file directly into the cache.  "
 			+ "Upload a file using multipart form data directly into the cache.  "
 			+ "The MD5 of the file will be returned on successfull PUT operations.")
-	@ApiErrors(value = {
-			@ApiError(code = 400, reason = "No file supplied"),
-			@ApiError(code = 404, reason = "No key or url supplied"),
-			@ApiError(code = 409, reason = "Duplicate key for a different MD5"),
-			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "No file supplied"),
+			@ApiResponse(code = 404, message = "No key or url supplied"),
+			@ApiResponse(code = 409, message = "Duplicate key for a different MD5"),
+			@ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
 	public Response addToCache(
 			@ApiParam(value = "An arbitrary key to associate this file with (e.g., the url)", required = true) @FormDataParam("key") String key,
 			@ApiParam(value = "The file data to cache", required = true) @FormDataParam("file") InputStream inputStream,
@@ -152,12 +156,12 @@ public class CacheResource {
 			+ " If the file is not cached, an attemp will be made to retrieve the file contents from the url given. This is an asynchronous "
 			+ " request.  Expect response code 202 and use the location given to check the status. If the file is cached, then the file will"
 			+ " be returned.  Giving an MD5 assumes the file is already cached and a 404 will be returned if it is not.")
-	@ApiErrors(value = {
-			@ApiError(code = 400, reason = "Neither MD5 or url is supplied"),
-			@ApiError(code = 404, reason = "No file cached with MD5 given"),
-			@ApiError(code = 404, reason = "No file cached with key given"),
-			@ApiError(code = 404, reason = "No file catalogued with url given"),
-			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "Neither MD5 or url is supplied"),
+			@ApiResponse(code = 404, message = "No file cached with MD5 given"),
+			@ApiResponse(code = 404, message = "No file cached with key given"),
+			@ApiResponse(code = 404, message = "No file catalogued with url given"),
+			@ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
 	public Response getFromCache(
 			@ApiParam(value = "The MD5 of this cached file", required = false) @QueryParam("md5") String md5,
 			@ApiParam(value = "The MD5 of this cached file", required = false) @QueryParam("key") String key,
@@ -233,7 +237,7 @@ public class CacheResource {
 										+ hostname
 										+ " to "
 										+ UriBuilder
-												.fromResource(HostResourceJSON.class)
+												.fromResource(HostResource.class)
 										+ " and try again.").build();
 					}
 
@@ -270,9 +274,9 @@ public class CacheResource {
 	@DELETE
 	@Path("/{MD5}")
 	@ApiOperation(value = "Remove a file from cache")
-	@ApiErrors(value = {
-			@ApiError(code = 400, reason = "No MD5 supplied"),
-			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "No MD5 supplied"),
+			@ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
 	public Response removeFromCache(
 			@ApiParam(value = "The MD5 of this cached file", required = true) @PathParam("MD5") String md5) {
 
@@ -290,10 +294,10 @@ public class CacheResource {
 	@GET
 	@Path("/find")
 	@ApiOperation(value = "Find the MD5 for a cached file")
-	@ApiErrors(value = {
-			@ApiError(code = 400, reason = "No key supplied"),
-			@ApiError(code = 404, reason = "No file cached for given key"),
-			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "No key supplied"),
+			@ApiResponse(code = 404, message = "No file cached for given key"),
+			@ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
 	public Response find(
 			@ApiParam(value = "One of the cached file's keys (e.g., the encoded url of the file)", required = true) @QueryParam("key") String key) {
 
@@ -330,9 +334,9 @@ public class CacheResource {
 	@PUT
 	@Path("/{MD5}/map")
 	@ApiOperation(value = "Map a new key to this cached file")
-	@ApiErrors(value = {
-			@ApiError(code = 400, reason = "No key or md5 supplied"),
-			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "No key or md5 supplied"),
+			@ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
 	public Response map(
 			@ApiParam(value = "The MD5 of the cached file", required = true) @PathParam("MD5") String md5,
 			@ApiParam(value = "A new key to map (e.g., the url of the file)", required = true) @FormParam("key") String key) {

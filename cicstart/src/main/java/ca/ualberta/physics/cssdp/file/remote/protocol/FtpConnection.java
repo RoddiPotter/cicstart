@@ -21,6 +21,7 @@ package ca.ualberta.physics.cssdp.file.remote.protocol;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,9 +65,10 @@ public class FtpConnection extends RemoteConnection {
 		String hostname = hostEntry.getHostname();
 		try {
 			ftpClient.connect(hostname);
+			Thread.sleep(2000);
 			boolean success = ftpClient.login(hostEntry.getUsername(),
 					hostEntry.getPassword());
-			if (!success) {
+			if(!success) {
 				throw new ProtocolException("Unable to login to FTP server "
 						+ hostEntry.getHostname(), false);
 			}
@@ -92,8 +94,9 @@ public class FtpConnection extends RemoteConnection {
 	public boolean disconnect() {
 
 		try {
+			InetAddress remoteAddress = ftpClient.getRemoteAddress();
 			logger.info("Disconnecting from "
-					+ ftpClient.getRemoteAddress().getHostName());
+					+ (remoteAddress != null ? remoteAddress.getHostName() : "unknown"));
 			ftpClient.disconnect();
 			return true;
 		} catch (IOException e) {

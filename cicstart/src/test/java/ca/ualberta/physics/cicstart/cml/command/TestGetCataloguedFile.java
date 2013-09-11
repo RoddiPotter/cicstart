@@ -11,8 +11,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ca.ualberta.physics.cssdp.auth.service.AuthClient;
-import ca.ualberta.physics.cssdp.configuration.Common;
 import ca.ualberta.physics.cssdp.configuration.InjectorHolder;
+import ca.ualberta.physics.cssdp.configuration.ResourceUrls;
 import ca.ualberta.physics.cssdp.domain.auth.User;
 import ca.ualberta.physics.cssdp.domain.catalogue.CatalogueSearchRequest;
 import ca.ualberta.physics.cssdp.domain.catalogue.CatalogueSearchResponse;
@@ -82,12 +82,12 @@ public class TestGetCataloguedFile extends IntegrationTestScaffolding {
 
 		String apacheJSON = mapper.writeValueAsString(apache);
 
-		String catalogueUrl = Common.properties()
-				.getString("api.url") + "/catalogue";
+//		String catalogueUrl = Common.properties()
+//				.getString("api.url") + "/catalogue";
 		
 		Response res = given().body(apacheJSON).and()
 				.contentType("application/json")
-				.post(catalogueUrl + "/project.json");
+				.post(ResourceUrls.PROJECT);
 
 		User dataManager = setupDataManager();
 		sessionToken = login(dataManager.getEmail(), "password");
@@ -98,14 +98,14 @@ public class TestGetCataloguedFile extends IntegrationTestScaffolding {
 		host.setUsername("anonymous");
 		host.setPassword("anonymous");
 
-		String fileUrl = Common.properties().getString("api.url") + "/file";
+//		String fileUrl = Common.properties().getString("api.url") + "/file";
 		given().content(host).and().contentType(ContentType.JSON).and()
 				.headers("CICSTART.session", sessionToken)
-				.post(fileUrl + "/host.json");
+				.post(ResourceUrls.HOST);
 
 		// scan the host first
 		res = given().header("CICSTART.session", sessionToken).put(
-				catalogueUrl + "/project.json/APACHE1/scan");
+				ResourceUrls.PROJECT + "/APACHE1/scan");
 
 		System.out.println(res.asString());
 
@@ -114,7 +114,7 @@ public class TestGetCataloguedFile extends IntegrationTestScaffolding {
 
 		res = given().content(searchRequest).and()
 				.contentType(ContentType.JSON)
-				.post(catalogueUrl + "/project.json/find");
+				.post(ResourceUrls.PROJECT + "/find");
 
 		Assert.assertEquals(4, res.as(CatalogueSearchResponse.class).getUris()
 				.size());

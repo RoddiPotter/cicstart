@@ -16,6 +16,7 @@ import ca.ualberta.physics.cssdp.catalogue.dao.UrlDataProductDao;
 import ca.ualberta.physics.cssdp.catalogue.resource.CatalogueTestsScaffolding;
 import ca.ualberta.physics.cssdp.catalogue.service.CatalogueService;
 import ca.ualberta.physics.cssdp.configuration.InjectorHolder;
+import ca.ualberta.physics.cssdp.configuration.ResourceUrls;
 import ca.ualberta.physics.cssdp.domain.catalogue.CatalogueSearchResponse;
 import ca.ualberta.physics.cssdp.domain.catalogue.DataProduct;
 import ca.ualberta.physics.cssdp.domain.catalogue.Observatory;
@@ -121,7 +122,7 @@ public class FindTests extends CatalogueTestsScaffolding {
 				.body(Files.toString(new File("../examples/findMACCS.json"),
 						Charset.forName("UTF-8"))).and()
 				.contentType(ContentType.JSON)
-				.post(baseUrl() + "/project.json/find");
+				.post(ResourceUrls.PROJECT + "/find");
 
 		// System.out.println(res.asString());
 

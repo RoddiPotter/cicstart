@@ -29,7 +29,9 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
@@ -49,11 +51,15 @@ import ca.ualberta.physics.cssdp.service.ServiceResponse;
 
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
-import com.wordnik.swagger.annotations.ApiError;
-import com.wordnik.swagger.annotations.ApiErrors;
+import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
+import com.wordnik.swagger.annotations.ApiResponse;
+import com.wordnik.swagger.annotations.ApiResponses;
 
+@Path("/catalogue/project")
+@Api(value = "/catalogue/project", description = "Operations about Projects")
+@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 public class ProjectResource {
 
 	private final Logger logger = LoggerFactory
@@ -71,15 +77,19 @@ public class ProjectResource {
 
 	@POST
 	@ApiOperation(value = "Create a new Project object", notes = "Successful operation will respond with 201 and a location header to get the contents of the Project object")
-	@ApiErrors(value = {
-			@ApiError(code = 400, reason = "No Project object supplied"),
-			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "No Project object supplied"),
+			@ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
 	public Response createProject(
 			@ApiParam(value = "The Project data", required = true) Project project,
 			@Context UriInfo uriInfo) {
 
 		for (DataProduct dp : project.getDataProducts()) {
-			dp.afterJsonUmarshal(project);
+			try {
+				dp.afterJsonUmarshal(project);
+			} catch (IllegalStateException e) {
+				return Response.status(400).entity(e.getMessage()).build();
+			}
 		}
 		logger.debug("Project is " + project);
 
@@ -101,11 +111,11 @@ public class ProjectResource {
 
 	@DELETE
 	@Path("/{extKey}")
-	@ApiOperation(value = "Delete a Project object", notes = "Successful operation will respond with 200 and return the Project object deleted", responseClass = "ca.ualberta.physics.cssdp.domain.catalogue.Project")
-	@ApiErrors(value = {
-			@ApiError(code = 400, reason = "No Project key supplied"),
-			@ApiError(code = 404, reason = "No Project found for key supplied"),
-			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+	@ApiOperation(value = "Delete a Project object", notes = "Successful operation will respond with 200 and return the Project object deleted", response = ca.ualberta.physics.cssdp.domain.catalogue.Project.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "No Project key supplied"),
+			@ApiResponse(code = 404, message = "No Project found for key supplied"),
+			@ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
 	public Response delete(
 			@ApiParam(value = "The Project key", required = true) @PathParam("extKey") String extKey) {
 
@@ -140,8 +150,8 @@ public class ProjectResource {
 	}
 
 	@GET
-	@ApiOperation(value = "List all projects", notes = "Returns an object with links to project details.", responseClass = "ca.ualberta.physics.cssdp.catalogue.resource.ProjectLinks")
-	@ApiErrors(value = { @ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+	@ApiOperation(value = "List all projects", notes = "Returns an object with links to project details.", response = ca.ualberta.physics.cssdp.catalogue.resource.ProjectLinks.class)
+	@ApiResponses(value = { @ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
 	public Response getProjects(@Context UriInfo uriInfo) {
 
 		ServiceResponse<List<Project>> sr = catalogueService.findAll();
@@ -158,11 +168,11 @@ public class ProjectResource {
 
 	@GET
 	@Path("/{extKey}")
-	@ApiOperation(value = "Get Project details", notes = "Get the project details", responseClass = "ca.ualberta.physics.cssdp.domain.catalogue.Project")
-	@ApiErrors(value = {
-			@ApiError(code = 400, reason = "No Project key supplied"),
-			@ApiError(code = 404, reason = "No Project found for key supplied"),
-			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+	@ApiOperation(value = "Get Project details", notes = "Get the project details", response = ca.ualberta.physics.cssdp.domain.catalogue.Project.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "No Project key supplied"),
+			@ApiResponse(code = 404, message = "No Project found for key supplied"),
+			@ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
 	public Response getProject(
 			@ApiParam(value = "The Project key", required = true) @PathParam("extKey") String extKey) {
 
@@ -189,11 +199,11 @@ public class ProjectResource {
 	@PUT
 	@Path("/{extKey}/scan")
 	@ApiOperation(value = "Request a directory scan and mapping of the project host", notes = "This is an asynchronous request")
-	@ApiErrors(value = {
-			@ApiError(code = 400, reason = "No Project key supplied"),
-			@ApiError(code = 404, reason = "No Project found for key supplied"),
-			@ApiError(code = 404, reason = "No session found"),
-			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "No Project key supplied"),
+			@ApiResponse(code = 404, message = "No Project found for key supplied"),
+			@ApiResponse(code = 404, message = "No session found"),
+			@ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
 	public Response scanForDataProductMapping(
 			@ApiParam(value = "The Project key", required = true) @PathParam("extKey") String extKey,
 			@ApiParam(value = "The authenticated session token", required = true) @HeaderParam("CICSTART.session") String sessionToken,
@@ -227,9 +237,9 @@ public class ProjectResource {
 	@POST
 	@Path("/find")
 	@ApiOperation(value = "Search the catalogue", notes = "")
-	@ApiErrors(value = {
-			@ApiError(code = 400, reason = "No CatalogueSearchRequest supplied"),
-			@ApiError(code = 500, reason = "Unable to complete request, see response body for error details") })
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "No CatalogueSearchRequest supplied"),
+			@ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
 	public Response query(
 			@ApiParam(value = "The search criteria", required = true) CatalogueSearchRequest searchRequest) {
 

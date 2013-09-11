@@ -26,6 +26,7 @@ import java.io.File;
 import org.junit.Assert;
 import org.junit.Test;
 
+import ca.ualberta.physics.cssdp.configuration.ResourceUrls;
 import ca.ualberta.physics.cssdp.vfs.configuration.VfsServer;
 
 import com.google.common.io.Files;
@@ -48,8 +49,7 @@ public class FileSystemResourceTest extends VfsTestsScaffolding {
 				.statusCode(201)
 				.and()
 				.header("location",
-						"http://localhost:8080" + baseUrl()
-								+ "/filesystem.json/" + vfsUser.getId()
+						ResourceUrls.FILESYSTEM + "/" + vfsUser.getId()
 								+ "/read?path=/build.gradle")
 				.given()
 				.header("CICSTART.session", sessionToken)
@@ -59,7 +59,7 @@ public class FileSystemResourceTest extends VfsTestsScaffolding {
 				.formParam("path", "/")
 				.and()
 				.when()
-				.post(baseUrl() + "/filesystem.json/{owner}/write",
+				.post(ResourceUrls.FILESYSTEM + "/{owner}/write",
 						vfsUser.getId());
 
 		Assert.assertArrayEquals(
@@ -71,7 +71,7 @@ public class FileSystemResourceTest extends VfsTestsScaffolding {
 				.header("CICSTART.session", sessionToken)
 				.and()
 				.queryParam("path", "/")
-				.get(baseUrl() + "/filesystem.json/{owner}/ls", vfsUser.getId());
+				.get(ResourceUrls.FILESYSTEM + "/{owner}/ls", vfsUser.getId());
 
 		System.out.println(res.asString());
 

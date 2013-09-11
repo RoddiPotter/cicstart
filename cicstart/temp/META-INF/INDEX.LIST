@@ -1,0 +1,11 @@
+JarIndex-Version: 1.0
+
+commons-primitives-1.0.jar
+org/apache/commons/collections/primitives/adapters
+org/apache/commons
+org/apache/commons/collections/primitives/decorators
+org/apache/commons/collections
+org/apache/commons/collections/primitives/adapters/io
+org/apache/commons/collections/primitives
+org
+org/apache

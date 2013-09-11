@@ -5,26 +5,28 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.wordnik.swagger.annotations.ApiProperty;
+import com.wordnik.swagger.annotations.ApiModel;
+import com.wordnik.swagger.annotations.ApiModelProperty;
 
+@ApiModel(value = "Represents a specification for an OpenStack cloud image")
 @XmlRootElement(name = "InstanceSpec")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class InstanceSpec {
 
 	@XmlElement
-	@ApiProperty(value = "The actual cloud to start this image on (DAIR, CESWP, EC2, etc)", required = true)
+	@ApiModelProperty(value = "The actual cloud to start this image on (DAIR, CESWP, EC2, etc)", required = true)
 	private String cloud;
 
 	@XmlElement
-	@ApiProperty(value = "The name of the image to use", required = true)
+	@ApiModelProperty(value = "The name of the image to use", required = true)
 	private String image;
 
 	@XmlElement
-	@ApiProperty(value = "The flavor of the VM, default to m1.tiny", allowableValues = "m1.tiny, m1.small, m1.medium, m1.large, m1.xlarge", required = false)
+	@ApiModelProperty(value = "The flavor of the VM, default to m1.tiny", allowableValues = "m1.tiny, m1.small, m1.medium, m1.large, m1.xlarge", required = false)
 	private String flavor = "m1.tiny";
 
 	@XmlElement
-	@ApiProperty(value = "An ID you can refer to later, like the job id of the macro you are running", required = true)
+	@ApiModelProperty(value = "An ID you can refer to later, like the job id of the macro you are running", required = true)
 	private String requestId;
 
 	public String getCloud() {

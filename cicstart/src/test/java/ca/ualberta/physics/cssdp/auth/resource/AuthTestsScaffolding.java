@@ -22,6 +22,7 @@ import static com.jayway.restassured.RestAssured.given;
 
 import org.junit.Before;
 
+import ca.ualberta.physics.cssdp.configuration.ResourceUrls;
 import ca.ualberta.physics.cssdp.domain.auth.User;
 import ca.ualberta.physics.cssdp.domain.auth.User.Role;
 import ca.ualberta.physics.cssdp.util.IntegrationTestScaffolding;
@@ -50,12 +51,12 @@ public class AuthTestsScaffolding extends IntegrationTestScaffolding {
 		newDataUser.setRole(Role.DATA_USER);
 
 		Response res = given().content(newDataUser).and().contentType("application/json")
-				.post(baseUrl() + "/user.json");
+				.post(ResourceUrls.USER);
 
 		System.out.println(res.asString());
 		
 		dataUser = given().contentType(ContentType.JSON)
-				.get(baseUrl() + "/user.json/datauser@nowhere.com")
+				.get(ResourceUrls.USER + "/datauser@nowhere.com")
 				.as(User.class);
 	}
 

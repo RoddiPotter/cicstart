@@ -13,7 +13,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ca.ualberta.physics.cssdp.configuration.Common;
+import ca.ualberta.physics.cssdp.configuration.ResourceUrls;
 import ca.ualberta.physics.cssdp.domain.catalogue.CatalogueSearchRequest;
 import ca.ualberta.physics.cssdp.domain.catalogue.CatalogueSearchResponse;
 import ca.ualberta.physics.cssdp.util.UrlParser;
@@ -37,12 +37,12 @@ public class GetCataloguedFiles implements Command {
 	@Override
 	public void execute(CMLRuntime runtime) {
 
-		String catalogueResource = Common.properties().getString(
-				"api.url") + "/catalogue";
+//		String catalogueResource = Common.properties().getString(
+//				"api.url") + "/catalogue";
 
-		String fileResource = Common.properties().getString("api.url") + "/file";
+//		String fileResource = Common.properties().getString("api.url") + "/file";
 
-		String findUrl = catalogueResource + "/project.json/find";
+		String findUrl = ResourceUrls.PROJECT + "/find";
 		jobLogger.info("GetCatalogueFiles: finding data at " + findUrl);
 		jobLogger.info("GetCatalogueFiles: search request is " + searchRequest);
 
@@ -58,7 +58,7 @@ public class GetCataloguedFiles implements Command {
 					+ uri.toASCIIString() + ", requesting data download");
 			res = given().queryParam("url", uri.toASCIIString()).and()
 					.contentType(ContentType.URLENC).when()
-					.get(fileResource + "/cache.json");
+					.get(ResourceUrls.CACHE);
 			if (res.statusCode() == 202) {
 				jobLogger
 						.info("GetCatalogueFiles: data not in cache, trying next one");
@@ -92,7 +92,7 @@ public class GetCataloguedFiles implements Command {
 
 			res = given().queryParam("url", uri.toASCIIString()).and()
 					.contentType(ContentType.URLENC).when()
-					.get(fileResource + "/cache.json");
+					.get(ResourceUrls.CACHE);
 
 			int i = 0;
 			while (res.statusCode() == 202) {

@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ca.ualberta.physics.cicstart.macro.configuration.MacroServer;
-import ca.ualberta.physics.cssdp.configuration.Common;
+import ca.ualberta.physics.cssdp.configuration.ResourceUrls;
 import ca.ualberta.physics.cssdp.domain.macro.Instance;
 import ca.ualberta.physics.cssdp.domain.macro.InstanceSpec;
 import ca.ualberta.physics.cssdp.util.NetworkUtil;
@@ -59,11 +59,11 @@ public class StartVM implements Command {
 
 			jobLogger.info("StartVM: Starting VM instance on " + cloudName
 					+ " using image " + imageName + " of size " + flavor);
-			String macroUrl = Common.properties().getString("api.url") + "/macro";
+//			String macroUrl = Common.properties().getString("api.url") + "/macro";
 			Response res = given().content(vmSpec).and()
 					.contentType(ContentType.JSON).and()
 					.headers("CICSTART.session", cicstartSession)
-					.post(macroUrl + "/macro.json/vm");
+					.post(ResourceUrls.MACRO + "/vm");
 
 			if (res.statusCode() == 200) {
 				instance = res.as(Instance.class);

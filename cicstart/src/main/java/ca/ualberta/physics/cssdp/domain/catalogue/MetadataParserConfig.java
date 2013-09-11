@@ -31,10 +31,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 import ca.ualberta.physics.cssdp.dao.Persistent;
 
 import com.google.common.base.Throwables;
-import com.wordnik.swagger.annotations.ApiClass;
-import com.wordnik.swagger.annotations.ApiProperty;
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiModelProperty;
 
-@ApiClass(value = "The configuration used to match files visited during a server scan.")
+@Api(value = "The configuration used to match files visited during a server scan.")
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 @Entity
@@ -43,29 +43,29 @@ public class MetadataParserConfig extends Persistent {
 
 	private static final long serialVersionUID = 1L;
 
-	@ApiProperty(required = true, value = "The regular expression used for inclusion; "
+	@ApiModelProperty(required = true, value = "The regular expression used for inclusion; "
 			+ "map these files to the Data Product associated with this MetadataParserConfig. "
 			+ "Matches against the entire URL.")
 	@XmlElement
 	@Column(name = "includes_regex", length = 1024, nullable = false)
 	private String includesRegex;
 
-	@ApiProperty(required = false, value = "The regular expression used for parsing the start date from file names.")
+	@ApiModelProperty(required = false, value = "The regular expression used for parsing the start date from file names.")
 	@XmlElement
 	@Column(name = "start_date_regex", length = 1024, nullable = true)
 	private String startDateRegex;
 
-	@ApiProperty(required = false, value = "The regular expression used for parsing the end date from file names.")
+	@ApiModelProperty(required = false, value = "The regular expression used for parsing the end date from file names.")
 	@XmlElement
 	@Column(name = "end_date_regex", length = 1024, nullable = true)
 	private String endDateRegex;
 
-	@ApiProperty(required = false, value = "The bean shell expression used for parsing the start date from file names.")
+	@ApiModelProperty(required = false, value = "The bean shell expression used for parsing the start date from file names.")
 	@XmlElement
 	@Column(name = "start_date_bean_shell", nullable = true)
 	private String startDateBeanShell;
 
-	@ApiProperty(required = false, value = "The bean shell expression used for parsing the end date from file names.")
+	@ApiModelProperty(required = false, value = "The bean shell expression used for parsing the end date from file names.")
 	@XmlElement
 	@Column(name = "end_date_bean_shell", nullable = true)
 	private String endDateBeanShell;

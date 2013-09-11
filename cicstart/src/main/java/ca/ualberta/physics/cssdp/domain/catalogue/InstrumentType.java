@@ -44,10 +44,10 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.base.Objects;
-import com.wordnik.swagger.annotations.ApiClass;
-import com.wordnik.swagger.annotations.ApiProperty;
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiModelProperty;
 
-@ApiClass(value = "Describes an Instrument Type")
+@Api(value = "Describes an Instrument Type")
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 @Entity
@@ -64,14 +64,14 @@ public class InstrumentType extends Persistent {
 
 	@JsonSerialize(using = JSONMnemonicSerializer.class)
 	@JsonDeserialize(using = JSONMnemonicDeserializer.class)
-	@ApiProperty(required = true, value = "The external key for lookup of this Instrument Type", dataType = "Mnemonic")
+	@ApiModelProperty(required = true, value = "The external key for lookup of this Instrument Type", dataType = "Mnemonic")
 	@XmlAttribute
 	@XmlJavaTypeAdapter(MnemonicAdapter.class)
 	@Column(name = "ext_key", length = 50, nullable = false)
 	@Type(type = "ca.ualberta.physics.cssdp.dao.MnemonicType")
 	private Mnemonic externalKey;
 
-	@ApiProperty(required = false, value = "The description of this Instrument Type", dataType = "String")
+	@ApiModelProperty(required = false, value = "The description of this Instrument Type", dataType = "String")
 	@XmlElement
 	@Column(name = "description", length = 1024, nullable = true)
 	private String description;
