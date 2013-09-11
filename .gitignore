@@ -3,12 +3,12 @@
 .classpath
 .project
 .settings/
-build/
+**/build/
 **/WEB-INF/classes/
 bin/
 cloud-script.txt
-cml/macro.log
-cml/temp
+cicstart/macro.log
+cicstart/temp
 rod_script.txt
 open_stack_api_learning.txt
 #*#
