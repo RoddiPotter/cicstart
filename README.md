@@ -29,9 +29,9 @@ The components that make up the CICSTART platform are:
 > Note that this component currently does not use HTTPS.  A discussion has been started on the Google group about this. 
 > [More details](//github.com/roddipotter/cicstart/wiki/Auth)
 ### API Documentation
-> [User](http://208.75.74.81/cicstart/docs/?input_baseUrl=http://208.75.74.81/cicstart/api/api-docs.json#!/user)
+> [User](http://208.75.74.81/cicstart/docs/?input_baseUrl=http://208.75.74.81/cicstart/api/api-docs#!/user)
 
-> [Session](http://208.75.74.81/cicstart/docs/?input_baseUrl=http://208.75.74.81/cicstart/api/api-docs.json#!/session)
+> [Session](http://208.75.74.81/cicstart/docs/?input_baseUrl=http://208.75.74.81/cicstart/api/api-docs#!/session)
 
 ## Catalogue for File Metadata 
 > A Catalogue Service used to identify and locate data resources on the Internet. This service is 
@@ -40,7 +40,7 @@ The components that make up the CICSTART platform are:
 > At the same time, this service allows any research software to automatically catalogue the output generated data from computational models. 
 > This component enables a method for piping data from one computational job to the next. [More details](//github.com/roddipotter/cicstart/wiki/Catalogue)
 ### API Documentation
-> [Project](http://208.75.74.81/cicstart/docs/?input_baseUrl=http://208.75.74.81/cicstart/api/api-docs.json#!/project)
+> [Project](http://208.75.74.81/cicstart/docs/?input_baseUrl=http://208.75.74.81/cicstart/api/api-docs#!/project)
 
 ## File Transfer and Cache
 > A File Service used to transfer data resources across the Internet to the computational jobs running on cloud resources or directly to end users. 
@@ -49,9 +49,9 @@ The components that make up the CICSTART platform are:
 > allows for arbitrary mapping of external keys to the file's MD5 hash.  The arbitrary mapping of keys to file hashes eliminates duplicate file
 > data in the cache and provides unlimited vectors for users to organize and recall data files. [More details](//github.com/roddipotter/cicstart/wiki/File)
 ### API Documentation
-> [Cache](http://208.75.74.81/cicstart/docs/?input_baseUrl=http://208.75.74.81/cicstart/api/api-docs.json#!/cache)
+> [Cache](http://208.75.74.81/cicstart/docs/?input_baseUrl=http://208.75.74.81/cicstart/api/api-docs#!/cache)
 
-> [Host](http://208.75.74.81/cicstart/docs/?input_baseUrl=http://208.75.74.81/cicstart/api/api-docs.json#!/host)
+> [Host](http://208.75.74.81/cicstart/docs/?input_baseUrl=http://208.75.74.81/cicstart/api/api-docs#!/host)
 
 ## Virtual File System (VFS)
 > A Virtual 'File System Service' that allows end-users and computational jobs to place and get data files from.  The CICSTART services on
@@ -61,7 +61,7 @@ The components that make up the CICSTART platform are:
 > SFTP services at this time).  The VFS system interacts with the Auth service for authentication and authorization to VFS resources.
 > [More details](//github.com/roddipotter/cicstart/wiki/VFS)  
 ### API Documentation
-> [File System](http://208.75.74.81/cicstart/docs/?input_baseUrl=http://208.75.74.81/cicstart/api/api-docs.json#!/filesystem)
+> [File System](http://208.75.74.81/cicstart/docs/?input_baseUrl=http://208.75.74.81/cicstart/api/api-docs#!/filesystem)
 
 ## Macro Service and CICSTART Macro Language
 > This service allows the end user to define a set of steps (like a workflow) in the form of a macro using the [CICSTART Macro Language](//github.com/roddipotter/cicstart/wiki/CML) to
@@ -71,7 +71,7 @@ The components that make up the CICSTART platform are:
 > debugging or for cases that do no require a VM, such as accessing software licenses for the local machine only. 
 > [More details](//github.com/roddipotter/cicstart/wiki/Macro)
 ### API Documentation
-> [Macro](http://208.75.74.81/cicstart/docs/?input_baseUrl=http://208.75.74.81/cicstart/api/api-docs.json#!/macro)
+> [Macro](http://208.75.74.81/cicstart/docs/?input_baseUrl=http://208.75.74.81/cicstart/api/api-docs#!/macro)
 
 > [CICSTART Macro Language Documentation](//github.com/roddipotter/cicstart/wiki/CML)
 
@@ -90,13 +90,13 @@ The server components need a database to talk with (PostgreSQL is default), but 
 ### For the platform implementor
 You are using the REST APIs offered by CICSTART to build your own data portal.
 
-1. See [REST APIs](http://208.75.74.81/cicstart/docs/?input_baseUrl=http://208.75.74.81/cicstart/api/api-docs.json)
+1. See [REST APIs](http://208.75.74.81/cicstart/docs/?input_baseUrl=http://208.75.74.81/cicstart/api/api-docs)
     
 ### For the model developer
 You are developing a computational model and you want it served by CICSTART
 
 1. See [Macro](//github.com/roddipotter/cicstart/wiki/Macro) and [CML](//github.com/roddipotter/cicstart/wiki/CML) documentation
-2. See [REST APIs](http://208.75.74.81/cicstart/docs/?input_baseUrl=http://208.75.74.81/cicstart/api/api-docs.json)
+2. See [REST APIs](http://208.75.74.81/cicstart/docs/?input_baseUrl=http://208.75.74.81/cicstart/api/api-docs)
 
 ---------------------------------------
 
