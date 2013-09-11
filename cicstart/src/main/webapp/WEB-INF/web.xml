@@ -58,7 +58,7 @@
   </init-param>
   <init-param>
     <param-name>swagger.api.basepath</param-name>
-    <param-value>http://localhost:8080/cicstart/api</param-value>
+    <param-value>http://208.75.74.81/cicstart/api</param-value>
   </init-param>
   <load-on-startup>2</load-on-startup>
 </servlet>
