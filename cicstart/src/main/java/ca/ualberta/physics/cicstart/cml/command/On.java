@@ -52,7 +52,7 @@ public class On implements Command {
 	public void execute(CMLRuntime runtime) {
 
 		MDC.put("JobId", runtime.getRequestId());
-		
+
 		jobLogger.info("This is try # " + retryCount + " of " + maxRetries);
 
 		String cicstartServer = MacroServer.properties().getString(
@@ -92,14 +92,14 @@ public class On implements Command {
 					// the common properties will be overridden when the client
 					// is built if the jvm building the client can't access the
 					// internal ip of the cicstart server
-					String macroUrl = Common.properties().getString("api.url") + "/macro"
+					String macroUrl = Common.properties().getString("api.url")
+							+ "/macro"
 							+ "/macro/bin?include_jre=false&use_internal_network=true&job_id="
 							+ runtime.getRequestId();
 
 					// bootstrap the script, removing references to vm created
 					// and forcing it to use the ip defined by the on command
-					String bootstrappedScript = script.replaceAll("$"
-							+ serverVar, "\"" + host + "\"").replaceAll("\n", "");
+					String bootstrappedScript = bootstrapCMLScript(script, serverVar, host);
 
 					runOnRemote(
 							client,
@@ -120,7 +120,8 @@ public class On implements Command {
 
 			} catch (Exception e) {
 
-				jobLogger.warn("something when wrong connecting to spawned vm", e);
+				jobLogger.warn("something when wrong connecting to spawned vm",
+						e);
 				// assigned external address takes a few seconds and is
 				// non-determinant of what exception will be thrown so just
 				// retry until we can connect to the host
@@ -155,6 +156,13 @@ public class On implements Command {
 
 		}
 
+	}
+
+	public static String bootstrapCMLScript(String cmlScript, String serverVar,
+			String host) {
+		String bootstrappedScript = cmlScript.replaceAll("\\$" + serverVar,
+				"\"" + host + "\"").replaceAll("\\n", "\\\\ \n").replaceAll("'", "\\\\'").replaceAll("\\t", " ");
+		return bootstrappedScript;
 	}
 
 	private void runOnRemote(SSHClient client, String command)
