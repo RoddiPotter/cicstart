@@ -112,21 +112,24 @@ public class FileSystemResource {
 
 		path = path.endsWith("/") ? path : path + "/";
 
+		String fileName = disposition.getFileName();
+		if (Strings.isNullOrEmpty(fileName)) {
+			return Response.status(400)
+					.entity("filename not found in content disposition")
+					.build();
+		}
 		ServiceResponse<Void> sr = fileSystemService.write(owner, path,
-				disposition.getFileName(), inputStream);
+				fileName, inputStream);
 
 		if (sr.isRequestOk()) {
 
 			return Response
 					.status(201)
 					.location(
-							UriBuilder
-									.fromUri(uriInfo.getBaseUri())
-									.path(getClass())
-									.path(owner.toString())
+							UriBuilder.fromUri(uriInfo.getBaseUri())
+									.path(getClass()).path(owner.toString())
 									.path("read")
-									.queryParam("path",
-											path + disposition.getFileName())
+									.queryParam("path", path + fileName)
 									.build()).build();
 
 		} else {

@@ -195,6 +195,7 @@ public class MacroResource {
 
 	@Path("/{requestId}/log")
 	@GET
+	@Produces({ "text/plain" })
 	@ApiOperation(value = "Download the entire log file. Makes a request to your VFS to get the log file.")
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "No request id supplied"),
@@ -208,14 +209,11 @@ public class MacroResource {
 			 */
 			@ApiParam(value = "The authenticated session token", required = true) @HeaderParam("CICSTART.session") final String sessionToken) {
 
-//		String authResource = Common.properties().getString("api.url");
 		String whoisUrl = ResourceUrls.SESSION + "/{session}/whois";
 		final User user = get(whoisUrl, sessionToken).as(User.class);
-//		String vfsResource = Common.properties().getString("api.url") + "/vfs";
 
 		final String readUrl = ResourceUrls.FILESYSTEM + "/{owner}/read";
 
-		// FIXME this does nothing.
 		return new StreamingOutput() {
 			public void write(OutputStream output) throws IOException,
 					WebApplicationException {

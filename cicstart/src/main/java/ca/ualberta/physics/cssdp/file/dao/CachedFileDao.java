@@ -24,8 +24,6 @@ import javax.persistence.Query;
 import ca.ualberta.physics.cssdp.dao.AbstractJpaDao;
 import ca.ualberta.physics.cssdp.domain.file.CachedFile;
 
-import com.google.common.collect.Sets;
-
 public class CachedFileDao extends AbstractJpaDao<CachedFile> {
 
 	public CachedFile find(String externalKey) {
@@ -33,7 +31,7 @@ public class CachedFileDao extends AbstractJpaDao<CachedFile> {
 		String qlString = "select cf from CachedFile cf, in(cf.externalKeys) extkey where extkey = :externalKey";
 
 		Query q = em.createQuery(qlString);
-		q.setParameter("externalKey", Sets.newHashSet(externalKey));
+		q.setParameter("externalKey", externalKey);
 
 		CachedFile cf = null;
 		try {

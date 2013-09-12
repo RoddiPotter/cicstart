@@ -19,5 +19,6 @@ alter table cached_file_keys add constraint fk_keys_cached_file foreign key (cac
 @UP
 
 @DOWN
+drop table cached_file_keys;
 drop table cached_file;
 @DOWN
