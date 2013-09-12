@@ -39,7 +39,6 @@ public class On implements Command {
 
 	// the host these commands should be run on
 	private final String host;
-	private final String serverVar;
 	private final List<CommandDefinition> cmdsToRun;
 	private final String script;
 
@@ -47,9 +46,8 @@ public class On implements Command {
 	private int retryCount = 0;
 
 	public On(Instance instance, List<CommandDefinition> cmdsToRun,
-			String script, String serverVar) {
+			String script) {
 		this.host = instance.ipAddress;
-		this.serverVar = serverVar;
 		this.cmdsToRun = cmdsToRun;
 		this.script = script;
 	}
@@ -189,15 +187,6 @@ public class On implements Command {
 
 		}
 
-	}
-
-	public static String bootstrapCMLScript(String cmlScript, String serverVar,
-			String host) {
-		String bootstrappedScript = cmlScript
-				.replaceAll("\\$" + serverVar, "\"" + host + "\"")
-				.replaceAll("\\n", "\\\\ \n").replaceAll("'", "\\\\'")
-				.replaceAll("\\t", " ");
-		return bootstrappedScript;
 	}
 
 	private void runOnRemote(SSHClient client, String command)

@@ -161,8 +161,7 @@ public class CMLRuntime {
 			OnCommandDefinition onCommandDef = (OnCommandDefinition) commandDef;
 			On cmd = new On(
 					mutate(onCommandDef.getServerVar(), Instance.class),
-					onCommandDef.getChildren(), onCommandDef.getMacroScript(),
-					onCommandDef.getServerVar());
+					onCommandDef.getChildren(), onCommandDef.getMacroScript());
 			return cmd;
 		}
 

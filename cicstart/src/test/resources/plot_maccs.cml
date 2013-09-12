@@ -11,7 +11,7 @@ on $vm {
 	maccsData = getCataloguedFiles({
 		project=("MACCS"),
 		observatories=("PG"),
-		dateRange=("2010-01-01","2010-01-03")
+		dateRange=("2010-10-01","2010-10-05")
 	});
 			
 	// Loop over each MACCS data file we grabbed
