@@ -98,8 +98,8 @@ public class On implements Command {
 
 					// bootstrap the script, removing references to vm created
 					// and forcing it to use the ip defined by the on command
-					String bootstrappedScript = script.replaceAll("\\$"
-							+ serverVar, "\"" + host + "\"");
+					String bootstrappedScript = script.replaceAll("$"
+							+ serverVar, "\"" + host + "\"").replaceAll("\n", "");
 
 					runOnRemote(
 							client,
