@@ -1,9 +1,12 @@
 package ca.ualberta.physics.cicstart.cml.command;
 
+import static com.jayway.restassured.RestAssured.get;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -21,9 +24,12 @@ import org.slf4j.LoggerFactory;
 
 import ca.ualberta.physics.cicstart.macro.configuration.MacroServer;
 import ca.ualberta.physics.cssdp.configuration.Common;
+import ca.ualberta.physics.cssdp.configuration.ResourceUrls;
+import ca.ualberta.physics.cssdp.domain.auth.User;
 import ca.ualberta.physics.cssdp.domain.macro.Instance;
 import ca.ualberta.physics.cssdp.util.NetworkUtil;
 
+import com.google.common.io.Files;
 import com.google.common.net.InetAddresses;
 
 public class On implements Command {
@@ -97,18 +103,46 @@ public class On implements Command {
 							+ "/macro/bin?include_jre=false&use_internal_network=true&job_id="
 							+ runtime.getRequestId();
 
-					// bootstrap the script, removing references to vm created
-					// and forcing it to use the ip defined by the on command
-					String bootstrappedScript = bootstrapCMLScript(script, serverVar, host);
+					// put script to VFS to transfer back to VM
+					File tempDir = Files.createTempDir();
+					File tempMacroFile = new File(tempDir,
+							runtime.getRequestId() + ".cml");
+					tempMacroFile.createNewFile();
+					Files.write(script, tempMacroFile, Charset.forName("UTF-8"));
+					runtime.setVariableData(tempMacroFile.getName(),
+							tempMacroFile);
+					PutVFS putMacroOnVFS = new PutVFS(runtime.getCICSTARTSession(),
+							"/", tempMacroFile.getName());
+					putMacroOnVFS.execute(runtime);
+					
+					String whoisUrl = ResourceUrls.SESSION + "/{session}/whois";
+					jobLogger
+							.debug("PutVFS: locating whois for session var at "
+									+ whoisUrl);
+					User user = get(whoisUrl, runtime.getCICSTARTSession()).as(
+							User.class);
+
+					String getVFSMacroFileUrl = Common.properties().getString(
+							"api.url")
+							+ "/vfs/filesystem/"
+							+ user.getId()
+							+ "/read?path=/" + tempMacroFile.getName();
+
+					runOnRemote(
+							client,
+							"curl -H CICSTART.session:\""
+									+ runtime.getCICSTARTSession()
+									+ "\" -H Content-Type:\"application/octet-stream\" -X GET "
+									+ "\"" + getVFSMacroFileUrl + "\""
+									+ "> macro.cml");
 
 					runOnRemote(
 							client,
 							"curl -H CICSTART.session:\""
 									+ runtime.getCICSTARTSession()
 									+ "\" -H Content-Type:\"application/octet-stream\" --data-binary "
-									+ "'" + bootstrappedScript + "'"
-									+ " -X POST " + "\"" + macroUrl + "\""
-									+ "> client.tar.gz");
+									+ "@macro.cml" + " -X POST " + "\""
+									+ macroUrl + "\"" + "> client.tar.gz");
 
 					runOnRemote(client, "tar zxvf client.tar.gz");
 					runOnRemote(client, "cd bin && ./run");
@@ -160,8 +194,10 @@ public class On implements Command {
 
 	public static String bootstrapCMLScript(String cmlScript, String serverVar,
 			String host) {
-		String bootstrappedScript = cmlScript.replaceAll("\\$" + serverVar,
-				"\"" + host + "\"").replaceAll("\\n", "\\\\ \n").replaceAll("'", "\\\\'").replaceAll("\\t", " ");
+		String bootstrappedScript = cmlScript
+				.replaceAll("\\$" + serverVar, "\"" + host + "\"")
+				.replaceAll("\\n", "\\\\ \n").replaceAll("'", "\\\\'")
+				.replaceAll("\\t", " ");
 		return bootstrappedScript;
 	}
 
