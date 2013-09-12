@@ -109,13 +109,12 @@ public class On implements Command {
 							runtime.getRequestId() + ".cml");
 					tempMacroFile.createNewFile();
 					Files.write(script, tempMacroFile, Charset.forName("UTF-8"));
-					runtime.setVariableData(tempMacroFile.getName(),
-							tempMacroFile);
 					PutVFS putMacroOnVFS = new PutVFS(runtime.getCICSTARTSession(),
-							"/", tempMacroFile.getName());
+							"/", tempMacroFile.getAbsolutePath());
 					putMacroOnVFS.execute(runtime);
-					
-					String whoisUrl = ResourceUrls.SESSION + "/{session}/whois";
+					tempMacroFile.delete();
+					tempDir.delete();
+					String whoisUrl = ResourceUrls.SESSION + "/" + runtime.getCICSTARTSession() + "/whois";
 					jobLogger
 							.debug("PutVFS: locating whois for session var at "
 									+ whoisUrl);
