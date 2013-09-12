@@ -114,7 +114,7 @@ public class On implements Command {
 					putMacroOnVFS.execute(runtime);
 					tempMacroFile.delete();
 					tempDir.delete();
-					String whoisUrl = ResourceUrls.SESSION + "/" + runtime.getCICSTARTSession() + "/whois";
+					String whoisUrl = ResourceUrls.SESSION + "/{session}/whois";
 					jobLogger
 							.debug("PutVFS: locating whois for session var at "
 									+ whoisUrl);
