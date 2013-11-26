@@ -4,11 +4,11 @@
 .project
 .settings/
 build/
-WEB-INF/classes/
+classes/
 bin/
 cloud-script.txt
-cicstart/macro.log
-cicstart/temp
+macro.log
+temp/
 rod_script.txt
 open_stack_api_learning.txt
 #*#
