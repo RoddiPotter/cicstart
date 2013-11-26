@@ -1,6 +1,0 @@
-
-// starts a VM and runs something on it
-vm = startVM("DAIR", "Ubuntu 10.04 amd64", "m1.tiny");
-on $vm {
-	run("date");
-}
