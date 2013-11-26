@@ -1,0 +1,32 @@
+<configuration>
+
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <layout class="ch.qos.logback.classic.PatternLayout">
+      <Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</Pattern>
+    </layout>
+  </appender>
+
+  <appender name="CMLLOGGER" class="ca.ualberta.physics.cicstart.cml.log.CMLLogger">
+  	<file>macro.log</file>
+  	<append>true</append>
+  	<encoder>
+  		<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+  	</encoder>
+  </appender>
+	
+  <root level="info">
+    <appender-ref ref="STDOUT" />
+  </root>
+  <logger name="org.hibernate.SQL" level="debug"/>
+  <logger name="org.hibernate.type" level="warn"/>
+  <logger name="o.eclipse.jetty" level="debug" />
+  <logger name="ca.ualberta.physics" level="debug"/>
+  <logger name="com.sun.grizzly" level="trace"/>
+  <logger name="javax.mail" level="debug" />
+  <logger name="com.coderod" level="debug"/>
+  
+  <logger name="JOBLOGGER" level="info" additivity="true">
+	<appender-ref ref="CMLLOGGER" />
+  </logger>
+	
+</configuration>

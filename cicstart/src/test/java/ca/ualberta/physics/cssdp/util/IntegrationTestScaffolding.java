@@ -151,9 +151,8 @@ public abstract class IntegrationTestScaffolding {
 		newDataManager.setOpenStackUsername(MacroServer.properties().getString("cicstart.test.openstack.username"));
 		newDataManager.setOpenStackPassword(MacroServer.properties().getString("cicstart.test.openstack.password"));
 
-		String authUrl = Common.properties().getString("api.url") + "/auth";
 		Response res = given().content(newDataManager).and()
-				.contentType("application/json").post(authUrl + "/user.json");
+				.contentType("application/json").post(ResourceUrls.USER);
 
 		String location = res.getHeader("location");
 		User dataManager = given().contentType(ContentType.JSON).get(location)
@@ -177,7 +176,6 @@ public abstract class IntegrationTestScaffolding {
 	 * @return
 	 */
 	protected String login(String username, String password) {
-//		String authUrl = Common.properties().getString("api.url") + "/auth";
 		return given().formParam("username", username)
 				.formParam("password", password)
 				.post(ResourceUrls.SESSION).asString();

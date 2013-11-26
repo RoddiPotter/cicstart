@@ -1,0 +1,6 @@
+on $localhost {	
+
+	run("date");
+	
+}	
+

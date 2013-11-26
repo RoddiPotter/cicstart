@@ -285,7 +285,7 @@ public class HostResourceTest extends FileTestsScaffolding {
 		}
 
 		Assert.assertNotNull(ls);
-		Assert.assertTrue(ls.getRemoteFiles().size() > 50);
+		Assert.assertTrue(ls.getRemoteFiles().size() > 10);
 		for (RemoteFile file : ls.getRemoteFiles()) {
 			int numSlashes = file.getUrl().split("/").length - 1;
 			Assert.assertTrue(file.getUrl() + ":" + numSlashes, numSlashes == 5);
