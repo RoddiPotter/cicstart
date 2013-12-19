@@ -21,8 +21,9 @@ public class OpenStackCloudTests extends MacroTestsScaffolding {
 	public void testStartInstance() {
 
 		User user = setupDataManager();
-		
+
 		Cloud cloud = new OpenStackCloud();
+		cloud.init("DAIR");
 		Identity id = cloud.authenticate(user.getOpenStackUsername(),
 				user.getOpenStackPassword());
 
@@ -56,6 +57,7 @@ public class OpenStackCloudTests extends MacroTestsScaffolding {
 		User user = setupDataManager();
 
 		Cloud cloud = new OpenStackCloud();
+		cloud.init("DAIR");
 		Identity id = cloud.authenticate(user.getOpenStackUsername(),
 				user.getOpenStackPassword());
 

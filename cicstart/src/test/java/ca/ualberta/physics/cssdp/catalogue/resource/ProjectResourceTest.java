@@ -210,11 +210,11 @@ public class ProjectResourceTest extends CatalogueTestsScaffolding {
 		host.setUsername("anonymous");
 		host.setPassword("anonymous");
 
-		String fileUrl = Common.properties().getString("api.url") + "/file";
+//		String fileUrl = Common.properties().getString("api.url") + "/file";
 		expect().statusCode(201).when().given().content(host).and()
 				.contentType(ContentType.JSON).and()
 				.headers("CICSTART.session", sessionToken)
-				.post(fileUrl + "/host.json");
+				.post(ResourceUrls.HOST);
 
 		// scan the host first
 		res = given().header("CICSTART.session", sessionToken).expect()

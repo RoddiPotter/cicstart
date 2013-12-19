@@ -20,6 +20,8 @@ import ca.ualberta.physics.cssdp.util.NetworkUtil;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Throwables;
@@ -27,6 +29,7 @@ import com.google.inject.Inject;
 import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.path.json.JsonPath;
 import com.jayway.restassured.response.Response;
+import com.jayway.restassured.specification.RequestSpecification;
 
 public class OpenStackCloud implements Cloud {
 
@@ -41,27 +44,25 @@ public class OpenStackCloud implements Cloud {
 
 	private String cloudName;
 
-	private String osAuthUrl = "http://208.75.74.10:5000/v2.0";
+	private String osAuthUrl = null;
 
-	private String imageRef = "http://208.75.74.10:8774/v2/{tenantId}/images";
-	private String flavorRef = "http://208.75.74.10:8774/v2/{tenantId}/flavors";
-	private String serversRef = "http://208.75.74.10:8774/v2/{tenantId}/servers";
-	private String keypairsRef = "http://208.75.74.10:8774/v2/{tenantId}/os-keypairs";
-	private String ipRef = "http://208.75.74.10:8774/v2/{tenantId}/os-floating-ips";
+	private String imagesUrl = null;
+	private String flavorRef = null;
+	private String serversRef = null;
+	private String keypairsRef = null;
+	private String ipRef = null;
 
 	public void init(String cloudName) {
 		this.cloudName = cloudName;
 
 		Properties props = MacroServer.properties().getSet(cloudName);
-		osAuthUrl = props.getProperty(cloudName + ".authUrl",
-				"http://208.75.74.10:5000/v2.0");
-		String novaUrl = props.getProperty(cloudName + ".nova",
-				"http://208.75.74.10:8774/v2");
-		imageRef = novaUrl + "/{tenantId}/images";
-		flavorRef = novaUrl + "/{tenantId}/flavors";
-		serversRef = novaUrl + "/{tenantId}/servers";
-		keypairsRef = novaUrl + "/{tenantId}/os-keypairs";
-		ipRef = novaUrl + "/{tenantId}/os-floating-ips";
+		osAuthUrl = props.getProperty(cloudName + ".identity");
+		imagesUrl = props.getProperty(cloudName + ".image");
+		String computeUrl = props.getProperty(cloudName + ".compute");
+		flavorRef = computeUrl + "/{tenantId}/flavors";
+		serversRef = computeUrl + "/{tenantId}/servers";
+		keypairsRef = computeUrl + "/{tenantId}/os-keypairs";
+		ipRef = computeUrl + "/{tenantId}/os-floating-ips";
 	}
 
 	public static enum Flavor {
@@ -85,7 +86,6 @@ public class OpenStackCloud implements Cloud {
 	 * A wrapper object to hold some open stack authentication data. These have
 	 * to be public for FasterXML to locate them
 	 */
-	@JsonAutoDetect(fieldVisibility = Visibility.ANY)
 	public static class Identity {
 
 		public Auth auth = new Auth();
@@ -93,12 +93,31 @@ public class OpenStackCloud implements Cloud {
 		public static class Auth {
 
 			public PasswordCredentials passwordCredentials = new PasswordCredentials();
-			public String tenantId;
-			public String token;
+
+			private String tenantId;
+			private String token;
 
 			public static class PasswordCredentials {
 				public String username;
 				public String password;
+			}
+
+			@JsonInclude(Include.NON_NULL)
+			public String getTenantId() {
+				return tenantId;
+			}
+
+			public void setTenantId(String tenantId) {
+				this.tenantId = tenantId;
+			}
+
+			@JsonInclude(Include.NON_NULL)
+			public String getToken() {
+				return token;
+			}
+
+			public void setToken(String token) {
+				this.token = token;
 			}
 
 		}
@@ -156,16 +175,17 @@ public class OpenStackCloud implements Cloud {
 		// start the instance
 		CreateServer createServer = new CreateServer();
 		createServer.server.flavorRef = flavorRef.replaceAll("\\{tenantId\\}",
-				identity.auth.tenantId) + "/" + flavor.flavorId;
+				identity.auth.getTenantId()) + "/" + flavor.flavorId;
 		createServer.server.imageRef = image.href;
 
 		createServer.server.name = ref;
 
 		String jsonServer = serialize(createServer);
 
-		Response res = given().header("X-Auth-Token", identity.auth.token)
+		Response res = given().header("X-Auth-Token", identity.auth.getToken())
 				.and().header("Content-Type", "application/json").and()
-				.content(jsonServer).post(serversRef, identity.auth.tenantId);
+				.content(jsonServer)
+				.post(serversRef, identity.auth.getTenantId());
 
 		// avoid infinite loop below in server status check
 		if (res.getStatusCode() == 202) {
@@ -183,7 +203,7 @@ public class OpenStackCloud implements Cloud {
 			instance.href = res.getHeader("location");
 
 			// get more detailed info and wait until instance is ready to use
-			res = given().header("X-Auth-Token", identity.auth.token).get(
+			res = given().header("X-Auth-Token", identity.auth.getToken()).get(
 					instance.href);
 
 			String instanceQueryResponseJson = res.asString();
@@ -196,8 +216,8 @@ public class OpenStackCloud implements Cloud {
 
 			while (!serverStatus.equals("ACTIVE")) {
 
-				res = given().header("X-Auth-Token", identity.auth.token).get(
-						instance.href);
+				res = given().header("X-Auth-Token", identity.auth.getToken())
+						.get(instance.href);
 
 				instanceQueryResponseJson = res.asString();
 				instanceQueryResponseJsonPath = JsonPath
@@ -252,8 +272,8 @@ public class OpenStackCloud implements Cloud {
 
 				logger.info("Allocating and assigned external IP address because CICSTART server is external");
 
-				res = given().header("X-Auth-Token", identity.auth.token).post(
-						ipRef, identity.auth.tenantId);
+				res = given().header("X-Auth-Token", identity.auth.getToken())
+						.post(ipRef, identity.auth.getTenantId());
 
 				if (res.getStatusCode() == 200) {
 
@@ -264,13 +284,13 @@ public class OpenStackCloud implements Cloud {
 					ipRequest.addFloatingIp.address = externalIp;
 
 					res = given()
-							.header("X-Auth-Token", identity.auth.token)
+							.header("X-Auth-Token", identity.auth.getToken())
 							.and()
 							.content(ipRequest)
 							.and()
 							.contentType(ContentType.JSON)
 							.post(serversRef + "/{server_id}/action",
-									identity.auth.tenantId, instance.id);
+									identity.auth.getTenantId(), instance.id);
 
 					if (res.getStatusCode() == 202) {
 						// networking seems to take a minute.. let it finish
@@ -316,7 +336,8 @@ public class OpenStackCloud implements Cloud {
 
 			LocalDateTime end = LocalDateTime.now();
 
-			logger.info("Instance " + instance.ipAddress + "(" + ref + ") took "
+			logger.info("Instance " + instance.ipAddress + "(" + ref
+					+ ") took "
 					+ Seconds.secondsBetween(start, end).getSeconds()
 					+ " seconds to become accessible.");
 
@@ -340,31 +361,34 @@ public class OpenStackCloud implements Cloud {
 
 		String jsonIdentity = serialize(identity);
 
+		System.out.println(jsonIdentity);
+
 		// get a temporary auth token to lookup tenant
 		Response res = given().content(jsonIdentity).and()
 				.header("Content-Type", "application/json")
 				.post(osAuthUrl + "/tokens");
 
-//		System.out.println(res.asString());
-		
+		// System.out.println(res.asString());
+
 		String tempToken = JsonPath.from(res.asString()).getString(
 				"access.token.id");
 		res = given().header("X-Auth-Token", tempToken).get(
 				osAuthUrl + "/tenants");
 
 		// grab the tenant id
-		identity.auth.tenantId = JsonPath.from(res.asString()).get(
-				"tenants[0].id");
+		identity.auth.setTenantId(JsonPath.from(res.asString())
+				.get("tenants[0].id").toString());
 
 		jsonIdentity = serialize(identity);
+		System.out.println("use this to get real auth token " + jsonIdentity);
 
 		// get an auth token using the identity loaded with the tenant id
 		res = given().content(jsonIdentity).and()
 				.header("Content-Type", "application/json")
 				.post(osAuthUrl + "/tokens");
 
-		identity.auth.token = JsonPath.from(res.asString()).getString(
-				"access.token.id");
+		identity.auth.setToken(JsonPath.from(res.asString()).getString(
+				"access.token.id"));
 
 		return identity;
 
@@ -394,12 +418,11 @@ public class OpenStackCloud implements Cloud {
 	@Override
 	public void stopInstance(Identity identity, Instance instance) {
 
-		given().header("X-Auth-Token", identity.auth.token).delete(
+		given().header("X-Auth-Token", identity.auth.getToken()).delete(
 				instance.href);
-		
+
 		// TODO release IP address
-		
-		
+
 		// TODO handle errors
 	}
 
@@ -421,23 +444,28 @@ public class OpenStackCloud implements Cloud {
 
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<Image> getImages(Identity identity) {
 
-		Response res = given().header("X-Auth-Token", identity.auth.token).get(
-				imageRef, identity.auth.tenantId);
+		RequestSpecification request = given().header("X-Auth-Token",
+				identity.auth.getToken());
+		request.log().all(true);
+		Response res = request.get(imagesUrl);
+
+		// curl -v -H "X-Auth-Token:9beed78b9219498a9b5fe0ded9b96416"
+		// http://208.75.74.10:9292/v2/images
 
 		List<Image> images = new ArrayList<Image>();
 		String sResponse = res.asString();
+		// System.out.println(sResponse);
 		JsonPath jsonPath = JsonPath.from(sResponse);
 
 		List<Map<String, Object>> imagesList = jsonPath.getList("images");
 		for (Map<String, Object> data : imagesList) {
 
 			Image image = new Image();
-			image.href = (String) ((List<Map<String, Object>>) data
-					.get("links")).get(0).get("href");
+			image.href = imagesUrl
+					+ data.get("self").toString().replaceAll("/v2/images", "");
 			image.id = (String) data.get("id");
 			image.name = (String) data.get("name");
 
@@ -453,10 +481,10 @@ public class OpenStackCloud implements Cloud {
 		kpRequest.keypair.name = keyname;
 		kpRequest.keypair.public_key = publicKey;
 
-		given().header("X-Auth-Token", clientIdentity.auth.token).and()
+		given().header("X-Auth-Token", clientIdentity.auth.getToken()).and()
 				.header("Content-Type", "application/json").and()
 				.content(kpRequest)
-				.post(keypairsRef, clientIdentity.auth.tenantId);
+				.post(keypairsRef, clientIdentity.auth.getTenantId());
 
 	}
 

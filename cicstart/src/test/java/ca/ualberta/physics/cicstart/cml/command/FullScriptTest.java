@@ -63,8 +63,8 @@ public class FullScriptTest extends IntegrationTestScaffolding {
 
 	@Before
 	public void setupData() throws Exception {
-//		// this is a copy & paste from a ProjectResourceTest
-//		// TODO dry this.
+		// // this is a copy & paste from a ProjectResourceTest
+		// // TODO dry this.
 		Project apache = new Project();
 		apache.setExternalKey(Mnemonic.of("APACHE3"));
 		apache.setHost("sunsite.ualberta.ca");
@@ -91,8 +91,8 @@ public class FullScriptTest extends IntegrationTestScaffolding {
 
 		String apacheJSON = mapper.writeValueAsString(apache);
 
-//		String catalogueUrl = Common.properties()
-//				.getString("api.url") + "/catalogue";
+		// String catalogueUrl = Common.properties()
+		// .getString("api.url") + "/catalogue";
 		Response res = given().body(apacheJSON).and()
 				.contentType("application/json").expect().statusCode(201)
 				.when().post(ResourceUrls.PROJECT);
@@ -106,7 +106,7 @@ public class FullScriptTest extends IntegrationTestScaffolding {
 		host.setUsername("anonymous");
 		host.setPassword("anonymous");
 
-//		String fileUrl = Common.properties().getString("api.url") + "/file";
+		// String fileUrl = Common.properties().getString("api.url") + "/file";
 		expect().statusCode(201).when().given().content(host).and()
 				.contentType(ContentType.JSON).and()
 				.headers("CICSTART.session", sessionToken)
@@ -138,9 +138,11 @@ public class FullScriptTest extends IntegrationTestScaffolding {
 		String vfsRoot = VfsServer.properties().getString("vfs_root");
 		File extractedJarRoot = new File(new File(vfsRoot, dataManager.getId()
 				.toString()), "testJob");
-
-		for (File file : extractedJarRoot.listFiles()) {
-			file.delete();
+		
+		if (extractedJarRoot.exists()) {
+			for (File file : extractedJarRoot.listFiles()) {
+				file.delete();
+			}
 		}
 
 		String script = Files.toString(new File(ParsingAndBuildingTests.class
