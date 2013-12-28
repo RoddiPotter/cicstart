@@ -361,7 +361,7 @@ public class OpenStackCloud implements Cloud {
 
 		String jsonIdentity = serialize(identity);
 
-		System.out.println(jsonIdentity);
+		logger.debug(jsonIdentity);
 
 		// get a temporary auth token to lookup tenant
 		Response res = given().content(jsonIdentity).and()
@@ -370,7 +370,9 @@ public class OpenStackCloud implements Cloud {
 
 		// System.out.println(res.asString());
 
-		String tempToken = JsonPath.from(res.asString()).getString(
+		String response = res.asString();
+		logger.debug(response);
+		String tempToken = JsonPath.from(response).getString(
 				"access.token.id");
 		res = given().header("X-Auth-Token", tempToken).get(
 				osAuthUrl + "/tenants");
@@ -380,7 +382,7 @@ public class OpenStackCloud implements Cloud {
 				.get("tenants[0].id").toString());
 
 		jsonIdentity = serialize(identity);
-		System.out.println("use this to get real auth token " + jsonIdentity);
+		logger.debug("use this to get real auth token " + jsonIdentity);
 
 		// get an auth token using the identity loaded with the tenant id
 		res = given().content(jsonIdentity).and()
