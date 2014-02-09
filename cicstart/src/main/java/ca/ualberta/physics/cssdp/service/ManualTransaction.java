@@ -37,6 +37,7 @@ public abstract class ManualTransaction {
 			tx.begin();
 			logger.debug("Started Transaction");
 		} else {
+			em.joinTransaction();
 			shouldCommit = false;
 		}
 		try {

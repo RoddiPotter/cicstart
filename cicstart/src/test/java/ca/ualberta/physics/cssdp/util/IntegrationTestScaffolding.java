@@ -65,7 +65,7 @@ public abstract class IntegrationTestScaffolding {
 		overrides
 				.setProperty(
 						"common.hibernate.connection.url",
-						"jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;MODE=PostgreSQL;TRACE_LEVEL_FILE=0;");
+						"jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;MODE=PostgreSQL;TRACE_LEVEL_FILE=0;DB_CLOSE_ON_EXIT=FALSE");
 		ApplicationProperties.overrideDefaults(overrides);
 		
 		String url = Common.properties().getString("hibernate.connection.url");

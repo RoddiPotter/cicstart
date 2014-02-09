@@ -33,7 +33,12 @@ public class StatsService {
 	@Inject
 	private EntityManager em;
 
-	public ServiceResponse<ServiceStats> find(final StatsService.ServiceName serviceName) {
+	/*
+	 * We synchronize here to avoid unique key exceptions on inserts. It might
+	 * slow things down a bit... we'll wait and see how it does.
+	 */
+	public synchronized ServiceResponse<ServiceStats> find(
+			final StatsService.ServiceName serviceName) {
 		final ServiceResponse<ServiceStats> sr = new ServiceResponse<ServiceStats>();
 
 		new ManualTransaction(sr, em) {
@@ -48,8 +53,8 @@ public class StatsService {
 			public void doInTransaction() {
 				logger.debug("about to find stats for service " + serviceName);
 				ServiceStats stats = dao.find(serviceName);
-				logger.debug("found stats: " + (stats != null ? stats.toString()
-						: "null"));
+				logger.debug("found stats: "
+						+ (stats != null ? stats.toString() : "null"));
 				if (stats == null) {
 					stats = new ServiceStats();
 					stats.setInvocations(0);
@@ -61,6 +66,13 @@ public class StatsService {
 				sr.setPayload(stats);
 			}
 		};
+		if (sr.getPayload() == null) {
+			throw new NullPointerException(
+					"Impossible for service stats to be null here, unless the insert commit failed.");
+		}
+		if(!sr.isRequestOk()) {
+			logger.error(sr.getMessagesAsStrings());
+		}
 		return sr;
 
 	}

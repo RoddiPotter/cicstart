@@ -14,18 +14,18 @@
   	</encoder>
   </appender>
 	
-  <root level="info">
+  <root level="warn">
     <appender-ref ref="STDOUT" />
   </root>
-  <logger name="org.hibernate.SQL" level="debug"/>
+  <logger name="org.hibernate.SQL" level="warn"/>
   <logger name="org.hibernate.type" level="warn"/>
-  <logger name="o.eclipse.jetty" level="debug" />
-  <logger name="ca.ualberta.physics" level="debug"/>
-  <logger name="com.sun.grizzly" level="trace"/>
-  <logger name="javax.mail" level="debug" />
-  <logger name="com.coderod" level="debug"/>
+  <logger name="o.eclipse.jetty" level="warn" />
+  <logger name="ca.ualberta" level="info"/>
+  <logger name="com.sun.grizzly" level="warn"/>
+  <logger name="javax.mail" level="warn" />
+  <logger name="com.coderod" level="warn"/>
   
-  <logger name="JOBLOGGER" level="info" additivity="true">
+  <logger name="JOBLOGGER" level="warn" additivity="true">
 	<appender-ref ref="CMLLOGGER" />
   </logger>
 	

@@ -71,10 +71,15 @@ public abstract class AbstractServiceResource {
 	@ApiResponses(value = { @ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
 	public Response getStats(@Context HttpHeaders headers) {
 		for (MediaType type : headers.getAcceptableMediaTypes()) {
+			ServiceStats jsonStats = buildStats();
 			if (type.equals(MediaType.APPLICATION_JSON_TYPE)) {
-				return Response.ok(buildStats()).build();
+				if(jsonStats == null) {
+					logger.error("no stats to return");
+				}
+				return Response.ok(jsonStats)/*.header("Content-Type", "application/json")*/.build();
 			} else if (type.equals(MediaType.TEXT_HTML_TYPE)) {
-				return Response.ok(toHtmlString(buildStats())).build();
+				String htmlStats = toHtmlString(jsonStats);
+				return Response.ok(htmlStats)/*.header("Content-Type", "text/html")*/.build();
 			} else {
 				break;
 			}
@@ -154,6 +159,9 @@ public abstract class AbstractServiceResource {
 	}
 
 	private String toHtmlString(ServiceStats stats) {
+		if(stats == null) {
+			throw new IllegalArgumentException("ServiceStats object can not be null");
+		}
 		String html = null;
 		Configuration cfg = new Configuration();
 		cfg.setClassForTemplateLoading(AbstractServiceResource.class, "");

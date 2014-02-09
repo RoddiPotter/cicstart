@@ -47,7 +47,7 @@ public class EntityManagerInterceptor implements Filter {
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		
+
 		// this needs to happen before any other initialized code runs.
 
 		String applicationPropertiesFile = filterConfig.getServletContext()
@@ -66,7 +66,7 @@ public class EntityManagerInterceptor implements Filter {
 				FileServer.properties();
 				VfsServer.properties();
 				MacroServer.properties();
-				
+
 				Properties overrides = new Properties();
 				try {
 					System.out.println("Loading property overrides from "
@@ -93,7 +93,6 @@ public class EntityManagerInterceptor implements Filter {
 			logger.info("Not reading application.properties from web.xml because we are testing.");
 		}
 
-		
 		InjectorHolder.inject(this);
 	}
 
@@ -102,7 +101,6 @@ public class EntityManagerInterceptor implements Filter {
 			FilterChain chain) throws IOException, ServletException {
 
 		try {
-
 			logger.debug("Creating Entity Manager");
 			emProvider.get();
 
@@ -115,23 +113,26 @@ public class EntityManagerInterceptor implements Filter {
 				} else {
 
 					if (url.contains("auth")) {
-						statsService.incrementInvocationCount(StatsService.ServiceName.AUTH);
+						statsService
+								.incrementInvocationCount(StatsService.ServiceName.AUTH);
 					}
 					if (url.contains("catalogue")) {
 						statsService
 								.incrementInvocationCount(StatsService.ServiceName.CATALOGUE);
 					}
 					if (url.contains("file")) {
-						statsService.incrementInvocationCount(StatsService.ServiceName.FILE);
+						statsService
+								.incrementInvocationCount(StatsService.ServiceName.FILE);
 					}
 					if (url.contains("macro")) {
 						statsService
 								.incrementInvocationCount(StatsService.ServiceName.MACRO);
 					}
 					if (url.contains("vfs")) {
-						statsService.incrementInvocationCount(StatsService.ServiceName.VFS);
+						statsService
+								.incrementInvocationCount(StatsService.ServiceName.VFS);
 					}
-					
+
 				}
 			}
 
