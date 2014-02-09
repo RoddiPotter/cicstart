@@ -38,7 +38,7 @@ public class StatsResourceTest extends IntegrationTestScaffolding {
 	public void shouldAlwaysReturnContentType() throws InterruptedException,
 			ExecutionException {
 
-		ExecutorService executor = Executors.newFixedThreadPool(25);
+		ExecutorService executor = Executors.newFixedThreadPool(100);
 
 		List<Future<Boolean>> futures = new ArrayList<Future<Boolean>>();
 
@@ -48,10 +48,13 @@ public class StatsResourceTest extends IntegrationTestScaffolding {
 
 		Random r = new Random(System.currentTimeMillis());
 		
-		for (int i = 0; i < 5000; i++) {
+		for (int i = 0; i < 50000; i++) {
 
-			final String url1 = baseUrls.get(r.nextInt(baseUrls.size() - 1));
-			final String url2 = baseUrls.get(r.nextInt(baseUrls.size() - 1));
+			// add some variableness to the request timings
+			Thread.sleep((long)(r.nextFloat() * 250));
+			
+			final String url1 = baseUrls.get(r.nextInt(baseUrls.size()));
+			final String url2 = baseUrls.get(r.nextInt(baseUrls.size()));
 
 			Callable<Boolean> callable = new Callable<Boolean>() {
 
