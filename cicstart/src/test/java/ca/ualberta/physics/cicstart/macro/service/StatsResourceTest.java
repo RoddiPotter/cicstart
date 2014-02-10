@@ -2,18 +2,18 @@ package ca.ualberta.physics.cicstart.macro.service;
 
 import static com.jayway.restassured.RestAssured.given;
 
-import java.util.ArrayList;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.Assert;
+import org.joda.time.LocalDateTime;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import ca.ualberta.physics.cssdp.configuration.ResourceUrls;
 import ca.ualberta.physics.cssdp.util.IntegrationTestScaffolding;
 
+import com.google.common.io.Files;
 import com.jayway.restassured.response.Response;
 import com.jayway.restassured.specification.RequestSpecification;
 
@@ -36,87 +37,122 @@ public class StatsResourceTest extends IntegrationTestScaffolding {
 
 	@Test
 	public void shouldAlwaysReturnContentType() throws InterruptedException,
-			ExecutionException {
+			ExecutionException, IOException {
 
 		ExecutorService executor = Executors.newFixedThreadPool(100);
-
-		List<Future<Boolean>> futures = new ArrayList<Future<Boolean>>();
 
 		List<String> baseUrls = Arrays.asList(ResourceUrls.AUTH,
 				ResourceUrls.FILE, ResourceUrls._MACRO, ResourceUrls.CATALOGUE,
 				ResourceUrls.VFS);
 
 		Random r = new Random(System.currentTimeMillis());
-		
+
+		final File to = new File(
+				"/home/rpotter/workspaces/cicstart/soak_test_results.csv");
+		to.createNewFile();
+		Files.write(
+				"THREAD,URL,SENT,RECEIVED,DURATION,STATUS,ACCEPT,CONTENT-TYPE,SUCCESS\n",
+				to, Charset.forName("UTF-8"));
+
 		for (int i = 0; i < 50000; i++) {
 
-			// add some variableness to the request timings
-			Thread.sleep((long)(r.nextFloat() * 250));
-			
-			final String url1 = baseUrls.get(r.nextInt(baseUrls.size()));
-			final String url2 = baseUrls.get(r.nextInt(baseUrls.size()));
+			Thread.sleep((long) (r.nextFloat() * 150));
 
-			Callable<Boolean> callable = new Callable<Boolean>() {
+			final String url = baseUrls.get(r.nextInt(baseUrls.size()));
+
+			executor.execute(new Runnable() {
 
 				@Override
-				public Boolean call() {
-					RequestSpecification request = given().header("Accept",
-							"application/json");
-					// request.log().all();
-					Response res = request.get(url1 + "/service/stats");
-					Boolean worked;
-					if (!"application/json".equals(res
-							.getHeader("Content-Type"))) {
-						logger.error("Expecting application/json but was: "
-								+ res.getHeader("Content-Type"));
-						worked = false;
-					} else {
-						worked = true;
+				public void run() {
+					ResponseData rd = doRequest(url, "application/json");
+					try {
+						Files.append(rd.toString() + "\n", to,
+								Charset.forName("UTF-8"));
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
-					logger.info(res.getStatusLine() + " " + res.getHeaders());
-					if (res.getStatusCode() != 200) {
-						logger.error(res.asString());
-					}
-					return worked;
 				}
+			});
 
-			};
-			Future<Boolean> f1 = executor.submit(callable);
-			futures.add(f1);
-
-			Callable<Boolean> callable1 = new Callable<Boolean>() {
+			executor.execute(new Runnable() {
 
 				@Override
-				public Boolean call() {
-					Response res = given().header("Accept", "text/html").get(
-							url2 + "/service/stats");
-					Boolean worked;
-					if (!"text/html".equals(res.getHeader("Content-Type"))) {
-						logger.error("Expecting text/html but was "
-								+ res.getHeader("Content-Type"));
-						worked = false;
-					} else {
-						worked = true;
+				public void run() {
+					ResponseData rd = doRequest(url, "text/html");
+					try {
+						Files.append(rd.toString() + "\n", to,
+								Charset.forName("UTF-8"));
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
-					logger.info(res.getStatusLine() + " " + res.getHeaders());
-					if (res.getStatusCode() != 200) {
-						logger.error(res.asString());
-					}
-					return worked;
-
 				}
-
-			};
-			Future<Boolean> f2 = executor.submit(callable1);
-			futures.add(f2);
+			});
 		}
 
 		executor.shutdown();
 		executor.awaitTermination(5, TimeUnit.MINUTES);
 
-		for (Future<Boolean> f : futures) {
-			Assert.assertTrue(f.get());
-		}
 	}
 
+	private ResponseData doRequest(String url, String acceptHeader) {
+		RequestSpecification request = given().header("Accept", acceptHeader);
+		LocalDateTime sent = new LocalDateTime();
+		String fullUrl = url + "/service/stats";
+		Response res = request.get(fullUrl);
+		LocalDateTime received = new LocalDateTime();
+		int statusCode = res.getStatusCode();
+		String contentType = res.getHeader("Content-Type");
+		boolean success = contentType.equals(acceptHeader);
+
+		ResponseData rd = new ResponseData(Thread.currentThread().getName(), fullUrl, sent, received, statusCode,
+				acceptHeader, contentType, success);
+		logger.info(rd.toString());
+		return rd;
+	}
+
+	static class ResponseData {
+
+		private final String thread;
+		private final String url;
+		private final LocalDateTime requestSent;
+		private final LocalDateTime responseReceived;
+		private final int statusCode;
+		private final String acceptHeader;
+		private final String contentType;
+		private final boolean success;
+
+		public ResponseData(String thread, String url, LocalDateTime requestSent,
+				LocalDateTime responseReceived, int statusCode,
+				String acceptHeader, String contentType, boolean success) {
+			this.thread = thread;
+			this.url = url;
+			this.requestSent = requestSent;
+			this.responseReceived = responseReceived;
+			this.statusCode = statusCode;
+			this.acceptHeader = acceptHeader;
+			this.contentType = contentType;
+			this.success = success;
+		}
+
+		@Override
+		public String toString() {
+			return thread + "," + url + "," + requestSent.toString() + ","
+					+ responseReceived.toString() + "," + getDuration() + ","
+					+ statusCode + "," + acceptHeader + "," + contentType + ","
+					+ success;
+		}
+
+		long getDuration() {
+			long duration = Math.abs(requestSent.toDate().getTime()
+					- responseReceived.toDate().getTime());
+			return duration;
+		}
+
+		boolean isSuccess() {
+			return success;
+		}
+
+	}
 }
