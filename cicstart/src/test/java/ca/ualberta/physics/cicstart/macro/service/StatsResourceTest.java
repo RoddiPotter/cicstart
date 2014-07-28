@@ -39,7 +39,7 @@ public class StatsResourceTest extends IntegrationTestScaffolding {
 	public void shouldAlwaysReturnContentType() throws InterruptedException,
 			ExecutionException, IOException {
 
-		ExecutorService executor = Executors.newFixedThreadPool(100);
+		ExecutorService executor = Executors.newFixedThreadPool(2);
 
 		List<String> baseUrls = Arrays.asList(ResourceUrls.AUTH,
 				ResourceUrls.FILE, ResourceUrls._MACRO, ResourceUrls.CATALOGUE,
@@ -48,15 +48,13 @@ public class StatsResourceTest extends IntegrationTestScaffolding {
 		Random r = new Random(System.currentTimeMillis());
 
 		final File to = new File(
-				"/home/rpotter/workspaces/cicstart/soak_test_results.csv");
+				"/home/rpotter/workspaces/cicstart/soak_test_results2.csv");
 		to.createNewFile();
 		Files.write(
 				"THREAD,URL,SENT,RECEIVED,DURATION,STATUS,ACCEPT,CONTENT-TYPE,SUCCESS\n",
 				to, Charset.forName("UTF-8"));
 
-		for (int i = 0; i < 50000; i++) {
-
-			Thread.sleep((long) (r.nextFloat() * 150));
+		for (int i = 0; i < 500; i++) {
 
 			final String url = baseUrls.get(r.nextInt(baseUrls.size()));
 
@@ -92,7 +90,7 @@ public class StatsResourceTest extends IntegrationTestScaffolding {
 		}
 
 		executor.shutdown();
-		executor.awaitTermination(5, TimeUnit.MINUTES);
+		executor.awaitTermination(3, TimeUnit.MINUTES);
 
 	}
 
