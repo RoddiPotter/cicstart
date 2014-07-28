@@ -238,9 +238,6 @@ public class HostResourceTest extends FileTestsScaffolding {
 
 	}
 
-	/**
-	 * Requires Auth to be running on 8080
-	 */
 	@Test
 	public void ls_depth0() {
 
