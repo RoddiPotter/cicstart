@@ -165,8 +165,8 @@ public abstract class AbstractServiceResource {
 	public Response getTryMe() {
 		try {
 			String docsUrl = Common.properties().getString("doc.url");
-			String apiUrl = Common.properties().getString("api.url");
-			String renderedApiDocs = docsUrl + "?input_baseUrl=" + apiUrl;
+			String apiUrl = Common.properties().getString("external.api.url");
+			String renderedApiDocs = docsUrl + "?input_baseUrl=" + apiUrl + "/api-docs";
 			return Response.seeOther(new URI(renderedApiDocs)).build();
 		} catch (URISyntaxException e) {
 			return Response.serverError()
