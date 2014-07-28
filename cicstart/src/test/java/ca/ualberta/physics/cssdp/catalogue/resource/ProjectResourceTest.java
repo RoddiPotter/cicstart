@@ -56,7 +56,7 @@ public class ProjectResourceTest extends CatalogueTestsScaffolding {
 
 	@Inject
 	private ObjectMapper objectMapper;
-	
+
 	@Test
 	public void testCreateGetAndDeleteWithJSONAndXML() throws Exception {
 
@@ -174,8 +174,7 @@ public class ProjectResourceTest extends CatalogueTestsScaffolding {
 		apache.setExternalKey(Mnemonic.of("APACHE-2"));
 		apache.setHost("sunsite.ualberta.ca");
 		apache.setName("Apache data on sunsite at ualberta.ca");
-		apache.setScanDirectories(Arrays
-				.asList("/pub/Mirror/apache/commons"));
+		apache.setScanDirectories(Arrays.asList("/pub/Mirror/apache/commons"));
 
 		Discriminator d = new Discriminator();
 		d.setDescription("commons/daemon");
@@ -198,8 +197,15 @@ public class ProjectResourceTest extends CatalogueTestsScaffolding {
 		String apacheJSON = mapper.writeValueAsString(apache);
 
 		Response res = given().body(apacheJSON).and()
-				.contentType("application/json").expect().statusCode(201)
-				.when().post(ResourceUrls.PROJECT);
+				.contentType("application/json").when()
+				.post(ResourceUrls.PROJECT);
+
+		if (res.getStatusCode() != 201) {
+			System.out.println(res.asString());
+		}
+
+		Assert.assertEquals("expected 201, not " + res.getStatusCode(), 201,
+				res.getStatusCode());
 
 		User dataManager = setupDataManager();
 		String sessionToken = login(dataManager.getEmail(), "password");
@@ -210,7 +216,7 @@ public class ProjectResourceTest extends CatalogueTestsScaffolding {
 		host.setUsername("anonymous");
 		host.setPassword("anonymous");
 
-//		String fileUrl = Common.properties().getString("api.url") + "/file";
+		// String fileUrl = Common.properties().getString("api.url") + "/file";
 		expect().statusCode(201).when().given().content(host).and()
 				.contentType(ContentType.JSON).and()
 				.headers("CICSTART.session", sessionToken)
@@ -226,16 +232,17 @@ public class ProjectResourceTest extends CatalogueTestsScaffolding {
 		CatalogueSearchRequest searchRequest = new CatalogueSearchRequest();
 		searchRequest.setProjectKey(Mnemonic.of("APACHE-2"));
 
-		String searchRequestJson = objectMapper.writeValueAsString(searchRequest);
+		String searchRequestJson = objectMapper
+				.writeValueAsString(searchRequest);
 		System.out.println(searchRequestJson);
-		
+
 		res = given().content(searchRequest).and()
 				.contentType(ContentType.JSON)
 				.post(ResourceUrls.PROJECT + "/find");
 
 		// System.out.println(res.asString());
 
-		Assert.assertEquals(4, res.as(CatalogueSearchResponse.class).getUris()
+		Assert.assertEquals(1, res.as(CatalogueSearchResponse.class).getUris()
 				.size());
 
 	}

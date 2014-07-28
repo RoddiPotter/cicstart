@@ -17,6 +17,18 @@
 		<tr>
 			<th>Release Time</th><td>${info.releaseTime}</td>
 		</tr>
+		<tr>
+			<th>Research Subject</th><td>${info.researchSubject}</td>
+		</tr>
+		<tr>
+			<th>Support Email</th><td>${info.supportEmail}</td>
+		</tr>
+		<tr>
+			<th>Category</th><td>${info.category}</td>
+		</tr>
+		<tr>
+			<th>Tags</th><td>${tags}</td>
+		</tr>
 	</table>
 
 </body>

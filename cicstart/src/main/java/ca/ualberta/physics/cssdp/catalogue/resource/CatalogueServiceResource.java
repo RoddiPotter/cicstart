@@ -29,6 +29,8 @@ public class CatalogueServiceResource extends AbstractServiceResource {
 		ServiceInfo info = new ServiceInfo();
 		info.setName(StatsService.ServiceName.CATALOGUE);
 		info.setSynopsis("A generic catalogue service used for mapping urls to metadata.  Metadata can then be searched to find those urls.");
+		info.setCategory("Other");
+		info.setTags(new String[] {"catalogue","metadata","ontology"});
 		return info;
 	}
 

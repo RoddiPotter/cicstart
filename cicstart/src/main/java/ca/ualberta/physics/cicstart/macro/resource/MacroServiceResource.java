@@ -31,6 +31,8 @@ public class MacroServiceResource extends AbstractServiceResource {
 		info.setSynopsis("A facility to script cloud actions and run arbitrary commands on a spawned VM.  "
 				+ "The scripting functions also allow for interaction with all other CICSTART services, providing "
 				+ "a mechanism for you to build fast, custom CICSTART clients to suite your needs.");
+		info.setCategory("Workflow/Service Scheduling");
+		info.setTags(new String[] {"cloud","instance","vm","macro","DML","launch","script"});
 		return info;
 	}
 

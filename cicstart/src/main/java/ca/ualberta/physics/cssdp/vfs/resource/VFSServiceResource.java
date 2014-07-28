@@ -16,12 +16,12 @@ import ca.ualberta.physics.cssdp.service.StatsService;
 
 import com.google.inject.Inject;
 
-
 @Path("/vfs/service")
 public class VFSServiceResource extends AbstractServiceResource {
 
-	private static final Logger logger = LoggerFactory.getLogger(VFSServiceResource.class);
-	
+	private static final Logger logger = LoggerFactory
+			.getLogger(VFSServiceResource.class);
+
 	@Inject
 	private StatsService statsService;
 
@@ -36,6 +36,9 @@ public class VFSServiceResource extends AbstractServiceResource {
 		info.setSynopsis("Long term persistent storage that can interact with other CICSTART services.  "
 				+ "Useful for accessing input files required by Macros running on spawned VMs.  Also useful "
 				+ "for storing output from Macros.");
+		info.setCategory("Data Storage and Retrieval");
+		info.setTags(new String[] { "storage", "file", "file system", "ftp",
+				"ftps", "disk", "persistent" });
 		return info;
 	}
 

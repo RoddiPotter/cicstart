@@ -29,6 +29,8 @@ public class AuthServiceResource extends AbstractServiceResource {
 		ServiceInfo info = new ServiceInfo();
 		info.setName(StatsService.ServiceName.AUTH);
 		info.setSynopsis("A generic authentication service used for user and session management.");
+		info.setCategory("User Management/Authentication");
+		info.setTags(new String[] {"authentication","security","token","user","session"});
 		return info;
 	}
 

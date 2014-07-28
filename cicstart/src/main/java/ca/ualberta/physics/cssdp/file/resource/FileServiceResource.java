@@ -29,6 +29,8 @@ public class FileServiceResource extends AbstractServiceResource {
 		ServiceInfo info = new ServiceInfo();
 		info.setName(StatsService.ServiceName.FILE);
 		info.setSynopsis("A generic file transfer and caching service.  Give it a URL and get the file data.  Useful for downloading and caching file data resulting from Catalogue search results.");
+		info.setCategory("Other");
+		info.setTags(new String[] {"cache","transfer","download","ftp","ftps"});
 		return info;
 	}
 

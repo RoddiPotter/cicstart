@@ -20,9 +20,11 @@ import javax.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ca.ualberta.physics.cssdp.configuration.Common;
 import ca.ualberta.physics.cssdp.domain.ServiceInfo;
 import ca.ualberta.physics.cssdp.domain.ServiceStats;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Throwables;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiResponse;
@@ -73,13 +75,19 @@ public abstract class AbstractServiceResource {
 		for (MediaType type : headers.getAcceptableMediaTypes()) {
 			ServiceStats jsonStats = buildStats();
 			if (type.equals(MediaType.APPLICATION_JSON_TYPE)) {
-				if(jsonStats == null) {
+				if (jsonStats == null) {
 					logger.error("no stats to return");
 				}
-				return Response.ok(jsonStats)/*.header("Content-Type", "application/json")*/.build();
+				return Response.ok(jsonStats)/*
+											 * .header("Content-Type",
+											 * "application/json")
+											 */.build();
 			} else if (type.equals(MediaType.TEXT_HTML_TYPE)) {
 				String htmlStats = toHtmlString(jsonStats);
-				return Response.ok(htmlStats)/*.header("Content-Type", "text/html")*/.build();
+				return Response.ok(htmlStats)/*
+											 * .header("Content-Type",
+											 * "text/html")
+											 */.build();
 			} else {
 				break;
 			}
@@ -152,15 +160,58 @@ public abstract class AbstractServiceResource {
 
 	@Path("/tryme")
 	@GET
-	@ApiOperation(value = "Not implemented")
+	@ApiOperation(value = "Returns an HTTP redirect to the live generated API docs that include some 'try-me' actions")
 	@ApiResponses(value = { @ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
 	public Response getTryMe() {
-		return Response.noContent().build();
+		try {
+			String docsUrl = Common.properties().getString("doc.url");
+			String apiUrl = Common.properties().getString("api.url");
+			String renderedApiDocs = docsUrl + "?input_baseUrl=" + apiUrl;
+			return Response.seeOther(new URI(renderedApiDocs)).build();
+		} catch (URISyntaxException e) {
+			return Response.serverError()
+					.entity(Throwables.getStackTraceAsString(e)).build();
+		}
+	}
+
+	@Path("/license")
+	@GET
+	@ApiOperation(value = "Returns an HTTP redirect to the license file on Github")
+	@ApiResponses(value = { @ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
+	public Response getLicense() {
+		try {
+			return Response
+					.seeOther(
+							new URI(
+									"https://github.com/RoddiPotter/cicstart/blob/master/LICENSE"))
+					.build();
+		} catch (URISyntaxException e) {
+			return Response.serverError()
+					.entity(Throwables.getStackTraceAsString(e)).build();
+		}
+	}
+
+	@Path("/provenance	")
+	@GET
+	@ApiOperation(value = "Returns an HTTP redirect to the provenance file on Github")
+	@ApiResponses(value = { @ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
+	public Response getProvenance() {
+		try {
+			return Response
+					.seeOther(
+							new URI(
+									"https://github.com/RoddiPotter/cicstart/wiki/Provenance"))
+					.build();
+		} catch (URISyntaxException e) {
+			return Response.serverError()
+					.entity(Throwables.getStackTraceAsString(e)).build();
+		}
 	}
 
 	private String toHtmlString(ServiceStats stats) {
-		if(stats == null) {
-			throw new IllegalArgumentException("ServiceStats object can not be null");
+		if (stats == null) {
+			throw new IllegalArgumentException(
+					"ServiceStats object can not be null");
 		}
 		String html = null;
 		Configuration cfg = new Configuration();
@@ -190,6 +241,7 @@ public abstract class AbstractServiceResource {
 			Template template = cfg.getTemplate("ServiceInfo.ftl");
 			Map<String, Object> data = new HashMap<String, Object>();
 			data.put("info", info);
+			data.put("tags", Joiner.on(",").join(info.getTags()));
 			Writer out = new StringWriter();
 			template.process(data, out);
 			html = out.toString();
