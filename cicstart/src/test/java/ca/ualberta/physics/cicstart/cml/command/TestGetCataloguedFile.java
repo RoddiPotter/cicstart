@@ -75,7 +75,7 @@ public class TestGetCataloguedFile extends IntegrationTestScaffolding {
 		commonsDaemon.setProject(apache);
 
 		MetadataParserConfig metadataParserConfig = new MetadataParserConfig();
-		metadataParserConfig.setIncludesRegex(".*jar$");
+		metadataParserConfig.setIncludesRegex("commons-daemon.*-src*");
 		commonsDaemon.setMetadataParserConfig(metadataParserConfig);
 
 		apache.getDataProducts().add(commonsDaemon);
