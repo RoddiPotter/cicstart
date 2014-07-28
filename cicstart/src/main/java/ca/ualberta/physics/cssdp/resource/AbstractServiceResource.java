@@ -174,16 +174,16 @@ public abstract class AbstractServiceResource {
 		}
 	}
 
-	@Path("/license")
+	@Path("/licence")
 	@GET
-	@ApiOperation(value = "Returns an HTTP redirect to the license file on Github")
+	@ApiOperation(value = "Returns an HTTP redirect to the licence file on Github")
 	@ApiResponses(value = { @ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
-	public Response getLicense() {
+	public Response getLicence() {
 		try {
 			return Response
 					.seeOther(
 							new URI(
-									"https://github.com/RoddiPotter/cicstart/blob/master/LICENSE"))
+									"https://github.com/RoddiPotter/cicstart/blob/master/LICENCE"))
 					.build();
 		} catch (URISyntaxException e) {
 			return Response.serverError()
@@ -191,7 +191,7 @@ public abstract class AbstractServiceResource {
 		}
 	}
 
-	@Path("/provenance	")
+	@Path("/provenance")
 	@GET
 	@ApiOperation(value = "Returns an HTTP redirect to the provenance file on Github")
 	@ApiResponses(value = { @ApiResponse(code = 500, message = "Unable to complete request, see response body for error details") })
