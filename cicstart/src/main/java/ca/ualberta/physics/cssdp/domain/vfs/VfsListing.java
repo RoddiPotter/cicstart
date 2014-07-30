@@ -38,7 +38,7 @@ public class VfsListing {
 
 	@XmlElementWrapper
 	@XmlElement
-	private List<VfsListingEntry> entires = new ArrayList<VfsListingEntry>();
+	private List<VfsListingEntry> entries = new ArrayList<VfsListingEntry>();
 	
 	public VfsListing() {
 
@@ -52,12 +52,12 @@ public class VfsListing {
 		this.path = path;
 	}
 
-	public List<VfsListingEntry> getEntires() {
-		return entires;
+	public List<VfsListingEntry> getEntries() {
+		return entries;
 	}
 
-	public void setEntires(List<VfsListingEntry> entires) {
-		this.entires = entires;
+	public void setEntries(List<VfsListingEntry> entries) {
+		this.entries = entries;
 	}
 
 
