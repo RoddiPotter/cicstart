@@ -234,7 +234,7 @@ public class FileSystemResource {
 					entry.setSize(file.length());
 					entry.setLastModified(new LocalDateTime(new Date(file
 							.lastModified())));
-					listing.getEntires().add(entry);
+					listing.getEntries().add(entry);
 				}
 
 				return Response.ok(listing).build();

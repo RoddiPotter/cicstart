@@ -51,8 +51,13 @@ public class RecursiveLs extends RemoteServerCommand<List<RemoteFile>> {
 			throw new IllegalArgumentException(
 					"Must supply a root dir to start listing at");
 		}
-		this.rootDir = rootDir.endsWith("/") ? rootDir.substring(0,
+
+		if(rootDir.length()>1)
+			this.rootDir = rootDir.endsWith("/") ? rootDir.substring(0,
 				rootDir.length() - 1) : rootDir;
+		else
+			this.rootDir = rootDir;
+		
 		if (maxDepth != null && maxDepth > 250) {
 			error("Max Depth must be <= 250");
 			this.maxDepth = 0;
@@ -94,6 +99,7 @@ public class RecursiveLs extends RemoteServerCommand<List<RemoteFile>> {
 
 	private List<RemoteFile> visit(RemoteConnection connection,
 			RemoteFile remoteFile) {
+		logger.info("RemoteFIleUrl: " + remoteFile.getUrl());
 		currentDepth++;
 		String url = remoteFile.getUrl();
 		String path = UrlParser.getPath(url);

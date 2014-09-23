@@ -72,7 +72,17 @@ public class SftpConnection extends RemoteConnection {
 			ssh.setConnectTimeout(Long.valueOf(getHostEntry().getTimeout())
 					.intValue());
 			ssh.addHostKeyVerifier(new PromiscuousVerifier());
-			ssh.connect(getHostEntry().getHostname());
+			String hn = getHostEntry().getHostname();
+			String port = "";
+
+			if(hn.contains(":"))
+			{
+				port = hn.substring(hn.indexOf(":")+1);
+				hn = hn.substring(0,hn.indexOf(":"));
+				ssh.connect(hn,Integer.parseInt(port));
+			}
+			else
+				ssh.connect(hn);
 
 			String password = getHostEntry().getPassword();
 			String username = getHostEntry().getUsername();
