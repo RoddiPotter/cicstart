@@ -25,7 +25,7 @@ public class MacroResourceTests extends MacroTestsScaffolding {
 		InstanceSpec instanceSpec = new InstanceSpec();
 		instanceSpec.setCloud("DAIR");
 		instanceSpec.setFlavor("m1.tiny");
-		instanceSpec.setImage("Ubuntu 12.04.4");
+		instanceSpec.setImage("Ubuntu 12.04.5");
 		instanceSpec.setRequestId("TESTJOB");
 
 		// String macroUrl = Common.properties().getString("api.url") +
@@ -51,7 +51,7 @@ public class MacroResourceTests extends MacroTestsScaffolding {
 				.delete(ResourceUrls.MACRO + "/vm");
 
 		// TODO release floating ips
-
+		Assert.fail(instance.id + " release my ip address!");
 	}
 
 }

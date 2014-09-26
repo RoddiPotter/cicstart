@@ -2,6 +2,7 @@ package ca.ualberta.physics.cssdp.util;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.NetworkInterface;
 import java.net.Socket;
 import java.net.SocketException;
@@ -85,18 +86,20 @@ public class NetworkUtil {
 
 			Socket socket = null;
 			try {
-				socket = new Socket(host, 22);
+				socket = new Socket();
+				InetSocketAddress inetSocketAddress = new InetSocketAddress(host, 22);
+				socket.connect(inetSocketAddress, 2000);
 				reachable = true;
 				break;
 			} catch (Exception e) {
 				try {
-					Thread.sleep(1000);
+					Thread.sleep(2000);
 				} catch (InterruptedException e1) {
 					Thread.currentThread().interrupt();
 					break;
 				}
 				logger.info("not reachable yet, trying again (" + tryNo + "/"
-						+ numTries + ") - " + e.getMessage());
+						+ numTries + ") - " + Throwables.getRootCause(e).getMessage());
 				tryNo++;
 			} finally {
 				if (socket != null)

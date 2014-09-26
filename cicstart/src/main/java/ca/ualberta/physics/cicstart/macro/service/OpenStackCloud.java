@@ -254,7 +254,7 @@ public class OpenStackCloud implements Cloud {
 				// networking seems to take a minute.. let it finish
 				// to avoid connection refused & no route to host
 				// errors
-				boolean reachable = NetworkUtil.isReachable(internalIp, 10);
+				boolean reachable = NetworkUtil.isReachable(internalIp, 15);
 				if (reachable) {
 					logger.info(internalIp + " is reachable: " + reachable);
 					instance.ipAddress = internalIp;
@@ -297,7 +297,7 @@ public class OpenStackCloud implements Cloud {
 						// to avoid connection refused & no route to host
 						// errors
 
-						if (NetworkUtil.isReachable(externalIp, 10)) {
+						if (NetworkUtil.isReachable(externalIp, 15)) {
 							logger.info(externalIp
 									+ " is now reachable, have fun!");
 							instance.ipAddress = externalIp;

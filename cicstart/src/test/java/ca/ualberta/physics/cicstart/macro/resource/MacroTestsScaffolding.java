@@ -16,7 +16,6 @@
  */
 package ca.ualberta.physics.cicstart.macro.resource;
 
-import ca.ualberta.physics.cssdp.auth.service.AuthClient;
 import ca.ualberta.physics.cssdp.configuration.InjectorHolder;
 import ca.ualberta.physics.cssdp.util.IntegrationTestScaffolding;
 
@@ -27,9 +26,6 @@ public class MacroTestsScaffolding extends IntegrationTestScaffolding {
 
 	@Inject
 	protected ObjectMapper mapper;
-
-	@Inject
-	protected AuthClient authClient;
 
 	public MacroTestsScaffolding() {
 		InjectorHolder.inject(this);

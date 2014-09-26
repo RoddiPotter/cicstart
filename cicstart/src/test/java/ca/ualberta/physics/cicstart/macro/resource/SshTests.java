@@ -41,6 +41,7 @@ public class SshTests {
 			}
 		} finally {
 			client.disconnect();
+			client.close();
 		}
 
 	}

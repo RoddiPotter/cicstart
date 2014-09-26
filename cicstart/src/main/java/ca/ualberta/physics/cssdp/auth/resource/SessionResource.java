@@ -84,7 +84,7 @@ public class SessionResource {
 			+ "You can use HTTP BASIC or simple form based authentication; both are available at this end point.  "
 			+ "Note the server will not request BASIC so you must always send the authentication header.  "
 			+ "Returns a session token to use for future requests.  "
-			+ "curl --user datamanager@nowhere.com:password -X POST http://localhost:8080/cicstart/api/auth/session", response = java.lang.String.class)
+			+ "curl --user datamanager@nowhere.com:password -X POST http://localhost:8080/cicstart/api/auth/session", response = ca.ualberta.physics.cssdp.domain.auth.Session.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "No email value supplied"),
 			@ApiResponse(code = 400, message = "No password value supplied"),
@@ -137,7 +137,9 @@ public class SessionResource {
 
 		if (sr.isRequestOk()) {
 
-			return Response.ok(sr.getPayload().getToken()).build();
+			Session session = sr.getPayload();
+			session.getUser().setMasked(true);
+			return Response.ok(session).build();
 
 		} else {
 			return Response.status(404).build();

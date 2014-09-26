@@ -3,6 +3,7 @@ package ca.ualberta.physics.cicstart.macro.resource;
 import java.util.List;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import ca.ualberta.physics.cicstart.macro.service.Cloud;
@@ -49,6 +50,8 @@ public class OpenStackCloudTests extends MacroTestsScaffolding {
 		// cleanup
 		cloud.stopInstance(id, instance);
 
+		Assert.fail(instance.id + " release my ip address!");
+		
 	}
 
 	@Test

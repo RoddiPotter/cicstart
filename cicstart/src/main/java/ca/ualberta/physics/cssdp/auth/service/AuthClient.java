@@ -27,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ca.ualberta.physics.cssdp.configuration.ResourceUrls;
+import ca.ualberta.physics.cssdp.domain.auth.Session;
 import ca.ualberta.physics.cssdp.domain.auth.User;
 import ca.ualberta.physics.cssdp.service.ServiceResponse;
 
@@ -38,7 +39,8 @@ public class AuthClient {
 	private static final Logger logger = LoggerFactory
 			.getLogger(AuthClient.class);
 
-//	private String authUrl = Common.properties().getString("api.url") + "/auth";
+	// private String authUrl = Common.properties().getString("api.url") +
+	// "/auth";
 
 	public ServiceResponse<String> login(String username, String password) {
 
@@ -49,7 +51,7 @@ public class AuthClient {
 
 		ServiceResponse<String> sr = new ServiceResponse<String>();
 		if (res.getStatusCode() == 200) {
-			sr.setPayload(res.asString());
+			sr.setPayload(res.as(Session.class).getToken());
 		} else {
 			sr.error("Invalid login credentials");
 		}

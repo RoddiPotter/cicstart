@@ -99,7 +99,7 @@ public class RecursiveLs extends RemoteServerCommand<List<RemoteFile>> {
 
 	private List<RemoteFile> visit(RemoteConnection connection,
 			RemoteFile remoteFile) {
-		logger.info("RemoteFIleUrl: " + remoteFile.getUrl());
+		logger.info("RemoteFileUrl: " + remoteFile.getUrl());
 		currentDepth++;
 		String url = remoteFile.getUrl();
 		String path = UrlParser.getPath(url);

@@ -57,15 +57,9 @@ public class HostResourceTest extends FileTestsScaffolding {
 		host.setPassword("password");
 		host.setUsername("username");
 
-		given().content(host)
-				.and()
-				.header("CICSTART.session", session)
-				.contentType("application/json")
-				.expect()
-				.statusCode(201)
-				.and()
-				.header("location",
-						ResourceUrls.HOST + "/hostname").when()
+		given().content(host).and().header("CICSTART.session", session)
+				.contentType("application/json").expect().statusCode(201).and()
+				.header("location", ResourceUrls.HOST + "/hostname").when()
 				.post(ResourceUrls.HOST);
 
 		Host created = get(ResourceUrls.HOST + "/hostname").as(Host.class);
@@ -91,15 +85,9 @@ public class HostResourceTest extends FileTestsScaffolding {
 		host.setPassword("password");
 		host.setUsername("username");
 
-		given().content(host)
-				.and()
-				.header("CICSTART.session", session)
-				.contentType("application/json")
-				.expect()
-				.statusCode(201)
-				.and()
-				.header("location",
-						ResourceUrls.HOST + "/delete").when()
+		given().content(host).and().header("CICSTART.session", session)
+				.contentType("application/json").expect().statusCode(201).and()
+				.header("location", ResourceUrls.HOST + "/delete").when()
 				.post(ResourceUrls.HOST);
 
 		given().header("CICSTART.session", session).expect().statusCode(200)
@@ -126,16 +114,10 @@ public class HostResourceTest extends FileTestsScaffolding {
 		host.setPassword("password");
 		host.setUsername("username");
 
-		Response res = given()
-				.content(host)
-				.and()
+		Response res = given().content(host).and()
 				.header("CICSTART.session", session)
-				.contentType("application/json")
-				.expect()
-				.statusCode(201)
-				.and()
-				.header("location",
-						ResourceUrls.HOST + "/localhost2").when()
+				.contentType("application/json").expect().statusCode(201).and()
+				.header("location", ResourceUrls.HOST + "/localhost2").when()
 				.post(ResourceUrls.HOST);
 
 		System.out.println(res.asString());
@@ -145,7 +127,8 @@ public class HostResourceTest extends FileTestsScaffolding {
 				.expect()
 				.statusCode(200)
 				.when()
-				.get(ResourceUrls.HOST + "/localhost2/ls?path=/home/rpotter&depth=2");
+				.get(ResourceUrls.HOST
+						+ "/localhost2/ls?path=/home/rpotter&depth=2");
 
 		/*
 		 * RestAssured sucks at deserializing json... so it's best to access the
@@ -190,21 +173,18 @@ public class HostResourceTest extends FileTestsScaffolding {
 
 		// if CacheResourceTest.rquest() runs first, this may return status 500,
 		// but that's OK since sunsite.ualberta.ca will have already been added.
-		given().content(host)
-				.and()
-				.header("CICSTART.session", session)
-				.contentType("application/json")
-				.and()
-				.header("location",
-						ResourceUrls.HOST + "/sunsite.ualberta.ca").when()
-				.post(ResourceUrls.HOST);
+		given().content(host).and().header("CICSTART.session", session)
+				.contentType("application/json").and()
+				.header("location", ResourceUrls.HOST + "/sunsite.ualberta.ca")
+				.when().post(ResourceUrls.HOST);
 
 		Response res = given()
 				.header("CICSTART.session", session)
 				.expect()
 				.statusCode(200)
 				.when()
-				.get(ResourceUrls.HOST + "/sunsite.ualberta.ca/ls?path=/pub/Mirror/apache/commons/daemon&depth=5");
+				.get(ResourceUrls.HOST
+						+ "/sunsite.ualberta.ca/ls?path=/pub/Mirror/apache/commons/daemon&depth=5");
 
 		/*
 		 * RestAssured sucks at deserializing json... so it's best to access the
@@ -241,6 +221,7 @@ public class HostResourceTest extends FileTestsScaffolding {
 	@Test
 	public void ls_depth0() {
 
+		User dataManager = setupDataManager();
 		String session = login(dataManager.getEmail(),
 				dataManager.getPassword());
 
@@ -251,15 +232,9 @@ public class HostResourceTest extends FileTestsScaffolding {
 		host.setPassword("password");
 		host.setUsername("username");
 
-		given().content(host)
-				.and()
-				.header("CICSTART.session", session)
-				.contentType("application/json")
-				.expect()
-				.statusCode(201)
-				.and()
-				.header("location",
-						ResourceUrls.HOST + "/localhost1").when()
+		given().content(host).and().header("CICSTART.session", session)
+				.contentType("application/json").expect().statusCode(201).and()
+				.header("location", ResourceUrls.HOST + "/localhost1").when()
 				.post(ResourceUrls.HOST);
 
 		Response res = given()
@@ -267,7 +242,8 @@ public class HostResourceTest extends FileTestsScaffolding {
 				.expect()
 				.statusCode(200)
 				.when()
-				.get(ResourceUrls.HOST + "/localhost1/ls?path=/home/rpotter&depth=0");
+				.get(ResourceUrls.HOST
+						+ "/localhost1/ls?path=/home/rpotter&depth=0");
 
 		/*
 		 * RestAssured sucks at deserializing json... so it's best to access the

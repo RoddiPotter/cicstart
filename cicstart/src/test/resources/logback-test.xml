@@ -1,32 +1,38 @@
 <configuration>
 
-  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-    <layout class="ch.qos.logback.classic.PatternLayout">
-      <Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</Pattern>
-    </layout>
-  </appender>
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+			</Pattern>
+		</layout>
+	</appender>
 
-  <appender name="CMLLOGGER" class="ca.ualberta.physics.cicstart.cml.log.CMLLogger">
-  	<file>macro.log</file>
-  	<append>true</append>
-  	<encoder>
-  		<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
-  	</encoder>
-  </appender>
-	
-  <root level="warn">
-    <appender-ref ref="STDOUT" />
-  </root>
-  <logger name="org.hibernate.SQL" level="warn"/>
-  <logger name="org.hibernate.type" level="warn"/>
-  <logger name="o.eclipse.jetty" level="warn" />
-  <logger name="ca.ualberta" level="info"/>
-  <logger name="com.sun.grizzly" level="warn"/>
-  <logger name="javax.mail" level="warn" />
-  <logger name="com.coderod" level="warn"/>
-  
-  <logger name="JOBLOGGER" level="warn" additivity="true">
-	<appender-ref ref="CMLLOGGER" />
-  </logger>
-	
+	<appender name="CMLLOGGER"
+		class="ca.ualberta.physics.cicstart.cml.log.CMLLogger">
+		<file>macro.log</file>
+		<append>true</append>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<root level="warn">
+		<appender-ref ref="STDOUT" />
+	</root>
+	<logger name="org.hibernate.SQL" level="warn" />
+	<logger name="org.hibernate.type" level="warn" />
+	<logger name="o.eclipse.jetty" level="warn" />
+	<logger name="ca.ualberta" level="info" />
+	<logger name="com.sun.grizzly" level="warn" />
+	<logger name="javax.mail" level="warn" />
+	<logger name="com.coderod" level="warn" />
+	<logger
+		name="ca.ualberta.physics.cicstart.macro.service.OpenStackCloud.logger"
+		level="debug" />
+
+	<logger name="JOBLOGGER" level="warn" additivity="true">
+		<appender-ref ref="CMLLOGGER" />
+	</logger>
+
 </configuration>

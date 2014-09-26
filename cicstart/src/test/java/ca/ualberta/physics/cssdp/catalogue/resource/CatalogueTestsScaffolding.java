@@ -18,7 +18,6 @@
  */
 package ca.ualberta.physics.cssdp.catalogue.resource;
 
-import ca.ualberta.physics.cssdp.auth.service.AuthClient;
 import ca.ualberta.physics.cssdp.configuration.InjectorHolder;
 import ca.ualberta.physics.cssdp.util.IntegrationTestScaffolding;
 
@@ -29,9 +28,6 @@ public class CatalogueTestsScaffolding extends IntegrationTestScaffolding {
 
 	@Inject
 	protected ObjectMapper mapper;
-
-	@Inject
-	protected AuthClient authClient;
 
 	public CatalogueTestsScaffolding() {
 		InjectorHolder.inject(this);

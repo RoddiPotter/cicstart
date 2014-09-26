@@ -30,7 +30,7 @@ import com.jayway.restassured.response.Response;
 
 public class TestBinary extends IntegrationTestScaffolding {
 
-	protected static User dataManager;
+	protected static User dataManagerBinary;
 
 	@Inject
 	private AuthClient authClient;
@@ -48,14 +48,14 @@ public class TestBinary extends IntegrationTestScaffolding {
 	public void setupTestUsers() {
 
 		User newDataManager = new User();
-		newDataManager.setName("Data Manager");
+		newDataManager.setName("Data Manager Binary");
 		newDataManager.setDeleted(false);
-		newDataManager.setEmail("datamanager@nowhere.com");
+		newDataManager.setEmail("datamanagerbinary@nowhere.com");
 		newDataManager.setInstitution("institution");
 		newDataManager.setPassword("password");
 		newDataManager.setRole(Role.DATA_MANAGER);
 
-		dataManager = authClient.addUser(newDataManager);
+		dataManagerBinary = authClient.addUser(newDataManager);
 	}
 
 	@Test
@@ -75,7 +75,7 @@ public class TestBinary extends IntegrationTestScaffolding {
 				.contentType(ContentType.BINARY)
 				.and()
 				.header("CICSTART.session",
-						login(dataManager.getEmail(), "password")).expect()
+						login(dataManagerBinary.getEmail(), "password")).expect()
 				.statusCode(200).when().post(ResourceUrls.MACRO + "/bin");
 
 		File tempDir = Files.createTempDir();

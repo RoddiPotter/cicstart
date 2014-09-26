@@ -26,6 +26,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
@@ -74,11 +75,12 @@ import com.wordnik.swagger.annotations.ApiResponses;
 
 @Path("/macro/macro")
 @Api(value = "/macro/macro", description = "Operations about Macros")
-@Produces({ "application/json","application/xml" })
+@Produces({ "application/json", "application/xml" })
 public class MacroResource {
 
-	private static final Logger logger = LoggerFactory.getLogger(MacroResource.class);
-	
+	private static final Logger logger = LoggerFactory
+			.getLogger(MacroResource.class);
+
 	@Inject
 	private MacroService macroService;
 
@@ -314,8 +316,13 @@ public class MacroResource {
 		String flavorName = instanceSpec.getFlavor();
 
 		Image theImage = null;
-		for (Image image : cloudService.getImages(cloudName, sessionToken)
-				.getPayload()) {
+		ServiceResponse<List<Image>> getImagesSr = cloudService.getImages(
+				cloudName, sessionToken);
+		if (!getImagesSr.isRequestOk()) {
+			logger.error(getImagesSr.getMessagesAsStrings());
+		}
+		List<Image> images = getImagesSr.getPayload();
+		for (Image image : images) {
 
 			if (image.name.equals(imageName)) {
 				theImage = image;

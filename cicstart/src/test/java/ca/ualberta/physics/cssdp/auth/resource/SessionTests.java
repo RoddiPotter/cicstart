@@ -26,6 +26,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import ca.ualberta.physics.cssdp.configuration.ResourceUrls;
+import ca.ualberta.physics.cssdp.domain.auth.Session;
 import ca.ualberta.physics.cssdp.domain.auth.User;
 
 import com.jayway.restassured.http.ContentType;
@@ -51,17 +52,17 @@ public class SessionTests extends AuthTestsScaffolding {
 				.post(ResourceUrls.SESSION);
 
 		// success
-		String sessionToken = given().auth().preemptive()
+		Session session = given().auth().preemptive()
 				.basic("datauser@nowhere.com", "password")
 				.contentType(ContentType.JSON).expect().statusCode(200)
-				.post(ResourceUrls.SESSION).asString();
-		Assert.assertEquals(36, sessionToken.length());
+				.post(ResourceUrls.SESSION).as(Session.class);
+		Assert.assertEquals(36, session.getToken().length());
 
-		sessionToken = given().auth().preemptive()
+		session = given().auth().preemptive()
 				.basic("datauser@nowhere.com", "password")
 				.contentType(ContentType.XML).expect().statusCode(200)
-				.post(ResourceUrls.SESSION).asString();
-		Assert.assertEquals(36, sessionToken.length());
+				.post(ResourceUrls.SESSION).as(Session.class);
+		Assert.assertEquals(36, session.getToken().length());
 
 		// fail
 		given().auth().preemptive()
@@ -99,25 +100,25 @@ public class SessionTests extends AuthTestsScaffolding {
 				.formParam("username", "datauser@nowhere.com")
 				.formParam("password", "password")
 				.contentType(ContentType.JSON).expect().statusCode(200).when()
-				.post(ResourceUrls.SESSION).asString();
+				.post(ResourceUrls.SESSION).as(Session.class).getToken();
 		Assert.assertEquals(36, sessionToken.length());
 
 		sessionToken = given().formParam("username", "datauser@nowhere.com")
 				.formParam("password", "password").expect().statusCode(200)
 				.when().contentType(ContentType.XML).post(ResourceUrls.SESSION)
-				.asString();
+				.as(Session.class).getToken();
 		Assert.assertEquals(36, sessionToken.length());
 
 		// fail
 		given().formParam("username", "datauser@nowhere.com")
 				.formParam("password", "wrongpassword")
 				.contentType(ContentType.JSON).expect().statusCode(404).when()
-				.post(ResourceUrls.SESSION).asString();
+				.post(ResourceUrls.SESSION);
 
 		given().formParam("username", "datauser@nowhere.com")
 				.formParam("password", "wrongpassword")
 				.contentType(ContentType.XML).expect().statusCode(404).when()
-				.post(ResourceUrls.SESSION).asString();
+				.post(ResourceUrls.SESSION);
 
 	}
 
@@ -138,7 +139,7 @@ public class SessionTests extends AuthTestsScaffolding {
 		// get a token to validate lookup
 		String token = given().auth().preemptive()
 				.basic("datauser@nowhere.com", "password")
-				.post(ResourceUrls.SESSION).asString();
+				.post(ResourceUrls.SESSION).as(Session.class).getToken();
 		String email = get(ResourceUrls.SESSION + "/{token}/whois", token).as(
 				User.class).getEmail();
 		Assert.assertEquals(dataUser.getEmail(), email);

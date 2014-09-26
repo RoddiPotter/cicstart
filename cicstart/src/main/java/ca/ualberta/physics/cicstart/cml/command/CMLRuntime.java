@@ -21,6 +21,7 @@ import ca.ualberta.physics.cssdp.util.NetworkUtil;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
 
 public class CMLRuntime {
 	private static final Logger jobLogger = LoggerFactory
@@ -296,6 +297,10 @@ public class CMLRuntime {
 
 	public String getCICSTARTSession() {
 		return (String) variableData.get(CICSTARTSESSION);
+	}
+
+	public List<Instance> getInstances() {
+		return ImmutableList.copyOf(instances.values());
 	}
 
 }

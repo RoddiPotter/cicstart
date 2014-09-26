@@ -34,6 +34,7 @@ import ca.ualberta.physics.cssdp.configuration.Common;
 import ca.ualberta.physics.cssdp.configuration.JSONObjectMapperProvider;
 import ca.ualberta.physics.cssdp.configuration.ResourceUrls;
 import ca.ualberta.physics.cssdp.dao.EntityManagerInterceptor;
+import ca.ualberta.physics.cssdp.domain.auth.Session;
 import ca.ualberta.physics.cssdp.domain.auth.User;
 import ca.ualberta.physics.cssdp.domain.auth.User.Role;
 
@@ -51,7 +52,7 @@ public abstract class IntegrationTestScaffolding {
 
 	@BeforeClass
 	public static void setupDb() {
-		
+
 		ApplicationProperties.dropOverrides();
 
 		// initialize default properties
@@ -67,7 +68,7 @@ public abstract class IntegrationTestScaffolding {
 						"common.hibernate.connection.url",
 						"jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;MODE=PostgreSQL;TRACE_LEVEL_FILE=0;DB_CLOSE_ON_EXIT=FALSE");
 		ApplicationProperties.overrideDefaults(overrides);
-		
+
 		String url = Common.properties().getString("hibernate.connection.url");
 		String driver = Common.properties().getString(
 				"hibernate.connection.driver_class");
@@ -83,11 +84,10 @@ public abstract class IntegrationTestScaffolding {
 		migrator.migrateUpAll();
 
 	}
-	
+
 	// start an auth server for tests that depend on the auth resources
 	@Before
 	public void setup() throws Exception {
-
 
 		config().objectMapperConfig(
 				new ObjectMapperConfig()
@@ -103,17 +103,18 @@ public abstract class IntegrationTestScaffolding {
 
 		if (server == null || !server.isStarted()) {
 
-			// override some common setup needed during actual runtime on servers
+			// override some common setup needed during actual runtime on
+			// servers
 			EntityManagerInterceptor.readWebXml.set(Boolean.FALSE);
 
 			// configure Jetty as an embedded web application server
 			server = new Server(8080);
-//			server.setStopAtShutdown(true);
-//			server.setGracefulShutdown(1000);
-//
-//			SocketConnector connector = new SocketConnector();
-//			connector.setPort(8080);
-//			server.addConnector(connector);
+			// server.setStopAtShutdown(true);
+			// server.setGracefulShutdown(1000);
+			//
+			// SocketConnector connector = new SocketConnector();
+			// connector.setPort(8080);
+			// server.addConnector(connector);
 
 			// this one is relative to the project we are testing
 			WebAppContext context = new WebAppContext();
@@ -148,20 +149,33 @@ public abstract class IntegrationTestScaffolding {
 		newDataManager.setInstitution("institution");
 		newDataManager.setPassword("password");
 		newDataManager.setRole(Role.DATA_MANAGER);
-		newDataManager.setOpenStackUsername(MacroServer.properties().getString("cicstart.test.openstack.username"));
-		newDataManager.setOpenStackPassword(MacroServer.properties().getString("cicstart.test.openstack.password"));
+		newDataManager.setOpenStackUsername(MacroServer.properties().getString(
+				"cicstart.test.openstack.username"));
+		newDataManager.setOpenStackPassword(MacroServer.properties().getString(
+				"cicstart.test.openstack.password"));
 
 		Response res = given().content(newDataManager).and()
 				.contentType("application/json").post(ResourceUrls.USER);
 
-		String location = res.getHeader("location");
-		User dataManager = given().contentType(ContentType.JSON).get(location)
-				.as(User.class);
+		User dataManager = null;
+		if (res.getStatusCode() == 201) {
 
-		// bootstrap so tests will work.  cicstart masks automatically.
-		dataManager.setOpenStackUsername(MacroServer.properties().getString("cicstart.test.openstack.username"));
-		dataManager.setOpenStackPassword(MacroServer.properties().getString("cicstart.test.openstack.password"));
+			String location = res.getHeader("location");
+			dataManager = given().contentType(ContentType.JSON).get(location)
+					.as(User.class);
+		} else {
+			dataManager = given().contentType(ContentType.JSON)
+					.get(ResourceUrls.USER + "/" + newDataManager.getEmail())
+					.as(User.class);
+		}
 
+		// bootstrap so tests will work. cicstart masks automatically.
+		dataManager.setOpenStackUsername(MacroServer.properties().getString(
+				"cicstart.test.openstack.username"));
+		dataManager.setOpenStackPassword(MacroServer.properties().getString(
+				"cicstart.test.openstack.password"));
+		dataManager.setPassword("password");
+		
 		return dataManager;
 	}
 
@@ -177,7 +191,7 @@ public abstract class IntegrationTestScaffolding {
 	 */
 	protected String login(String username, String password) {
 		return given().formParam("username", username)
-				.formParam("password", password)
-				.post(ResourceUrls.SESSION).asString();
+				.formParam("password", password).post(ResourceUrls.SESSION)
+				.as(Session.class).getToken();
 	}
 }

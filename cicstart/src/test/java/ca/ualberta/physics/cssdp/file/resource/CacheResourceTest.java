@@ -33,6 +33,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import ca.ualberta.physics.cssdp.configuration.ResourceUrls;
+import ca.ualberta.physics.cssdp.domain.auth.User;
 import ca.ualberta.physics.cssdp.domain.file.Host;
 import ca.ualberta.physics.cssdp.domain.file.Host.Protocol;
 import ca.ualberta.physics.cssdp.file.configuration.FileServer;
@@ -67,7 +68,8 @@ public class CacheResourceTest extends FileTestsScaffolding {
 				.statusCode(201)
 				.and()
 				.header("location",
-						ResourceUrls.CACHE + "?md5=68784d5d41107460df67ba08b7287267")
+						ResourceUrls.CACHE
+								+ "?md5=68784d5d41107460df67ba08b7287267")
 				.when().put(ResourceUrls.CACHE);
 
 		int midCount = cacheDir.list().length;
@@ -80,7 +82,8 @@ public class CacheResourceTest extends FileTestsScaffolding {
 				.statusCode(201)
 				.and()
 				.header("location",
-						ResourceUrls.CACHE + "?md5=68784d5d41107460df67ba08b7287267")
+						ResourceUrls.CACHE
+								+ "?md5=68784d5d41107460df67ba08b7287267")
 				.when().put(ResourceUrls.CACHE);
 
 		int endCount = cacheDir.list().length;
@@ -108,7 +111,10 @@ public class CacheResourceTest extends FileTestsScaffolding {
 		tempDir.delete();
 
 		// cleanup
-		expect().statusCode(200).when().delete(ResourceUrls.CACHE + "/68784d5d41107460df67ba08b7287267");
+		expect().statusCode(200)
+				.when()
+				.delete(ResourceUrls.CACHE
+						+ "/68784d5d41107460df67ba08b7287267");
 		expect().statusCode(404).when().get(location);
 
 		Assert.assertEquals(startCount, cacheDir.list().length);
@@ -127,7 +133,8 @@ public class CacheResourceTest extends FileTestsScaffolding {
 				.statusCode(201)
 				.and()
 				.header("location",
-						ResourceUrls.CACHE + "?md5=68784d5d41107460df67ba08b7287267")
+						ResourceUrls.CACHE
+								+ "?md5=68784d5d41107460df67ba08b7287267")
 				.when().put(ResourceUrls.CACHE);
 
 		file = new File("build.gradle");
@@ -148,7 +155,8 @@ public class CacheResourceTest extends FileTestsScaffolding {
 				.statusCode(201)
 				.and()
 				.header("location",
-						ResourceUrls.CACHE + "?md5=68784d5d41107460df67ba08b7287267")
+						ResourceUrls.CACHE
+								+ "?md5=68784d5d41107460df67ba08b7287267")
 				.when().put(ResourceUrls.CACHE);
 
 		String md5 = get(ResourceUrls.CACHE + "/find?key=addToCache")
@@ -169,14 +177,16 @@ public class CacheResourceTest extends FileTestsScaffolding {
 				.statusCode(201)
 				.and()
 				.header("location",
-						ResourceUrls.CACHE + "?md5=68784d5d41107460df67ba08b7287267")
+						ResourceUrls.CACHE
+								+ "?md5=68784d5d41107460df67ba08b7287267")
 				.when().put(ResourceUrls.CACHE);
 
 		given().formParam("key", "secondKey")
 				.expect()
 				.statusCode(200)
 				.when()
-				.put(ResourceUrls.CACHE + "/68784d5d41107460df67ba08b7287267/map");
+				.put(ResourceUrls.CACHE
+						+ "/68784d5d41107460df67ba08b7287267/map");
 
 		Assert.assertEquals("68784d5d41107460df67ba08b7287267",
 				get(ResourceUrls.CACHE + "/find?key=secondKey").asString());
@@ -185,6 +195,8 @@ public class CacheResourceTest extends FileTestsScaffolding {
 
 	@Test
 	public void request() throws IOException {
+
+		User dataManager = setupDataManager();
 
 		Host host = new Host("sunsite.ualberta.ca", "anonymous", "anonymous");
 		host.setProtocol(Protocol.ftp);
@@ -202,15 +214,9 @@ public class CacheResourceTest extends FileTestsScaffolding {
 		String url = "ftp://sunsite.ualberta.ca/pub/Mirror/apache/commons/daemon/RELEASE-NOTES.txt";
 		// String url = "ftp://ftp14.freebsd.org/pub/FreeBSD/README.TXT";
 		String encodeUrl = URLEncoder.encode(url, "UTF-8");
-		final Response res = given()
-				.queryParam("url", url)
-				.and()
-				.contentType(ContentType.URLENC)
-				.expect()
-				.statusCode(202)
-				.and()
-				.header("location",
-						ResourceUrls.CACHE + "?url=" + url).when()
+		final Response res = given().queryParam("url", url).and()
+				.contentType(ContentType.URLENC).expect().statusCode(202).and()
+				.header("location", ResourceUrls.CACHE + "?url=" + url).when()
 				.get(ResourceUrls.CACHE);
 
 		Response poll = get(res.getHeader("location"));

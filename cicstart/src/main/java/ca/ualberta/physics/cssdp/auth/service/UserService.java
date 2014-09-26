@@ -107,7 +107,7 @@ public class UserService {
 				HashUtils.getHash(NUM_HASHES_TO_COMPUTE, user.getPassword(),
 						bSalt);
 
-				sr.warn("Email already registered");
+				sr.error("Email already registered, not added.");
 			}
 		}
 
@@ -219,12 +219,21 @@ public class UserService {
 		return sr;
 	}
 
-	public ServiceResponse<Session> locate(String sessionToken) {
-		ServiceResponse<Session> sr = new ServiceResponse<Session>();
-		Session session = sessionDao.find(sessionToken);
-		if (session != null && !session.hasExpired()) {
-			sr.setPayload(session);
-		}
+	public ServiceResponse<Session> locate(final String sessionToken) {
+		final ServiceResponse<Session> sr = new ServiceResponse<Session>();
+		new ManualTransaction(sr, em) {
+
+			@Override
+			public void onError(Exception e, ServiceResponse<?> sr) {
+				sr.error(e.getMessage());
+			}
+
+			@Override
+			public void doInTransaction() {
+				Session session = sessionDao.find(sessionToken);
+				sr.setPayload(session);
+			}
+		};
 		return sr;
 	}
 

@@ -190,7 +190,6 @@ public class CatalogueService {
 		ServiceResponse<Void> sr = new ServiceResponse<Void>();
 		List<String> roots = project.getScanDirectories();
 		String host = project.getHost();
-//		String fileUrl = Common.properties().getString("api.url") + "/file";
 		String hostResource = ResourceUrls.HOST;
 
 		List<UrlDataProduct> unsavedUrlDataProducts = new ArrayList<UrlDataProduct>();
