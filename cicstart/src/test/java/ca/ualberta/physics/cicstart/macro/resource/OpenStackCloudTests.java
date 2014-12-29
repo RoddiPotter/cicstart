@@ -54,7 +54,9 @@ public class OpenStackCloudTests extends MacroTestsScaffolding {
 		Assert.fail(instance.id + " release my ip address!");
 		
 	}
-
+	
+	// run if you have a DAIR account.  Update macro.properties with credentials
+	@Ignore
 	@Test
 	public void testListImages() {
 
