@@ -64,7 +64,11 @@ public class EntityManagerProvider implements EntityManagerStore,
 	public void remove() {
 		EntityManager em = ems.get();
 		if (em.isOpen()) {
-			em.close();
+			try {
+				em.close();
+			} catch (Exception ignore) {
+				// interceptor may have already close me.
+			}
 		}
 		ems.remove();
 	}
