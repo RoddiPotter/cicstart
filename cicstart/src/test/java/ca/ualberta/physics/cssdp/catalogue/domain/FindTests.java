@@ -5,8 +5,6 @@ import static com.jayway.restassured.RestAssured.given;
 import java.io.File;
 import java.nio.charset.Charset;
 
-import javax.persistence.EntityManager;
-
 import org.joda.time.LocalDateTime;
 import org.junit.Assert;
 import org.junit.Before;
@@ -17,6 +15,7 @@ import ca.ualberta.physics.cssdp.catalogue.resource.CatalogueTestsScaffolding;
 import ca.ualberta.physics.cssdp.catalogue.service.CatalogueService;
 import ca.ualberta.physics.cssdp.configuration.InjectorHolder;
 import ca.ualberta.physics.cssdp.configuration.ResourceUrls;
+import ca.ualberta.physics.cssdp.dao.EntityManagerProvider;
 import ca.ualberta.physics.cssdp.domain.catalogue.CatalogueSearchResponse;
 import ca.ualberta.physics.cssdp.domain.catalogue.DataProduct;
 import ca.ualberta.physics.cssdp.domain.catalogue.Observatory;
@@ -40,7 +39,7 @@ public class FindTests extends CatalogueTestsScaffolding {
 	private UrlDataProductDao dao;
 
 	@Inject
-	private EntityManager em;
+	private EntityManagerProvider emp;
 
 	public FindTests() {
 		InjectorHolder.inject(this);
@@ -91,7 +90,7 @@ public class FindTests extends CatalogueTestsScaffolding {
 		url4.setUrl("url4");
 		url4.setScanTimestamp(LocalDateTime.now());
 
-		new ManualTransaction(new ServiceResponse<Void>(), em) {
+		new ManualTransaction(new ServiceResponse<Void>(), emp.get()) {
 
 			@Override
 			public void onError(Exception e, ServiceResponse<?> sr) {

@@ -28,11 +28,10 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import javax.persistence.EntityManager;
-
 import ca.ualberta.physics.cssdp.auth.configuration.AuthServer;
 import ca.ualberta.physics.cssdp.auth.dao.SessionDao;
 import ca.ualberta.physics.cssdp.auth.dao.UserDao;
+import ca.ualberta.physics.cssdp.dao.EntityManagerProvider;
 import ca.ualberta.physics.cssdp.domain.auth.Session;
 import ca.ualberta.physics.cssdp.domain.auth.User;
 import ca.ualberta.physics.cssdp.service.ManualTransaction;
@@ -67,7 +66,7 @@ public class UserService {
 	private SessionDao sessionDao;
 
 	@Inject
-	private EntityManager em;
+	private EntityManagerProvider emp;
 
 	@Inject
 	private EmailService emailService;
@@ -197,7 +196,7 @@ public class UserService {
 			final Session session = new Session(user, UUID.randomUUID()
 					.toString().split("=")[0]);
 
-			new ManualTransaction(sr, em) {
+			new ManualTransaction(sr, emp.get()) {
 
 				@Override
 				public void doInTransaction() {
@@ -221,7 +220,7 @@ public class UserService {
 
 	public ServiceResponse<Session> locate(final String sessionToken) {
 		final ServiceResponse<Session> sr = new ServiceResponse<Session>();
-		new ManualTransaction(sr, em) {
+		new ManualTransaction(sr, emp.get()) {
 
 			@Override
 			public void onError(Exception e, ServiceResponse<?> sr) {
@@ -243,7 +242,7 @@ public class UserService {
 
 		if (sr.isRequestOk()) {
 
-			new ManualTransaction(sr, em) {
+			new ManualTransaction(sr, emp.get()) {
 
 				@Override
 				public void onError(Exception e, ServiceResponse<?> sr) {

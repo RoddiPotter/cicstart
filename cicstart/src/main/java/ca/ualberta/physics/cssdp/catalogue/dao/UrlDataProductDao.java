@@ -59,7 +59,7 @@ public class UrlDataProductDao extends AbstractJpaDao<UrlDataProduct> implements
 
 		// we have to resort to hibernate directly because JPA does not have
 		// scrolling capability
-		Session session = em.unwrap(Session.class).getSessionFactory()
+		Session session = emp.get().unwrap(Session.class).getSessionFactory()
 				.openSession();
 
 		Transaction tx = session.beginTransaction();
@@ -141,7 +141,7 @@ public class UrlDataProductDao extends AbstractJpaDao<UrlDataProduct> implements
 					+ (start != null ? " and ud.startTimestamp <= :end " : "")
 					+ (end != null ? " and ud.endTimestamp >= :start" : "");
 
-			javax.persistence.Query q = em.createQuery(qlString);
+			javax.persistence.Query q = emp.get().createQuery(qlString);
 			q.setParameter("dataProducts", dataProducts);
 			if (start != null) {
 				q.setParameter("start", start);

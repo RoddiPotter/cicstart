@@ -27,8 +27,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.persistence.EntityManager;
-
 import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +37,7 @@ import ca.ualberta.physics.cssdp.catalogue.dao.DataProductDao;
 import ca.ualberta.physics.cssdp.catalogue.dao.ProjectDao;
 import ca.ualberta.physics.cssdp.catalogue.dao.UrlDataProductDao;
 import ca.ualberta.physics.cssdp.configuration.ResourceUrls;
+import ca.ualberta.physics.cssdp.dao.EntityManagerProvider;
 import ca.ualberta.physics.cssdp.domain.catalogue.DataProduct;
 import ca.ualberta.physics.cssdp.domain.catalogue.Discriminator;
 import ca.ualberta.physics.cssdp.domain.catalogue.Project;
@@ -72,7 +71,7 @@ public class CatalogueService {
 	private UrlDataProductDao urlDataProductDao;
 
 	@Inject
-	private EntityManager em;
+	private EntityManagerProvider emp;
 
 	@Inject
 	private ObjectMapper mapper;
@@ -83,7 +82,7 @@ public class CatalogueService {
 
 		final ServiceResponse<Void> sr = new ServiceResponse<Void>();
 
-		new ManualTransaction(sr, em) {
+		new ManualTransaction(sr, emp.get()) {
 
 			@Override
 			public void onError(Exception e, ServiceResponse<?> sr) {
@@ -128,7 +127,7 @@ public class CatalogueService {
 	public ServiceResponse<Void> delete(final Project project) {
 		ServiceResponse<Void> sr = new ServiceResponse<Void>();
 
-		new ManualTransaction(sr, em) {
+		new ManualTransaction(sr, emp.get()) {
 
 			@Override
 			public void onError(Exception e, ServiceResponse<?> sr) {

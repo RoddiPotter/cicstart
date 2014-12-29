@@ -35,7 +35,7 @@ public class HostEntryDao extends AbstractJpaDao<Host> {
 	public Host find(String hostname) {
 		String qlString = "select h from Host h where h.hostname = :hostname";
 
-		Query query = em.createQuery(qlString);
+		Query query = emp.get().createQuery(qlString);
 		query.setParameter("hostname", hostname);
 		Host he = null;
 		try {
@@ -49,7 +49,7 @@ public class HostEntryDao extends AbstractJpaDao<Host> {
 
 	@SuppressWarnings("unchecked")
 	public List<Host> list() {
-		List<Host> list = em.createQuery(
+		List<Host> list = emp.get().createQuery(
 				"select h from Host h order by h.hostname").getResultList();
 		return list;
 	}

@@ -20,8 +20,6 @@ package ca.ualberta.physics.cssdp.dao;
 
 import java.io.Serializable;
 
-import javax.persistence.EntityManager;
-
 import com.google.inject.Inject;
 
 /**
@@ -32,32 +30,32 @@ import com.google.inject.Inject;
 public abstract class AbstractJpaDao<T extends Persistent> implements Dao<T> {
 
 	@Inject
-	protected EntityManager em;
+	protected EntityManagerProvider emp;
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public void delete(T t) {
-		T toDelete = (T) em.getReference(t.getClass(), t.getId());
-		em.remove(toDelete);
+		T toDelete = (T) emp.get().getReference(t.getClass(), t.getId());
+		emp.get().remove(toDelete);
 	}
 
 	@Override
 	public T load(Class<T> clazz, Serializable uid) {
-		return (T) em.find(clazz, uid);
+		return (T) emp.get().find(clazz, uid);
 	}
 
 	@Override
 	public void save(T t) {
-		em.persist(t);
+		emp.get().persist(t);
 	}
 
 	@Override
 	public void update(T t) {
-		em.merge(t);
+		emp.get().merge(t);
 	}
 
 	@Override
 	public void refresh(T t) {
-		em.refresh(t);
+		emp.get().refresh(t);
 	}
 }

@@ -24,12 +24,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
 
-import javax.persistence.EntityManager;
-
 import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ca.ualberta.physics.cssdp.dao.EntityManagerProvider;
 import ca.ualberta.physics.cssdp.domain.file.CachedFile;
 import ca.ualberta.physics.cssdp.file.configuration.FileServer;
 import ca.ualberta.physics.cssdp.file.dao.CachedFileDao;
@@ -55,7 +54,7 @@ public class CacheService {
 	private CachedFileDao cachedFileDao;
 
 	@Inject
-	private EntityManager em;
+	private EntityManagerProvider emp;
 
 	public ServiceResponse<String> put(final String filename,
 			final String externalKey, final InputStream fileData) {
@@ -85,7 +84,7 @@ public class CacheService {
 		}
 
 		final String md5 = getMD5(tempFile);
-		new ManualTransaction(sr, em) {
+		new ManualTransaction(sr, emp.get()) {
 
 			@Override
 			public void onError(Exception e, ServiceResponse<?> sr) {
@@ -163,7 +162,7 @@ public class CacheService {
 		final CachedFile cachedFile = cachedFileDao.get(md5);
 		if (cachedFile != null) {
 
-			new ManualTransaction(sr, em) {
+			new ManualTransaction(sr, emp.get()) {
 
 				@Override
 				public void onError(Exception e, ServiceResponse<?> sr) {
@@ -192,7 +191,7 @@ public class CacheService {
 	public ServiceResponse<CachedFile> remove(final String md5) {
 
 		final ServiceResponse<CachedFile> sr = new ServiceResponse<CachedFile>();
-		new ManualTransaction(sr, em) {
+		new ManualTransaction(sr, emp.get()) {
 
 			@Override
 			public void doInTransaction() {
@@ -235,7 +234,7 @@ public class CacheService {
 			final String key) {
 
 		final ServiceResponse<CachedFile> sr = new ServiceResponse<CachedFile>();
-		new ManualTransaction(sr, em) {
+		new ManualTransaction(sr, emp.get()) {
 
 			@Override
 			public void doInTransaction() {

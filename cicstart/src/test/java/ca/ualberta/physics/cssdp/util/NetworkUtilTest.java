@@ -1,10 +1,12 @@
 package ca.ualberta.physics.cssdp.util;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class NetworkUtilTest {
 
+	@Ignore
 	@Test
 	public void testCurrentlyRunningOn() {
 		

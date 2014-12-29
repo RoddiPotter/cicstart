@@ -1,11 +1,10 @@
 package ca.ualberta.physics.cssdp.service;
 
-import javax.persistence.EntityManager;
-
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ca.ualberta.physics.cssdp.dao.EntityManagerProvider;
 import ca.ualberta.physics.cssdp.dao.ServiceStatsDao;
 import ca.ualberta.physics.cssdp.domain.ServiceStats;
 
@@ -31,7 +30,7 @@ public class StatsService {
 	private ServiceStatsDao dao;
 
 	@Inject
-	private EntityManager em;
+	private EntityManagerProvider emp;
 
 	/*
 	 * We synchronize here to avoid unique key exceptions on inserts. It might
@@ -41,7 +40,7 @@ public class StatsService {
 			final StatsService.ServiceName serviceName) {
 		final ServiceResponse<ServiceStats> sr = new ServiceResponse<ServiceStats>();
 
-		new ManualTransaction(sr, em) {
+		new ManualTransaction(sr, emp.get()) {
 
 			@Override
 			public void onError(Exception e, ServiceResponse<?> sr) {
@@ -87,7 +86,7 @@ public class StatsService {
 
 		final ServiceResponse<ServiceStats> sr = new ServiceResponse<ServiceStats>();
 
-		new ManualTransaction(sr, em) {
+		new ManualTransaction(sr, emp.get()) {
 
 			@Override
 			public void onError(Exception e, ServiceResponse<?> srForError) {

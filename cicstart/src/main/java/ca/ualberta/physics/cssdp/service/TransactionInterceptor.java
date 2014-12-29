@@ -18,13 +18,14 @@
  */
 package ca.ualberta.physics.cssdp.service;
 
-import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import ca.ualberta.physics.cssdp.dao.EntityManagerProvider;
 
 import com.google.common.base.Throwables;
 import com.google.inject.Inject;
@@ -35,14 +36,14 @@ public class TransactionInterceptor implements MethodInterceptor {
 			.getLogger(TransactionInterceptor.class);
 
 	@Inject
-	private EntityManager em;
+	private EntityManagerProvider emp;
 
 	@Override
 	public Object invoke(MethodInvocation invocation) throws Throwable {
 
 		Object obj = null;
 
-		EntityTransaction tx = em.getTransaction();
+		EntityTransaction tx = emp.get().getTransaction();
 		try {
 			boolean shouldCommit = true;
 			if (tx != null && tx.isActive() == false) {
@@ -66,7 +67,7 @@ public class TransactionInterceptor implements MethodInterceptor {
 			if (tx != null && tx.isActive() == true) {
 				tx.rollback();
 			}
-			em.clear();
+			emp.get().clear();
 			logger.error("Rolled back Transaction: ", e);
 			Throwables.propagate(Throwables.getRootCause(e));
 		} finally {

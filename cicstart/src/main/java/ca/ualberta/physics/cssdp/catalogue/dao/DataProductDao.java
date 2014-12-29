@@ -60,7 +60,7 @@ public class DataProductDao extends AbstractJpaDao<DataProduct> implements
 			qlString.append(" and dp.discriminator = :discriminator");
 		}
 	
-		Query q = em.createQuery(qlString.toString());
+		Query q = emp.get().createQuery(qlString.toString());
 		q.setParameter("project", project);
 		if(observatories != null && !observatories.isEmpty()) {
 			q.setParameter("observatories", observatories);

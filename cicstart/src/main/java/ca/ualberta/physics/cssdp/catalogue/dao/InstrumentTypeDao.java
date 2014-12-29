@@ -41,7 +41,7 @@ public class InstrumentTypeDao extends AbstractJpaDao<InstrumentType> implements
 			qlString.append(" and it.externalKey in (:externalKeys)");
 		}
 
-		Query q = em.createQuery(qlString.toString());
+		Query q = emp.get().createQuery(qlString.toString());
 		q.setParameter("project", project);
 		if (externalKeys != null && !externalKeys.isEmpty()) {
 			q.setParameter("externalKeys", externalKeys);

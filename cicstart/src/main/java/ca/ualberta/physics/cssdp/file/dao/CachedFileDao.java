@@ -30,7 +30,7 @@ public class CachedFileDao extends AbstractJpaDao<CachedFile> {
 
 		String qlString = "select cf from CachedFile cf, in(cf.externalKeys) extkey where extkey = :externalKey";
 
-		Query q = em.createQuery(qlString);
+		Query q = emp.get().createQuery(qlString);
 		q.setParameter("externalKey", externalKey);
 
 		CachedFile cf = null;
@@ -47,7 +47,7 @@ public class CachedFileDao extends AbstractJpaDao<CachedFile> {
 
 		String qlString = "select cf from CachedFile cf where cf.md5 = :md5";
 
-		Query q = em.createQuery(qlString);
+		Query q = emp.get().createQuery(qlString);
 		q.setParameter("md5", md5);
 
 		CachedFile cf = null;

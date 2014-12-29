@@ -4,6 +4,7 @@ import static com.jayway.restassured.RestAssured.expect;
 import static com.jayway.restassured.RestAssured.given;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import ca.ualberta.physics.cssdp.configuration.ResourceUrls;
@@ -16,6 +17,7 @@ import com.jayway.restassured.response.Response;
 
 public class MacroResourceTests extends MacroTestsScaffolding {
 
+	@Ignore
 	@Test
 	public void testStartVM() {
 
@@ -25,7 +27,7 @@ public class MacroResourceTests extends MacroTestsScaffolding {
 		InstanceSpec instanceSpec = new InstanceSpec();
 		instanceSpec.setCloud("DAIR");
 		instanceSpec.setFlavor("m1.tiny");
-		instanceSpec.setImage("Ubuntu 12.04.5");
+		instanceSpec.setImage("Ubuntu 12.04");
 		instanceSpec.setRequestId("TESTJOB");
 
 		// String macroUrl = Common.properties().getString("api.url") +

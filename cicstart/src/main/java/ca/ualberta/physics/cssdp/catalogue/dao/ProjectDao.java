@@ -35,7 +35,7 @@ public class ProjectDao extends AbstractJpaDao<Project> implements Dao<Project> 
 	public List<Project> findAll() {
 
 		String qlString = "select p from Project p order by p.externalKey";
-		Query q = em.createQuery(qlString);
+		Query q = emp.get().createQuery(qlString);
 		List<Project> projects = q.getResultList();
 
 		return projects;
@@ -44,7 +44,7 @@ public class ProjectDao extends AbstractJpaDao<Project> implements Dao<Project> 
 	public Project find(Mnemonic externalKey) {
 
 		String qlString = "select p from Project p where p.externalKey = :externalKey";
-		Query q = em.createQuery(qlString);
+		Query q = emp.get().createQuery(qlString);
 		q.setParameter("externalKey", externalKey);
 
 		Project project = null;

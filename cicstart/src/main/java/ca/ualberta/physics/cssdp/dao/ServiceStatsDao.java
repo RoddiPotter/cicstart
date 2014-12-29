@@ -19,7 +19,7 @@ public class ServiceStatsDao extends AbstractJpaDao<ServiceStats> {
 		logger.debug("Finding a stats record for service " + serviceName);
 
 		String qlString = "select ss from ServiceStats ss where ss.serviceName = :serviceName";
-		Query q = em.createQuery(qlString);
+		Query q = emp.get().createQuery(qlString);
 		q.setParameter("serviceName", serviceName);
 
 		ServiceStats stats = null;

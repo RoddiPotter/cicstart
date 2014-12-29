@@ -30,7 +30,7 @@ public class SessionDao extends AbstractJpaDao<Session> {
 	public Session find(String token) {
 
 		String qlString = "select s from Session s where s.token = :token";
-		Query q = em.createQuery(qlString);
+		Query q = emp.get().createQuery(qlString);
 		q.setParameter("token", token);
 
 		Session session = null;

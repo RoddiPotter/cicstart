@@ -66,9 +66,6 @@ public class CommonModule extends AbstractModule {
 			install(new JpaModule());
 			install(new TransactionalModule());
 
-			bind(EntityManager.class).toProvider(EntityManagerProvider.class)
-					.asEagerSingleton();
-
 			// Common service for stats and info
 			bind(ServiceStatsDao.class).in(Scopes.SINGLETON);
 			bind(StatsService.class).in(Scopes.SINGLETON);

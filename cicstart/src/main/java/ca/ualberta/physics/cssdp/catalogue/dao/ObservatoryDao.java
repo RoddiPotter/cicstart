@@ -41,7 +41,7 @@ public class ObservatoryDao extends AbstractJpaDao<Observatory> implements
 			qlString.append(" and o.externalKey in (:externalKeys)");
 		}
 
-		Query q = em.createQuery(qlString.toString());
+		Query q = emp.get().createQuery(qlString.toString());
 		q.setParameter("project", project);
 		if (externalKeys != null && !externalKeys.isEmpty()) {
 			q.setParameter("externalKeys", externalKeys);

@@ -18,9 +18,8 @@
  */
 package ca.ualberta.physics.cssdp.file.service;
 
-import javax.persistence.EntityManager;
-
 import ca.ualberta.physics.cssdp.configuration.InjectorHolder;
+import ca.ualberta.physics.cssdp.dao.EntityManagerProvider;
 import ca.ualberta.physics.cssdp.domain.file.Host;
 import ca.ualberta.physics.cssdp.file.dao.HostEntryDao;
 import ca.ualberta.physics.cssdp.service.ManualTransaction;
@@ -34,7 +33,7 @@ public class HostService {
 	private HostEntryDao hostEntryDao;
 
 	@Inject
-	private EntityManager em;
+	private EntityManagerProvider emp;
 
 	public HostService() {
 		InjectorHolder.inject(this);
@@ -47,7 +46,7 @@ public class HostService {
 	public ServiceResponse<Host> deleteHostEntry(final String hostname) {
 
 		final ServiceResponse<Host> sr = new ServiceResponse<Host>();
-		new ManualTransaction(sr, em) {
+		new ManualTransaction(sr, emp.get()) {
 
 			@Override
 			public void onError(Exception e, ServiceResponse<?> sr) {
@@ -73,7 +72,7 @@ public class HostService {
 	public ServiceResponse<Void> addHost(final Host hostEntry) {
 
 		final ServiceResponse<Void> sr = new ServiceResponse<Void>();
-		new ManualTransaction(sr, em) {
+		new ManualTransaction(sr, emp.get()) {
 
 			@Override
 			public void onError(Exception e, ServiceResponse<?> sr) {

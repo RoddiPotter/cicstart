@@ -18,6 +18,7 @@ import com.google.common.base.Strings;
 
 public class OpenStackCloudTests extends MacroTestsScaffolding {
 
+	@Ignore
 	@Test
 	public void testStartInstance() {
 

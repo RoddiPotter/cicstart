@@ -30,7 +30,7 @@ public class UserDao extends AbstractJpaDao<User> {
 	public User find(String email) {
 
 		String qlString = "select u from User u where u.email = :email";
-		Query q = em.createQuery(qlString);
+		Query q = emp.get().createQuery(qlString);
 		q.setParameter("email", email);
 
 		User user = null;
