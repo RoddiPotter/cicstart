@@ -17,6 +17,7 @@ import ca.ualberta.physics.cssdp.util.NetworkUtil;
 
 import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.response.Response;
+import com.jayway.restassured.specification.RequestSpecification;
 
 public class StartVM implements Command {
 
@@ -60,9 +61,11 @@ public class StartVM implements Command {
 			jobLogger.info("StartVM: Starting VM instance on " + cloudName
 					+ " using image " + imageName + " of size " + flavor);
 //			String macroUrl = Common.properties().getString("api.url") + "/macro";
-			Response res = given().content(vmSpec).and()
+			RequestSpecification request = given().content(vmSpec).and()
 					.contentType(ContentType.JSON).and()
-					.headers("CICSTART.session", cicstartSession)
+					.headers("CICSTART.session", cicstartSession);
+			jobLogger.info("THIS IS THE REQUEST -->" + request.log().all(true).toString());
+			Response res = request
 					.post(ResourceUrls.MACRO + "/vm");
 
 			if (res.statusCode() == 200) {
