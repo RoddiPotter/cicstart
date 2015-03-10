@@ -60,6 +60,7 @@ public class StartVM implements Command {
 
 			jobLogger.info("StartVM: Starting VM instance on " + cloudName
 					+ " using image " + imageName + " of size " + flavor);
+
 			// String macroUrl = Common.properties().getString("api.url") +
 			// "/macro";
 			jobLogger.info("VMSPEC -->" + vmSpec);

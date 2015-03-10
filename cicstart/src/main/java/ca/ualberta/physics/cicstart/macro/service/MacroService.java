@@ -239,7 +239,7 @@ public class MacroService {
 			appProperties.createNewFile();
 
 			Properties overrides = ApplicationProperties.dump();
-
+			
 			// logback will be in the bin folder
 			overrides
 					.setProperty("common.logback.configuration", "logback.xml");
@@ -277,6 +277,8 @@ public class MacroService {
 				overrides.setProperty("common.api.url", Common.properties()
 						.getString("external.api.url"));
 			}
+
+			logger.debug("Using these properties in macro-server client: " + overrides.toString());
 
 			os = new FileOutputStream(appProperties);
 			overrides.store(os,

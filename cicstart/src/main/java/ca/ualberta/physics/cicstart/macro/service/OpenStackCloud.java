@@ -182,6 +182,11 @@ public class OpenStackCloud implements Cloud {
 
 		String jsonServer = serialize(createServer);
 
+		logger.debug("Create server request: " + jsonServer);
+		logger.debug("Create server header: X-Auth-Token=" + identity.auth.getToken());
+		logger.debug("Create server header: Content-Type=application/json");
+		logger.debug("Create server url: " + serversRef);
+		
 		Response res = given().header("X-Auth-Token", identity.auth.getToken())
 				.and().header("Content-Type", "application/json").and()
 				.content(jsonServer)
