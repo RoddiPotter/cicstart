@@ -9,9 +9,9 @@ bin/
 cloud-script.txt
 macro.log
 temp/
-rod_script.txt
+*rod_script*.txt
 open_stack_api_learning.txt
-#*#
+\#*\#
 macro.log
 open_stack_api_learning_2.txt
 soak_test_results2.csv
