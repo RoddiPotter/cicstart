@@ -17,6 +17,7 @@ import ca.ualberta.physics.cssdp.util.NetworkUtil;
 
 import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.response.Response;
+import com.jayway.restassured.specification.RequestSpecification;
 
 public class StartVM implements Command {
 
@@ -45,7 +46,7 @@ public class StartVM implements Command {
 	public void execute(CMLRuntime runtime) {
 
 		MDC.put("JobId", runtime.getRequestId());
-		
+
 		String cicstartServer = MacroServer.properties().getString(
 				"cicstart.server.internal");
 
@@ -59,18 +60,23 @@ public class StartVM implements Command {
 
 			jobLogger.info("StartVM: Starting VM instance on " + cloudName
 					+ " using image " + imageName + " of size " + flavor);
-//			String macroUrl = Common.properties().getString("api.url") + "/macro";
-			Response res = given().content(vmSpec).and()
+			// String macroUrl = Common.properties().getString("api.url") +
+			// "/macro";
+			jobLogger.info("VMSPEC -->" + vmSpec);
+			RequestSpecification request = given().content(vmSpec).and()
 					.contentType(ContentType.JSON).and()
-					.headers("CICSTART.session", cicstartSession)
-					.post(ResourceUrls.MACRO + "/vm");
+					.headers("CICSTART.session", cicstartSession);
+			String url = ResourceUrls.MACRO + "/vm";
+			jobLogger.info("URL -->" + url);
+			Response res = request.post(url);
 
 			if (res.statusCode() == 200) {
 				instance = res.as(Instance.class);
 				jobLogger.info("StartVM: Instance started with ip address "
 						+ instance.ipAddress + " and id " + instance.id);
 			} else {
-				jobLogger.error("StartVM: Instance start failed because " + res.statusCode() + ":" + res.asString());
+				jobLogger.error("StartVM: Instance start failed because "
+						+ res.statusCode() + ":" + res.asString());
 			}
 
 		} else {
