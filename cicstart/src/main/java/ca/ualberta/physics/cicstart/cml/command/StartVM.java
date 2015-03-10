@@ -69,6 +69,8 @@ public class StartVM implements Command {
 				instance = res.as(Instance.class);
 				jobLogger.info("StartVM: Instance started with ip address "
 						+ instance.ipAddress + " and id " + instance.id);
+			} else {
+				jobLogger.error("StartVM: Instance start failed because " + res.statusCode() + ":" + res.asString());
 			}
 
 		} else {
