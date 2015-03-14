@@ -58,7 +58,7 @@ dependencies {
 	compile "com.jolbox:bonecp:0.8.0-rc1"
 	compile "com.jolbox:bonecp-jdk-compat:0.8.0-rc1"
 	compile "com.jolbox:bonecp-provider:0.8.0-alpha1"
-	compile "postgresql:postgresql:9.1-901.jdbc4"
+	compile 'org.postgresql:postgresql:9.4-1201-jdbc41'
 
 	compile "org.apache.commons:commons-email:1.2"
 	compile "org.apache.commons:commons-compress:1.5"

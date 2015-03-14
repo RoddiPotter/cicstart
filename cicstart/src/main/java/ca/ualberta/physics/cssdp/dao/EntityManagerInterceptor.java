@@ -113,22 +113,27 @@ public class EntityManagerInterceptor implements Filter {
 				} else {
 
 					if (url.contains("auth")) {
+						logger.debug("Incrementing Auth count");
 						statsService
 								.incrementInvocationCount(StatsService.ServiceName.AUTH);
 					}
 					if (url.contains("catalogue")) {
+						logger.debug("Incrementing Catalogue count");
 						statsService
 								.incrementInvocationCount(StatsService.ServiceName.CATALOGUE);
 					}
 					if (url.contains("file")) {
+						logger.debug("Incrementing File count");
 						statsService
 								.incrementInvocationCount(StatsService.ServiceName.FILE);
 					}
 					if (url.contains("macro")) {
+						logger.debug("Incrementing Macro count");
 						statsService
 								.incrementInvocationCount(StatsService.ServiceName.MACRO);
 					}
 					if (url.contains("vfs")) {
+						logger.debug("Incrementing VFS count");
 						statsService
 								.incrementInvocationCount(StatsService.ServiceName.VFS);
 					}
