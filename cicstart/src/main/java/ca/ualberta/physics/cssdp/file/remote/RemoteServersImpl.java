@@ -67,7 +67,7 @@ public class RemoteServersImpl implements RemoteServers {
 		
 		InjectorHolder.inject(this);
 
-		ServiceResponse<Void> sr = new ServiceResponse<>();
+		ServiceResponse<Void> sr = new ServiceResponse<Void>();
 		new ManualTransaction(sr, emp.get()) {
 
 			@Override
