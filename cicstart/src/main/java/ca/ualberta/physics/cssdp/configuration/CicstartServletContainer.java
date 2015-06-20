@@ -31,6 +31,8 @@ import org.apache.sshd.server.Command;
 import org.apache.sshd.server.FileSystemFactory;
 import org.apache.sshd.server.FileSystemView;
 import org.apache.sshd.server.sftp.SftpSubsystem;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ca.ualberta.physics.cssdp.file.remote.RemoteServers;
 import ca.ualberta.physics.cssdp.vfs.configuration.VfsServer;
@@ -50,25 +52,33 @@ public class CicstartServletContainer extends ServletContainer {
 
 	private static final long serialVersionUID = 1L;
 
+	private static final Logger log = LoggerFactory.getLogger(CicstartServletContainer.class);
+	
 	@Inject
 	private RemoteServers remoteServers;
+	
 	private Thread remoteServersDaemon;
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void init() throws ServletException {
 
+		log.info("Initializing");
+		
 		InjectorHolder.inject(this);
+
+		log.info("Injected");
 
 		// File server stuff
 		remoteServersDaemon = new Thread(remoteServers, "Remote Servers");
 		remoteServersDaemon.setDaemon(true);
 		remoteServersDaemon.start();
+		log.info("Remote server daemon started");
 
 		
 		// VFS server stuff
 		// start the FTP server
 		VfsFtpServer.main(new String[0]);
+		log.info("FTP Server started");
 
 		// start the SFTP server
 		String pemKeyFile = VfsServer.properties().getString("pemKeyFile");
@@ -92,6 +102,8 @@ public class CicstartServletContainer extends ServletContainer {
 		sshd.setPasswordAuthenticator(new CssdpPasswordAuthenticator());
 		try {
 			sshd.start();
+			log.info("SFTP Server started");
+
 		} catch (IOException e) {
 			throw Throwables.propagate(e);
 		}

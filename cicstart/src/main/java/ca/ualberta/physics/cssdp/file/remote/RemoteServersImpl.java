@@ -30,10 +30,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ca.ualberta.physics.cssdp.configuration.InjectorHolder;
+import ca.ualberta.physics.cssdp.dao.EntityManagerProvider;
 import ca.ualberta.physics.cssdp.domain.file.Host;
 import ca.ualberta.physics.cssdp.file.dao.HostEntryDao;
 import ca.ualberta.physics.cssdp.file.remote.command.RemoteServerCommand;
 import ca.ualberta.physics.cssdp.file.remote.protocol.RemoteConnection;
+import ca.ualberta.physics.cssdp.service.ManualTransaction;
+import ca.ualberta.physics.cssdp.service.ServiceResponse;
 
 import com.google.common.base.Throwables;
 import com.google.inject.Inject;
@@ -50,6 +53,9 @@ public class RemoteServersImpl implements RemoteServers {
 	@Inject
 	private HostEntryDao hostEntryDao;
 
+	@Inject
+	private EntityManagerProvider emp;
+	
 	private final ConcurrentMap<String, BlockingQueue<RemoteConnection>> connectionPools = new ConcurrentHashMap<String, BlockingQueue<RemoteConnection>>();
 
 	private final BlockingQueue<RemoteServerCommand<?>> backlog = new ArrayBlockingQueue<RemoteServerCommand<?>>(
@@ -58,12 +64,32 @@ public class RemoteServersImpl implements RemoteServers {
 	private final CopyOnWriteArraySet<RemoteServerCommand<?>> currentRequests = new CopyOnWriteArraySet<RemoteServerCommand<?>>();
 
 	public RemoteServersImpl() {
+		
 		InjectorHolder.inject(this);
 
-		// initialize the existing hosts in this remove server object
-		List<Host> hostEntries = hostEntryDao.list();
-		for (Host hostEntry : hostEntries) {
-			add(hostEntry);
+		ServiceResponse<Void> sr = new ServiceResponse<>();
+		new ManualTransaction(sr, emp.get()) {
+
+			@Override
+			public void doInTransaction() {
+				// initialize the existing hosts in this remove server object
+				List<Host> hostEntries = hostEntryDao.list();
+				
+				for (Host hostEntry : hostEntries) {
+					add(hostEntry);
+				}
+				
+			}
+
+			@Override
+			public void onError(Exception e, ServiceResponse<?> sr) {
+				sr.error("Failed to initialize remote servers: " + e.getMessage());
+			}
+
+		};
+		
+		if(!sr.isRequestOk()) {
+			logger.error(sr.getMessagesAsStrings());
 		}
 
 	}
