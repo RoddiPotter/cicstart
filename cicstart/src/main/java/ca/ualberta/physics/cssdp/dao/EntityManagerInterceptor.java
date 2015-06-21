@@ -105,11 +105,17 @@ public class EntityManagerInterceptor implements Filter {
 			emProvider.get();
 
 			if (request instanceof HttpServletRequest) {
+				
+				logger.debug("got an http servlet request here...");
+				
 				String url = ((HttpServletRequest) request).getRequestURL()
 						.toString();
 
+				logger.debug("and the request is for " + url);
+
 				if (url.contains("api-docs") || url.contains("service")) {
 					// don't count stats on these.
+					
 				} else {
 
 					if (url.contains("auth")) {
@@ -141,7 +147,10 @@ public class EntityManagerInterceptor implements Filter {
 				}
 			}
 
+			logger.debug("going down filter chain now...");
 			chain.doFilter(request, response);
+			logger.debug("Hello, I'm back up the filter chain now");
+			
 		} catch (RuntimeException e) {
 			logger.error("uh oh", e.getMessage(), e);
 		} finally {

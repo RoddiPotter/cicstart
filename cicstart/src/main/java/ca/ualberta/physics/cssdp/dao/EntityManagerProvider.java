@@ -22,12 +22,17 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.FlushModeType;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 public class EntityManagerProvider implements EntityManagerStore,
 		Provider<EntityManager> {
 
+	private static final Logger log = LoggerFactory.getLogger(EntityManagerProvider.class);
+	
 	private static final ThreadLocal<EntityManager> ems = new ThreadLocal<EntityManager>();
 
 	private EntityManagerFactory emf;
@@ -57,6 +62,7 @@ public class EntityManagerProvider implements EntityManagerStore,
 			em.setFlushMode(FlushModeType.COMMIT);
 			ems.set(em);
 		}
+		log.info("returning EntityManager: " + em);
 		return em;
 	}
 
