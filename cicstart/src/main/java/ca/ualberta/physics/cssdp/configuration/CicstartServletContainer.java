@@ -75,38 +75,40 @@ public class CicstartServletContainer extends ServletContainer {
 		log.info("Remote server daemon started");
 
 		
-		// VFS server stuff
-		// start the FTP server
-		VfsFtpServer.main(new String[0]);
-		log.info("FTP Server started");
+		// these never worked through DAIR firewall, so don't bother starting them (avoid potential security holes)
+		
+//		// VFS server stuff
+//		// start the FTP server
+//		VfsFtpServer.main(new String[0]);
+//		log.info("FTP Server started");
 
 		// start the SFTP server
-		String pemKeyFile = VfsServer.properties().getString("pemKeyFile");
-		int sftpPort = VfsServer.properties().getInt("sftpPort");
-
-		SshServer sshd = SshServer.setUpDefaultServer();
-		sshd.setPort(sftpPort);
-		sshd.setKeyPairProvider(new FileKeyPairProvider(
-				new String[] { pemKeyFile }));
-		sshd.setSubsystemFactories(Arrays
-				.<NamedFactory<Command>> asList(new SftpSubsystem.Factory()));
-		sshd.setFileSystemFactory(new FileSystemFactory() {
-
-			@Override
-			public FileSystemView createFileSystemView(Session session)
-					throws IOException {
-
-				return new CssdpFileSystem(session.getUsername());
-			}
-		});
-		sshd.setPasswordAuthenticator(new CssdpPasswordAuthenticator());
-		try {
-			sshd.start();
-			log.info("SFTP Server started");
-
-		} catch (IOException e) {
-			throw Throwables.propagate(e);
-		}
+//		String pemKeyFile = VfsServer.properties().getString("pemKeyFile");
+//		int sftpPort = VfsServer.properties().getInt("sftpPort");
+//
+//		SshServer sshd = SshServer.setUpDefaultServer();
+//		sshd.setPort(sftpPort);
+//		sshd.setKeyPairProvider(new FileKeyPairProvider(
+//				new String[] { pemKeyFile }));
+//		sshd.setSubsystemFactories(Arrays
+//				.<NamedFactory<Command>> asList(new SftpSubsystem.Factory()));
+//		sshd.setFileSystemFactory(new FileSystemFactory() {
+//
+//			@Override
+//			public FileSystemView createFileSystemView(Session session)
+//					throws IOException {
+//
+//				return new CssdpFileSystem(session.getUsername());
+//			}
+//		});
+//		sshd.setPasswordAuthenticator(new CssdpPasswordAuthenticator());
+//		try {
+//			sshd.start();
+//			log.info("SFTP Server started");
+//
+//		} catch (IOException e) {
+//			throw Throwables.propagate(e);
+//		}
 
 		
 		super.init();
